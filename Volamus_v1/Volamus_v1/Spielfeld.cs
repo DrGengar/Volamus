@@ -85,6 +85,16 @@ namespace Volamus_v1
             return fieldVertices;
         }
 
+        public int get_width()
+        {
+            return width;
+        }
+
+        public int get_length()
+        {
+            return length;
+        }
+
         public void Draw(Kamera camera, GraphicsDeviceManager graphics)
         {
             effect.View = camera.get_View();
@@ -116,7 +126,7 @@ namespace Volamus_v1
                 {
                     effect.EnableDefaultLighting();
                     effect.World = transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) * Matrix.CreateScale(0.06f, 0.05f, 0.05f)
-                        * Matrix.CreateTranslation(new Vector3(0, 0, 10));
+                        * Matrix.CreateTranslation(new Vector3(0, 0, net_height));
                     effect.View = camera.get_View();
                     effect.Projection = camera.get_Projection();
                 }

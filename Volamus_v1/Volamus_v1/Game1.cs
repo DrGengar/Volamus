@@ -12,13 +12,15 @@ namespace Volamus_v1
         Kamera camera;
         Spielfeld field;
         Spieler player_one;
+        Ball ball;
 
 
         public Game1()
         {
-            field = new Spielfeld(50, 100, 20);
+            field = new Spielfeld(50, 100, 15);
             camera = new Kamera(new Vector3(0, -60, 20), new Vector3(0, 0, 0), new Vector3(0, 1, 1));
-            player_one = new Spieler(new Vector3(0,-25,5));
+            player_one = new Spieler(new Vector3(0,-25,0),5,0.5f,0.8f);
+            ball = new Ball(new Vector3(0, -10, 20));
             graphics = new GraphicsDeviceManager(this);
             graphics.IsFullScreen = true;
             Content.RootDirectory = "Content";
@@ -40,6 +42,7 @@ namespace Volamus_v1
             spriteBatch = new SpriteBatch(GraphicsDevice);
             field.LoadContent(Content);
             player_one.LoadContent(Content);
+            ball.LoadContent(Content);
 
             // TODO: use this.Content to load your game content here
         }
@@ -55,6 +58,9 @@ namespace Volamus_v1
         protected override void Update(GameTime gameTime)
         {
             camera.Update();
+            player_one.Update(field);
+            ball.Update(player_one);
+
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
@@ -73,6 +79,8 @@ namespace Volamus_v1
             field.Draw(camera, graphics);
 
             player_one.Draw(camera, graphics);
+
+            ball.Draw(camera, graphics);
 
             base.Draw(gameTime);
         }
