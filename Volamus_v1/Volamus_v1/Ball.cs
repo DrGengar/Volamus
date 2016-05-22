@@ -66,15 +66,15 @@ namespace Volamus_v1
             }
 
             //Ball wird geworfen
-            // Q starker Wurf,  E leichter Wurf
-            if (fliegt == false && state.IsKeyDown(Keys.Q))
+            // Q leichter Wurf,  E starker Wurf
+            if (fliegt == false && state.IsKeyDown(Keys.E))
             {
                 v0 = 35f;
                 fliegt = true;
                 Flugbahn();
             }
 
-            if (fliegt == false && state.IsKeyDown(Keys.E))
+            if (fliegt == false && state.IsKeyDown(Keys.Q))
             {
                 v0 = 25f;
                 fliegt = true;
