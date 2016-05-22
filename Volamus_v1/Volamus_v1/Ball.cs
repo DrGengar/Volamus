@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,16 @@ namespace Volamus_v1
 {
     class Ball
     {
+        Vector3 position;#
+        //Rest
+
+        Ball(Vector3 pos)
+        {
+            position = pos;
+            //Rest
+
+        }
+
 
     }
 }

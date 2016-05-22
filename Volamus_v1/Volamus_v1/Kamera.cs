@@ -48,6 +48,7 @@ namespace Volamus_v1
         {
             UpdateViewMatrix();
         }
+
         private void UpdateViewMatrix()
         {
             viewMatrix = Matrix.CreateLookAt(cameraPos, cameraView, cameraUp);

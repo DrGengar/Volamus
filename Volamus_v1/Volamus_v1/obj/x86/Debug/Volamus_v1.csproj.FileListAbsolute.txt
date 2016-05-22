@@ -50,3 +50,6 @@ C:\Users\Lars\Desktop\3dGame3\Volamus_v1\Volamus_v1\bin\Windows\x86\Debug\SharpD
 C:\Users\Lars\Desktop\3dGame3\Volamus_v1\Volamus_v1\bin\Windows\x86\Debug\SharpDX.RawInput.xml
 C:\Users\Lars\Desktop\3dGame3\Volamus_v1\Volamus_v1\bin\Windows\x86\Debug\SharpDX.Direct3D9.xml
 C:\Users\Lars\Desktop\3dGame3\Volamus_v1\Volamus_v1\obj\x86\Debug\Volamus_v1.csprojResolveAssemblyReference.cache
+C:\Users\Lars\Desktop\3dGame3\Volamus_v1\Volamus_v1\bin\Windows\x86\Debug\Content\Netzv2.xnb
+C:\Users\Lars\Desktop\3dGame3\Volamus_v1\Volamus_v1\bin\Windows\x86\Debug\Content\background.xnb
+C:\Users\Lars\Desktop\3dGame3\Volamus_v1\Volamus_v1\bin\Windows\x86\Debug\Content\3DAcaLogo.xnb

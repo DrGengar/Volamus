@@ -32,7 +32,7 @@ namespace Volamus_v1
             net_height = n_h;
         }
 
-        public void Initialize(GraphicsDeviceManager graphics)
+        public void Initialize(GraphicsDeviceManager graphics, ContentManager content)
         {
             fieldVertices[0].Position = new Vector3(width / 2, -length / 2, 0);
             fieldVertices[1].Position = new Vector3(-width / 2, -length / 2, 0);
@@ -59,7 +59,7 @@ namespace Volamus_v1
 
         public void LoadContent(ContentManager content)
         {
-            net = content.Load<Model>("Netzv1");
+            net = content.Load<Model>("Netzv2");
         }
 
         public BasicEffect get_effect()
@@ -90,6 +90,8 @@ namespace Volamus_v1
             effect.View = camera.get_View();
             effect.Projection = camera.get_Projection();
 
+            //effect.TextureEnabled = true;
+
             foreach (var pass in effect.CurrentTechnique.Passes)
             {
                 pass.Apply();
@@ -113,9 +115,8 @@ namespace Volamus_v1
                 foreach (BasicEffect effect in mesh.Effects)
                 {
                     effect.EnableDefaultLighting();
-                    effect.World = transforms[mesh.ParentBone.Index] * Matrix.CreateScale(0.06f, 0.05f, 0.05f) *
-                        Matrix.CreateRotationX(-90.0f)
-                        * Matrix.CreateTranslation(new Vector3(0, 0, 5));
+                    effect.World = transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) * Matrix.CreateScale(0.06f, 0.05f, 0.05f)
+                        * Matrix.CreateTranslation(new Vector3(0, 0, 10));
                     effect.View = camera.get_View();
                     effect.Projection = camera.get_Projection();
                 }
