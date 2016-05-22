@@ -12,7 +12,8 @@ namespace Volamus_v1
     class Spielfeld
     {
         VertexPositionTexture[] fieldVertices = new VertexPositionTexture[12];
-        
+        VertexPositionTexture[] netVertices = new VertexPositionTexture[6];
+
 
         int width;
         int length;
@@ -24,7 +25,7 @@ namespace Volamus_v1
         //Texturen
         BasicEffect effect;
 
-        public Spielfeld(int w,int l, int n_h) : base()
+        public Spielfeld(int w, int l, int n_h) : base()
         {
             width = w;
             length = l;
@@ -46,6 +47,12 @@ namespace Volamus_v1
             fieldVertices[10].Position = fieldVertices[8].Position;
             fieldVertices[11].Position = new Vector3(width / 2, length / 2, 0);
 
+            netVertices[0].Position = fieldVertices[4].Position;
+            netVertices[1].Position = fieldVertices[4].Position + new Vector3(0, 0, 10);
+            netVertices[2].Position = fieldVertices[6].Position;
+            netVertices[3].Position = netVertices[1].Position;
+            netVertices[4].Position = fieldVertices[6].Position + new Vector3(0, 0, 10);
+            netVertices[5].Position = netVertices[2].Position;
 
             effect = new BasicEffect(graphics.GraphicsDevice);
         }
@@ -62,7 +69,7 @@ namespace Volamus_v1
 
         public VertexPositionTexture get_vertex(int index)
         {
-            if(index > 12 || index < 0)
+            if (index > 6 || index < 0)
             {
                 VertexPositionTexture zero = new VertexPositionTexture();
                 zero.Position = new Vector3(0, 0, 0);
@@ -76,6 +83,45 @@ namespace Volamus_v1
         public VertexPositionTexture[] get_field()
         {
             return fieldVertices;
+        }
+
+        public void Draw(Kamera camera, GraphicsDeviceManager graphics)
+        {
+            effect.View = camera.get_View();
+            effect.Projection = camera.get_Projection();
+
+            foreach (var pass in effect.CurrentTechnique.Passes)
+            {
+                pass.Apply();
+
+                effect.View = camera.get_View();
+                effect.Projection = camera.get_Projection();
+
+                graphics.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, fieldVertices, 0, 4);
+
+                //graphics.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, netVertices, 0, 2);
+            }
+
+            Matrix[] transforms = new Matrix[net.Bones.Count];
+            net.CopyAbsoluteBoneTransformsTo(transforms);
+
+            // Draw the model. A model can have multiple meshes, so loop.
+            foreach (ModelMesh mesh in net.Meshes)
+            {
+                // This is where the mesh orientation is set, as well 
+                // as our camera and projection.
+                foreach (BasicEffect effect in mesh.Effects)
+                {
+                    effect.EnableDefaultLighting();
+                    effect.World = transforms[mesh.ParentBone.Index] * Matrix.CreateScale(0.06f, 0.05f, 0.05f) *
+                        Matrix.CreateRotationX(-90.0f)
+                        * Matrix.CreateTranslation(new Vector3(0, 0, 5));
+                    effect.View = camera.get_View();
+                    effect.Projection = camera.get_Projection();
+                }
+                // Draw the mesh, using the effects set above.
+                mesh.Draw();
+            }
         }
 
 

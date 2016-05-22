@@ -24,7 +24,7 @@ namespace Volamus_v1
             cameraView = camV;
             cameraUp = camU;
 
-            projectionMatrix = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(90.0f), 16 / 9, .5f, 500f);
+            projectionMatrix = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(90.0f), 16 / 9, .5f, 1000);
 
             Update();
         }
@@ -41,7 +41,7 @@ namespace Volamus_v1
              * 3. Parameter: near plane
              * 4. Parameter: far plane
              * */
-            projectionMatrix = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(45.0f), 16/9, .5f, 500f);
+            projectionMatrix = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(45.0f), 16 / 9, .5f, 1000);
         }
 
         public void Update()

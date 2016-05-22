@@ -16,13 +16,13 @@ namespace Volamus_v1
         public Game1()
         {
             field = new Spielfeld(50, 100, 20);
-            camera = new Kamera(new Vector3(0,-62,30),new Vector3(0, 0, 0), Vector3.UnitZ);
+            camera = new Kamera(new Vector3(0, -60, 40), new Vector3(0, 0, 0), new Vector3(0, 1, 1));
             graphics = new GraphicsDeviceManager(this);
             graphics.IsFullScreen = true;
             Content.RootDirectory = "Content";
         }
 
-    
+
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
@@ -31,7 +31,7 @@ namespace Volamus_v1
             base.Initialize();
         }
 
- 
+
         protected override void LoadContent()
         {
             // Create a new SpriteBatch, which can be used to draw textures.
@@ -41,13 +41,13 @@ namespace Volamus_v1
             // TODO: use this.Content to load your game content here
         }
 
- 
+
         protected override void UnloadContent()
         {
             // TODO: Unload any non ContentManager content here
         }
 
- 
+
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
@@ -60,25 +60,14 @@ namespace Volamus_v1
             base.Update(gameTime);
         }
 
- 
+
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
-            BasicEffect field_effect = field.get_effect();
-            field_effect.View = camera.get_View();
-            field_effect.Projection = camera.get_Projection();
-
-            foreach(var pass in field_effect.CurrentTechnique.Passes)
-            {
-                pass.Apply();
-
-                graphics.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, field.get_field(), 0, 2);
-            }
-
-
+            field.Draw(camera, graphics);
 
             base.Draw(gameTime);
         }
