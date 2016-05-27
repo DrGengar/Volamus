@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace Volamus_v1
 {
     class Ball
@@ -44,17 +45,7 @@ namespace Volamus_v1
         public void Update(Spieler player_one)
         {
             KeyboardState state = Keyboard.GetState();
-
-    
-
-            // Richtung rechts-links
-            // man kann nicht nach hinten werfen
-            if (state.IsKeyDown(Keys.Right) && gamma<=1.5){
-                gamma += 0.01f;
-            }
-            if(state.IsKeyDown(Keys.Left) && gamma>=-1.5){
-                gamma -= 0.01f;
-            }
+   
 
             // Wenn er nicht fliegt, ist er immer an der Position des Spielers
             if (fliegt==false)
@@ -63,6 +54,17 @@ namespace Volamus_v1
                 x = position.X;
                 y = position.Y;
                 z = position.Z;
+
+                // Richtung rechts-links
+                // man kann nicht nach hinten werfen
+                if (state.IsKeyDown(Keys.Right) && gamma <= MathHelper.ToRadians(90))
+                {
+                    gamma += 0.01f;
+                }
+                if (state.IsKeyDown(Keys.Left) && gamma >= MathHelper.ToRadians(-90))
+                {
+                    gamma -= 0.01f;
+                }
             }
 
             //Ball wird geworfen
@@ -83,7 +85,12 @@ namespace Volamus_v1
 
             if (fliegt == true)
             {
-                Flugbahn();
+                if (position.Z <= 0)
+                {
+                    t = 0;
+                    fliegt = false;
+                }
+                else Flugbahn();
             }
         }
 
@@ -96,13 +103,11 @@ namespace Volamus_v1
  * */
         private void Flugbahn()
         {
-            for (int i = 0; i < 10; i++)
-            {
-                position.Z = z + v0 * alpha * t - g / 2 * t * t;
-                position.Y = y + v0 * betta * t;
-                position.X = x + v0 * gamma * t;
-                t = t + 0.005f;
-            }
+
+                position.Z = z + v0 * (float)Math.Sin(alpha) * t - (g / 2) * t * t;
+                position.Y = y + v0 * (float)Math.Cos(betta) * t;
+                position.X = x + v0 * (float)Math.Sin(gamma) * t;
+                t = t + 0.05f;
         }
 
 
@@ -120,7 +125,7 @@ namespace Volamus_v1
                 {
                     effect.EnableDefaultLighting();
                     effect.World = transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) *
-                        Matrix.CreateScale(0.03f, 0.03f, 0.03f)
+                        Matrix.CreateScale(0.02f, 0.02f, 0.02f)
                         * Matrix.CreateTranslation(position);
                     effect.View = camera.get_View();
                     effect.Projection = camera.get_Projection();

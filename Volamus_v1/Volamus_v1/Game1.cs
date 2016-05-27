@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
 
 namespace Volamus_v1
 {
@@ -18,9 +19,9 @@ namespace Volamus_v1
         public Game1()
         {
             field = new Spielfeld(50, 100, 15);
-            camera = new Kamera(new Vector3(0, -60, 20), new Vector3(0, 0, 0), new Vector3(0, 1, 1));
+            camera = new Kamera(new Vector3(0, -60, 20), new Vector3(0, 0, 0), new Vector3(0, 1, 1)); // 0,-60,20   0,0,0    0,1,1
             player_one = new Spieler(new Vector3(0,-25,0),5,0.5f,0.8f);
-            ball = new Ball(new Vector3(0, -10, 20),0.6f,0f,0.7f);
+            ball = new Ball(new Vector3(0, -10, 20),MathHelper.ToRadians(45), MathHelper.ToRadians(0), MathHelper.ToRadians(45));    
             graphics = new GraphicsDeviceManager(this);
             graphics.IsFullScreen = true;
             Content.RootDirectory = "Content";
