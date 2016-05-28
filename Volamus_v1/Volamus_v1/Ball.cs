@@ -26,6 +26,7 @@ namespace Volamus_v1
         float gamma;
         float betta;
         private float g=9.81f;
+        private int anzahlHuepfer = 0;
 
         public Ball(Vector3 pos, float al, float ga, float be)
         {
@@ -85,8 +86,19 @@ namespace Volamus_v1
 
             if (fliegt == true)
             {
-                if (position.Z <= 0)
+                if (position.Z < 0 && anzahlHuepfer <=2)
                 {
+                    anzahlHuepfer += 1;
+                    x = position.X;
+                    y = position.Y;
+                    z = 0;
+                    v0 -= 8;
+                    t = 0;
+                    Flugbahn();
+                }
+                if (anzahlHuepfer > 2)
+                {
+                    anzahlHuepfer = 0;
                     t = 0;
                     fliegt = false;
                 }
@@ -103,11 +115,11 @@ namespace Volamus_v1
  * */
         private void Flugbahn()
         {
+            position.Z = z + v0 * (float)Math.Sin(alpha) * t - (g / 2) * t * t;
+            position.Y = y + v0 * (float)Math.Cos(betta) * t;
+            position.X = x + v0 * (float)Math.Sin(gamma) * t;
+            t = t + 0.05f;
 
-                position.Z = z + v0 * (float)Math.Sin(alpha) * t - (g / 2) * t * t;
-                position.Y = y + v0 * (float)Math.Cos(betta) * t;
-                position.X = x + v0 * (float)Math.Sin(gamma) * t;
-                t = t + 0.05f;
         }
 
 
