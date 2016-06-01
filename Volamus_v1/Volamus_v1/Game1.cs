@@ -23,7 +23,7 @@ namespace Volamus_v1
             player_one = new Spieler(new Vector3(0,-25,0),5,0.5f,0.8f);
             ball = new Ball(new Vector3(0, -10, 20),MathHelper.ToRadians(45), MathHelper.ToRadians(0), MathHelper.ToRadians(45));    
             graphics = new GraphicsDeviceManager(this);
-         //   graphics.IsFullScreen = true;
+            graphics.IsFullScreen = true;
             Content.RootDirectory = "Content";
         }
 
