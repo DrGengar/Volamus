@@ -88,7 +88,6 @@ C:\Users\Iam\Desktop\3dGame\Volamus_v1\Volamus_v1\bin\Windows\x86\Debug\Content\
 C:\Users\Iam\Desktop\3dGame\Volamus_v1\Volamus_v1\bin\Windows\x86\Debug\Content\Netzv2.xnb
 C:\Users\Lars\Desktop\3DGameProject\Volamus_v1\Volamus_v1\obj\x86\Debug\Volamus_v1.exe
 C:\Users\Lars\Desktop\3DGameProject\Volamus_v1\Volamus_v1\obj\x86\Debug\Volamus_v1.pdb
-C:\Users\Lars\Desktop\3DGameProject\Volamus_v1\Volamus_v1\obj\x86\Debug\Volamus_v1.csprojResolveAssemblyReference.cache
 C:\Users\Lars\Desktop\3DGameProject\Volamus_v1\Volamus_v1\Content\3DAcaLogo.xnb
 C:\Users\Lars\Desktop\3DGameProject\Volamus_v1\Volamus_v1\Content\ball.xnb
 C:\Users\Lars\Desktop\3DGameProject\Volamus_v1\Volamus_v1\Content\Netzv1.xnb

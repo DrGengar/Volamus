@@ -28,6 +28,11 @@ namespace Volamus_v1
         private float g=9.81f;
         private int anzahlHuepfer = 0;
 
+        public Vector3 Position
+        {
+            get { return position; }
+        }
+
         public Ball(Vector3 pos, float al, float ga, float be)
         {
             position = pos;
@@ -43,7 +48,7 @@ namespace Volamus_v1
         }
 
 
-        public void Update(Player player_one)
+        public void Update(Player player)
         {
             KeyboardState state = Keyboard.GetState();
    
@@ -51,7 +56,7 @@ namespace Volamus_v1
             // Wenn er nicht fliegt, ist er immer an der Position des Spielers
             if (fliegt==false)
             {
-                position = player_one.get_position() + new Vector3(0, 0, 15);
+                position = player.get_position() + new Vector3(0, 0, 15);
                 x = position.X;
                 y = position.Y;
                 z = position.Z;
@@ -74,14 +79,14 @@ namespace Volamus_v1
             {
                 v0 = 35f;
                 fliegt = true;
-                Flugbahn();
+                Flugbahn(player);
             }
 
             if (fliegt == false && state.IsKeyDown(Keys.Q))
             {
                 v0 = 25f;
                 fliegt = true;
-                Flugbahn();
+                Flugbahn(player);
             }
 
             if (fliegt == true)
@@ -94,7 +99,7 @@ namespace Volamus_v1
                     z = 0;
                     v0 -= 8;
                     t = 0;
-                    Flugbahn();
+                    Flugbahn(player);
                 }
                 if (anzahlHuepfer > 2)
                 {
@@ -102,7 +107,7 @@ namespace Volamus_v1
                     t = 0;
                     fliegt = false;
                 }
-                else Flugbahn();
+                else Flugbahn(player);
             }
         }
 
@@ -113,10 +118,10 @@ namespace Volamus_v1
  *  g: Erdanziehungskraft 
  * 
  * */
-        private void Flugbahn()
+        private void Flugbahn(Player player)
         {
             position.Z = z + v0 * (float)Math.Sin(alpha) * t - (g / 2) * t * t;
-            position.Y = y + v0 * (float)Math.Cos(betta) * t;
+            position.Y = y + (player.Direction)* v0 * (float)Math.Cos(betta) * t;
             position.X = x + v0 * (float)Math.Sin(gamma) * t;
             t = t + 0.05f;
 

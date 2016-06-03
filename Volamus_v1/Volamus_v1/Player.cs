@@ -16,14 +16,32 @@ namespace Volamus_v1
         int max_jump_height;
         float jump_velocity;
         float movespeed;
+        Camera camera;
+        int direction; //1, if Position.Y < 0, -1 if Position.Y > 0
 
         Model player_model;
         bool is_jumping = false;
         bool is_falling = false;
 
+        //Get-Methods
+        public int Direction
+        {
+            get { return direction; }
+        }
+
         public Player(Vector3 pos,int m_j_height, float j_velo,float mvp)
         {
             position = pos;
+
+            if(position.Y < 0)
+            {
+                direction = 1;
+            }
+            else
+            {
+                direction = -1;
+            }
+
             max_jump_height = m_j_height;
             jump_velocity = j_velo;
             movespeed = mvp;

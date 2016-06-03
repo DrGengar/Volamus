@@ -111,7 +111,11 @@ namespace Volamus_v1
 
                 graphics.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, fieldVertices, 0, 4);
             }
+            
+        }
 
+        public void DrawNet(Camera camera)
+        {
             Matrix[] transforms = new Matrix[net.Bones.Count];
             net.CopyAbsoluteBoneTransformsTo(transforms);
 
@@ -132,7 +136,5 @@ namespace Volamus_v1
                 mesh.Draw();
             }
         }
-
-
     }
 }
