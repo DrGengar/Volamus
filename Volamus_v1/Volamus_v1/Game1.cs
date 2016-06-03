@@ -29,7 +29,7 @@ namespace Volamus_v1
             // TODO: Add your initialization logic here
             //field.Initialize(graphics, content);
 
-            //graphics.IsFullScreen = true;
+            graphics.IsFullScreen = true;
             graphics.PreferredBackBufferWidth = (int)GameStateManager.Instance.dimensions.X;
             graphics.PreferredBackBufferHeight = (int)GameStateManager.Instance.dimensions.Y;
             graphics.ApplyChanges();
@@ -51,6 +51,7 @@ namespace Volamus_v1
             GameStateManager.Instance.GraphicsDevice = GraphicsDevice;
             GameStateManager.Instance.GraphicsDeviceManager = graphics;
             GameStateManager.Instance.SpriteBatch = spriteBatch;
+
             GameStateManager.Instance.LoadContent(Content);
         }
 

@@ -74,89 +74,21 @@ namespace Volamus_v1
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            bool ball_early_draw = false;
+            GameStateManager.Instance.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
 
             GameStateManager.Instance.GraphicsDevice.Clear(Color.CornflowerBlue);
 
             GameStateManager.Instance.GraphicsDevice.Viewport = leftView;
             field.Draw(camera, graphics);
-
-            if(ball.Position.Y > player_two.get_position().Y)
-            {
-                ball.Draw(camera, graphics);
-                ball_early_draw = true;
-            }
-
+            ball.Draw(camera, graphics);
+            player_one.Draw(camera, graphics);
             player_two.Draw(camera, graphics);
-
-            if (ball.Position.Y > 0 && !ball_early_draw)
-            {
-                ball.Draw(camera, graphics);
-                ball_early_draw = true;
-            }
-
-            field.DrawNet(camera);
-
-            if(!ball_early_draw)
-            {
-                if(ball.Position.Y >= player_one.get_position().Y)
-                {
-                    ball.Draw(camera, graphics);
-                    player_one.Draw(camera, graphics);
-                }
-                else
-                {
-                    player_one.Draw(camera, graphics);
-                    ball.Draw(camera, graphics);
-                }
-            }
-            else
-            {
-                player_one.Draw(camera, graphics);
-            }
-
-            ball_early_draw = false;
-
-
 
             GameStateManager.Instance.GraphicsDevice.Viewport = rightView;
             field.Draw(camera_2, graphics);
-
-            if (ball.Position.Y < player_one.get_position().Y)
-            {
-                ball.Draw(camera_2, graphics);
-                ball_early_draw = true;
-            }
-
+            ball.Draw(camera_2, graphics);
             player_one.Draw(camera_2, graphics);
-
-            if (ball.Position.Y < 0 && !ball_early_draw)
-            {
-                ball.Draw(camera_2, graphics);
-                ball_early_draw = true;
-            }
-
-            field.DrawNet(camera);
-
-            if (!ball_early_draw)
-            {
-                if (ball.Position.Y <= player_two.get_position().Y)
-                {
-                    ball.Draw(camera_2, graphics);
-                    player_two.Draw(camera_2, graphics);
-                }
-                else
-                {
-                    player_two.Draw(camera_2, graphics);
-                    ball.Draw(camera_2, graphics);
-                }
-            }
-            else
-            {
-                player_two.Draw(camera_2, graphics);
-            }
-
-            ball_early_draw = false;
+            player_two.Draw(camera_2, graphics);
 
             GameStateManager.Instance.GraphicsDevice.Viewport = defaultView;
 

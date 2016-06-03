@@ -111,6 +111,8 @@ namespace Volamus_v1
 
                 graphics.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, fieldVertices, 0, 4);
             }
+
+            DrawNet(camera);
             
         }
 
