@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<SplashScreen>
+  <Screen>
+    <Path>Images/TitleScreen</Path>
+    <isActive>true</isActive>
+    <Position>
+      <X>0</X>
+      <Y>0</Y>
+    </Position>
+    <Alpha>1.0</Alpha>
+    <Scale>
+      <X>1.0</X>
+      <Y>1.0</Y>
+    </Scale>
+  </Screen>
+  <Volamus>
+    <Text>VOLAMUS</Text>
+    <FontName>SpriteFonts/Headline</FontName>
+    <Position>
+      <X>0</X>
+      <Y>0</Y>
+    </Position>
+    <Alpha>1.0</Alpha>
+    <Scale>
+      <X>1</X>
+      <Y>1</Y>
+    </Scale>
+  </Volamus>
+  <Enter>
+    <Effects>FadeEffect</Effects>
+    <Text>Press Enter to Start</Text>
+    <isActive>true</isActive>
+    <Position>
+      <X>0</X>
+      <Y>0</Y>
+    </Position>
+    <Alpha>1.0</Alpha>
+    <Scale>
+      <X>1.5</X>
+      <Y>1.5</Y>
+    </Scale>
+  </Enter>
+</SplashScreen>

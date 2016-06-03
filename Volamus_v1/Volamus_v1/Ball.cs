@@ -43,7 +43,7 @@ namespace Volamus_v1
         }
 
 
-        public void Update(Spieler player_one)
+        public void Update(Player player_one)
         {
             KeyboardState state = Keyboard.GetState();
    
@@ -123,7 +123,7 @@ namespace Volamus_v1
         }
 
 
-        public void Draw(Kamera camera, GraphicsDeviceManager graphics)
+        public void Draw(Camera camera, GraphicsDeviceManager graphics)
         {
             Matrix[] transforms = new Matrix[ball_model.Bones.Count];
             ball_model.CopyAbsoluteBoneTransformsTo(transforms);
