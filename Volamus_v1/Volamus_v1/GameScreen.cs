@@ -7,13 +7,12 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Input;
+using System.Xml.Serialization;
 
 namespace Volamus_v1
 {
-    class GameScreen : GameState
+    public class GameScreen : GameState
     {
-        GraphicsDeviceManager graphics;
-        Camera camera, camera_2;
         Field field;
         Player player_one, player_two;
         Ball ball;
@@ -21,26 +20,19 @@ namespace Volamus_v1
         //SplitScreen
         Viewport defaultView, leftView, rightView;
 
-        public GameScreen()
+        private void Initialize()
         {
-            graphics = GameStateManager.Instance.GraphicsDeviceManager;
             content = GameStateManager.Instance.Content;
 
             field = new Field(50, 100, 15);
-            camera = new Camera(new Vector3(0, -60, 20), new Vector3(0, 0, 0), new Vector3(0, 1, 1)); // 0,-60, 20   0,0,0    0,1,1
 
-            camera_2 = new Camera(new Vector3(0, 60, 20), new Vector3(0, 0, 0), new Vector3(0, -1, 1));
-
-            player_one = new Player(new Vector3(0, -25, 0), 5, 0.5f, 0.8f);
-            player_two = new Player(new Vector3(0, 25, 0), 5, 0.5f, 0.8f);
+            player_one = new Player(new Vector3(0, -25, 0), 5, 0.5f, 0.8f, field);
+            player_two = new Player(new Vector3(0, 25, 0), 5, 0.5f, 0.8f, field);
 
             ball = new Ball(new Vector3(0, -10, 20), MathHelper.ToRadians(45), MathHelper.ToRadians(0), MathHelper.ToRadians(45));
 
-            field.Initialize(graphics, content);
-        }
+            field.Initialize();
 
-        public override void LoadContent()
-        {
             defaultView = GameStateManager.Instance.GraphicsDevice.Viewport;
             leftView = defaultView;
             rightView = defaultView;
@@ -48,12 +40,18 @@ namespace Volamus_v1
             rightView.Width = rightView.Width / 2;
             rightView.X = leftView.Width + 1;
 
-            field.LoadContent(content);
+            }
 
-            player_one.LoadContent(content);
-            player_two.LoadContent(content);
+        public override void LoadContent()
+        {
+            Initialize();
 
-            ball.LoadContent(content);
+            field.LoadContent();
+
+            player_one.LoadContent();
+            player_two.LoadContent();
+
+            ball.LoadContent();
         }
 
         public override void UnloadContent()
@@ -63,10 +61,9 @@ namespace Volamus_v1
 
         public override void Update(GameTime gameTime)
         {
-            camera.Update();
-            camera_2.Update();
+            player_one.Update(field, Keys.W, Keys.S, Keys.A, Keys.D, Keys.Space);
+            player_two.Update(field, Keys.Up, Keys.Down, Keys.Left, Keys.Right, Keys.Insert);
 
-            player_one.Update(field);
             ball.Update(player_one);
 
             base.Update(gameTime);
@@ -79,20 +76,26 @@ namespace Volamus_v1
             GameStateManager.Instance.GraphicsDevice.Clear(Color.CornflowerBlue);
 
             GameStateManager.Instance.GraphicsDevice.Viewport = leftView;
-            field.Draw(camera, graphics);
-            ball.Draw(camera, graphics);
-            player_one.Draw(camera, graphics);
-            player_two.Draw(camera, graphics);
+            field.Draw(player_one.Camera);
+            ball.Draw(player_one.Camera);
+            player_one.Draw(player_one.Camera);
+            player_two.Draw(player_one.Camera);
+            GameStateManager.Instance.SpriteBatch.DrawString(player_one.Font, player_one.Points.ToString(), 
+                new Vector2(leftView.Width/2, 0), Color.Black);
 
             GameStateManager.Instance.GraphicsDevice.Viewport = rightView;
-            field.Draw(camera_2, graphics);
-            ball.Draw(camera_2, graphics);
-            player_one.Draw(camera_2, graphics);
-            player_two.Draw(camera_2, graphics);
+            field.Draw(player_two.Camera);
+            ball.Draw(player_two.Camera);
+            player_one.Draw(player_two.Camera);
+            player_two.Draw(player_two.Camera);
+            GameStateManager.Instance.SpriteBatch.DrawString(player_two.Font, player_two.Points.ToString(), 
+                new Vector2(leftView.Width + rightView.Width/2, 0), Color.Black);
+
 
             GameStateManager.Instance.GraphicsDevice.Viewport = defaultView;
 
             base.Draw(spriteBatch);
         }
+        
     }
 }

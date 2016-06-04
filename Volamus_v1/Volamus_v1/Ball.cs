@@ -14,10 +14,10 @@ namespace Volamus_v1
     class Ball
     {
         Vector3 position;
-        Model ball_model;
+        Model model;
 
         private float t = 0;
-        Boolean fliegt = false;
+        bool isflying = false;
         private float x;
         private float y;
         private float z;
@@ -33,6 +33,11 @@ namespace Volamus_v1
             get { return position; }
         }
 
+        public Model Model
+        {
+            get { return model; }
+        }
+
         public Ball(Vector3 pos, float al, float ga, float be)
         {
             position = pos;
@@ -42,9 +47,9 @@ namespace Volamus_v1
         }
 
 
-        public void LoadContent(ContentManager content)
+        public void LoadContent()
         {
-            ball_model = content.Load<Model>("ball");
+            model = GameStateManager.Instance.Content.Load<Model>("BeachBall");
         }
 
 
@@ -54,9 +59,9 @@ namespace Volamus_v1
    
 
             // Wenn er nicht fliegt, ist er immer an der Position des Spielers
-            if (fliegt==false)
+            if (!isflying)
             {
-                position = player.get_position() + new Vector3(0, 0, 15);
+                position = player.Position + new Vector3(0, 0, 15);
                 x = position.X;
                 y = position.Y;
                 z = position.Z;
@@ -75,21 +80,21 @@ namespace Volamus_v1
 
             //Ball wird geworfen
             // Q leichter Wurf,  E starker Wurf
-            if (fliegt == false && state.IsKeyDown(Keys.E))
-            {
-                v0 = 35f;
-                fliegt = true;
-                Flugbahn(player);
-            }
-
-            if (fliegt == false && state.IsKeyDown(Keys.Q))
+            if (!isflying && state.IsKeyDown(Keys.E))
             {
                 v0 = 25f;
-                fliegt = true;
+                isflying = true;
                 Flugbahn(player);
             }
 
-            if (fliegt == true)
+            if (!isflying && state.IsKeyDown(Keys.Q))
+            {
+                v0 = 20f;
+                isflying = true;
+                Flugbahn(player);
+            }
+
+            if (isflying)
             {
                 if (position.Z < 0 && anzahlHuepfer <=2)
                 {
@@ -105,7 +110,7 @@ namespace Volamus_v1
                 {
                     anzahlHuepfer = 0;
                     t = 0;
-                    fliegt = false;
+                    isflying = false;
                 }
                 else Flugbahn(player);
             }
@@ -128,26 +133,24 @@ namespace Volamus_v1
         }
 
 
-        public void Draw(Camera camera, GraphicsDeviceManager graphics)
+        public void Draw(Camera camera)
         {
-            Matrix[] transforms = new Matrix[ball_model.Bones.Count];
-            ball_model.CopyAbsoluteBoneTransformsTo(transforms);
+            Matrix[] transforms = new Matrix[model.Bones.Count];
+            model.CopyAbsoluteBoneTransformsTo(transforms);
 
-            // Draw the model. A model can have multiple meshes, so loop.
-            foreach (ModelMesh mesh in ball_model.Meshes)
+
+            foreach (ModelMesh mesh in model.Meshes)
             {
-                // This is where the mesh orientation is set, as well 
-                // as our camera and projection.
                 foreach (BasicEffect effect in mesh.Effects)
                 {
                     effect.EnableDefaultLighting();
+
                     effect.World = transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) *
-                        Matrix.CreateScale(0.02f, 0.02f, 0.02f)
+                        Matrix.CreateScale(1.0f, 1.0f, 1.0f)
                         * Matrix.CreateTranslation(position);
-                    effect.View = camera.get_View();
-                    effect.Projection = camera.get_Projection();
+                    effect.View = camera.ViewMatrix;
+                    effect.Projection = camera.ProjectionMatrix;
                 }
-                // Draw the mesh, using the effects set above.
                 mesh.Draw();
             }
         }

@@ -119,3 +119,6 @@ C:\Users\Lars\Desktop\3DGameProject\Volamus_v1\Volamus_v1\SharpDX.XInput.xml
 C:\Users\Lars\Desktop\3DGameProject\Volamus_v1\Volamus_v1\SharpDX.RawInput.xml
 C:\Users\Lars\Desktop\3DGameProject\Volamus_v1\Volamus_v1\SharpDX.Direct3D9.xml
 C:\Users\Lars\Desktop\3DGameProject\Volamus_v1\Volamus_v1\obj\x86\Debug\Volamus_v1.csprojResolveAssemblyReference.cache
+C:\Users\Lars\Desktop\3DGameProject\Volamus_v1\Volamus_v1\Content\sand.xnb
+C:\Users\Lars\Desktop\3DGameProject\Volamus_v1\Volamus_v1\Content\BeachBall.xnb
+C:\Users\Lars\Desktop\3DGameProject\Volamus_v1\Volamus_v1\Content\Images\pointsimage.xnb

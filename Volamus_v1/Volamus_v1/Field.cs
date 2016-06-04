@@ -12,8 +12,6 @@ namespace Volamus_v1
     class Field
     {
         VertexPositionTexture[] fieldVertices = new VertexPositionTexture[12];
-        VertexPositionTexture[] netVertices = new VertexPositionTexture[6];
-
 
         int width;
         int length;
@@ -24,6 +22,22 @@ namespace Volamus_v1
 
         //Texturen
         BasicEffect effect;
+        Texture2D texture;
+
+        public VertexPositionTexture[] FieldVertices
+        {
+            get { return fieldVertices; }
+        }
+
+        public int Width
+        {
+            get { return width; }
+        }
+
+        public int Length
+        {
+            get { return length; }
+        }
 
         public Field(int w, int l, int n_h) : base()
         {
@@ -32,7 +46,7 @@ namespace Volamus_v1
             net_height = n_h;
         }
 
-        public void Initialize(GraphicsDeviceManager graphics, ContentManager content)
+        public void Initialize()
         {
             fieldVertices[0].Position = new Vector3(width / 2, -length / 2, 0);
             fieldVertices[1].Position = new Vector3(-width / 2, -length / 2, 0);
@@ -40,6 +54,15 @@ namespace Volamus_v1
             fieldVertices[3].Position = fieldVertices[0].Position;
             fieldVertices[4].Position = fieldVertices[2].Position;
             fieldVertices[5].Position = new Vector3(width / 2, 0, 0);
+
+            fieldVertices[0].TextureCoordinate = new Vector2(0, 0);
+            fieldVertices[1].TextureCoordinate = new Vector2(0, 1);
+            fieldVertices[2].TextureCoordinate = new Vector2(1, 0);
+
+            fieldVertices[3].TextureCoordinate = fieldVertices[1].TextureCoordinate;
+            fieldVertices[4].TextureCoordinate = new Vector2(1, 1);
+            fieldVertices[5].TextureCoordinate = fieldVertices[2].TextureCoordinate;
+
             fieldVertices[6].Position = fieldVertices[5].Position;
             fieldVertices[7].Position = fieldVertices[2].Position;
             fieldVertices[8].Position = new Vector3(-width / 2, length / 2, 0);
@@ -47,69 +70,37 @@ namespace Volamus_v1
             fieldVertices[10].Position = fieldVertices[8].Position;
             fieldVertices[11].Position = new Vector3(width / 2, length / 2, 0);
 
-            netVertices[0].Position = fieldVertices[4].Position;
-            netVertices[1].Position = fieldVertices[4].Position + new Vector3(0, 0, 10);
-            netVertices[2].Position = fieldVertices[6].Position;
-            netVertices[3].Position = netVertices[1].Position;
-            netVertices[4].Position = fieldVertices[6].Position + new Vector3(0, 0, 10);
-            netVertices[5].Position = netVertices[2].Position;
+            fieldVertices[6].TextureCoordinate = new Vector2(0, 0);
+            fieldVertices[7].TextureCoordinate = new Vector2(0, 1);
+            fieldVertices[8].TextureCoordinate = new Vector2(1, 0);
 
-            effect = new BasicEffect(graphics.GraphicsDevice);
+            fieldVertices[9].TextureCoordinate = fieldVertices[1].TextureCoordinate;
+            fieldVertices[10].TextureCoordinate = new Vector2(1, 1);
+            fieldVertices[11].TextureCoordinate = fieldVertices[2].TextureCoordinate;
+
+            effect = new BasicEffect(GameStateManager.Instance.GraphicsDevice);
         }
 
-        public void LoadContent(ContentManager content)
+        public void LoadContent()
         {
-            net = content.Load<Model>("Netzv2");
+            net = GameStateManager.Instance.Content.Load<Model>("Netzv2");
+
+            texture = GameStateManager.Instance.Content.Load<Texture2D>("sand");
         }
 
-        public BasicEffect get_effect()
+        public void Draw(Camera camera)
         {
-            return effect;
-        }
+            effect.View = camera.ViewMatrix;
+            effect.Projection = camera.ProjectionMatrix;
 
-        public VertexPositionTexture get_vertex(int index)
-        {
-            if (index > 6 || index < 0)
-            {
-                VertexPositionTexture zero = new VertexPositionTexture();
-                zero.Position = new Vector3(0, 0, 0);
-
-                return zero;
-            }
-
-            return fieldVertices[index];
-        }
-
-        public VertexPositionTexture[] get_field()
-        {
-            return fieldVertices;
-        }
-
-        public int get_width()
-        {
-            return width;
-        }
-
-        public int get_length()
-        {
-            return length;
-        }
-
-        public void Draw(Camera camera, GraphicsDeviceManager graphics)
-        {
-            effect.View = camera.get_View();
-            effect.Projection = camera.get_Projection();
-
-            //effect.TextureEnabled = true;
+            effect.TextureEnabled = true;
+            effect.Texture = texture;
 
             foreach (var pass in effect.CurrentTechnique.Passes)
             {
                 pass.Apply();
 
-                effect.View = camera.get_View();
-                effect.Projection = camera.get_Projection();
-
-                graphics.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, fieldVertices, 0, 4);
+                GameStateManager.Instance.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, fieldVertices, 0, 4);
             }
 
             DrawNet(camera);
@@ -121,20 +112,17 @@ namespace Volamus_v1
             Matrix[] transforms = new Matrix[net.Bones.Count];
             net.CopyAbsoluteBoneTransformsTo(transforms);
 
-            // Draw the model. A model can have multiple meshes, so loop.
             foreach (ModelMesh mesh in net.Meshes)
             {
-                // This is where the mesh orientation is set, as well 
-                // as our camera and projection.
                 foreach (BasicEffect effect in mesh.Effects)
                 {
                     effect.EnableDefaultLighting();
+
                     effect.World = transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) * Matrix.CreateScale(0.06f, 0.05f, 0.05f)
                         * Matrix.CreateTranslation(new Vector3(0, 0, net_height));
-                    effect.View = camera.get_View();
-                    effect.Projection = camera.get_Projection();
+                    effect.View = camera.ViewMatrix;
+                    effect.Projection = camera.ProjectionMatrix;
                 }
-                // Draw the mesh, using the effects set above.
                 mesh.Draw();
             }
         }

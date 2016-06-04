@@ -87,10 +87,10 @@ namespace Volamus_v1
         private GameStateManager()
         {
             dimensions = new Vector2(GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height); //Laden von XML Datei einfügen
-            currentState = new SplashScreen();
+            currentState = new GameScreen();
             xmlGameStateManager = new XmlManager<GameState>();
             xmlGameStateManager.Type = currentState.Type;
-            currentState = xmlGameStateManager.Load("Content/Load/SplashScreen.xml"); //auf ingame setzen beim programmieren: GameScreen.xml //ERSTELLEN!
+            currentState = xmlGameStateManager.Load("Content/Load/GameScreen.xml"); //SplashScreen.xml
         }
 
         public void LoadContent(ContentManager Content)

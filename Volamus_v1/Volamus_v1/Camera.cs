@@ -18,6 +18,16 @@ namespace Volamus_v1
         Matrix projectionMatrix;
         //float aspectRatio;
 
+        public Matrix ViewMatrix
+        {
+            get { return viewMatrix; }
+        }
+
+        public Matrix ProjectionMatrix
+        {
+            get { return projectionMatrix; }
+        }
+
         public Camera(Vector3 camP, Vector3 camV, Vector3 camU)
         {
             cameraPos = camP;
@@ -37,7 +47,7 @@ namespace Volamus_v1
 
         public void ResetCamera()
         {
-            cameraPos = new Vector3(0, -10, 40);
+            cameraPos = new Vector3(0, 0, 0);
             cameraView = new Vector3(0, 0, 0);
             cameraUp = Vector3.UnitZ;
             viewMatrix = Matrix.Identity;
@@ -47,24 +57,17 @@ namespace Volamus_v1
 
         public void Update()
         {
-            UpdateViewMatrix();
-        }
-
-        private void UpdateViewMatrix()
-        {
             viewMatrix = Matrix.CreateLookAt(cameraPos, cameraView, cameraUp);
         }
 
-        public Matrix get_View()
+        public void AddPosition(Vector3 pos)
         {
-            return viewMatrix;
+            cameraPos += pos;
         }
 
-        public Matrix get_Projection()
+        public void AddView(Vector3 view)
         {
-            return projectionMatrix;
+            cameraView += view;
         }
-
-
     }
 }

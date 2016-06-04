@@ -16,12 +16,17 @@ namespace Volamus_v1
         int max_jump_height;
         float jump_velocity;
         float movespeed;
-        Camera camera;
-        int direction; //1, if Position.Y < 0, -1 if Position.Y > 0
+        int points;
+        SpriteFont points_font;
 
-        Model player_model;
+        Camera camera;
+        Model model;
+
+        int direction; //1, if Position.Y < 0, -1 if Position.Y > 0
         bool is_jumping = false;
         bool is_falling = false;
+
+        Vector2[] box = new Vector2[2];
 
         //Get-Methods
         public int Direction
@@ -29,68 +34,149 @@ namespace Volamus_v1
             get { return direction; }
         }
 
-        public Player(Vector3 pos,int m_j_height, float j_velo,float mvp)
+        public Camera Camera
+        {
+            get { return camera; }
+        }
+
+        public Vector3 Position
+        {
+            get { return position; }
+        }
+
+        public int Points
+        {
+            get { return points; }
+            set { points = value; }
+        }
+
+        public SpriteFont Font
+        {
+            get { return points_font; }
+        }
+
+        public Player(Vector3 pos,int m_j_height, float j_velo,float mvp, Field field)
         {
             position = pos;
 
             if(position.Y < 0)
             {
                 direction = 1;
+                box[0] = new Vector2(-field.Width / 2, -field.Length / 2);
+                box[1] = new Vector2(field.Width / 2, 0);
             }
             else
             {
                 direction = -1;
+                box[0] = new Vector2(field.Width / 2, field.Length / 2);
+                box[1] = new Vector2(-field.Width / 2, 0);
             }
+
+            camera = new Camera(new Vector3(0, direction*(-60), 20), new Vector3(0, 0, 0), new Vector3(0, direction*1, 1));
 
             max_jump_height = m_j_height;
             jump_velocity = j_velo;
             movespeed = mvp;
+
+            points = 0;
+
+            points_font = GameStateManager.Instance.Content.Load<SpriteFont>("SpriteFonts/Standard");
         }
 
-        public void LoadContent(ContentManager content)
+        public void LoadContent()
         {
-            player_model = content.Load<Model>("3DAcaLogo");
+            model = GameStateManager.Instance.Content.Load<Model>("3DAcaLogo");
         }
 
-        public void Update(Field field)
+        public void Update(Field field, Keys Up, Keys Down, Keys Left, Keys Right, Keys Jump)
         {
             KeyboardState state = Keyboard.GetState();
 
+            camera.Update();
+
             if (!is_jumping)
             {
-                if (state.IsKeyDown(Keys.W))
+                if (state.IsKeyDown(Up))
                 {
-                    if (position.Y < -1)
+                    if (direction == 1)
                     {
-                        position.Y += movespeed;
+                        if (position.Y < box[1].Y)
+                        {
+                            position.Y += movespeed;
+                        }
+                    }
+                    else if(direction == -1)
+                    {
+                        if (position.Y > box[1].Y)
+                        {
+                            position.Y -= movespeed;
+                        }
+                    } 
+                }
+
+                if (state.IsKeyDown(Left))
+                {
+                    if (direction == 1)
+                    {
+                        if (position.X > box[0].X)
+                        {
+                            position.X -= movespeed;
+                            camera.AddPosition(new Vector3(-movespeed, 0, 0));
+                            camera.AddView(new Vector3(-movespeed, 0, 0));
+                        }
+                    }
+                    else if (direction == -1)
+                    {
+                        if (position.X < box[0].X)
+                        {
+                            position.X += movespeed;
+                            camera.AddPosition(new Vector3(movespeed, 0, 0));
+                            camera.AddView(new Vector3(movespeed, 0, 0));
+                        }
                     }
                 }
 
-                if (state.IsKeyDown(Keys.A))
+                if (state.IsKeyDown(Down))
                 {
-                    if (!(position.X < (-field.get_width() / 2)))
+                    if (direction == 1)
                     {
-                        position.X -= movespeed;
+                        if (position.Y > box[0].Y)
+                        {
+                            position.Y -= movespeed;
+                        }
+                    }
+                    else if (direction == -1)
+                    {
+                        if (position.Y < box[0].Y)
+                        {
+                            position.Y += movespeed;
+                        }
                     }
                 }
 
-                if (state.IsKeyDown(Keys.S))
+                if (state.IsKeyDown(Right))
                 {
-                    if (!(position.Y < (-field.get_length() / 2)))
+                    if (direction == 1)
                     {
-                        position.Y -= movespeed;
+                        if (position.X < box[1].X)
+                        {
+                            position.X += movespeed;
+                            camera.AddPosition(new Vector3(movespeed,0,0));
+                            camera.AddView(new Vector3(movespeed, 0, 0));
+                        }
+                    }
+                    else if (direction == -1)
+                    {
+                        if (position.X > box[1].X)
+                        {
+                            position.X -= movespeed;
+                            camera.AddPosition(new Vector3(-movespeed, 0, 0));
+                            camera.AddView(new Vector3(-movespeed, 0, 0));
+                        }
                     }
                 }
 
-                if (state.IsKeyDown(Keys.D))
-                {
-                    if (!(position.X > (field.get_width() / 2)))
-                    {
-                        position.X += movespeed;
-                    }
-                }
-
-                if (state.IsKeyDown(Keys.Space))
+                if (state.IsKeyDown(Jump))
                 {
                     is_jumping = true;
                     is_falling = false;
@@ -118,33 +204,26 @@ namespace Volamus_v1
             }
         }
 
-        public void Draw(Camera camera, GraphicsDeviceManager graphics)
+        public void Draw(Camera camera)
         {
-            Matrix[] transforms = new Matrix[player_model.Bones.Count];
-            player_model.CopyAbsoluteBoneTransformsTo(transforms);
 
-            // Draw the model. A model can have multiple meshes, so loop.
-            foreach (ModelMesh mesh in player_model.Meshes)
+            Matrix[] transforms = new Matrix[model.Bones.Count];
+            model.CopyAbsoluteBoneTransformsTo(transforms);
+
+            foreach (ModelMesh mesh in model.Meshes)
             {
-                // This is where the mesh orientation is set, as well 
-                // as our camera and projection.
                 foreach (BasicEffect effect in mesh.Effects)
                 {
                     effect.EnableDefaultLighting();
+
                     effect.World = transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) *
                         Matrix.CreateScale(0.075f, 0.075f, 0.075f)
                         * Matrix.CreateTranslation(position);
-                    effect.View = camera.get_View();
-                    effect.Projection = camera.get_Projection();
+                    effect.View = camera.ViewMatrix;
+                    effect.Projection = camera.ProjectionMatrix;
                 }
-                // Draw the mesh, using the effects set above.
                 mesh.Draw();
             }
-        }
-
-        public Vector3 get_position()
-        {
-            return position;
         }
     }
 }
