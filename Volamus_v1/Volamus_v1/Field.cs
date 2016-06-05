@@ -83,7 +83,7 @@ namespace Volamus_v1
 
         public void LoadContent()
         {
-            net = GameStateManager.Instance.Content.Load<Model>("Netzv3");
+            net = GameStateManager.Instance.Content.Load<Model>("netzv4");
 
             texture = GameStateManager.Instance.Content.Load<Texture2D>("sand");
         }
@@ -118,8 +118,8 @@ namespace Volamus_v1
                 {
                     effect.EnableDefaultLighting();
 
-                    effect.World = transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) * Matrix.CreateScale(0.06f, 0.05f, 0.05f)
-                        * Matrix.CreateTranslation(new Vector3(0, 0, net_height));
+                    effect.World = transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) * Matrix.CreateScale(0.025f, 0.025f, 0.025f)
+                        * Matrix.CreateTranslation(new Vector3(0, 0, 0));
                     effect.View = camera.ViewMatrix;
                     effect.Projection = camera.ProjectionMatrix;
                 }
