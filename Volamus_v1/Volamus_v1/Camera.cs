@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Volamus_v1
 {
-    class Camera
+    public class Camera
     {
         Vector3 cameraPos;
         Vector3 cameraView;

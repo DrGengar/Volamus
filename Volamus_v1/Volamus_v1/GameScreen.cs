@@ -15,7 +15,7 @@ namespace Volamus_v1
     {
         Field field;
         Player player_one, player_two;
-        Ball ball;
+        Collision collision;
 
         //SplitScreen
         Viewport defaultView, leftView, rightView;
@@ -29,8 +29,6 @@ namespace Volamus_v1
             player_one = new Player(new Vector3(0, -25, 0), 5, 0.5f, 0.8f, field);
             player_two = new Player(new Vector3(0, 25, 0), 5, 0.5f, 0.8f, field);
 
-            ball = new Ball(new Vector3(0, -10, 20), MathHelper.ToRadians(45), MathHelper.ToRadians(0), MathHelper.ToRadians(45));
-
             field.Initialize();
 
             defaultView = GameStateManager.Instance.GraphicsDevice.Viewport;
@@ -40,6 +38,7 @@ namespace Volamus_v1
             rightView.Width = rightView.Width / 2;
             rightView.X = leftView.Width + 1;
 
+            collision = new Collision();
             }
 
         public override void LoadContent()
@@ -51,7 +50,7 @@ namespace Volamus_v1
             player_one.LoadContent();
             player_two.LoadContent();
 
-            ball.LoadContent();
+            Ball.Instance.LoadContent();
         }
 
         public override void UnloadContent()
@@ -61,10 +60,16 @@ namespace Volamus_v1
 
         public override void Update(GameTime gameTime)
         {
-            player_one.Update(field, Keys.W, Keys.S, Keys.A, Keys.D, Keys.Space);
-            player_two.Update(field, Keys.Up, Keys.Down, Keys.Left, Keys.Right, Keys.Insert);
 
-            ball.Update(player_one);
+            collision.CollisionMethod(player_one);
+            collision.CollisionMethod(player_two);
+
+            collision.CollisionMethod(field, player_one, player_two);
+
+            player_one.Update(field, Keys.W, Keys.S, Keys.A, Keys.D, Keys.Space,Keys.Q,Keys.E,Keys.Left, Keys.Right);
+            player_two.Update(field, Keys.I, Keys.K, Keys.J, Keys.L, Keys.Enter,Keys.U,Keys.O, Keys.D9,Keys.D0 );
+
+            Ball.Instance.Update(player_one,field);
 
             base.Update(gameTime);
         }
@@ -77,7 +82,7 @@ namespace Volamus_v1
 
             GameStateManager.Instance.GraphicsDevice.Viewport = leftView;
             field.Draw(player_one.Camera);
-            ball.Draw(player_one.Camera);
+            Ball.Instance.Draw(player_one.Camera);
             player_one.Draw(player_one.Camera);
             player_two.Draw(player_one.Camera);
             GameStateManager.Instance.SpriteBatch.DrawString(player_one.Font, player_one.Points.ToString(), 
@@ -85,7 +90,7 @@ namespace Volamus_v1
 
             GameStateManager.Instance.GraphicsDevice.Viewport = rightView;
             field.Draw(player_two.Camera);
-            ball.Draw(player_two.Camera);
+            Ball.Instance.Draw(player_two.Camera);
             player_one.Draw(player_two.Camera);
             player_two.Draw(player_two.Camera);
             GameStateManager.Instance.SpriteBatch.DrawString(player_two.Font, player_two.Points.ToString(), 

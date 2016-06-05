@@ -11,10 +11,14 @@ using System.Threading.Tasks;
 
 namespace Volamus_v1
 {
-    class Ball
+    public class Ball
     {
         Vector3 position;
         Model model;
+        BoundingSphere boundingSphere;
+        Collision collision;
+
+        private static Ball instance;
 
         private float t = 0;
         bool isflying = false;
@@ -22,6 +26,7 @@ namespace Volamus_v1
         private float y;
         private float z;
         private float v0;
+        private int dir;
         float alpha;
         float gamma;
         float betta;
@@ -38,8 +43,40 @@ namespace Volamus_v1
             get { return model; }
         }
 
-        public Ball(Vector3 pos, float al, float ga, float be)
+        public bool IsFlying
         {
+            get { return isflying; }
+            set { isflying = value;  }
+        }
+
+        public float Gamma
+        {
+            get { return gamma; }
+            set { gamma = value; }
+        }
+
+        public BoundingSphere BoundingSphere
+        {
+            get { return boundingSphere; }
+        }
+
+        public static Ball Instance
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    instance = new Ball(new Vector3(0, -10, 15), MathHelper.ToRadians(45), MathHelper.ToRadians(0), MathHelper.ToRadians(45));
+                }
+
+                return instance;
+            }
+        }
+
+        private Ball(Vector3 pos, float al, float ga, float be)
+        {
+            gamma = 0;
+            collision = new Collision();
             position = pos;
             alpha = al;
             betta = be;
@@ -50,70 +87,63 @@ namespace Volamus_v1
         public void LoadContent()
         {
             model = GameStateManager.Instance.Content.Load<Model>("BeachBall");
+
+
+            boundingSphere = new BoundingSphere();
+
+            foreach (ModelMesh mesh in model.Meshes)
+            {
+                if (boundingSphere.Radius == 0)
+                    boundingSphere = mesh.BoundingSphere;
+                else
+                    boundingSphere = BoundingSphere.CreateMerged(boundingSphere, mesh.BoundingSphere);
+            }
+
+            boundingSphere.Radius *= 1.0f;
+
+            boundingSphere.Center = position;
+
+
         }
 
 
-        public void Update(Player player)
+        public void Update(Player player,Field field)
         {
             KeyboardState state = Keyboard.GetState();
-   
 
-            // Wenn er nicht fliegt, ist er immer an der Position des Spielers
+            boundingSphere.Center = position;
+
             if (!isflying)
             {
-                position = player.Position + new Vector3(0, 0, 15);
+                /*position = player.Position + new Vector3(0, 0, 15);
                 x = position.X;
                 y = position.Y;
-                z = position.Z;
-
-                // Richtung rechts-links
-                // man kann nicht nach hinten werfen
-                if (state.IsKeyDown(Keys.Right) && gamma <= MathHelper.ToRadians(90))
-                {
-                    gamma += 0.01f;
-                }
-                if (state.IsKeyDown(Keys.Left) && gamma >= MathHelper.ToRadians(-90))
-                {
-                    gamma -= 0.01f;
-                }
-            }
-
-            //Ball wird geworfen
-            // Q leichter Wurf,  E starker Wurf
-            if (!isflying && state.IsKeyDown(Keys.E))
-            {
-                v0 = 25f;
-                isflying = true;
-                Flugbahn(player);
-            }
-
-            if (!isflying && state.IsKeyDown(Keys.Q))
-            {
-                v0 = 20f;
-                isflying = true;
-                Flugbahn(player);
+                z = position.Z;*/
             }
 
             if (isflying)
             {
-                if (position.Z < 0 && anzahlHuepfer <=2)
+                if (collision.CollisionMethod() && anzahlHuepfer <=2)
                 {
                     anzahlHuepfer += 1;
                     x = position.X;
                     y = position.Y;
-                    z = 0;
-                    v0 -= 8;
+                    z = boundingSphere.Radius;
+                    v0 -= 4;
                     t = 0;
-                    Flugbahn(player);
+                    Flugbahn(v0,dir);
                 }
+
                 if (anzahlHuepfer > 2)
                 {
                     anzahlHuepfer = 0;
                     t = 0;
                     isflying = false;
                 }
-                else Flugbahn(player);
+                else
+                Flugbahn(v0,dir);
             }
+
         }
 
         /*  x: rechts/links;  y: vorne/hinten,   z: oben/unten
@@ -123,10 +153,12 @@ namespace Volamus_v1
  *  g: Erdanziehungskraft 
  * 
  * */
-        private void Flugbahn(Player player)
+        public void Flugbahn(float velo,int direction)
         {
+            v0 = velo;
+            dir = direction;
             position.Z = z + v0 * (float)Math.Sin(alpha) * t - (g / 2) * t * t;
-            position.Y = y + (player.Direction)* v0 * (float)Math.Cos(betta) * t;
+            position.Y = y + (direction)* v0 * (float)Math.Cos(betta) * t;
             position.X = x + v0 * (float)Math.Sin(gamma) * t;
             t = t + 0.05f;
 

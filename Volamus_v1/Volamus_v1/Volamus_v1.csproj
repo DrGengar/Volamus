@@ -39,6 +39,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Ball.cs" />
+    <Compile Include="Collision.cs" />
+    <Compile Include="DebugDraw.cs" />
     <Compile Include="FadeEffect.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="Camera.cs" />

@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework.Content;
 
 namespace Volamus_v1
 {
-    class Field
+    public class Field
     {
         VertexPositionTexture[] fieldVertices = new VertexPositionTexture[12];
 
@@ -83,7 +83,7 @@ namespace Volamus_v1
 
         public void LoadContent()
         {
-            net = GameStateManager.Instance.Content.Load<Model>("Netzv2");
+            net = GameStateManager.Instance.Content.Load<Model>("Netzv3");
 
             texture = GameStateManager.Instance.Content.Load<Texture2D>("sand");
         }

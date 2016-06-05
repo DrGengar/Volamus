@@ -10,7 +10,36 @@ using System.Threading.Tasks;
 
 namespace Volamus_v1
 {
-    class Player
+    public static class VertexElementExtractor
+    {
+        public static Vector3[] GetVertexElement(ModelMeshPart meshPart, VertexElementUsage usage)
+        {
+            VertexDeclaration vd = meshPart.VertexBuffer.VertexDeclaration;
+            VertexElement[] elements = vd.GetVertexElements();
+
+            Func<VertexElement, bool> elementPredicate = ve => ve.VertexElementUsage == usage && ve.VertexElementFormat == VertexElementFormat.Vector3;
+            if (!elements.Any(elementPredicate))
+                return null;
+
+            VertexElement element = elements.First(elementPredicate);
+
+            Vector3[] vertexData = new Vector3[meshPart.NumVertices];
+            meshPart.VertexBuffer.GetData((meshPart.VertexOffset * vd.VertexStride) + element.Offset,
+                vertexData, 0, vertexData.Length, vd.VertexStride);
+
+            return vertexData;
+        }
+    }
+
+    public class BoundingBoxBuffers
+    {
+        public VertexBuffer Vertices;
+        public int VertexCount;
+        public IndexBuffer Indices;
+        public int PrimitiveCount;
+    }
+
+    public class Player
     {
         Vector3 position;
         int max_jump_height;
@@ -18,6 +47,8 @@ namespace Volamus_v1
         float movespeed;
         int points;
         SpriteFont points_font;
+        BoundingSphere boundingSphere;
+        Vector3 scale;
 
         Camera camera;
         Model model;
@@ -55,6 +86,21 @@ namespace Volamus_v1
             get { return points_font; }
         }
 
+        public Vector2[] Box
+        {
+            get { return box; }
+        }
+
+        public BoundingSphere BoundingSphere
+        {
+            get { return boundingSphere; }
+        }
+
+        public Model Model
+        {
+            get { return model; }
+        }
+
         public Player(Vector3 pos,int m_j_height, float j_velo,float mvp, Field field)
         {
             position = pos;
@@ -73,12 +119,15 @@ namespace Volamus_v1
             }
 
             camera = new Camera(new Vector3(0, direction*(-60), 20), new Vector3(0, 0, 0), new Vector3(0, direction*1, 1));
+            //camera = new Camera(new Vector3(40, direction*(-25), 10), new Vector3(0, position.Y, 0), new Vector3(0, 0, 1));
 
             max_jump_height = m_j_height;
             jump_velocity = j_velo;
             movespeed = mvp;
 
             points = 0;
+
+            scale = new Vector3(0.075f, 0.075f, 0.075f);
 
             points_font = GameStateManager.Instance.Content.Load<SpriteFont>("SpriteFonts/Standard");
         }
@@ -88,11 +137,25 @@ namespace Volamus_v1
             model = GameStateManager.Instance.Content.Load<Model>("3DAcaLogo");
         }
 
-        public void Update(Field field, Keys Up, Keys Down, Keys Left, Keys Right, Keys Jump)
+        public void Update(Field field, Keys Up, Keys Down, Keys Left, Keys Right, Keys Jump, Keys weak, Keys strong,Keys l,Keys r)
         {
             KeyboardState state = Keyboard.GetState();
 
             camera.Update();
+
+            boundingSphere.Center = position;
+
+            if (state.IsKeyDown(r) && Ball.Instance.Gamma <= MathHelper.ToRadians(90))
+            {
+                Ball.Instance.Gamma += (direction)*0.01f;
+            }
+            if (state.IsKeyDown(l) && Ball.Instance.Gamma >= MathHelper.ToRadians(-90))
+            {
+                Ball.Instance.Gamma -= (direction)*0.01f;
+            }
+
+            WeakThrow(weak);
+            StrongThrow(strong);
 
             if (!is_jumping)
             {
@@ -204,6 +267,24 @@ namespace Volamus_v1
             }
         }
 
+        public void WeakThrow(Keys weakthrow)
+        {
+            if(!Ball.Instance.IsFlying && Keyboard.GetState().IsKeyDown(weakthrow))
+            {
+                Ball.Instance.IsFlying = true;
+                Ball.Instance.Flugbahn(20.0f, direction);
+            }
+        }
+
+        public void StrongThrow(Keys strongthrow)
+        {
+            if (!Ball.Instance.IsFlying && Keyboard.GetState().IsKeyDown(strongthrow))
+            {
+                Ball.Instance.IsFlying = true;
+                Ball.Instance.Flugbahn(25.0f, direction);
+            }
+        }
+
         public void Draw(Camera camera)
         {
 
@@ -217,7 +298,7 @@ namespace Volamus_v1
                     effect.EnableDefaultLighting();
 
                     effect.World = transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) *
-                        Matrix.CreateScale(0.075f, 0.075f, 0.075f)
+                        Matrix.CreateScale(scale)
                         * Matrix.CreateTranslation(position);
                     effect.View = camera.ViewMatrix;
                     effect.Projection = camera.ProjectionMatrix;
