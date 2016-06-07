@@ -19,10 +19,14 @@ namespace Volamus_v1
 
         //Netz
         Model net;
+        BoundingBox netBoundingBox;
+        BoundingBox boundingBox;
 
         //Texturen
         BasicEffect effect;
         Texture2D texture;
+
+        DebugDraw d;
 
         public VertexPositionTexture[] FieldVertices
         {
@@ -37,6 +41,16 @@ namespace Volamus_v1
         public int Length
         {
             get { return length; }
+        }
+
+        public BoundingBox NetBoundingBox
+        {
+            get { return netBoundingBox; }
+        }
+
+        public BoundingBox BoundingBox
+        {
+            get { return boundingBox; }
         }
 
         public Field(int w, int l, int n_h) : base()
@@ -79,6 +93,8 @@ namespace Volamus_v1
             fieldVertices[11].TextureCoordinate = fieldVertices[2].TextureCoordinate;
 
             effect = new BasicEffect(GameStateManager.Instance.GraphicsDevice);
+
+            d = new DebugDraw(GameStateManager.Instance.GraphicsDevice);
         }
 
         public void LoadContent()
@@ -86,6 +102,10 @@ namespace Volamus_v1
             net = GameStateManager.Instance.Content.Load<Model>("netzv4");
 
             texture = GameStateManager.Instance.Content.Load<Texture2D>("sand");
+
+            CreateBoundingBox();
+
+            CreateNetBoundingBox();
         }
 
         public void Draw(Camera camera)
@@ -104,10 +124,15 @@ namespace Volamus_v1
             }
 
             DrawNet(camera);
-            
+
+            d.Begin(camera.ViewMatrix, camera.ProjectionMatrix);
+            d.DrawWireBox(netBoundingBox, Color.White);
+            d.DrawWireBox(boundingBox, Color.White);
+            d.End();
+
         }
 
-        public void DrawNet(Camera camera)
+        private void DrawNet(Camera camera)
         {
             Matrix[] transforms = new Matrix[net.Bones.Count];
             net.CopyAbsoluteBoneTransformsTo(transforms);
@@ -125,6 +150,44 @@ namespace Volamus_v1
                 }
                 mesh.Draw();
             }
+        }
+
+        private void CreateNetBoundingBox()
+        {
+            // Initialize minimum and maximum corners of the bounding box to max and min values
+            Vector3 min = new Vector3(float.MaxValue, float.MaxValue, float.MaxValue);
+            Vector3 max = new Vector3(float.MinValue, float.MinValue, float.MinValue);
+
+            // For each mesh of the model
+            foreach (ModelMesh mesh in net.Meshes)
+            {
+                foreach (ModelMeshPart meshPart in mesh.MeshParts)
+                {
+                    // Vertex buffer parameters
+                    int vertexStride = meshPart.VertexBuffer.VertexDeclaration.VertexStride;
+                    int vertexBufferSize = meshPart.NumVertices * vertexStride;
+
+                    // Get vertex data as float
+                    float[] vertexData = new float[vertexBufferSize / sizeof(float)];
+                    meshPart.VertexBuffer.GetData<float>(vertexData);
+
+                    // Iterate through vertices (possibly) growing bounding box, all calculations are done in world space
+                    for (int i = 0; i < vertexBufferSize / sizeof(float); i += vertexStride / sizeof(float))
+                    {
+                        Vector3 transformedPosition = Vector3.Transform(new Vector3(vertexData[i], vertexData[i + 1], vertexData[i + 2]), Matrix.Identity);
+
+                        min = Vector3.Min(min, transformedPosition);
+                        max = Vector3.Max(max, transformedPosition);
+                    }
+                }
+            }
+
+            netBoundingBox = new BoundingBox(new Vector3(-27,-0.2f, 10), new Vector3(27, 0.2f, 20));
+        }
+
+        private void CreateBoundingBox()
+        {
+            boundingBox = new BoundingBox(new Vector3(-(width/2), -(length/2), 0), new Vector3(width/2, length/2, 40));
         }
     }
 }

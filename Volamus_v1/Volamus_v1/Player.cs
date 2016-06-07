@@ -45,9 +45,11 @@ namespace Volamus_v1
         int max_jump_height;
         float jump_velocity;
         float movespeed;
+        float gamma;
         int points;
+
         SpriteFont points_font;
-        BoundingSphere boundingSphere;
+        BoundingBox boundingBox;
         Vector3 scale;
 
         Camera camera;
@@ -57,7 +59,13 @@ namespace Volamus_v1
         bool is_jumping = false;
         bool is_falling = false;
 
+        Player enemy;
+
         Vector2[] box = new Vector2[2];
+
+        DebugDraw d;
+
+        Texture2D circle_angle, arrow;
 
         //Get-Methods
         public int Direction
@@ -81,6 +89,15 @@ namespace Volamus_v1
             set { points = value; }
         }
 
+        public Player Enemy
+        {
+            get { return enemy; }
+            set
+            {
+                enemy = value;
+            }
+        }
+
         public SpriteFont Font
         {
             get { return points_font; }
@@ -91,9 +108,9 @@ namespace Volamus_v1
             get { return box; }
         }
 
-        public BoundingSphere BoundingSphere
+        public BoundingBox BoundingBox
         {
-            get { return boundingSphere; }
+            get { return boundingBox; }
         }
 
         public Model Model
@@ -101,11 +118,26 @@ namespace Volamus_v1
             get { return model; }
         }
 
-        public Player(Vector3 pos,int m_j_height, float j_velo,float mvp, Field field)
+        public Texture2D Circle
+        {
+            get { return circle_angle; }
+        }
+
+        public Texture2D Arrow
+        {
+            get { return arrow; }
+        }
+
+        public float Gamma
+        {
+            get { return MathHelper.ToRadians(gamma); }
+        }
+
+        public Player(Vector3 pos, int m_j_height, float j_velo, float mvp, Field field)
         {
             position = pos;
 
-            if(position.Y < 0)
+            if (position.Y < 0)
             {
                 direction = 1;
                 box[0] = new Vector2(-field.Width / 2, -field.Length / 2);
@@ -118,40 +150,64 @@ namespace Volamus_v1
                 box[1] = new Vector2(-field.Width / 2, 0);
             }
 
-            camera = new Camera(new Vector3(0, direction*(-60), 20), new Vector3(0, 0, 0), new Vector3(0, direction*1, 1));
-            //camera = new Camera(new Vector3(40, direction*(-25), 10), new Vector3(0, position.Y, 0), new Vector3(0, 0, 1));
+            camera = new Camera(new Vector3(0, direction * (-60), 20), new Vector3(0, 0, 0), new Vector3(0, direction * 1, 1));
+            //camera = new Camera(new Vector3(0, 0, 50), position, new Vector3(0, direction, 0));
 
             max_jump_height = m_j_height;
             jump_velocity = j_velo;
             movespeed = mvp;
 
             points = 0;
+            gamma = 0.0f;
 
             scale = new Vector3(0.075f, 0.075f, 0.075f);
 
-            points_font = GameStateManager.Instance.Content.Load<SpriteFont>("SpriteFonts/Standard");
+            d = new DebugDraw(GameStateManager.Instance.GraphicsDevice);
         }
 
         public void LoadContent()
         {
             model = GameStateManager.Instance.Content.Load<Model>("3DAcaLogo");
+
+            points_font = GameStateManager.Instance.Content.Load<SpriteFont>("SpriteFonts/Standard");
+
+            circle_angle = GameStateManager.Instance.Content.Load<Texture2D>("Images/winkel");
+            arrow = GameStateManager.Instance.Content.Load<Texture2D>("Images/pfeil");
+
+            CreateBoundingBox();
         }
 
-        public void Update(Field field, Keys Up, Keys Down, Keys Left, Keys Right, Keys Jump, Keys weak, Keys strong,Keys l,Keys r)
+        public void Update(Field field, Keys Up, Keys Down, Keys Left, Keys Right, Keys Jump, Keys weak, Keys strong, Keys l, Keys r)
         {
             KeyboardState state = Keyboard.GetState();
 
             camera.Update();
 
-            boundingSphere.Center = position;
-
-            if (state.IsKeyDown(r) && Ball.Instance.Gamma <= MathHelper.ToRadians(90))
+            //every player needs a gamma
+            if (direction == 1)
             {
-                Ball.Instance.Gamma += (direction)*0.01f;
+                if (state.IsKeyDown(r) && gamma <= 90)
+                {
+                    gamma += (direction) * 1.0f; //Ein Grad mehr/weniger
+                }
+                if (state.IsKeyDown(l) && gamma >= -90)
+                {
+                    gamma -= (direction) * 1.0f; //Ein Grad mehr/weniger
+                }
             }
-            if (state.IsKeyDown(l) && Ball.Instance.Gamma >= MathHelper.ToRadians(-90))
+            else
             {
-                Ball.Instance.Gamma -= (direction)*0.01f;
+                if(direction ==-1)
+                {
+                    if (state.IsKeyDown(r) && gamma >= -90)
+                    {
+                        gamma -= 1.0f; //Ein Grad mehr/weniger
+                    }
+                    if (state.IsKeyDown(l) && gamma <= 90)
+                    {
+                        gamma += 1.0f; //Ein Grad mehr/weniger
+                    }
+                }
             }
 
             WeakThrow(weak);
@@ -163,36 +219,44 @@ namespace Volamus_v1
                 {
                     if (direction == 1)
                     {
-                        if (position.Y < box[1].Y)
+                        if (!Collision.Instance.PlayerWithNet(this,field)) //Collision Spieler mit Netz
                         {
                             position.Y += movespeed;
+                            boundingBox.Min.Y += movespeed;
+                            boundingBox.Max.Y += movespeed;
                         }
                     }
-                    else if(direction == -1)
+                    else if (direction == -1)
                     {
-                        if (position.Y > box[1].Y)
+                        if (!Collision.Instance.PlayerWithNet(this, field)) //Collision Spieler mit Netz
                         {
                             position.Y -= movespeed;
+                            boundingBox.Min.Y -= movespeed;
+                            boundingBox.Max.Y -= movespeed;
                         }
-                    } 
+                    }
                 }
 
                 if (state.IsKeyDown(Left))
                 {
                     if (direction == 1)
                     {
-                        if (position.X > box[0].X)
+                        if (position.X > box[0].X) //position.X > box[0].X
                         {
                             position.X -= movespeed;
+                            boundingBox.Min.X -= movespeed;
+                            boundingBox.Max.X -= movespeed;
                             camera.AddPosition(new Vector3(-movespeed, 0, 0));
                             camera.AddView(new Vector3(-movespeed, 0, 0));
                         }
                     }
                     else if (direction == -1)
                     {
-                        if (position.X < box[0].X)
+                        if (position.X < box[0].X) //position.X < box[0].X
                         {
                             position.X += movespeed;
+                            boundingBox.Min.X += movespeed;
+                            boundingBox.Max.X += movespeed;
                             camera.AddPosition(new Vector3(movespeed, 0, 0));
                             camera.AddView(new Vector3(movespeed, 0, 0));
                         }
@@ -203,16 +267,20 @@ namespace Volamus_v1
                 {
                     if (direction == 1)
                     {
-                        if (position.Y > box[0].Y)
+                        if (position.Y > box[0].Y) //position.Y > box[0].Y
                         {
                             position.Y -= movespeed;
+                            boundingBox.Min.Y -= movespeed;
+                            boundingBox.Max.Y -= movespeed;
                         }
                     }
                     else if (direction == -1)
                     {
-                        if (position.Y < box[0].Y)
+                        if (position.Y < box[0].Y) //position.Y < box[0].Y
                         {
                             position.Y += movespeed;
+                            boundingBox.Min.Y += movespeed;
+                            boundingBox.Max.Y += movespeed;
                         }
                     }
                 }
@@ -221,18 +289,22 @@ namespace Volamus_v1
                 {
                     if (direction == 1)
                     {
-                        if (position.X < box[1].X)
+                        if (position.X < box[1].X) //position.X < box[1].X
                         {
                             position.X += movespeed;
-                            camera.AddPosition(new Vector3(movespeed,0,0));
+                            boundingBox.Min.X += movespeed;
+                            boundingBox.Max.X += movespeed;
+                            camera.AddPosition(new Vector3(movespeed, 0, 0));
                             camera.AddView(new Vector3(movespeed, 0, 0));
                         }
                     }
                     else if (direction == -1)
                     {
-                        if (position.X > box[1].X)
+                        if (position.X > box[1].X) //position.X > box[1].X
                         {
                             position.X -= movespeed;
+                            boundingBox.Min.X -= movespeed;
+                            boundingBox.Max.X -= movespeed;
                             camera.AddPosition(new Vector3(-movespeed, 0, 0));
                             camera.AddView(new Vector3(-movespeed, 0, 0));
                         }
@@ -250,12 +322,16 @@ namespace Volamus_v1
                 if (position.Z <= max_jump_height && !is_falling)
                 {
                     position.Z += jump_velocity;
+                    boundingBox.Min.Z += jump_velocity;
+                    boundingBox.Max.Z += jump_velocity;
                 }
                 else
                 {
                     if (position.Z > 0)
                     {
                         position.Z -= jump_velocity;
+                        boundingBox.Min.Z -= jump_velocity;
+                        boundingBox.Max.Z -= jump_velocity;
                         is_falling = true;
                     }
                     else
@@ -269,10 +345,11 @@ namespace Volamus_v1
 
         public void WeakThrow(Keys weakthrow)
         {
-            if(!Ball.Instance.IsFlying && Keyboard.GetState().IsKeyDown(weakthrow))
+            if (!Ball.Instance.IsFlying && Keyboard.GetState().IsKeyDown(weakthrow))
             {
                 Ball.Instance.IsFlying = true;
-                Ball.Instance.Flugbahn(20.0f, direction);
+                Parabel weak = new Parabel(Ball.Instance.Position,45.0f,0.0f, 45.0f, 20.0f, direction);
+                Ball.Instance.Active = weak;
             }
         }
 
@@ -281,13 +358,13 @@ namespace Volamus_v1
             if (!Ball.Instance.IsFlying && Keyboard.GetState().IsKeyDown(strongthrow))
             {
                 Ball.Instance.IsFlying = true;
-                Ball.Instance.Flugbahn(25.0f, direction);
+                Parabel strong = new Parabel(Ball.Instance.Position, 45.0f, gamma, 45.0f, 25.0f, direction);
+                Ball.Instance.Active = strong;
             }
         }
 
         public void Draw(Camera camera)
         {
-
             Matrix[] transforms = new Matrix[model.Bones.Count];
             model.CopyAbsoluteBoneTransformsTo(transforms);
 
@@ -305,6 +382,57 @@ namespace Volamus_v1
                 }
                 mesh.Draw();
             }
+
+            d.Begin(camera.ViewMatrix,camera.ProjectionMatrix);
+            d.DrawWireBox(boundingBox, Color.White);
+            d.End();
+        }
+
+        private void CreateBoundingBox()
+        {
+            // Initialize minimum and maximum corners of the bounding box to max and min values
+            Vector3 min = new Vector3(float.MaxValue, float.MaxValue, float.MaxValue);
+            Vector3 max = new Vector3(float.MinValue, float.MinValue, float.MinValue);
+
+            // For each mesh of the model
+            foreach (ModelMesh mesh in model.Meshes)
+            {
+                foreach (ModelMeshPart meshPart in mesh.MeshParts)
+                {
+                    // Vertex buffer parameters
+                    int vertexStride = meshPart.VertexBuffer.VertexDeclaration.VertexStride;
+                    int vertexBufferSize = meshPart.NumVertices * vertexStride;
+
+                    // Get vertex data as float
+                    float[] vertexData = new float[vertexBufferSize / sizeof(float)];
+                    meshPart.VertexBuffer.GetData<float>(vertexData);
+
+                    // Iterate through vertices (possibly) growing bounding box, all calculations are done in world space
+                    for (int i = 0; i < vertexBufferSize / sizeof(float); i += vertexStride / sizeof(float))
+                    {
+                        Vector3 transformedPosition = Vector3.Transform(new Vector3(vertexData[i], vertexData[i + 1], vertexData[i + 2]), Matrix.CreateScale(scale.X));
+
+                        min = Vector3.Min(min, transformedPosition);
+                        max = Vector3.Max(max, transformedPosition);
+                    }
+                }
+            }
+
+            // Create and return bounding box
+
+            Vector3 mid = new Vector3((max.X + min.X)/2, (direction) * (max.Y + min.Y)/2, min.Z);
+            Vector3 translate = mid - position;
+
+            min.X -= translate.X;
+            max.X -= translate.X;
+
+            min.Y += position.Y;
+            max.Y += position.Y;
+
+            min.Z -= translate.Z;
+            max.Z -= translate.Z;
+
+            boundingBox = new BoundingBox(min, max);
         }
     }
 }

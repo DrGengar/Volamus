@@ -13,12 +13,13 @@ namespace Volamus_v1
 {
     public class GameScreen : GameState
     {
-        Field field;
-        Player player_one, player_two;
-        Collision collision;
+        private Field field;
+        private Player player_one, player_two;
 
         //SplitScreen
-        Viewport defaultView, leftView, rightView;
+        private Viewport defaultView, leftView, rightView;
+
+        private FrameCounter frameCounter;
 
         private void Initialize()
         {
@@ -29,6 +30,9 @@ namespace Volamus_v1
             player_one = new Player(new Vector3(0, -25, 0), 5, 0.5f, 0.8f, field);
             player_two = new Player(new Vector3(0, 25, 0), 5, 0.5f, 0.8f, field);
 
+            player_one.Enemy = player_two;
+            player_two.Enemy = player_one;
+
             field.Initialize();
 
             defaultView = GameStateManager.Instance.GraphicsDevice.Viewport;
@@ -38,8 +42,11 @@ namespace Volamus_v1
             rightView.Width = rightView.Width / 2;
             rightView.X = leftView.Width + 1;
 
-            collision = new Collision();
-            }
+            Collision.Instance.Server = Collision.Instance.LastTouched = player_one;
+
+            frameCounter = new FrameCounter();
+
+        }
 
         public override void LoadContent()
         {
@@ -60,11 +67,11 @@ namespace Volamus_v1
 
         public override void Update(GameTime gameTime)
         {
+            var deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-            collision.CollisionMethod(player_one);
-            collision.CollisionMethod(player_two);
+            frameCounter.Update(deltaTime);
 
-            collision.CollisionMethod(field, player_one, player_two);
+            Collision.Instance.CollisionMethod(field);
 
             player_one.Update(field, Keys.W, Keys.S, Keys.A, Keys.D, Keys.Space,Keys.Q,Keys.E,Keys.Left, Keys.Right);
             player_two.Update(field, Keys.I, Keys.K, Keys.J, Keys.L, Keys.Enter,Keys.U,Keys.O, Keys.D9,Keys.D0 );
@@ -85,6 +92,12 @@ namespace Volamus_v1
             Ball.Instance.Draw(player_one.Camera);
             player_one.Draw(player_one.Camera);
             player_two.Draw(player_one.Camera);
+
+            GameStateManager.Instance.SpriteBatch.Draw(player_one.Circle, new Rectangle(leftView.X, leftView.Height - (player_one.Circle.Height), 
+                player_one.Circle.Width, player_one.Circle.Height), Color.White);
+            GameStateManager.Instance.SpriteBatch.Draw(player_one.Arrow, new Rectangle(leftView.X + player_one.Circle.Width/2, leftView.Height, player_one.Arrow.Width, player_one.Arrow.Height), null,
+                Color.White, player_one.Direction*player_one.Gamma, new Vector2(player_one.Arrow.Width / 2f, player_one.Arrow.Height), SpriteEffects.None, 0f);
+
             GameStateManager.Instance.SpriteBatch.DrawString(player_one.Font, player_one.Points.ToString(), 
                 new Vector2(leftView.Width/2, 0), Color.Black);
 
@@ -93,11 +106,21 @@ namespace Volamus_v1
             Ball.Instance.Draw(player_two.Camera);
             player_one.Draw(player_two.Camera);
             player_two.Draw(player_two.Camera);
+
+            GameStateManager.Instance.SpriteBatch.Draw(player_two.Circle, new Rectangle(rightView.X, rightView.Height - (player_two.Circle.Height), 
+                player_two.Circle.Width, player_two.Circle.Height), Color.White);
+            GameStateManager.Instance.SpriteBatch.Draw(player_two.Arrow, new Rectangle(rightView.X + player_two.Circle.Width / 2, rightView.Height, player_two.Arrow.Width, player_two.Arrow.Height), null,
+                Color.White, player_two.Direction*player_two.Gamma, new Vector2(player_two.Arrow.Width / 2f, player_two.Arrow.Height), SpriteEffects.None, 0f);
+
             GameStateManager.Instance.SpriteBatch.DrawString(player_two.Font, player_two.Points.ToString(), 
                 new Vector2(leftView.Width + rightView.Width/2, 0), Color.Black);
 
 
             GameStateManager.Instance.GraphicsDevice.Viewport = defaultView;
+
+            var fps = string.Format("FPS: {0}", frameCounter.AverageFramesPerSecond);
+
+            spriteBatch.DrawString(GameStateManager.Instance.Content.Load<SpriteFont>("SpriteFonts/Standard"), fps, new Vector2(1, 1), Color.Black);
 
             base.Draw(spriteBatch);
         }
