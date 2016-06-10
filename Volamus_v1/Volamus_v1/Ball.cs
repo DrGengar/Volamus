@@ -77,12 +77,11 @@ namespace Volamus_v1
             d = new DebugDraw(GameStateManager.Instance.GraphicsDevice);
         }
 
-
         public void LoadContent()
         {
             model = GameStateManager.Instance.Content.Load<Model>("BeachBall");
 
-
+            //BoundingSphere erstellen
             boundingSphere = new BoundingSphere();
 
             foreach (ModelMesh mesh in model.Meshes)
@@ -98,11 +97,11 @@ namespace Volamus_v1
             boundingSphere.Center = position;
         }
 
-
         public void Update()
         {
             if (!isflying)
             {
+                //Setze t auf 0 zurück
                 if (active != null)
                 {
                     active.Reset_t();
@@ -111,9 +110,11 @@ namespace Volamus_v1
 
             if (isflying)
             {
+                //Position Updaten nach Flugbahn
                 position = active.Flug();
             }
 
+            //BoundingSphere Position updaten auf aktuelle neue Position
             boundingSphere.Center = position;
         }
 

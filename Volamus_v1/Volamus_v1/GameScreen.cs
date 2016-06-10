@@ -88,39 +88,45 @@ namespace Volamus_v1
 
             GameStateManager.Instance.GraphicsDevice.Clear(Color.CornflowerBlue);
 
+            //Linker SplitScreen: Linker Spieler (player_one)
             GameStateManager.Instance.GraphicsDevice.Viewport = leftView;
             field.Draw(player_one.Camera);
             Ball.Instance.Draw(player_one.Camera);
             player_one.Draw(player_one.Camera);
             player_two.Draw(player_one.Camera);
 
+            //Halbkreis und Pfeil zeichnen
             GameStateManager.Instance.SpriteBatch.Draw(player_one.Circle, new Rectangle(leftView.X, leftView.Height - (player_one.Circle.Height), 
                 player_one.Circle.Width, player_one.Circle.Height), Color.White);
             GameStateManager.Instance.SpriteBatch.Draw(player_one.Arrow, new Rectangle(leftView.X + player_one.Circle.Width/2, leftView.Height, player_one.Arrow.Width, player_one.Arrow.Height), null,
                 Color.White, player_one.Direction*player_one.Gamma, new Vector2(player_one.Arrow.Width / 2f, player_one.Arrow.Height), SpriteEffects.None, 0f);
 
+            //Punkte vom linken Spieler
             GameStateManager.Instance.SpriteBatch.DrawString(player_one.Font, player_one.Points.ToString(), 
                 new Vector2(leftView.Width/2, 0), Color.Black);
 
+            //Rechter SplitScreen: Rechter Spieler (player_two)
             GameStateManager.Instance.GraphicsDevice.Viewport = rightView;
             field.Draw(player_two.Camera);
             Ball.Instance.Draw(player_two.Camera);
             player_one.Draw(player_two.Camera);
             player_two.Draw(player_two.Camera);
 
+            //Halbkreis und Pfeil zeichnen
             GameStateManager.Instance.SpriteBatch.Draw(player_two.Circle, new Rectangle(rightView.X, rightView.Height - (player_two.Circle.Height), 
                 player_two.Circle.Width, player_two.Circle.Height), Color.White);
             GameStateManager.Instance.SpriteBatch.Draw(player_two.Arrow, new Rectangle(rightView.X + player_two.Circle.Width / 2, rightView.Height, player_two.Arrow.Width, player_two.Arrow.Height), null,
                 Color.White, player_two.Direction*player_two.Gamma, new Vector2(player_two.Arrow.Width / 2f, player_two.Arrow.Height), SpriteEffects.None, 0f);
 
+            //Punkte vom rechten Spieler
             GameStateManager.Instance.SpriteBatch.DrawString(player_two.Font, player_two.Points.ToString(), 
                 new Vector2(leftView.Width + rightView.Width/2, 0), Color.Black);
 
-
+            //Ganzes Bild
             GameStateManager.Instance.GraphicsDevice.Viewport = defaultView;
 
+            //FPS Anzeige
             var fps = string.Format("FPS: {0}", frameCounter.AverageFramesPerSecond);
-
             spriteBatch.DrawString(GameStateManager.Instance.Content.Load<SpriteFont>("SpriteFonts/Standard"), fps, new Vector2(1, 1), Color.Black);
 
             base.Draw(spriteBatch);

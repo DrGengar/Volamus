@@ -11,8 +11,8 @@ namespace Volamus_v1
 {
     public class Collision
     {
-        private Player lastTouched, server;
-        private int touch_count;
+        private Player lastTouched;
+        private int touch_count; //Maximale Anzahl an ballberührungen hintereinander von einer Person ; TODO: Noch zu implementieren
         private Parabel newParabel;
 
         private static Collision instance;
@@ -44,9 +44,9 @@ namespace Volamus_v1
             }
         }
 
+        //Constructor
         private Collision()
         {
-            //Constructor
             touch_count = 0;
         }
 

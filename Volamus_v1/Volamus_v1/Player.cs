@@ -152,6 +152,7 @@ namespace Volamus_v1
             set { is_serving = value; }
         }
 
+        //Constructor
         public Player(Vector3 pos, int m_j_height, float j_velo, float mvp, Field field)
         {
             position = pos;
@@ -170,7 +171,6 @@ namespace Volamus_v1
             }
 
             camera = new Camera(new Vector3(0, direction * (-60), 20), new Vector3(0, 0, 0), new Vector3(0, direction * 1, 1));
-            //camera = new Camera(new Vector3(0, 0, 50), position, new Vector3(0, direction, 0));
 
             max_jump_height = m_j_height;
             jump_velocity = j_velo;
@@ -184,6 +184,7 @@ namespace Volamus_v1
             d = new DebugDraw(GameStateManager.Instance.GraphicsDevice);
         }
 
+        //LoadContent
         public void LoadContent()
         {
             model = GameStateManager.Instance.Content.Load<Model>("3DAcaLogo");
@@ -196,13 +197,14 @@ namespace Volamus_v1
             CreateBoundingBoxes();
         }
 
+        //Update
         public void Update(Field field, Keys Up, Keys Down, Keys Left, Keys Right, Keys Jump, Keys weak, Keys strong, Keys l, Keys r)
         {
             KeyboardState state = Keyboard.GetState();
 
             camera.Update();
 
-            //every player needs a gamma
+            //jeder Spieler braucht einen Winkel Gamma, den er verändern kann mit Eingaben
             if (direction == 1)
             {
                 if (state.IsKeyDown(r) && gamma <= 90)
@@ -229,6 +231,7 @@ namespace Volamus_v1
                 }
             }
 
+            //Spieler hat gerade Aufschlag -> Position hinten, Bewegung nur links un rechts, Sprung
             if (is_serving)
             {
                 WeakThrow(weak);
@@ -316,6 +319,7 @@ namespace Volamus_v1
                     }
                 }
 
+                //Setze Ball-Position auf aktuelle Position des Aufschlägers
                 if (direction == 1)
                 {
                     Ball.Instance.Position = new Vector3((OuterBoundingBox.Max.X + OuterBoundingBox.Min.X) / 2, OuterBoundingBox.Max.Y, OuterBoundingBox.Max.Z + 1);
@@ -328,7 +332,7 @@ namespace Volamus_v1
                     }
                 }
             }
-            else
+            else //Normales Spielen, alle Bewegungen
             {
                 WeakThrow(weak);
                 StrongThrow(strong);
@@ -454,38 +458,52 @@ namespace Volamus_v1
             }
         }
 
+        //Schwacher Schlag
         public void WeakThrow(Keys weakthrow)
         {
-            if (Keyboard.GetState().IsKeyDown(weakthrow) && can_hit)
+            if (Keyboard.GetState().IsKeyDown(weakthrow) && can_hit) //Drückt Knopf und darf schlagen
             {
-                if (is_serving)
+                if (is_serving) //Falls man Aufschlag hatte, hat man nach dem Schlagen ihn erstmal nicht mehr (Ball fliegt ja jetzt)
                 {
                     is_serving = false;
                 }
 
-                Collision.Instance.LastTouched = this;
-                Ball.Instance.IsFlying = true;
+                //Man darf nicht gleich nochmal schlagen, erst wenn der ball wieder die äußere BoundingBox des Spielrs berührt
+                can_hit = false;
+
+                Collision.Instance.LastTouched = this; //Setze diese Person als die, die den Ball als letztes berührt hat
+                Ball.Instance.IsFlying = true; //Ball fliegt
+
+                //neue Parabel und an Ball übergeben
                 Parabel weak = new Parabel(Ball.Instance.Position,45.0f,0.0f, 45.0f, 20.0f, direction);
                 Ball.Instance.Active = weak;
 
+                //Ball updaten
                 Ball.Instance.Update();
             }
         }
 
+        //Starker Schlag
         public void StrongThrow(Keys strongthrow)
         {
-            if (Keyboard.GetState().IsKeyDown(strongthrow) && can_hit)
+            if (Keyboard.GetState().IsKeyDown(strongthrow) && can_hit) //Drückt Knopf und darf schlagen
             {
-                if (is_serving)
+                if (is_serving) //Falls man Aufschlag hatte, hat man nach dem Schlagen ihn erstmal nicht mehr (Ball fliegt ja jetzt)
                 {
                     is_serving = false;
                 }
 
-                Collision.Instance.LastTouched = this;
-                Ball.Instance.IsFlying = true;
+                //Man darf nicht gleich nochmal schlagen, erst wenn der ball wieder die äußere BoundingBox des Spielrs berührt
+                can_hit = false;
+
+                Collision.Instance.LastTouched = this; //Setze diese Person als die, die den Ball als letztes berührt hat
+                Ball.Instance.IsFlying = true; //Ball fliegt
+
+                //neue Parabel und an Ball übergeben
                 Parabel strong = new Parabel(Ball.Instance.Position, 45.0f, gamma, 45.0f, 25.0f, direction);
                 Ball.Instance.Active = strong;
 
+                //Ball updaten
                 Ball.Instance.Update();
 
             }
