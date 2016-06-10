@@ -44,21 +44,6 @@ namespace Volamus_v1
             }
         }
 
-        public Player Server
-        {
-            get
-            {
-                return server;
-            }
-            set
-            {
-                server = value;
-                touch_count = 0;
-                lastTouched = value;
-                Ball.Instance.IsFlying = false;
-            }
-        }
-
         private Collision()
         {
             //Constructor
@@ -70,11 +55,12 @@ namespace Volamus_v1
             //Ball mit Ebene z=0
             if (BallWithPlane())
             {
+                Ball.Instance.IsFlying = false;
                 //Wenn außerhalb des Feldes: Gegner von LastTouched +1 Punkt und bekommt Aufschlag
                 if(Ball.Instance.Position.X > (field.Width/2) || Ball.Instance.Position.X < -(field.Width / 2) || Ball.Instance.Position.Y > (field.Length/2) || Ball.Instance.Position.Y < -(field.Length / 2))
                 {
                     lastTouched.Enemy.Points += 1;
-                    Server = lastTouched.Enemy;
+                    lastTouched.Enemy.IsServing = true;
                 }
                 //Sonst muss der ball im Feld gelandet sein -> Unterscheidung eigenes (gegner bekommt Punkt)/gegnerisches feld(ich selbst bekomme Punkt)
                 else
@@ -84,24 +70,24 @@ namespace Volamus_v1
                     if(lastTouched.Direction*Ball.Instance.Position.Y < min)
                     {
                         lastTouched.Enemy.Points += 1;
-                        Server = lastTouched.Enemy;
+                        lastTouched.Enemy.IsServing = true;
                     }
                     else
                     {
                         lastTouched.Points += 1;
-                        Server = lastTouched;
+                        lastTouched.IsServing = true;
                     }
                 }
             }
 
-            //Ball mit Spieler
-            if (Ball.Instance.BoundingSphere.Intersects(LastTouched.BoundingBox) && Ball.Instance.IsFlying == true)
-            {
-                //Kollision
-            }
+            BallWithOuterBoundingBox(lastTouched);
+            BallWithOuterBoundingBox(lastTouched.Enemy);
+
+            //BallWithInnerBoundingBox(lastTouched);
+            //BallWithInnerBoundingBox(lastTouched.Enemy);
 
             //Ball mit Netz
-            if(Ball.Instance.BoundingSphere.Intersects(field.NetBoundingBox) && (newParabel == null || !(newParabel.Equals(Ball.Instance.Active))))
+            if (Ball.Instance.BoundingSphere.Intersects(field.NetBoundingBox) && (newParabel == null || !(newParabel.Equals(Ball.Instance.Active))))
             {
                 //Neue Flugbahn mit Ausfallwinkel = Einfallswinkel, x - Ebene
                 newParabel = new Parabel(Ball.Instance.Position, Ball.Instance.Active.Angles.X, Ball.Instance.Active.Angles.Z, Ball.Instance.Active.Angles.Y, Ball.Instance.Active.Velocity - 5, Ball.Instance.Active.Direction*(-1));
@@ -123,13 +109,39 @@ namespace Volamus_v1
         //Spieler mit Netz
         public bool PlayerWithNet(Player player, Field field)
         {
-            return player.BoundingBox.Intersects(field.NetBoundingBox);
+            return player.InnerBoundingBox.Intersects(field.NetBoundingBox);
         }
 
         //Spieler mit Feldgrenzen
         public bool PlayerWithField(Player player, Field field)
         {
-            return player.BoundingBox.Intersects(field.BoundingBox);
+            return player.InnerBoundingBox.Intersects(field.BoundingBox);
+        }
+
+        private void BallWithInnerBoundingBox(Player player)
+        {
+            //Ball mit InnerBoundingBox vom Spieler -> Ball soll abprallen vom Spieler
+            if (Ball.Instance.BoundingSphere.Intersects(player.InnerBoundingBox) && Ball.Instance.IsFlying == true && !player.IsServing)
+            {
+                //Kollision
+                newParabel = new Parabel(Ball.Instance.Position, Ball.Instance.Active.Angles.X, Ball.Instance.Active.Angles.Z, Ball.Instance.Active.Angles.Y, Ball.Instance.Active.Velocity - 5, Ball.Instance.Active.Direction * (-1));
+                Ball.Instance.Active = newParabel;
+                player.CanHit = false;
+            }
+        }
+
+        private void BallWithOuterBoundingBox(Player player)
+        {
+            //Ball mit OuterBoundingBox vom Spieler -> Ball kann jetzt geschlagen werden vom Spieler
+            if (Ball.Instance.BoundingSphere.Intersects(player.OuterBoundingBox) && (player.IsServing || Ball.Instance.IsFlying))
+            {
+                //Kollision
+                player.CanHit = true;
+            }
+            else
+            {
+                player.CanHit = false;
+            }
         }
     }
 }

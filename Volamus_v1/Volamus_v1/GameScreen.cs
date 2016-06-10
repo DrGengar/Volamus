@@ -42,7 +42,8 @@ namespace Volamus_v1
             rightView.Width = rightView.Width / 2;
             rightView.X = leftView.Width + 1;
 
-            Collision.Instance.Server = Collision.Instance.LastTouched = player_one;
+            player_one.IsServing = true;
+            Collision.Instance.LastTouched = player_one;
 
             frameCounter = new FrameCounter();
 
@@ -54,10 +55,10 @@ namespace Volamus_v1
 
             field.LoadContent();
 
+            Ball.Instance.LoadContent();
+
             player_one.LoadContent();
             player_two.LoadContent();
-
-            Ball.Instance.LoadContent();
         }
 
         public override void UnloadContent()
@@ -71,12 +72,12 @@ namespace Volamus_v1
 
             frameCounter.Update(deltaTime);
 
-            Collision.Instance.CollisionMethod(field);
-
             player_one.Update(field, Keys.W, Keys.S, Keys.A, Keys.D, Keys.Space,Keys.Q,Keys.E,Keys.Left, Keys.Right);
             player_two.Update(field, Keys.I, Keys.K, Keys.J, Keys.L, Keys.Enter,Keys.U,Keys.O, Keys.D9,Keys.D0 );
 
-            Ball.Instance.Update(player_one,field);
+            Collision.Instance.CollisionMethod(field);
+
+            Ball.Instance.Update();
 
             base.Update(gameTime);
         }

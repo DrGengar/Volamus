@@ -96,18 +96,14 @@ namespace Volamus_v1
             boundingSphere.Radius *= 1.0f;
 
             boundingSphere.Center = position;
-
-
         }
 
 
-        public void Update(Player player,Field field)
+        public void Update()
         {
             if (!isflying)
             {
-                position = Collision.Instance.LastTouched.Position + new Vector3(0, 0, 15);
-
-                if(active != null)
+                if (active != null)
                 {
                     active.Reset_t();
                 }

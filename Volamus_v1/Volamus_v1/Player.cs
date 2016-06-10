@@ -49,7 +49,7 @@ namespace Volamus_v1
         int points;
 
         SpriteFont points_font;
-        BoundingBox boundingBox;
+        BoundingBox innerBoundingBox, outerBoundingBox;
         Vector3 scale;
 
         Camera camera;
@@ -58,6 +58,8 @@ namespace Volamus_v1
         int direction; //1, if Position.Y < 0, -1 if Position.Y > 0
         bool is_jumping = false;
         bool is_falling = false;
+        bool can_hit = false;
+        bool is_serving = false;
 
         Player enemy;
 
@@ -108,9 +110,14 @@ namespace Volamus_v1
             get { return box; }
         }
 
-        public BoundingBox BoundingBox
+        public BoundingBox InnerBoundingBox
         {
-            get { return boundingBox; }
+            get { return innerBoundingBox; }
+        }
+
+        public BoundingBox OuterBoundingBox
+        {
+            get { return outerBoundingBox; }
         }
 
         public Model Model
@@ -131,6 +138,18 @@ namespace Volamus_v1
         public float Gamma
         {
             get { return MathHelper.ToRadians(gamma); }
+        }
+
+        public bool CanHit
+        {
+            get { return can_hit; }
+            set { can_hit = value; }
+        }
+
+        public bool IsServing
+        {
+            get { return is_serving; }
+            set { is_serving = value; }
         }
 
         public Player(Vector3 pos, int m_j_height, float j_velo, float mvp, Field field)
@@ -174,7 +193,7 @@ namespace Volamus_v1
             circle_angle = GameStateManager.Instance.Content.Load<Texture2D>("Images/winkel");
             arrow = GameStateManager.Instance.Content.Load<Texture2D>("Images/pfeil");
 
-            CreateBoundingBox();
+            CreateBoundingBoxes();
         }
 
         public void Update(Field field, Keys Up, Keys Down, Keys Left, Keys Right, Keys Jump, Keys weak, Keys strong, Keys l, Keys r)
@@ -210,143 +229,241 @@ namespace Volamus_v1
                 }
             }
 
-            WeakThrow(weak);
-            StrongThrow(strong);
-
-            if (!is_jumping)
+            if (is_serving)
             {
-                if (state.IsKeyDown(Up))
+                WeakThrow(weak);
+                StrongThrow(strong);
+
+                float offset = position.Y - box[0].Y;
+                position.Y -= offset;
+                MovingBoundingBoxes(new Vector3(0, -offset, 0));
+
+                if (!is_jumping)
                 {
-                    if (direction == 1)
+                    if (state.IsKeyDown(Left))
                     {
-                        if (!Collision.Instance.PlayerWithNet(this,field)) //Collision Spieler mit Netz
+                        if (direction == 1)
                         {
-                            position.Y += movespeed;
-                            boundingBox.Min.Y += movespeed;
-                            boundingBox.Max.Y += movespeed;
+                            if (position.X > box[0].X) //position.X > box[0].X
+                            {
+                                position.X -= movespeed;
+                                MovingBoundingBoxes(new Vector3(-movespeed, 0, 0));
+                                camera.AddPosition(new Vector3(-movespeed, 0, 0));
+                                camera.AddView(new Vector3(-movespeed, 0, 0));
+                            }
+                        }
+                        else if (direction == -1)
+                        {
+                            if (position.X < box[0].X) //position.X < box[0].X
+                            {
+                                position.X += movespeed;
+                                MovingBoundingBoxes(new Vector3(movespeed, 0, 0));
+                                camera.AddPosition(new Vector3(movespeed, 0, 0));
+                                camera.AddView(new Vector3(movespeed, 0, 0));
+                            }
                         }
                     }
-                    else if (direction == -1)
+
+                    if (state.IsKeyDown(Right))
                     {
-                        if (!Collision.Instance.PlayerWithNet(this, field)) //Collision Spieler mit Netz
+                        if (direction == 1)
                         {
-                            position.Y -= movespeed;
-                            boundingBox.Min.Y -= movespeed;
-                            boundingBox.Max.Y -= movespeed;
+                            if (position.X < box[1].X) //position.X < box[1].X
+                            {
+                                position.X += movespeed;
+                                MovingBoundingBoxes(new Vector3(movespeed, 0, 0));
+                                camera.AddPosition(new Vector3(movespeed, 0, 0));
+                                camera.AddView(new Vector3(movespeed, 0, 0));
+                            }
+                        }
+                        else if (direction == -1)
+                        {
+                            if (position.X > box[1].X) //position.X > box[1].X
+                            {
+                                position.X -= movespeed;
+                                MovingBoundingBoxes(new Vector3(-movespeed, 0, 0));
+                                camera.AddPosition(new Vector3(-movespeed, 0, 0));
+                                camera.AddView(new Vector3(-movespeed, 0, 0));
+                            }
+                        }
+                    }
+
+                    if (state.IsKeyDown(Jump))
+                    {
+                        is_jumping = true;
+                        is_falling = false;
+                    }
+                }
+                else
+                {
+                    if (position.Z <= max_jump_height && !is_falling)
+                    {
+                        position.Z += jump_velocity;
+                        MovingBoundingBoxes(new Vector3(0, 0, jump_velocity));
+                    }
+                    else
+                    {
+                        if (position.Z > 0)
+                        {
+                            position.Z -= jump_velocity;
+                            MovingBoundingBoxes(new Vector3(0, 0, -jump_velocity));
+                            is_falling = true;
+                        }
+                        else
+                        {
+                            is_jumping = false;
                         }
                     }
                 }
 
-                if (state.IsKeyDown(Left))
+                if (direction == 1)
                 {
-                    if (direction == 1)
-                    {
-                        if (position.X > box[0].X) //position.X > box[0].X
-                        {
-                            position.X -= movespeed;
-                            boundingBox.Min.X -= movespeed;
-                            boundingBox.Max.X -= movespeed;
-                            camera.AddPosition(new Vector3(-movespeed, 0, 0));
-                            camera.AddView(new Vector3(-movespeed, 0, 0));
-                        }
-                    }
-                    else if (direction == -1)
-                    {
-                        if (position.X < box[0].X) //position.X < box[0].X
-                        {
-                            position.X += movespeed;
-                            boundingBox.Min.X += movespeed;
-                            boundingBox.Max.X += movespeed;
-                            camera.AddPosition(new Vector3(movespeed, 0, 0));
-                            camera.AddView(new Vector3(movespeed, 0, 0));
-                        }
-                    }
+                    Ball.Instance.Position = new Vector3((OuterBoundingBox.Max.X + OuterBoundingBox.Min.X) / 2, OuterBoundingBox.Max.Y, OuterBoundingBox.Max.Z);
                 }
-
-                if (state.IsKeyDown(Down))
+                else
                 {
-                    if (direction == 1)
+                    if (direction == -1)
                     {
-                        if (position.Y > box[0].Y) //position.Y > box[0].Y
-                        {
-                            position.Y -= movespeed;
-                            boundingBox.Min.Y -= movespeed;
-                            boundingBox.Max.Y -= movespeed;
-                        }
+                        Ball.Instance.Position = new Vector3((OuterBoundingBox.Max.X + OuterBoundingBox.Min.X) / 2, OuterBoundingBox.Min.Y, OuterBoundingBox.Max.Z);
                     }
-                    else if (direction == -1)
-                    {
-                        if (position.Y < box[0].Y) //position.Y < box[0].Y
-                        {
-                            position.Y += movespeed;
-                            boundingBox.Min.Y += movespeed;
-                            boundingBox.Max.Y += movespeed;
-                        }
-                    }
-                }
-
-                if (state.IsKeyDown(Right))
-                {
-                    if (direction == 1)
-                    {
-                        if (position.X < box[1].X) //position.X < box[1].X
-                        {
-                            position.X += movespeed;
-                            boundingBox.Min.X += movespeed;
-                            boundingBox.Max.X += movespeed;
-                            camera.AddPosition(new Vector3(movespeed, 0, 0));
-                            camera.AddView(new Vector3(movespeed, 0, 0));
-                        }
-                    }
-                    else if (direction == -1)
-                    {
-                        if (position.X > box[1].X) //position.X > box[1].X
-                        {
-                            position.X -= movespeed;
-                            boundingBox.Min.X -= movespeed;
-                            boundingBox.Max.X -= movespeed;
-                            camera.AddPosition(new Vector3(-movespeed, 0, 0));
-                            camera.AddView(new Vector3(-movespeed, 0, 0));
-                        }
-                    }
-                }
-
-                if (state.IsKeyDown(Jump))
-                {
-                    is_jumping = true;
-                    is_falling = false;
                 }
             }
             else
             {
-                if (position.Z <= max_jump_height && !is_falling)
+                WeakThrow(weak);
+                StrongThrow(strong);
+
+                if (!is_jumping)
                 {
-                    position.Z += jump_velocity;
-                    boundingBox.Min.Z += jump_velocity;
-                    boundingBox.Max.Z += jump_velocity;
+                    if (state.IsKeyDown(Up))
+                    {
+                        if (direction == 1)
+                        {
+                            if (!Collision.Instance.PlayerWithNet(this, field)) //Collision Spieler mit Netz
+                            {
+                                position.Y += movespeed;
+
+                                MovingBoundingBoxes(new Vector3(0, movespeed, 0));
+                            }
+                        }
+                        else if (direction == -1)
+                        {
+                            if (!Collision.Instance.PlayerWithNet(this, field)) //Collision Spieler mit Netz
+                            {
+                                position.Y -= movespeed;
+                                MovingBoundingBoxes(new Vector3(0, -movespeed, 0));
+                            }
+                        }
+                    }
+
+                    if (state.IsKeyDown(Left))
+                    {
+                        if (direction == 1)
+                        {
+                            if (position.X > box[0].X) //position.X > box[0].X
+                            {
+                                position.X -= movespeed;
+                                MovingBoundingBoxes(new Vector3(-movespeed, 0, 0));
+                                camera.AddPosition(new Vector3(-movespeed, 0, 0));
+                                camera.AddView(new Vector3(-movespeed, 0, 0));
+                            }
+                        }
+                        else if (direction == -1)
+                        {
+                            if (position.X < box[0].X) //position.X < box[0].X
+                            {
+                                position.X += movespeed;
+                                MovingBoundingBoxes(new Vector3(movespeed, 0, 0));
+                                camera.AddPosition(new Vector3(movespeed, 0, 0));
+                                camera.AddView(new Vector3(movespeed, 0, 0));
+                            }
+                        }
+                    }
+
+                    if (state.IsKeyDown(Down))
+                    {
+                        if (direction == 1)
+                        {
+                            if (position.Y > box[0].Y) //position.Y > box[0].Y
+                            {
+                                position.Y -= movespeed;
+                                MovingBoundingBoxes(new Vector3(0, -movespeed, 0));
+                            }
+                        }
+                        else if (direction == -1)
+                        {
+                            if (position.Y < box[0].Y) //position.Y < box[0].Y
+                            {
+                                position.Y += movespeed;
+                                MovingBoundingBoxes(new Vector3(0, movespeed, 0));
+                            }
+                        }
+                    }
+
+                    if (state.IsKeyDown(Right))
+                    {
+                        if (direction == 1)
+                        {
+                            if (position.X < box[1].X) //position.X < box[1].X
+                            {
+                                position.X += movespeed;
+                                MovingBoundingBoxes(new Vector3(movespeed, 0, 0));
+                                camera.AddPosition(new Vector3(movespeed, 0, 0));
+                                camera.AddView(new Vector3(movespeed, 0, 0));
+                            }
+                        }
+                        else if (direction == -1)
+                        {
+                            if (position.X > box[1].X) //position.X > box[1].X
+                            {
+                                position.X -= movespeed;
+                                MovingBoundingBoxes(new Vector3(-movespeed, 0, 0));
+                                camera.AddPosition(new Vector3(-movespeed, 0, 0));
+                                camera.AddView(new Vector3(-movespeed, 0, 0));
+                            }
+                        }
+                    }
+
+                    if (state.IsKeyDown(Jump))
+                    {
+                        is_jumping = true;
+                        is_falling = false;
+                    }
                 }
                 else
                 {
-                    if (position.Z > 0)
+                    if (position.Z <= max_jump_height && !is_falling)
                     {
-                        position.Z -= jump_velocity;
-                        boundingBox.Min.Z -= jump_velocity;
-                        boundingBox.Max.Z -= jump_velocity;
-                        is_falling = true;
+                        position.Z += jump_velocity;
+                        MovingBoundingBoxes(new Vector3(0, 0, jump_velocity));
                     }
                     else
                     {
-                        is_jumping = false;
+                        if (position.Z > 0)
+                        {
+                            position.Z -= jump_velocity;
+                            MovingBoundingBoxes(new Vector3(0, 0, -jump_velocity));
+                            is_falling = true;
+                        }
+                        else
+                        {
+                            is_jumping = false;
+                        }
                     }
                 }
-
             }
         }
 
         public void WeakThrow(Keys weakthrow)
         {
-            if (!Ball.Instance.IsFlying && Keyboard.GetState().IsKeyDown(weakthrow))
+            if (Keyboard.GetState().IsKeyDown(weakthrow) && can_hit)
             {
+                if (is_serving)
+                {
+                    is_serving = false;
+                }
+
+                Collision.Instance.LastTouched = this;
                 Ball.Instance.IsFlying = true;
                 Parabel weak = new Parabel(Ball.Instance.Position,45.0f,0.0f, 45.0f, 20.0f, direction);
                 Ball.Instance.Active = weak;
@@ -355,8 +472,14 @@ namespace Volamus_v1
 
         public void StrongThrow(Keys strongthrow)
         {
-            if (!Ball.Instance.IsFlying && Keyboard.GetState().IsKeyDown(strongthrow))
+            if (Keyboard.GetState().IsKeyDown(strongthrow) && can_hit)
             {
+                if (is_serving)
+                {
+                    is_serving = false;
+                }
+
+                Collision.Instance.LastTouched = this;
                 Ball.Instance.IsFlying = true;
                 Parabel strong = new Parabel(Ball.Instance.Position, 45.0f, gamma, 45.0f, 25.0f, direction);
                 Ball.Instance.Active = strong;
@@ -384,12 +507,16 @@ namespace Volamus_v1
             }
 
             d.Begin(camera.ViewMatrix,camera.ProjectionMatrix);
-            d.DrawWireBox(boundingBox, Color.White);
+            d.DrawWireBox(innerBoundingBox, Color.White);
+            d.DrawWireBox(outerBoundingBox, Color.Black);
             d.End();
         }
 
-        private void CreateBoundingBox()
+        private void CreateBoundingBoxes()
         {
+
+            //Innere BoundingBox
+
             // Initialize minimum and maximum corners of the bounding box to max and min values
             Vector3 min = new Vector3(float.MaxValue, float.MaxValue, float.MaxValue);
             Vector3 max = new Vector3(float.MinValue, float.MinValue, float.MinValue);
@@ -432,7 +559,21 @@ namespace Volamus_v1
             min.Z -= translate.Z;
             max.Z -= translate.Z;
 
-            boundingBox = new BoundingBox(min, max);
+            innerBoundingBox = new BoundingBox(min, max);
+
+            //äußere BoundingBox
+            Vector3 offset = new Vector3(Ball.Instance.BoundingSphere.Radius, Ball.Instance.BoundingSphere.Radius, 0);
+            outerBoundingBox = new BoundingBox((innerBoundingBox.Min - offset),
+                innerBoundingBox.Max + offset);
+        }
+
+        private void MovingBoundingBoxes(Vector3 offset)
+        {
+            innerBoundingBox.Min += offset;
+            innerBoundingBox.Max += offset;
+
+            outerBoundingBox.Min += offset;
+            outerBoundingBox.Max += offset;
         }
     }
 }
