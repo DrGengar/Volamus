@@ -83,8 +83,8 @@ namespace Volamus_v1
             BallWithOuterBoundingBox(lastTouched);
             BallWithOuterBoundingBox(lastTouched.Enemy);
 
-            //BallWithInnerBoundingBox(lastTouched);
-            //BallWithInnerBoundingBox(lastTouched.Enemy);
+            BallWithInnerBoundingBox(lastTouched);
+            BallWithInnerBoundingBox(lastTouched.Enemy);
 
             //Ball mit Netz
             if (Ball.Instance.BoundingSphere.Intersects(field.NetBoundingBox) && (newParabel == null || !(newParabel.Equals(Ball.Instance.Active))))
@@ -124,9 +124,11 @@ namespace Volamus_v1
             if (Ball.Instance.BoundingSphere.Intersects(player.InnerBoundingBox) && Ball.Instance.IsFlying == true && !player.IsServing)
             {
                 //Kollision
-                newParabel = new Parabel(Ball.Instance.Position, Ball.Instance.Active.Angles.X, Ball.Instance.Active.Angles.Z, Ball.Instance.Active.Angles.Y, Ball.Instance.Active.Velocity - 5, Ball.Instance.Active.Direction * (-1));
+                newParabel = new Parabel(Ball.Instance.Position, Ball.Instance.Active.Angles.X, Ball.Instance.Active.Angles.Z, Ball.Instance.Active.Angles.Y, Ball.Instance.Active.Velocity, Ball.Instance.Active.Direction * (-1));
                 Ball.Instance.Active = newParabel;
                 player.CanHit = false;
+
+                Ball.Instance.Update();
             }
         }
 

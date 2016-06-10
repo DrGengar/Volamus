@@ -318,13 +318,13 @@ namespace Volamus_v1
 
                 if (direction == 1)
                 {
-                    Ball.Instance.Position = new Vector3((OuterBoundingBox.Max.X + OuterBoundingBox.Min.X) / 2, OuterBoundingBox.Max.Y, OuterBoundingBox.Max.Z);
+                    Ball.Instance.Position = new Vector3((OuterBoundingBox.Max.X + OuterBoundingBox.Min.X) / 2, OuterBoundingBox.Max.Y, OuterBoundingBox.Max.Z + 1);
                 }
                 else
                 {
                     if (direction == -1)
                     {
-                        Ball.Instance.Position = new Vector3((OuterBoundingBox.Max.X + OuterBoundingBox.Min.X) / 2, OuterBoundingBox.Min.Y, OuterBoundingBox.Max.Z);
+                        Ball.Instance.Position = new Vector3((OuterBoundingBox.Max.X + OuterBoundingBox.Min.X) / 2, OuterBoundingBox.Min.Y, OuterBoundingBox.Max.Z + 1);
                     }
                 }
             }
@@ -467,6 +467,8 @@ namespace Volamus_v1
                 Ball.Instance.IsFlying = true;
                 Parabel weak = new Parabel(Ball.Instance.Position,45.0f,0.0f, 45.0f, 20.0f, direction);
                 Ball.Instance.Active = weak;
+
+                Ball.Instance.Update();
             }
         }
 
@@ -483,6 +485,9 @@ namespace Volamus_v1
                 Ball.Instance.IsFlying = true;
                 Parabel strong = new Parabel(Ball.Instance.Position, 45.0f, gamma, 45.0f, 25.0f, direction);
                 Ball.Instance.Active = strong;
+
+                Ball.Instance.Update();
+
             }
         }
 
