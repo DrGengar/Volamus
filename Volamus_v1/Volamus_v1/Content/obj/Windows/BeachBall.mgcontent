@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <SourceFile>C:/Users/Lars/Desktop/3DGameProject/Volamus_v1/Volamus_v1/Content/BeachBall.fbx</SourceFile>
-  <SourceTime>2016-06-04T00:09:03.0083067+02:00</SourceTime>
-  <DestFile>C:/Users/Lars/Desktop/3DGameProject/Volamus_v1/Volamus_v1/Content/bin/Windows/BeachBall.xnb</DestFile>
-  <DestTime>2016-06-04T10:50:32.6475258+02:00</DestTime>
+  <SourceFile>C:/Users/Ich/Desktop/3dGame/Volamus_v1/Volamus_v1/Content/BeachBall.fbx</SourceFile>
+  <SourceTime>2016-06-10T20:42:12.5408527+02:00</SourceTime>
+  <DestFile>C:/Users/Ich/Desktop/3dGame/Volamus_v1/Volamus_v1/Content/bin/Windows/BeachBall.xnb</DestFile>
+  <DestTime>2016-06-10T20:42:51.1295211+02:00</DestTime>
   <Importer>FbxImporter</Importer>
   <ImporterTime>2016-03-30T08:36:08+02:00</ImporterTime>
   <Processor>ModelProcessor</Processor>
@@ -66,7 +66,7 @@
   </Parameters>
   <Dependencies />
   <BuildAsset>
-    <string>C:/Users/Lars/Desktop/3DGameProject/Volamus_v1/Volamus_v1/Content/bin/Windows/../BeachBallTexture_0.xnb</string>
+    <string>C:/Users/Ich/Desktop/3dGame/Volamus_v1/Volamus_v1/Content/bin/Windows/../BeachBallTexture_0.xnb</string>
   </BuildAsset>
   <BuildOutput />
 </PipelineBuildEvent>

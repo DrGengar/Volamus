@@ -72,8 +72,9 @@ namespace Volamus_v1
 
             frameCounter.Update(deltaTime);
 
-            player_one.Update(field, Keys.W, Keys.S, Keys.A, Keys.D, Keys.Space,Keys.Q,Keys.E,Keys.Left, Keys.Right);
-            player_two.Update(field, Keys.I, Keys.K, Keys.J, Keys.L, Keys.Enter,Keys.U,Keys.O, Keys.D9,Keys.D0 );
+            player_one.Update(field, Keys.W, Keys.S, Keys.A, Keys.D, Keys.Space, Keys.Q, Keys.E, Keys.Left, Keys.Right);
+            player_two.Update(field, Buttons.LeftThumbstickUp, Buttons.LeftThumbstickDown, Buttons.LeftThumbstickLeft, Buttons.LeftThumbstickRight, Buttons.A, Buttons.LeftTrigger, Buttons.RightTrigger, Buttons.RightThumbstickLeft, Buttons.RightThumbstickRight);
+            
 
             Collision.Instance.CollisionMethod(field);
 

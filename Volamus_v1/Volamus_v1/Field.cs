@@ -17,6 +17,10 @@ namespace Volamus_v1
         int length;
         int net_height;
 
+        //Eisscholle
+        Model ice;
+
+
         //Netz
         Model net;
         BoundingBox netBoundingBox;
@@ -101,6 +105,8 @@ namespace Volamus_v1
         {
             net = GameStateManager.Instance.Content.Load<Model>("netzv4");
 
+            ice = GameStateManager.Instance.Content.Load<Model>("eisschollev1");
+
             texture = GameStateManager.Instance.Content.Load<Texture2D>("sand");
 
             CreateBoundingBox();
@@ -115,7 +121,7 @@ namespace Volamus_v1
 
             effect.TextureEnabled = true;
             effect.Texture = texture;
-
+            
             foreach (var pass in effect.CurrentTechnique.Passes)
             {
                 pass.Apply();
@@ -123,6 +129,7 @@ namespace Volamus_v1
                 GameStateManager.Instance.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, fieldVertices, 0, 4);
             }
 
+            DrawIce(camera);
             DrawNet(camera);
 
             d.Begin(camera.ViewMatrix, camera.ProjectionMatrix);
@@ -131,6 +138,29 @@ namespace Volamus_v1
             d.End();
 
         }
+
+
+        private void DrawIce(Camera camera)
+        {
+            Matrix[] transforms = new Matrix[ice.Bones.Count];
+            ice.CopyAbsoluteBoneTransformsTo(transforms);
+
+            foreach (ModelMesh mesh in ice.Meshes)
+            {
+                foreach (BasicEffect effect in mesh.Effects)
+                {
+                    effect.EnableDefaultLighting();
+
+                    effect.World = transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) * Matrix.CreateScale(0.025f, 0.025f, 0.025f)
+                        * Matrix.CreateTranslation(new Vector3(0, 0, 0));
+                    effect.View = camera.ViewMatrix;
+                    effect.Projection = camera.ProjectionMatrix;
+                }
+                mesh.Draw();
+            }
+        }
+
+
 
         private void DrawNet(Camera camera)
         {
