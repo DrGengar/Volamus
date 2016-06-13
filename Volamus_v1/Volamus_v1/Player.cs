@@ -170,7 +170,7 @@ namespace Volamus_v1
                 box[1] = new Vector2(-field.Width / 2, 0);
             }
 
-            camera = new Camera(new Vector3(0, direction * (-60), 20), new Vector3(0, 0, 0), new Vector3(0, direction * 1, 1));
+            camera = new Camera(new Vector3(0, direction * (-60), 20), new Vector3(0, 0, 0), new Vector3(0, direction * 1, 1)); //0,-60,20  0,0,0   0,1,1
 
             max_jump_height = m_j_height;
             jump_velocity = j_velo;

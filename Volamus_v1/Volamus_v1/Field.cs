@@ -20,6 +20,9 @@ namespace Volamus_v1
         //Eisscholle
         Model ice;
 
+        //Schiedsrichter
+        Model referee;
+
 
         //Netz
         Model net;
@@ -107,6 +110,8 @@ namespace Volamus_v1
 
             ice = GameStateManager.Instance.Content.Load<Model>("eisschollev1");
 
+            referee = GameStateManager.Instance.Content.Load<Model>("3DAcaLogo");
+
             texture = GameStateManager.Instance.Content.Load<Texture2D>("sand");
 
             CreateBoundingBox();
@@ -131,6 +136,7 @@ namespace Volamus_v1
 
             DrawIce(camera);
             DrawNet(camera);
+            DrawReferee(camera);
 
             d.Begin(camera.ViewMatrix, camera.ProjectionMatrix);
             d.DrawWireBox(netBoundingBox, Color.White);
@@ -151,8 +157,8 @@ namespace Volamus_v1
                 {
                     effect.EnableDefaultLighting();
 
-                    effect.World = transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) * Matrix.CreateScale(0.025f, 0.025f, 0.025f)
-                        * Matrix.CreateTranslation(new Vector3(0, 0, 0));
+                    effect.World = transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) * Matrix.CreateScale(0.05f, 0.15f, 0.01f)
+                        * Matrix.CreateTranslation(new Vector3(0, 0, -0.75f));
                     effect.View = camera.ViewMatrix;
                     effect.Projection = camera.ProjectionMatrix;
                 }
@@ -175,6 +181,28 @@ namespace Volamus_v1
 
                     effect.World = transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) * Matrix.CreateScale(0.025f, 0.025f, 0.025f)
                         * Matrix.CreateTranslation(new Vector3(0, 0, 0));
+                    effect.View = camera.ViewMatrix;
+                    effect.Projection = camera.ProjectionMatrix;
+                }
+                mesh.Draw();
+            }
+        }
+
+
+
+        private void DrawReferee(Camera camera)
+        {
+            Matrix[] transforms = new Matrix[referee.Bones.Count];
+            referee.CopyAbsoluteBoneTransformsTo(transforms);
+
+            foreach (ModelMesh mesh in referee.Meshes)
+            {
+                foreach (BasicEffect effect in mesh.Effects)
+                {
+                    effect.EnableDefaultLighting();
+
+                    effect.World = transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) * Matrix.CreateScale(0.075f, 0.075f, 0.075f)
+                        * Matrix.CreateTranslation(new Vector3(40, 0, 0));
                     effect.View = camera.ViewMatrix;
                     effect.Projection = camera.ProjectionMatrix;
                 }
