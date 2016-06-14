@@ -127,6 +127,7 @@ namespace Volamus_v1
                 newParabel = new Parabel(Ball.Instance.Position, Ball.Instance.Active.Angles.X/10, Ball.Instance.Active.Angles.Z, Ball.Instance.Active.Angles.Y, Ball.Instance.Active.Velocity, Ball.Instance.Active.Direction * (-1));
                 Ball.Instance.Active = newParabel;
                 player.CanHit = false;
+                lastTouched = player;
 
                 Ball.Instance.Update();
             }

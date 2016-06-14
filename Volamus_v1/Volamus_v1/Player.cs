@@ -786,7 +786,7 @@ namespace Volamus_v1
                     is_serving = false;
                 }
 
-                //Man darf nicht gleich nochmal schlagen, erst wenn der ball wieder die äußere BoundingBox des Spielrs berührt
+                //Man darf nicht gleich nochmal schlagen, erst wenn der ball wieder die äußere BoundingBox des Spielers berührt
                 can_hit = false;
 
                 Collision.Instance.LastTouched = this; //Setze diese Person als die, die den Ball als letztes berührt hat
@@ -812,7 +812,7 @@ namespace Volamus_v1
                     is_serving = false;
                 }
 
-                //Man darf nicht gleich nochmal schlagen, erst wenn der ball wieder die äußere BoundingBox des Spielrs berührt
+                //Man darf nicht gleich nochmal schlagen, erst wenn der ball wieder die äußere BoundingBox des Spielers berührt
                 can_hit = false;
 
                 Collision.Instance.LastTouched = this; //Setze diese Person als die, die den Ball als letztes berührt hat
