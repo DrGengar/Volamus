@@ -14,6 +14,7 @@ namespace Volamus_v1
         private Player lastTouched;
         private int touch_count; //Maximale Anzahl an ballberührungen hintereinander von einer Person ; TODO: Noch zu implementieren
         private Parabel newParabel;
+        private bool colliding;
 
         private static Collision instance;
 
@@ -120,11 +121,27 @@ namespace Volamus_v1
 
         private void BallWithInnerBoundingBox(Player player)
         {
-            //Ball mit InnerBoundingBox vom Spieler -> Ball soll abprallen vom Spieler
-            if (Ball.Instance.BoundingSphere.Intersects(player.InnerBoundingBox) && Ball.Instance.IsFlying == true && !player.IsServing)
+            if (!(Ball.Instance.BoundingSphere.Intersects(player.InnerBoundingBox)) && !(Ball.Instance.BoundingSphere.Intersects(player.Enemy.InnerBoundingBox)))
             {
-                //Kollision
-                newParabel = new Parabel(Ball.Instance.Position, Ball.Instance.Active.Angles.X/10, Ball.Instance.Active.Angles.Z, Ball.Instance.Active.Angles.Y, Ball.Instance.Active.Velocity, Ball.Instance.Active.Direction * (-1));
+                colliding = false;
+            }
+
+            //Ball mit InnerBoundingBox vom Spieler -> Ball soll abprallen vom Spieler
+            if (Ball.Instance.BoundingSphere.Intersects(player.InnerBoundingBox) && Ball.Instance.IsFlying == true && !player.IsServing && !colliding)
+            {
+                colliding = true;
+
+                //Kollision von Vorne
+                newParabel = new Parabel(Ball.Instance.Position, -Ball.Instance.Active.Angles.X, Ball.Instance.Active.Angles.Z, -Ball.Instance.Active.Angles.Y, Ball.Instance.Active.Velocity, Ball.Instance.Active.Direction * (-1));
+
+                //Kollision wenn von oben
+                if (Ball.Instance.Position.Z >= player.InnerBoundingBox.Max.Z)
+                {
+                    newParabel = new Parabel(Ball.Instance.Position, Ball.Instance.Active.Angles.X, Ball.Instance.Active.Angles.Z, Ball.Instance.Active.Angles.Y, Ball.Instance.Active.Velocity, Ball.Instance.Active.Direction);
+                }
+
+                //Kollision von der Seite
+
                 Ball.Instance.Active = newParabel;
                 player.CanHit = false;
                 lastTouched = player;

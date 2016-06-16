@@ -475,7 +475,7 @@ namespace Volamus_v1
                 Ball.Instance.IsFlying = true; //Ball fliegt
 
                 //neue Parabel und an Ball übergeben
-                Parabel weak = new Parabel(Ball.Instance.Position,45.0f,0.0f, 45.0f, 20.0f, direction);
+                Parabel weak = new Parabel(Ball.Instance.Position,45.0f, gamma, 45.0f, 20.0f, direction);
                 Ball.Instance.Active = weak;
 
                 //Ball updaten

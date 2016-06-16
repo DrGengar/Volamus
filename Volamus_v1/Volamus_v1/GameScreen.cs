@@ -74,11 +74,10 @@ namespace Volamus_v1
 
             player_one.Update(field, Keys.W, Keys.S, Keys.A, Keys.D, Keys.Space, Keys.Q, Keys.E, Keys.Left, Keys.Right);
             player_two.Update(field, Buttons.LeftThumbstickUp, Buttons.LeftThumbstickDown, Buttons.LeftThumbstickLeft, Buttons.LeftThumbstickRight, Buttons.A, Buttons.LeftTrigger, Buttons.RightTrigger, Buttons.RightThumbstickLeft, Buttons.RightThumbstickRight);
-            
-
-            Collision.Instance.CollisionMethod(field);
 
             Ball.Instance.Update();
+
+            Collision.Instance.CollisionMethod(field);
 
             base.Update(gameTime);
         }
