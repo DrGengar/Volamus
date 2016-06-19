@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace Volamus_v1
 {
     public static class VertexElementExtractor
@@ -520,7 +521,7 @@ namespace Volamus_v1
             GamePadState state = GamePad.GetState(PlayerIndex.One);
             camera.Update();
 
-
+            
             //jeder Spieler braucht einen Winkel Gamma, den er verändern kann mit Eingaben
             if (direction == 1)
             {
@@ -778,9 +779,14 @@ namespace Volamus_v1
         //Schwacher Schlag
         public void WeakThrow(Buttons weakthrow)
         {
-
+  
+            
             if (GamePad.GetState(PlayerIndex.One).IsButtonDown(weakthrow) && can_hit) //Drückt Knopf und darf schlagen
             {
+
+
+                //GamePad.SetVibration(PlayerIndex.One, 1.0f, 1.0f);
+                
                 if (is_serving) //Falls man Aufschlag hatte, hat man nach dem Schlagen ihn erstmal nicht mehr (Ball fliegt ja jetzt)
                 {
                     is_serving = false;
@@ -798,6 +804,8 @@ namespace Volamus_v1
 
                 //Ball updaten
                 Ball.Instance.Update();
+                
+
             }
         }
 
@@ -807,6 +815,8 @@ namespace Volamus_v1
 
             if (GamePad.GetState(PlayerIndex.One).IsButtonDown(strongthrow) && can_hit) //Drückt Knopf und darf schlagen
             {
+                //GamePad.SetVibration(PlayerIndex.One, 1.0f, 1.0f);
+
                 if (is_serving) //Falls man Aufschlag hatte, hat man nach dem Schlagen ihn erstmal nicht mehr (Ball fliegt ja jetzt)
                 {
                     is_serving = false;
@@ -824,7 +834,7 @@ namespace Volamus_v1
 
                 //Ball updaten
                 Ball.Instance.Update();
-
+                
             }
         }
         // Controller Ende

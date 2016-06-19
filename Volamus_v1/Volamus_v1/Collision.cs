@@ -56,6 +56,9 @@ namespace Volamus_v1
             //Ball mit Ebene z=0
             if (BallWithPlane())
             {
+
+
+
                 Ball.Instance.IsFlying = false;
                 //Wenn außerhalb des Feldes: Gegner von LastTouched +1 Punkt und bekommt Aufschlag
                 if(Ball.Instance.Position.X > (field.Width/2) || Ball.Instance.Position.X < -(field.Width / 2) || Ball.Instance.Position.Y > (field.Length/2) || Ball.Instance.Position.Y < -(field.Length / 2))
@@ -110,6 +113,7 @@ namespace Volamus_v1
         //Spieler mit Netz
         public bool PlayerWithNet(Player player, Field field)
         {
+
             return player.InnerBoundingBox.Intersects(field.NetBoundingBox);
         }
 
