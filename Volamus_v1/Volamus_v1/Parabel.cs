@@ -26,12 +26,12 @@ namespace Volamus_v1
         float betta; //Winkel in Winkelmaß -> Umrechnung in Radiant in Funktion
 
         Vector3 lastPosition;
-        Vector3 angle;
+        Vector3 hitdirection;
 
 
-        public Vector3 Angle_Vector
+        public Vector3 Hit_Direction
         {
-            get { return angle; }
+            get { return hitdirection; }
         }
 
         public Vector3 Angles
@@ -79,7 +79,7 @@ namespace Volamus_v1
             position.X = x + velocity * (float)Math.Sin(MathHelper.ToRadians(gamma)) * t;
             t = t + 0.05f;
 
-            angle = position - lastPosition;
+            hitdirection = position - lastPosition;
             
             lastPosition = position;
 

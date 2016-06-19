@@ -180,7 +180,7 @@ namespace Volamus_v1
             points = 0;
             gamma = 0.0f;
 
-            scale = new Vector3(0.025f, 0.025f, 0.025f);
+            scale = new Vector3(3.0f, 3.0f, 3.0f);
 
             d = new DebugDraw(GameStateManager.Instance.GraphicsDevice);
         }
@@ -476,7 +476,7 @@ namespace Volamus_v1
                 Ball.Instance.IsFlying = true; //Ball fliegt
 
                 //neue Parabel und an Ball übergeben
-                Parabel weak = new Parabel(Ball.Instance.Position,45.0f, gamma, 45.0f, 20.0f, direction);
+                Parabel weak = new Parabel(Ball.Instance.Position, 45.0f, gamma, 45.0f, 20.0f, direction);
                 Ball.Instance.Active = weak;
 
                 //Ball updaten
@@ -799,7 +799,7 @@ namespace Volamus_v1
                 Ball.Instance.IsFlying = true; //Ball fliegt
 
                 //neue Parabel und an Ball übergeben
-                Parabel weak = new Parabel(Ball.Instance.Position, 45.0f, 0.0f, 45.0f, 20.0f, direction);
+                Parabel weak = new Parabel(Ball.Instance.Position, 45.0f, gamma, 45.0f, 20.0f, direction);
                 Ball.Instance.Active = weak;
 
                 //Ball updaten
@@ -891,7 +891,8 @@ namespace Volamus_v1
                     // Iterate through vertices (possibly) growing bounding box, all calculations are done in world space
                     for (int i = 0; i < vertexBufferSize / sizeof(float); i += vertexStride / sizeof(float))
                     {
-                        Vector3 transformedPosition = Vector3.Transform(new Vector3(vertexData[i], vertexData[i + 1], vertexData[i + 2]), Matrix.CreateScale(scale.X));
+                        Vector3 transformedPosition = Vector3.Transform(new Vector3(vertexData[i], vertexData[i + 1], vertexData[i + 2]), 
+                            Matrix.CreateScale(scale));
 
                         min = Vector3.Min(min, transformedPosition);
                         max = Vector3.Max(max, transformedPosition);
@@ -919,6 +920,7 @@ namespace Volamus_v1
             Vector3 offset = new Vector3(Ball.Instance.BoundingSphere.Radius, Ball.Instance.BoundingSphere.Radius, 0);
             outerBoundingBox = new BoundingBox((innerBoundingBox.Min - offset),
                 innerBoundingBox.Max + offset);
+            outerBoundingBox.Max.Z += Ball.Instance.BoundingSphere.Radius;
         }
 
         private void MovingBoundingBoxes(Vector3 offset)

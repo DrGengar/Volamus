@@ -14,9 +14,9 @@ namespace Volamus_v1
         private Player lastTouched;
         private int touch_count; //Maximale Anzahl an ballberührungen hintereinander von einer Person ; TODO: Noch zu implementieren
         private Parabel newParabel;
-        private bool colliding;
 
         private static Collision instance;
+        private int colliding;
 
 
         public static Collision Instance
@@ -56,9 +56,6 @@ namespace Volamus_v1
             //Ball mit Ebene z=0
             if (BallWithPlane())
             {
-
-
-
                 Ball.Instance.IsFlying = false;
                 //Wenn außerhalb des Feldes: Gegner von LastTouched +1 Punkt und bekommt Aufschlag
                 if(Ball.Instance.Position.X > (field.Width/2) || Ball.Instance.Position.X < -(field.Width / 2) || Ball.Instance.Position.Y > (field.Length/2) || Ball.Instance.Position.Y < -(field.Length / 2))
@@ -84,6 +81,11 @@ namespace Volamus_v1
                 }
             }
 
+            if(!Ball.Instance.BoundingSphere.Intersects(lastTouched.InnerBoundingBox) && !Ball.Instance.BoundingSphere.Intersects(lastTouched.Enemy.InnerBoundingBox) && !Ball.Instance.BoundingSphere.Intersects(field.NetBoundingBox))
+            {
+                colliding = 0;
+            }
+
             BallWithOuterBoundingBox(lastTouched);
             BallWithOuterBoundingBox(lastTouched.Enemy);
 
@@ -91,10 +93,16 @@ namespace Volamus_v1
             BallWithInnerBoundingBox(lastTouched.Enemy);
 
             //Ball mit Netz
-            if (Ball.Instance.BoundingSphere.Intersects(field.NetBoundingBox) && (newParabel == null || !(newParabel.Equals(Ball.Instance.Active))))
+            if (Ball.Instance.BoundingSphere.Intersects(field.NetBoundingBox) && colliding == 0)
             {
                 //Neue Flugbahn mit Ausfallwinkel = Einfallswinkel, x - Ebene
-                newParabel = new Parabel(Ball.Instance.Position, Ball.Instance.Active.Angles.X, Ball.Instance.Active.Angles.Z, Ball.Instance.Active.Angles.Y, Ball.Instance.Active.Velocity - 5, Ball.Instance.Active.Direction*(-1));
+                colliding = 2;
+
+                Vector3 hitdirection = Ball.Instance.Active.Hit_Direction;
+                float angle_z = MathHelper.ToDegrees((float)Math.Atan((hitdirection.Z / hitdirection.Y)));
+                float angle_x = MathHelper.ToDegrees((float)Math.Atan((hitdirection.X / hitdirection.Y)));
+                newParabel = new Parabel(Ball.Instance.Position, -angle_z, angle_x, Ball.Instance.Active.Angles.Y, 0.6f * Ball.Instance.Active.Velocity, 
+                    Ball.Instance.Active.Direction * (-1)); //Skalierung
                 Ball.Instance.Active = newParabel;
             }
         }
@@ -114,7 +122,7 @@ namespace Volamus_v1
         public bool PlayerWithNet(Player player, Field field)
         {
 
-            return player.InnerBoundingBox.Intersects(field.NetBoundingBox);
+            return player.OuterBoundingBox.Intersects(field.NetBoundingBox);
         }
 
         //Spieler mit Feldgrenzen
@@ -125,26 +133,64 @@ namespace Volamus_v1
 
         private void BallWithInnerBoundingBox(Player player)
         {
-            if (!(Ball.Instance.BoundingSphere.Intersects(player.InnerBoundingBox)) && !(Ball.Instance.BoundingSphere.Intersects(player.Enemy.InnerBoundingBox)))
-            {
-                colliding = false;
-            }
-
             //Ball mit InnerBoundingBox vom Spieler -> Ball soll abprallen vom Spieler
-            if (Ball.Instance.BoundingSphere.Intersects(player.InnerBoundingBox) && Ball.Instance.IsFlying == true && !player.IsServing && !colliding)
+            if (Ball.Instance.BoundingSphere.Intersects(player.InnerBoundingBox) && Ball.Instance.IsFlying == true && !player.IsServing && colliding == 0)
             {
-                colliding = true;
+                Vector3 hitdirection = Ball.Instance.Active.Hit_Direction;
+                float angle_z = MathHelper.ToDegrees((float)Math.Atan((hitdirection.Z / hitdirection.Y)));
+                float angle_x = MathHelper.ToDegrees((float)Math.Atan((hitdirection.X / hitdirection.Y)));
 
-                //Kollision von Vorne
-                newParabel = new Parabel(Ball.Instance.Position, -Ball.Instance.Active.Angles.X, Ball.Instance.Active.Angles.Z, -Ball.Instance.Active.Angles.Y, Ball.Instance.Active.Velocity, Ball.Instance.Active.Direction * (-1));
+                colliding = player.Direction;
 
-                //Kollision wenn von oben
-                if (Ball.Instance.Position.Z >= player.InnerBoundingBox.Max.Z)
+                float left = 0.0f;
+                float right = 0.0f;
+                float front = 0.0f;
+                float back = 0.0f;
+
+                if (player.Direction == 1)
                 {
-                    newParabel = new Parabel(Ball.Instance.Position, Ball.Instance.Active.Angles.X, Ball.Instance.Active.Angles.Z, Ball.Instance.Active.Angles.Y, Ball.Instance.Active.Velocity, Ball.Instance.Active.Direction);
+                    left = player.InnerBoundingBox.Min.X;
+                    right = player.InnerBoundingBox.Max.X;
+                    front = player.InnerBoundingBox.Max.Y;
+                    back = player.InnerBoundingBox.Min.Y;
+                }
+                else if(player.Direction == -1)
+                {
+                    left = player.InnerBoundingBox.Min.X;
+                    right = player.InnerBoundingBox.Max.X;
+                    front = player.InnerBoundingBox.Min.Y;
+                    back = player.InnerBoundingBox.Max.Y;
+                }
+
+                //Kollision von vorne
+                if (player.Direction * Ball.Instance.Position.Y >= player.Direction * front)
+                {
+                    newParabel = new Parabel(Ball.Instance.Position, player.Direction * (-angle_z), angle_x, Ball.Instance.Active.Angles.Y, 0.75f * Ball.Instance.Active.Velocity,
+                        Ball.Instance.Active.Direction * (-1)); //Skalierung
                 }
 
                 //Kollision von der Seite
+                //Links
+                if(Ball.Instance.Position.X < left)
+                {
+                    //Links
+                    newParabel = new Parabel(Ball.Instance.Position, player.Direction * (-angle_z), player.Direction * angle_x, Ball.Instance.Active.Angles.Y, 0.75f * Ball.Instance.Active.Velocity,
+                        Ball.Instance.Active.Direction); //Skalierung
+                }
+
+                if (Ball.Instance.Position.X > right)
+                {
+                    //Rechts
+                    newParabel = new Parabel(Ball.Instance.Position, player.Direction * (-angle_z), player.Direction * angle_x, Ball.Instance.Active.Angles.Y, 0.75f * Ball.Instance.Active.Velocity,
+                        Ball.Instance.Active.Direction); //Skalierung
+                }
+                
+                //Kollision wenn von oben
+                if (Ball.Instance.Position.Z >= player.InnerBoundingBox.Max.Z)
+                {
+                    newParabel = new Parabel(Ball.Instance.Position, player.Direction * angle_z, angle_x, Ball.Instance.Active.Angles.Y, 0.75f * Ball.Instance.Active.Velocity,
+                        Ball.Instance.Active.Direction); //Skalierung
+                }
 
                 Ball.Instance.Active = newParabel;
                 player.CanHit = false;
