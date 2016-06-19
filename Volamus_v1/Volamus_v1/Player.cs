@@ -188,7 +188,7 @@ namespace Volamus_v1
         //LoadContent
         public void LoadContent()
         {
-            model = GameStateManager.Instance.Content.Load<Model>("pinguinv1");
+            model = GameStateManager.Instance.Content.Load<Model>("pinguinv2");
 
             points_font = GameStateManager.Instance.Content.Load<SpriteFont>("SpriteFonts/Standard");
 
