@@ -25,7 +25,7 @@ namespace Volamus_v1
         {
             content = GameStateManager.Instance.Content;
 
-            field = new Field(50, 100, 15);
+            field = new Field(100, 90, 15);
 
             player_one = new Player(new Vector3(0, -25, 0), 5, 0.5f, 0.8f, field);
             player_two = new Player(new Vector3(0, 25, 0), 5, 0.5f, 0.8f, field);

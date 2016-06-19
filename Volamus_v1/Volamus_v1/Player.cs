@@ -48,6 +48,7 @@ namespace Volamus_v1
         float movespeed;
         float gamma;
         int points;
+        int touch_count;
 
         SpriteFont points_font;
         BoundingBox innerBoundingBox, outerBoundingBox;
@@ -90,6 +91,16 @@ namespace Volamus_v1
         {
             get { return points; }
             set { points = value; }
+        }
+
+        public int Touch_count
+        {
+            get { return touch_count; }
+            set
+            {
+                Player temp = this;
+                touch_count = value;
+            }
         }
 
         public Player Enemy
@@ -150,7 +161,9 @@ namespace Volamus_v1
         public bool IsServing
         {
             get { return is_serving; }
-            set { is_serving = value; }
+            set
+            {   is_serving = value;
+            }
         }
 
         //Constructor
@@ -476,7 +489,7 @@ namespace Volamus_v1
                 Ball.Instance.IsFlying = true; //Ball fliegt
 
                 //neue Parabel und an Ball übergeben
-                Parabel weak = new Parabel(Ball.Instance.Position, 45.0f, gamma, 45.0f, 20.0f, direction);
+                Parabel weak = new Parabel(Ball.Instance.Position, 50.0f, gamma, 45.0f, 20.0f, direction);
                 Ball.Instance.Active = weak;
 
                 //Ball updaten
@@ -509,9 +522,6 @@ namespace Volamus_v1
 
             }
         }
-
-
-
 
         //  Controller  Anfang --------------------------------------------------------------------------------------------------------
         public void Update(Field field, Buttons Up, Buttons Down, Buttons Left, Buttons Right, Buttons Jump, Buttons weak, Buttons strong, Buttons l, Buttons r)
@@ -784,7 +794,6 @@ namespace Volamus_v1
             if (GamePad.GetState(PlayerIndex.One).IsButtonDown(weakthrow) && can_hit) //Drückt Knopf und darf schlagen
             {
 
-
                 //GamePad.SetVibration(PlayerIndex.One, 1.0f, 1.0f);
                 
                 if (is_serving) //Falls man Aufschlag hatte, hat man nach dem Schlagen ihn erstmal nicht mehr (Ball fliegt ja jetzt)
@@ -799,7 +808,7 @@ namespace Volamus_v1
                 Ball.Instance.IsFlying = true; //Ball fliegt
 
                 //neue Parabel und an Ball übergeben
-                Parabel weak = new Parabel(Ball.Instance.Position, 45.0f, gamma, 45.0f, 20.0f, direction);
+                Parabel weak = new Parabel(Ball.Instance.Position, 50.0f, gamma, 45.0f, 20.0f, direction);
                 Ball.Instance.Active = weak;
 
                 //Ball updaten
@@ -842,6 +851,18 @@ namespace Volamus_v1
 
         public void Draw(Camera camera)
         {
+            float temp = 0.0f;
+
+            if(direction == 1)
+            {
+                temp = 90.0f;
+            }
+            else if(direction == -1)
+            {
+                temp = -90.0f;
+            }
+
+
             Matrix[] transforms = new Matrix[model.Bones.Count];
             model.CopyAbsoluteBoneTransformsTo(transforms);
 
@@ -851,7 +872,7 @@ namespace Volamus_v1
                 {
                     effect.EnableDefaultLighting();
 
-                    effect.World = transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) *
+                    effect.World = transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) * Matrix.CreateRotationZ(MathHelper.ToRadians(temp)) *
                         Matrix.CreateScale(scale)
                         * Matrix.CreateTranslation(position);
                     effect.View = camera.ViewMatrix;
@@ -892,7 +913,7 @@ namespace Volamus_v1
                     for (int i = 0; i < vertexBufferSize / sizeof(float); i += vertexStride / sizeof(float))
                     {
                         Vector3 transformedPosition = Vector3.Transform(new Vector3(vertexData[i], vertexData[i + 1], vertexData[i + 2]), 
-                            Matrix.CreateScale(scale));
+                            Matrix.CreateScale(scale)*Matrix.CreateRotationZ(MathHelper.ToRadians(90)));
 
                         min = Vector3.Min(min, transformedPosition);
                         max = Vector3.Max(max, transformedPosition);

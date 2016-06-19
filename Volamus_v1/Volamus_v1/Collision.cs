@@ -12,7 +12,6 @@ namespace Volamus_v1
     public class Collision
     {
         private Player lastTouched;
-        private int touch_count; //Maximale Anzahl an ballberührungen hintereinander von einer Person ; TODO: Noch zu implementieren
         private Parabel newParabel;
 
         private static Collision instance;
@@ -48,7 +47,6 @@ namespace Volamus_v1
         //Constructor
         private Collision()
         {
-            touch_count = 0;
         }
 
         public void CollisionMethod(Field field)
@@ -68,7 +66,7 @@ namespace Volamus_v1
                 {
                     float min = lastTouched.Box[1].Y;
 
-                    if(lastTouched.Direction*Ball.Instance.Position.Y < min)
+                    if (lastTouched.Direction*Ball.Instance.Position.Y < min)
                     {
                         lastTouched.Enemy.Points += 1;
                         lastTouched.Enemy.IsServing = true;
@@ -101,7 +99,7 @@ namespace Volamus_v1
                 Vector3 hitdirection = Ball.Instance.Active.Hit_Direction;
                 float angle_z = MathHelper.ToDegrees((float)Math.Atan((hitdirection.Z / hitdirection.Y)));
                 float angle_x = MathHelper.ToDegrees((float)Math.Atan((hitdirection.X / hitdirection.Y)));
-                newParabel = new Parabel(Ball.Instance.Position, -angle_z, angle_x, Ball.Instance.Active.Angles.Y, 0.6f * Ball.Instance.Active.Velocity, 
+                newParabel = new Parabel(Ball.Instance.Position, lastTouched.Direction*(-angle_z), angle_x, Ball.Instance.Active.Angles.Y, 0.6f * Ball.Instance.Active.Velocity, 
                     Ball.Instance.Active.Direction * (-1)); //Skalierung
                 Ball.Instance.Active = newParabel;
             }
@@ -136,6 +134,11 @@ namespace Volamus_v1
             //Ball mit InnerBoundingBox vom Spieler -> Ball soll abprallen vom Spieler
             if (Ball.Instance.BoundingSphere.Intersects(player.InnerBoundingBox) && Ball.Instance.IsFlying == true && !player.IsServing && colliding == 0)
             {
+                if(!player.Equals(lastTouched))
+                {
+                    lastTouched.Touch_count = 0;
+                }
+
                 Vector3 hitdirection = Ball.Instance.Active.Hit_Direction;
                 float angle_z = MathHelper.ToDegrees((float)Math.Atan((hitdirection.Z / hitdirection.Y)));
                 float angle_x = MathHelper.ToDegrees((float)Math.Atan((hitdirection.X / hitdirection.Y)));
@@ -195,6 +198,8 @@ namespace Volamus_v1
                 Ball.Instance.Active = newParabel;
                 player.CanHit = false;
                 lastTouched = player;
+
+                lastTouched.Touch_count++;
 
                 Ball.Instance.Update();
             }

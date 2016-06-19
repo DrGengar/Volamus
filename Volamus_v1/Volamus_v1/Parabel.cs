@@ -77,7 +77,7 @@ namespace Volamus_v1
             position.Z = z + velocity * (float)Math.Sin(MathHelper.ToRadians(alpha)) * t - (g / 2) * t * t;
             position.Y = y + (direction) * velocity * (float)Math.Cos(MathHelper.ToRadians(betta)) * t;
             position.X = x + velocity * (float)Math.Sin(MathHelper.ToRadians(gamma)) * t;
-            t = t + 0.05f;
+            t = t + 0.04f;
 
             hitdirection = position - lastPosition;
             
