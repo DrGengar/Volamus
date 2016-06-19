@@ -180,7 +180,7 @@ namespace Volamus_v1
             points = 0;
             gamma = 0.0f;
 
-            scale = new Vector3(0.075f, 0.075f, 0.075f);
+            scale = new Vector3(0.025f, 0.025f, 0.025f);
 
             d = new DebugDraw(GameStateManager.Instance.GraphicsDevice);
         }
@@ -188,7 +188,7 @@ namespace Volamus_v1
         //LoadContent
         public void LoadContent()
         {
-            model = GameStateManager.Instance.Content.Load<Model>("3DAcaLogo");
+            model = GameStateManager.Instance.Content.Load<Model>("pinguinv1");
 
             points_font = GameStateManager.Instance.Content.Load<SpriteFont>("SpriteFonts/Standard");
 
