@@ -108,7 +108,7 @@ namespace Volamus_v1
                 }
             }
 
-            if (isflying)
+            if (isflying && active!=null)
             {
                 //Position Updaten nach Flugbahn
                 position = active.Flug();

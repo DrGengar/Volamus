@@ -24,7 +24,7 @@ namespace Volamus_v1
         {
             // TODO: Add your initialization logic here
 
-            graphics.IsFullScreen = true;
+            //graphics.IsFullScreen = true;
             graphics.PreferredBackBufferWidth = (int)GameStateManager.Instance.dimensions.X;
             graphics.PreferredBackBufferHeight = (int)GameStateManager.Instance.dimensions.Y;
             graphics.ApplyChanges();

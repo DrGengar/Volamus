@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 
 namespace Volamus_v1
 {
@@ -51,58 +52,68 @@ namespace Volamus_v1
 
         public void CollisionMethod(Field field)
         {
-            //Ball mit Ebene z=0
-            if (BallWithPlane())
-            {
-                Ball.Instance.IsFlying = false;
-                //Wenn außerhalb des Feldes: Gegner von LastTouched +1 Punkt und bekommt Aufschlag
-                if(Ball.Instance.Position.X > (field.Width/2) || Ball.Instance.Position.X < -(field.Width / 2) || Ball.Instance.Position.Y > (field.Length/2) || Ball.Instance.Position.Y < -(field.Length / 2))
+                //Ball mit Ebene z=0
+                if (BallWithPlane())
                 {
-                    lastTouched.Enemy.Points += 1;
-                    lastTouched.Enemy.IsServing = true;
-                }
-                //Sonst muss der ball im Feld gelandet sein -> Unterscheidung eigenes (gegner bekommt Punkt)/gegnerisches feld(ich selbst bekomme Punkt)
-                else
-                {
-                    float min = lastTouched.Box[1].Y;
-
-                    if (lastTouched.Direction*Ball.Instance.Position.Y < min)
+                    Ball.Instance.IsFlying = false;
+                    //Wenn außerhalb des Feldes: Gegner von LastTouched +1 Punkt und bekommt Aufschlag
+                    if (Ball.Instance.Position.X > (field.Width / 2) || Ball.Instance.Position.X < -(field.Width / 2) || Ball.Instance.Position.Y > (field.Length / 2) || Ball.Instance.Position.Y < -(field.Length / 2))
                     {
                         lastTouched.Enemy.Points += 1;
                         lastTouched.Enemy.IsServing = true;
+
+                        lastTouched.Touch_Count = 0;
+                        lastTouched.Enemy.Touch_Count = 0;
                     }
+                    //Sonst muss der ball im Feld gelandet sein -> Unterscheidung eigenes (gegner bekommt Punkt)/gegnerisches feld(ich selbst bekomme Punkt)
                     else
                     {
-                        lastTouched.Points += 1;
-                        lastTouched.IsServing = true;
+                        float min = lastTouched.Box[1].Y;
+
+                        if (lastTouched.Direction * Ball.Instance.Position.Y < min)
+                        {
+                            lastTouched.Enemy.Points += 1;
+                            lastTouched.Enemy.IsServing = true;
+
+                            lastTouched.Touch_Count = 0;
+                            lastTouched.Enemy.Touch_Count = 0;
+                        }
+                        else
+                        {
+                            lastTouched.Points += 1;
+                            lastTouched.IsServing = true;
+
+                            lastTouched.Touch_Count = 0;
+                            lastTouched.Enemy.Touch_Count = 0;
+                        }
                     }
                 }
-            }
 
-            if(!Ball.Instance.BoundingSphere.Intersects(lastTouched.InnerBoundingBox) && !Ball.Instance.BoundingSphere.Intersects(lastTouched.Enemy.InnerBoundingBox) && !Ball.Instance.BoundingSphere.Intersects(field.NetBoundingBox))
-            {
-                colliding = 0;
-            }
+                if (!Ball.Instance.BoundingSphere.Intersects(lastTouched.InnerBoundingBox) && !Ball.Instance.BoundingSphere.Intersects(lastTouched.Enemy.InnerBoundingBox) && !Ball.Instance.BoundingSphere.Intersects(field.NetBoundingBox))
+                {
+                    colliding = 0;
+                }
 
-            BallWithOuterBoundingBox(lastTouched);
-            BallWithOuterBoundingBox(lastTouched.Enemy);
+                BallWithOuterBoundingBox(lastTouched);
+                BallWithOuterBoundingBox(lastTouched.Enemy);
 
-            BallWithInnerBoundingBox(lastTouched);
-            BallWithInnerBoundingBox(lastTouched.Enemy);
+                BallWithInnerBoundingBox(lastTouched);
+                BallWithInnerBoundingBox(lastTouched.Enemy);
 
-            //Ball mit Netz
-            if (Ball.Instance.BoundingSphere.Intersects(field.NetBoundingBox) && colliding == 0)
-            {
-                //Neue Flugbahn mit Ausfallwinkel = Einfallswinkel, x - Ebene
-                colliding = 2;
+                //Ball mit Netz
+                if (Ball.Instance.BoundingSphere.Intersects(field.NetBoundingBox) && colliding == 0)
+                {
+                    //Neue Flugbahn mit Ausfallwinkel = Einfallswinkel, x - Ebene
+                    colliding = 2;
 
-                Vector3 hitdirection = Ball.Instance.Active.Hit_Direction;
-                float angle_z = MathHelper.ToDegrees((float)Math.Atan((hitdirection.Z / hitdirection.Y)));
-                float angle_x = MathHelper.ToDegrees((float)Math.Atan((hitdirection.X / hitdirection.Y)));
-                newParabel = new Parabel(Ball.Instance.Position, lastTouched.Direction*(-angle_z), angle_x, Ball.Instance.Active.Angles.Y, 0.6f * Ball.Instance.Active.Velocity, 
-                    Ball.Instance.Active.Direction * (-1)); //Skalierung
-                Ball.Instance.Active = newParabel;
-            }
+                    Vector3 hitdirection = Ball.Instance.Active.Hit_Direction;
+                    float angle_z = MathHelper.ToDegrees((float)Math.Atan((hitdirection.Z / hitdirection.Y)));
+                    float angle_x = MathHelper.ToDegrees((float)Math.Atan((hitdirection.X / hitdirection.Y)));
+                    newParabel = new Parabel(Ball.Instance.Position, lastTouched.Direction * (-angle_z), angle_x, Ball.Instance.Active.Angles.Y, 0.6f * Ball.Instance.Active.Velocity,
+                        Ball.Instance.Active.Direction * (-1)); //Skalierung
+                    Ball.Instance.Active = newParabel;
+                }
+                newParabel = null;
         }
 
         //Ball mit Ebene z=0
@@ -119,7 +130,6 @@ namespace Volamus_v1
         //Spieler mit Netz
         public bool PlayerWithNet(Player player, Field field)
         {
-
             return player.OuterBoundingBox.Intersects(field.NetBoundingBox);
         }
 
@@ -134,14 +144,15 @@ namespace Volamus_v1
             //Ball mit InnerBoundingBox vom Spieler -> Ball soll abprallen vom Spieler
             if (Ball.Instance.BoundingSphere.Intersects(player.InnerBoundingBox) && Ball.Instance.IsFlying == true && !player.IsServing && colliding == 0)
             {
-                if(!player.Equals(lastTouched))
-                {
-                    lastTouched.Touch_count = 0;
-                }
-
                 Vector3 hitdirection = Ball.Instance.Active.Hit_Direction;
                 float angle_z = MathHelper.ToDegrees((float)Math.Atan((hitdirection.Z / hitdirection.Y)));
                 float angle_x = MathHelper.ToDegrees((float)Math.Atan((hitdirection.X / hitdirection.Y)));
+
+                if(hitdirection.Y == 0.0f)
+                {
+                    angle_z = 90.0f;
+                    angle_x = 0.0f;
+                }
 
                 colliding = player.Direction;
 
@@ -163,6 +174,11 @@ namespace Volamus_v1
                     right = player.InnerBoundingBox.Max.X;
                     front = player.InnerBoundingBox.Min.Y;
                     back = player.InnerBoundingBox.Max.Y;
+                }
+
+                if(lastTouched.Enemy == player)
+                {
+                    lastTouched.Enemy.Touch_Count = 0;
                 }
 
                 //Kollision von vorne
@@ -199,7 +215,10 @@ namespace Volamus_v1
                 player.CanHit = false;
                 lastTouched = player;
 
-                lastTouched.Touch_count++;
+                if (!Keyboard.GetState().IsKeyDown(player.Weak) && !Keyboard.GetState().IsKeyDown(player.Strong))
+                {
+                    lastTouched.Touch_Count++;
+                }
 
                 Ball.Instance.Update();
             }

@@ -62,6 +62,7 @@ namespace Volamus_v1
         bool is_falling = false;
         bool can_hit = false;
         bool is_serving = false;
+        Keys weak_, strong_;
 
         Player enemy;
 
@@ -70,6 +71,9 @@ namespace Volamus_v1
         DebugDraw d;
 
         Texture2D circle_angle, arrow;
+
+        KeyboardState oldstate;
+        GamePadState oldgamepadstate;
 
         //Get-Methods
         public int Direction
@@ -93,14 +97,10 @@ namespace Volamus_v1
             set { points = value; }
         }
 
-        public int Touch_count
+        public int Touch_Count
         {
             get { return touch_count; }
-            set
-            {
-                Player temp = this;
-                touch_count = value;
-            }
+            set { touch_count = value; }
         }
 
         public Player Enemy
@@ -152,6 +152,17 @@ namespace Volamus_v1
             get { return MathHelper.ToRadians(gamma); }
         }
 
+        public Keys Weak
+        {
+            get { return weak_; }
+        }
+
+        public Keys Strong
+        {
+            get { return strong_; }
+        }
+
+
         public bool CanHit
         {
             get { return can_hit; }
@@ -192,10 +203,13 @@ namespace Volamus_v1
 
             points = 0;
             gamma = 0.0f;
+            touch_count = 0;
 
             scale = new Vector3(3.0f, 3.0f, 3.0f);
 
             d = new DebugDraw(GameStateManager.Instance.GraphicsDevice);
+
+            oldstate = Keyboard.GetState();
         }
 
         //LoadContent
@@ -214,18 +228,21 @@ namespace Volamus_v1
         //Update
         public void Update(Field field, Keys Up, Keys Down, Keys Left, Keys Right, Keys Jump, Keys weak, Keys strong, Keys l, Keys r)
         {
-            KeyboardState state = Keyboard.GetState();
+            weak_ = weak;
+            strong_ = strong;
+
+            KeyboardState newstate = Keyboard.GetState();
 
             camera.Update();
 
             //jeder Spieler braucht einen Winkel Gamma, den er verändern kann mit Eingaben
             if (direction == 1)
             {
-                if (state.IsKeyDown(r) && gamma <= 90)
+                if (newstate.IsKeyDown(r) && gamma <= 90)
                 {
                     gamma += (direction) * 1.0f; //Ein Grad mehr/weniger
                 }
-                if (state.IsKeyDown(l) && gamma >= -90)
+                if (newstate.IsKeyDown(l) && gamma >= -90)
                 {
                     gamma -= (direction) * 1.0f; //Ein Grad mehr/weniger
                 }
@@ -234,11 +251,11 @@ namespace Volamus_v1
             {
                 if(direction ==-1)
                 {
-                    if (state.IsKeyDown(r) && gamma >= -90)
+                    if (newstate.IsKeyDown(r) && gamma >= -90)
                     {
                         gamma -= 1.0f; //Ein Grad mehr/weniger
                     }
-                    if (state.IsKeyDown(l) && gamma <= 90)
+                    if (newstate.IsKeyDown(l) && gamma <= 90)
                     {
                         gamma += 1.0f; //Ein Grad mehr/weniger
                     }
@@ -257,7 +274,7 @@ namespace Volamus_v1
 
                 if (!is_jumping)
                 {
-                    if (state.IsKeyDown(Left))
+                    if (newstate.IsKeyDown(Left))
                     {
                         if (direction == 1)
                         {
@@ -281,7 +298,7 @@ namespace Volamus_v1
                         }
                     }
 
-                    if (state.IsKeyDown(Right))
+                    if (newstate.IsKeyDown(Right))
                     {
                         if (direction == 1)
                         {
@@ -305,7 +322,7 @@ namespace Volamus_v1
                         }
                     }
 
-                    if (state.IsKeyDown(Jump))
+                    if (newstate.IsKeyDown(Jump))
                     {
                         is_jumping = true;
                         is_falling = false;
@@ -353,7 +370,7 @@ namespace Volamus_v1
 
                 if (!is_jumping)
                 {
-                    if (state.IsKeyDown(Up))
+                    if (newstate.IsKeyDown(Up))
                     {
                         if (direction == 1)
                         {
@@ -374,7 +391,7 @@ namespace Volamus_v1
                         }
                     }
 
-                    if (state.IsKeyDown(Left))
+                    if (newstate.IsKeyDown(Left))
                     {
                         if (direction == 1)
                         {
@@ -398,7 +415,7 @@ namespace Volamus_v1
                         }
                     }
 
-                    if (state.IsKeyDown(Down))
+                    if (newstate.IsKeyDown(Down))
                     {
                         if (direction == 1)
                         {
@@ -418,7 +435,7 @@ namespace Volamus_v1
                         }
                     }
 
-                    if (state.IsKeyDown(Right))
+                    if (newstate.IsKeyDown(Right))
                     {
                         if (direction == 1)
                         {
@@ -442,7 +459,7 @@ namespace Volamus_v1
                         }
                     }
 
-                    if (state.IsKeyDown(Jump))
+                    if (newstate.IsKeyDown(Jump))
                     {
                         is_jumping = true;
                         is_falling = false;
@@ -470,56 +487,94 @@ namespace Volamus_v1
                     }
                 }
             }
+
+            if (Touch_Count > 3)
+            {
+                Enemy.Points++;
+                Enemy.IsServing = true;
+                IsServing = false;
+                Ball.Instance.Active = null;
+
+                Touch_Count = 0;
+                Enemy.Touch_Count = 0;
+            }
         }
 
         //Schwacher Schlag
         public void WeakThrow(Keys weakthrow)
         {
-            if (Keyboard.GetState().IsKeyDown(weakthrow) && can_hit) //Drückt Knopf und darf schlagen
+            KeyboardState newstate = Keyboard.GetState();
+
+            if (newstate.IsKeyDown(weakthrow) && can_hit) //Drückt Knopf und darf schlagen
             {
-                if (is_serving) //Falls man Aufschlag hatte, hat man nach dem Schlagen ihn erstmal nicht mehr (Ball fliegt ja jetzt)
+                if (!oldstate.IsKeyDown(weakthrow))
                 {
-                    is_serving = false;
+                    if (is_serving) //Falls man Aufschlag hatte, hat man nach dem Schlagen ihn erstmal nicht mehr (Ball fliegt ja jetzt)
+                    {
+                        is_serving = false;
+                    }
+
+                    if (Collision.Instance.LastTouched.Enemy == this)
+                    {
+                        Collision.Instance.LastTouched.Touch_Count = 0;
+                    }
+
+                    Touch_Count++;
+
+                    //Man darf nicht gleich nochmal schlagen, erst wenn der ball wieder die äußere BoundingBox des Spielers berührt
+                    can_hit = false;
+
+                    Collision.Instance.LastTouched = this; //Setze diese Person als die, die den Ball als letztes berührt hat
+                    Ball.Instance.IsFlying = true; //Ball fliegt
+
+                    //neue Parabel und an Ball übergeben
+                    Parabel weak = new Parabel(Ball.Instance.Position, 50.0f, gamma, 45.0f, 20.0f, direction);
+                    Ball.Instance.Active = weak;
+
+                    //Ball updaten
+                    Ball.Instance.Update();
                 }
 
-                //Man darf nicht gleich nochmal schlagen, erst wenn der ball wieder die äußere BoundingBox des Spielrs berührt
-                can_hit = false;
-
-                Collision.Instance.LastTouched = this; //Setze diese Person als die, die den Ball als letztes berührt hat
-                Ball.Instance.IsFlying = true; //Ball fliegt
-
-                //neue Parabel und an Ball übergeben
-                Parabel weak = new Parabel(Ball.Instance.Position, 50.0f, gamma, 45.0f, 20.0f, direction);
-                Ball.Instance.Active = weak;
-
-                //Ball updaten
-                Ball.Instance.Update();
+                oldstate = newstate;
             }
         }
 
         //Starker Schlag
         public void StrongThrow(Keys strongthrow)
         {
-            if (Keyboard.GetState().IsKeyDown(strongthrow) && can_hit) //Drückt Knopf und darf schlagen
+            KeyboardState newstate = Keyboard.GetState();
+
+            if (newstate.IsKeyDown(strongthrow) && can_hit) //Drückt Knopf und darf schlagen
             {
-                if (is_serving) //Falls man Aufschlag hatte, hat man nach dem Schlagen ihn erstmal nicht mehr (Ball fliegt ja jetzt)
+                if (!oldstate.IsKeyDown(strongthrow))
                 {
-                    is_serving = false;
+                    if (is_serving) //Falls man Aufschlag hatte, hat man nach dem Schlagen ihn erstmal nicht mehr (Ball fliegt ja jetzt)
+                    {
+                        is_serving = false;
+                    }
+
+                    if (Collision.Instance.LastTouched.Enemy == this)
+                    {
+                        Collision.Instance.LastTouched.Touch_Count = 0;
+                    }
+
+                    Touch_Count++;
+
+                    //Man darf nicht gleich nochmal schlagen, erst wenn der ball wieder die äußere BoundingBox des Spielrs berührt
+                    can_hit = false;
+
+                    Collision.Instance.LastTouched = this; //Setze diese Person als die, die den Ball als letztes berührt hat
+                    Ball.Instance.IsFlying = true; //Ball fliegt
+
+                    //neue Parabel und an Ball übergeben
+                    Parabel strong = new Parabel(Ball.Instance.Position, 45.0f, gamma, 45.0f, 25.0f, direction);
+                    Ball.Instance.Active = strong;
+
+                    //Ball updaten
+                    Ball.Instance.Update();
                 }
 
-                //Man darf nicht gleich nochmal schlagen, erst wenn der ball wieder die äußere BoundingBox des Spielrs berührt
-                can_hit = false;
-
-                Collision.Instance.LastTouched = this; //Setze diese Person als die, die den Ball als letztes berührt hat
-                Ball.Instance.IsFlying = true; //Ball fliegt
-
-                //neue Parabel und an Ball übergeben
-                Parabel strong = new Parabel(Ball.Instance.Position, 45.0f, gamma, 45.0f, 25.0f, direction);
-                Ball.Instance.Active = strong;
-
-                //Ball updaten
-                Ball.Instance.Update();
-
+                oldstate = newstate;
             }
         }
 
@@ -528,18 +583,18 @@ namespace Volamus_v1
         // public void Update(Field field, Keys Up, Keys Down, Keys Left, Keys Right, Keys Jump, Keys weak, Keys strong, Keys l, Keys r)
         {
 
-            GamePadState state = GamePad.GetState(PlayerIndex.One);
+            GamePadState oldgamepadstate = GamePad.GetState(PlayerIndex.One);
             camera.Update();
 
             
             //jeder Spieler braucht einen Winkel Gamma, den er verändern kann mit Eingaben
             if (direction == 1)
             {
-                if (state.IsButtonDown(r) && gamma <= 90)
+                if (oldgamepadstate.IsButtonDown(r) && gamma <= 90)
                 {
                     gamma += (direction) * 1.0f; //Ein Grad mehr/weniger
                 }
-                if (state.IsButtonDown(l) && gamma >= -90)
+                if (oldgamepadstate.IsButtonDown(l) && gamma >= -90)
                 {
                     gamma -= (direction) * 1.0f; //Ein Grad mehr/weniger
                 }
@@ -548,17 +603,16 @@ namespace Volamus_v1
             {
                 if (direction == -1)
                 {
-                    if (state.IsButtonDown(r) && gamma >= -90)
+                    if (oldgamepadstate.IsButtonDown(r) && gamma >= -90)
                     {
                         gamma -= 1.0f; //Ein Grad mehr/weniger
                     }
-                    if (state.IsButtonDown(l) && gamma <= 90)
+                    if (oldgamepadstate.IsButtonDown(l) && gamma <= 90)
                     {
                         gamma += 1.0f; //Ein Grad mehr/weniger
                     }
                 }
             }
-
             //Spieler hat gerade Aufschlag -> Position hinten, Bewegung nur links un rechts, Sprung
             if (is_serving)
             {
@@ -571,7 +625,7 @@ namespace Volamus_v1
 
                 if (!is_jumping)
                 {
-                    if (state.IsButtonDown(Left))
+                    if (oldgamepadstate.IsButtonDown(Left))
                     {
                         if (direction == 1)
                         {
@@ -595,7 +649,7 @@ namespace Volamus_v1
                         }
                     }
 
-                    if (state.IsButtonDown(Right))
+                    if (oldgamepadstate.IsButtonDown(Right))
                     {
                         if (direction == 1)
                         {
@@ -619,7 +673,7 @@ namespace Volamus_v1
                         }
                     }
 
-                    if (state.IsButtonDown(Jump))
+                    if (oldgamepadstate.IsButtonDown(Jump))
                     {
                         is_jumping = true;
                         is_falling = false;
@@ -667,7 +721,7 @@ namespace Volamus_v1
 
                 if (!is_jumping)
                 {
-                    if (state.IsButtonDown(Up))
+                    if (oldgamepadstate.IsButtonDown(Up))
                     {
                         if (direction == 1)
                         {
@@ -688,7 +742,7 @@ namespace Volamus_v1
                         }
                     }
 
-                    if (state.IsButtonDown(Left))
+                    if (oldgamepadstate.IsButtonDown(Left))
                     {
                         if (direction == 1)
                         {
@@ -712,7 +766,7 @@ namespace Volamus_v1
                         }
                     }
 
-                    if (state.IsButtonDown(Down))
+                    if (oldgamepadstate.IsButtonDown(Down))
                     {
                         if (direction == 1)
                         {
@@ -732,7 +786,7 @@ namespace Volamus_v1
                         }
                     }
 
-                    if (state.IsButtonDown(Right))
+                    if (oldgamepadstate.IsButtonDown(Right))
                     {
                         if (direction == 1)
                         {
@@ -756,7 +810,7 @@ namespace Volamus_v1
                         }
                     }
 
-                    if (state.IsButtonDown(Jump))
+                    if (oldgamepadstate.IsButtonDown(Jump))
                     {
                         is_jumping = true;
                         is_falling = false;
@@ -784,66 +838,94 @@ namespace Volamus_v1
                     }
                 }
             }
+
+            if (Touch_Count > 3)
+            {
+                Enemy.Points++;
+                Enemy.IsServing = true;
+                IsServing = false;
+                Ball.Instance.Active = null;
+
+                Touch_Count = 0;
+                Enemy.Touch_Count = 0;
+            }
         }
 
         //Schwacher Schlag
         public void WeakThrow(Buttons weakthrow)
         {
-  
-            
-            if (GamePad.GetState(PlayerIndex.One).IsButtonDown(weakthrow) && can_hit) //Drückt Knopf und darf schlagen
-            {
+            GamePadState newstate = GamePad.GetState(PlayerIndex.One);
 
-                //GamePad.SetVibration(PlayerIndex.One, 1.0f, 1.0f);
-                
-                if (is_serving) //Falls man Aufschlag hatte, hat man nach dem Schlagen ihn erstmal nicht mehr (Ball fliegt ja jetzt)
+            if (newstate.IsButtonDown(weakthrow) && can_hit) //Drückt Knopf und darf schlagen
+            {
+                if (!oldgamepadstate.IsButtonDown(weakthrow))
                 {
-                    is_serving = false;
+                    if (is_serving) //Falls man Aufschlag hatte, hat man nach dem Schlagen ihn erstmal nicht mehr (Ball fliegt ja jetzt)
+                    {
+                        is_serving = false;
+                    }
+
+                    if (Collision.Instance.LastTouched.Enemy == this)
+                    {
+                        Collision.Instance.LastTouched.Touch_Count = 0;
+                    }
+
+                    Touch_Count++;
+
+                    //Man darf nicht gleich nochmal schlagen, erst wenn der ball wieder die äußere BoundingBox des Spielers berührt
+                    can_hit = false;
+
+                    Collision.Instance.LastTouched = this; //Setze diese Person als die, die den Ball als letztes berührt hat
+                    Ball.Instance.IsFlying = true; //Ball fliegt
+
+                    //neue Parabel und an Ball übergeben
+                    Parabel weak = new Parabel(Ball.Instance.Position, 50.0f, gamma, 45.0f, 20.0f, direction);
+                    Ball.Instance.Active = weak;
+
+                    //Ball updaten
+                    Ball.Instance.Update();
                 }
 
-                //Man darf nicht gleich nochmal schlagen, erst wenn der ball wieder die äußere BoundingBox des Spielers berührt
-                can_hit = false;
-
-                Collision.Instance.LastTouched = this; //Setze diese Person als die, die den Ball als letztes berührt hat
-                Ball.Instance.IsFlying = true; //Ball fliegt
-
-                //neue Parabel und an Ball übergeben
-                Parabel weak = new Parabel(Ball.Instance.Position, 50.0f, gamma, 45.0f, 20.0f, direction);
-                Ball.Instance.Active = weak;
-
-                //Ball updaten
-                Ball.Instance.Update();
-                
-
+                oldgamepadstate = newstate;
             }
         }
 
         //Starker Schlag
         public void StrongThrow(Buttons strongthrow)
         {
+            GamePadState newstate = GamePad.GetState(PlayerIndex.One);
 
-            if (GamePad.GetState(PlayerIndex.One).IsButtonDown(strongthrow) && can_hit) //Drückt Knopf und darf schlagen
+            if (newstate.IsButtonDown(strongthrow) && can_hit) //Drückt Knopf und darf schlagen
             {
-                //GamePad.SetVibration(PlayerIndex.One, 1.0f, 1.0f);
-
-                if (is_serving) //Falls man Aufschlag hatte, hat man nach dem Schlagen ihn erstmal nicht mehr (Ball fliegt ja jetzt)
+                if (!oldgamepadstate.IsButtonDown(strongthrow))
                 {
-                    is_serving = false;
+
+                    if (is_serving) //Falls man Aufschlag hatte, hat man nach dem Schlagen ihn erstmal nicht mehr (Ball fliegt ja jetzt)
+                    {
+                        is_serving = false;
+                    }
+
+                    if (Collision.Instance.LastTouched.Enemy == this)
+                    {
+                        Collision.Instance.LastTouched.Touch_Count = 0;
+                    }
+
+                    Touch_Count++;
+
+                    //Man darf nicht gleich nochmal schlagen, erst wenn der ball wieder die äußere BoundingBox des Spielers berührt
+                    can_hit = false;
+
+                    Collision.Instance.LastTouched = this; //Setze diese Person als die, die den Ball als letztes berührt hat
+                    Ball.Instance.IsFlying = true; //Ball fliegt
+
+                    //neue Parabel und an Ball übergeben
+                    Parabel strong = new Parabel(Ball.Instance.Position, 45.0f, gamma, 45.0f, 25.0f, direction);
+                    Ball.Instance.Active = strong;
+
+                    //Ball updaten
+                    Ball.Instance.Update();
                 }
-
-                //Man darf nicht gleich nochmal schlagen, erst wenn der ball wieder die äußere BoundingBox des Spielers berührt
-                can_hit = false;
-
-                Collision.Instance.LastTouched = this; //Setze diese Person als die, die den Ball als letztes berührt hat
-                Ball.Instance.IsFlying = true; //Ball fliegt
-
-                //neue Parabel und an Ball übergeben
-                Parabel strong = new Parabel(Ball.Instance.Position, 45.0f, gamma, 45.0f, 25.0f, direction);
-                Ball.Instance.Active = strong;
-
-                //Ball updaten
-                Ball.Instance.Update();
-                
+                oldgamepadstate = newstate;
             }
         }
         // Controller Ende
