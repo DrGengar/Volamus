@@ -28,7 +28,7 @@ namespace Volamus_v1
             field = new Field(100, 90, 15);
 
             player_one = new Player(new Vector3(0, -25, 0), 5, 0.5f, 0.8f, field);
-            player_two = new Player(new Vector3(0, 25, 0), 5, 0.5f, 0.8f, field);
+            player_two = new Player(new Vector3(0, 25, 0), 5, 0.5f, 0.8f, field, PlayerIndex.One);
 
             player_one.Enemy = player_two;
             player_two.Enemy = player_one;
@@ -46,7 +46,6 @@ namespace Volamus_v1
             Collision.Instance.LastTouched = player_one;
 
             frameCounter = new FrameCounter();
-
         }
 
         public override void LoadContent()
@@ -72,8 +71,11 @@ namespace Volamus_v1
 
             frameCounter.Update(deltaTime);
 
-            player_one.Update(field, Keys.W, Keys.S, Keys.A, Keys.D, Keys.Space, Keys.Q, Keys.E, Keys.Left, Keys.Right);
-            player_two.Update(field, Buttons.LeftThumbstickUp, Buttons.LeftThumbstickDown, Buttons.LeftThumbstickLeft, Buttons.LeftThumbstickRight, Buttons.A, Buttons.LeftTrigger, Buttons.RightTrigger, Buttons.RightThumbstickLeft, Buttons.RightThumbstickRight);
+            //player_one.Update(field, Keys.W, Keys.S, Keys.A, Keys.D, Keys.Space, Keys.Q, Keys.E, Keys.Left, Keys.Right);
+            //player_two.Update(field, Buttons.LeftThumbstickUp, Buttons.LeftThumbstickDown, Buttons.LeftThumbstickLeft, Buttons.LeftThumbstickRight, Buttons.A, Buttons.LeftTrigger, Buttons.RightTrigger, Buttons.RightThumbstickLeft, Buttons.RightThumbstickRight);
+            player_one.Update(field);
+            player_two.Update(field);
+
 
             Ball.Instance.Update();
 

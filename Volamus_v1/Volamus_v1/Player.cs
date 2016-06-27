@@ -47,13 +47,13 @@ namespace Volamus_v1
         float jump_velocity;
         float movespeed;
         float gamma;
+
         int points;
         int touch_count;
 
         SpriteFont points_font;
         BoundingBox innerBoundingBox, outerBoundingBox;
         Vector3 scale;
-
         Camera camera;
         Model model;
 
@@ -62,7 +62,6 @@ namespace Volamus_v1
         bool is_falling = false;
         bool can_hit = false;
         bool is_serving = false;
-        Keys weak_, strong_;
 
         Player enemy;
 
@@ -72,8 +71,11 @@ namespace Volamus_v1
 
         Texture2D circle_angle, arrow;
 
-        KeyboardState oldstate;
-        GamePadState oldgamepadstate;
+        KeyboardControl keyboard;
+        GamePadControl gamepad;
+        bool controller;
+
+        PlayerIndex index;
 
         //Get-Methods
         public int Direction
@@ -152,17 +154,6 @@ namespace Volamus_v1
             get { return MathHelper.ToRadians(gamma); }
         }
 
-        public Keys Weak
-        {
-            get { return weak_; }
-        }
-
-        public Keys Strong
-        {
-            get { return strong_; }
-        }
-
-
         public bool CanHit
         {
             get { return can_hit; }
@@ -173,12 +164,28 @@ namespace Volamus_v1
         {
             get { return is_serving; }
             set
-            {   is_serving = value;
+            {
+                is_serving = value;
             }
         }
 
+        public bool Control
+        {
+            get { return controller; }
+        }
+
+        public KeyboardControl KeyboardControl
+        {
+            get { return keyboard; }
+        }
+
+        public GamePadControl GamePadControl
+        {
+            get { return gamepad; }
+        }
+
         //Constructor
-        public Player(Vector3 pos, int m_j_height, float j_velo, float mvp, Field field)
+        private void Construct(Vector3 pos, int m_j_height, float j_velo, float mvp, Field field)
         {
             position = pos;
 
@@ -208,8 +215,33 @@ namespace Volamus_v1
             scale = new Vector3(3.0f, 3.0f, 3.0f);
 
             d = new DebugDraw(GameStateManager.Instance.GraphicsDevice);
+        }
 
-            oldstate = Keyboard.GetState();
+        public Player(Vector3 pos, int m_j_height, float j_velo, float mvp, Field field)
+        {
+            Construct(pos, m_j_height, j_velo, mvp, field);
+
+            controller = false;
+
+            keyboard = new KeyboardControl();
+            keyboard.Initialize();
+            keyboard = keyboard.LoadContent();
+
+            keyboard.oldstate = Keyboard.GetState();
+        }
+
+        public Player(Vector3 pos, int m_j_height, float j_velo, float mvp, Field field, PlayerIndex i)
+        {
+            Construct(pos, m_j_height, j_velo, mvp, field);
+
+            index = i;
+            controller = true;
+
+            gamepad = new GamePadControl(i);
+            gamepad.Initialize();
+            gamepad = gamepad.LoadContent();
+
+            gamepad.oldstate = GamePad.GetState(i);
         }
 
         //LoadContent
@@ -226,375 +258,35 @@ namespace Volamus_v1
         }
 
         //Update
-        public void Update(Field field, Keys Up, Keys Down, Keys Left, Keys Right, Keys Jump, Keys weak, Keys strong, Keys l, Keys r)
+        public void Update(Field field)
         {
-            weak_ = weak;
-            strong_ = strong;
-
-            KeyboardState newstate = Keyboard.GetState();
-
-            camera.Update();
-
-            //jeder Spieler braucht einen Winkel Gamma, den er verändern kann mit Eingaben
-            if (direction == 1)
+            if (controller)
             {
-                if (newstate.IsKeyDown(r) && gamma <= 90)
-                {
-                    gamma += (direction) * 1.0f; //Ein Grad mehr/weniger
-                }
-                if (newstate.IsKeyDown(l) && gamma >= -90)
-                {
-                    gamma -= (direction) * 1.0f; //Ein Grad mehr/weniger
-                }
+                UpdateController(field, gamepad.Up, gamepad.Down, gamepad.Left, gamepad.Right, gamepad.Jump, gamepad.Weak,
+                    gamepad.Strong, gamepad.Dir_Left, gamepad.Dir_Right);
             }
             else
             {
-                if(direction ==-1)
-                {
-                    if (newstate.IsKeyDown(r) && gamma >= -90)
-                    {
-                        gamma -= 1.0f; //Ein Grad mehr/weniger
-                    }
-                    if (newstate.IsKeyDown(l) && gamma <= 90)
-                    {
-                        gamma += 1.0f; //Ein Grad mehr/weniger
-                    }
-                }
-            }
-
-            //Spieler hat gerade Aufschlag -> Position hinten, Bewegung nur links un rechts, Sprung
-            if (is_serving)
-            {
-                WeakThrow(weak);
-                StrongThrow(strong);
-
-                float offset = position.Y - box[0].Y;
-                position.Y -= offset;
-                MovingBoundingBoxes(new Vector3(0, -offset, 0));
-
-                if (!is_jumping)
-                {
-                    if (newstate.IsKeyDown(Left))
-                    {
-                        if (direction == 1)
-                        {
-                            if (position.X > box[0].X) //position.X > box[0].X
-                            {
-                                position.X -= movespeed;
-                                MovingBoundingBoxes(new Vector3(-movespeed, 0, 0));
-                                camera.AddPosition(new Vector3(-movespeed, 0, 0));
-                                camera.AddView(new Vector3(-movespeed, 0, 0));
-                            }
-                        }
-                        else if (direction == -1)
-                        {
-                            if (position.X < box[0].X) //position.X < box[0].X
-                            {
-                                position.X += movespeed;
-                                MovingBoundingBoxes(new Vector3(movespeed, 0, 0));
-                                camera.AddPosition(new Vector3(movespeed, 0, 0));
-                                camera.AddView(new Vector3(movespeed, 0, 0));
-                            }
-                        }
-                    }
-
-                    if (newstate.IsKeyDown(Right))
-                    {
-                        if (direction == 1)
-                        {
-                            if (position.X < box[1].X) //position.X < box[1].X
-                            {
-                                position.X += movespeed;
-                                MovingBoundingBoxes(new Vector3(movespeed, 0, 0));
-                                camera.AddPosition(new Vector3(movespeed, 0, 0));
-                                camera.AddView(new Vector3(movespeed, 0, 0));
-                            }
-                        }
-                        else if (direction == -1)
-                        {
-                            if (position.X > box[1].X) //position.X > box[1].X
-                            {
-                                position.X -= movespeed;
-                                MovingBoundingBoxes(new Vector3(-movespeed, 0, 0));
-                                camera.AddPosition(new Vector3(-movespeed, 0, 0));
-                                camera.AddView(new Vector3(-movespeed, 0, 0));
-                            }
-                        }
-                    }
-
-                    if (newstate.IsKeyDown(Jump))
-                    {
-                        is_jumping = true;
-                        is_falling = false;
-                    }
-                }
-                else
-                {
-                    if (position.Z <= max_jump_height && !is_falling)
-                    {
-                        position.Z += jump_velocity;
-                        MovingBoundingBoxes(new Vector3(0, 0, jump_velocity));
-                    }
-                    else
-                    {
-                        if (position.Z > 0)
-                        {
-                            position.Z -= jump_velocity;
-                            MovingBoundingBoxes(new Vector3(0, 0, -jump_velocity));
-                            is_falling = true;
-                        }
-                        else
-                        {
-                            is_jumping = false;
-                        }
-                    }
-                }
-
-                //Setze Ball-Position auf aktuelle Position des Aufschlägers
-                if (direction == 1)
-                {
-                    Ball.Instance.Position = new Vector3((OuterBoundingBox.Max.X + OuterBoundingBox.Min.X) / 2, OuterBoundingBox.Max.Y, OuterBoundingBox.Max.Z + 1);
-                }
-                else
-                {
-                    if (direction == -1)
-                    {
-                        Ball.Instance.Position = new Vector3((OuterBoundingBox.Max.X + OuterBoundingBox.Min.X) / 2, OuterBoundingBox.Min.Y, OuterBoundingBox.Max.Z + 1);
-                    }
-                }
-            }
-            else //Normales Spielen, alle Bewegungen
-            {
-                WeakThrow(weak);
-                StrongThrow(strong);
-
-                if (!is_jumping)
-                {
-                    if (newstate.IsKeyDown(Up))
-                    {
-                        if (direction == 1)
-                        {
-                            if (!Collision.Instance.PlayerWithNet(this, field)) //Collision Spieler mit Netz
-                            {
-                                position.Y += movespeed;
-
-                                MovingBoundingBoxes(new Vector3(0, movespeed, 0));
-                            }
-                        }
-                        else if (direction == -1)
-                        {
-                            if (!Collision.Instance.PlayerWithNet(this, field)) //Collision Spieler mit Netz
-                            {
-                                position.Y -= movespeed;
-                                MovingBoundingBoxes(new Vector3(0, -movespeed, 0));
-                            }
-                        }
-                    }
-
-                    if (newstate.IsKeyDown(Left))
-                    {
-                        if (direction == 1)
-                        {
-                            if (position.X > box[0].X) //position.X > box[0].X
-                            {
-                                position.X -= movespeed;
-                                MovingBoundingBoxes(new Vector3(-movespeed, 0, 0));
-                                camera.AddPosition(new Vector3(-movespeed, 0, 0));
-                                camera.AddView(new Vector3(-movespeed, 0, 0));
-                            }
-                        }
-                        else if (direction == -1)
-                        {
-                            if (position.X < box[0].X) //position.X < box[0].X
-                            {
-                                position.X += movespeed;
-                                MovingBoundingBoxes(new Vector3(movespeed, 0, 0));
-                                camera.AddPosition(new Vector3(movespeed, 0, 0));
-                                camera.AddView(new Vector3(movespeed, 0, 0));
-                            }
-                        }
-                    }
-
-                    if (newstate.IsKeyDown(Down))
-                    {
-                        if (direction == 1)
-                        {
-                            if (position.Y > box[0].Y) //position.Y > box[0].Y
-                            {
-                                position.Y -= movespeed;
-                                MovingBoundingBoxes(new Vector3(0, -movespeed, 0));
-                            }
-                        }
-                        else if (direction == -1)
-                        {
-                            if (position.Y < box[0].Y) //position.Y < box[0].Y
-                            {
-                                position.Y += movespeed;
-                                MovingBoundingBoxes(new Vector3(0, movespeed, 0));
-                            }
-                        }
-                    }
-
-                    if (newstate.IsKeyDown(Right))
-                    {
-                        if (direction == 1)
-                        {
-                            if (position.X < box[1].X) //position.X < box[1].X
-                            {
-                                position.X += movespeed;
-                                MovingBoundingBoxes(new Vector3(movespeed, 0, 0));
-                                camera.AddPosition(new Vector3(movespeed, 0, 0));
-                                camera.AddView(new Vector3(movespeed, 0, 0));
-                            }
-                        }
-                        else if (direction == -1)
-                        {
-                            if (position.X > box[1].X) //position.X > box[1].X
-                            {
-                                position.X -= movespeed;
-                                MovingBoundingBoxes(new Vector3(-movespeed, 0, 0));
-                                camera.AddPosition(new Vector3(-movespeed, 0, 0));
-                                camera.AddView(new Vector3(-movespeed, 0, 0));
-                            }
-                        }
-                    }
-
-                    if (newstate.IsKeyDown(Jump))
-                    {
-                        is_jumping = true;
-                        is_falling = false;
-                    }
-                }
-                else
-                {
-                    if (position.Z <= max_jump_height && !is_falling)
-                    {
-                        position.Z += jump_velocity;
-                        MovingBoundingBoxes(new Vector3(0, 0, jump_velocity));
-                    }
-                    else
-                    {
-                        if (position.Z > 0)
-                        {
-                            position.Z -= jump_velocity;
-                            MovingBoundingBoxes(new Vector3(0, 0, -jump_velocity));
-                            is_falling = true;
-                        }
-                        else
-                        {
-                            is_jumping = false;
-                        }
-                    }
-                }
-            }
-
-            if (Touch_Count > 3)
-            {
-                Enemy.Points++;
-                Enemy.IsServing = true;
-                IsServing = false;
-                Ball.Instance.Active = null;
-
-                Touch_Count = 0;
-                Enemy.Touch_Count = 0;
+                UpdateKeyboard(field, keyboard.Up, keyboard.Down, keyboard.Left, keyboard.Right, keyboard.Jump, keyboard.Weak,
+                    keyboard.Strong, keyboard.Dir_Left, keyboard.Dir_Right);
             }
         }
 
-        //Schwacher Schlag
-        public void WeakThrow(Keys weakthrow)
+        //Update
+        private void UpdateKeyboard(Field field, Keys Up, Keys Down, Keys Left, Keys Right, Keys Jump, Keys weak, Keys strong, Keys l, Keys r)
         {
-            KeyboardState newstate = Keyboard.GetState();
+            keyboard.newstate = Keyboard.GetState();
 
-            if (newstate.IsKeyDown(weakthrow) && can_hit) //Drückt Knopf und darf schlagen
-            {
-                if (!oldstate.IsKeyDown(weakthrow))
-                {
-                    if (is_serving) //Falls man Aufschlag hatte, hat man nach dem Schlagen ihn erstmal nicht mehr (Ball fliegt ja jetzt)
-                    {
-                        is_serving = false;
-                    }
-
-                    if (Collision.Instance.LastTouched.Enemy == this)
-                    {
-                        Collision.Instance.LastTouched.Touch_Count = 0;
-                    }
-
-                    Touch_Count++;
-
-                    //Man darf nicht gleich nochmal schlagen, erst wenn der ball wieder die äußere BoundingBox des Spielers berührt
-                    can_hit = false;
-
-                    Collision.Instance.LastTouched = this; //Setze diese Person als die, die den Ball als letztes berührt hat
-                    Ball.Instance.IsFlying = true; //Ball fliegt
-
-                    //neue Parabel und an Ball übergeben
-                    Parabel weak = new Parabel(Ball.Instance.Position, 50.0f, gamma, 45.0f, 20.0f, direction);
-                    Ball.Instance.Active = weak;
-
-                    //Ball updaten
-                    Ball.Instance.Update();
-                }
-
-                oldstate = newstate;
-            }
-        }
-
-        //Starker Schlag
-        public void StrongThrow(Keys strongthrow)
-        {
-            KeyboardState newstate = Keyboard.GetState();
-
-            if (newstate.IsKeyDown(strongthrow) && can_hit) //Drückt Knopf und darf schlagen
-            {
-                if (!oldstate.IsKeyDown(strongthrow))
-                {
-                    if (is_serving) //Falls man Aufschlag hatte, hat man nach dem Schlagen ihn erstmal nicht mehr (Ball fliegt ja jetzt)
-                    {
-                        is_serving = false;
-                    }
-
-                    if (Collision.Instance.LastTouched.Enemy == this)
-                    {
-                        Collision.Instance.LastTouched.Touch_Count = 0;
-                    }
-
-                    Touch_Count++;
-
-                    //Man darf nicht gleich nochmal schlagen, erst wenn der ball wieder die äußere BoundingBox des Spielrs berührt
-                    can_hit = false;
-
-                    Collision.Instance.LastTouched = this; //Setze diese Person als die, die den Ball als letztes berührt hat
-                    Ball.Instance.IsFlying = true; //Ball fliegt
-
-                    //neue Parabel und an Ball übergeben
-                    Parabel strong = new Parabel(Ball.Instance.Position, 45.0f, gamma, 45.0f, 25.0f, direction);
-                    Ball.Instance.Active = strong;
-
-                    //Ball updaten
-                    Ball.Instance.Update();
-                }
-
-                oldstate = newstate;
-            }
-        }
-
-        //  Controller  Anfang --------------------------------------------------------------------------------------------------------
-        public void Update(Field field, Buttons Up, Buttons Down, Buttons Left, Buttons Right, Buttons Jump, Buttons weak, Buttons strong, Buttons l, Buttons r)
-        // public void Update(Field field, Keys Up, Keys Down, Keys Left, Keys Right, Keys Jump, Keys weak, Keys strong, Keys l, Keys r)
-        {
-
-            GamePadState oldgamepadstate = GamePad.GetState(PlayerIndex.One);
             camera.Update();
 
-            
             //jeder Spieler braucht einen Winkel Gamma, den er verändern kann mit Eingaben
             if (direction == 1)
             {
-                if (oldgamepadstate.IsButtonDown(r) && gamma <= 90)
+                if (keyboard.IsKeyDown(r) && gamma <= 90)
                 {
                     gamma += (direction) * 1.0f; //Ein Grad mehr/weniger
                 }
-                if (oldgamepadstate.IsButtonDown(l) && gamma >= -90)
+                if (keyboard.IsKeyDown(l) && gamma >= -90)
                 {
                     gamma -= (direction) * 1.0f; //Ein Grad mehr/weniger
                 }
@@ -603,16 +295,17 @@ namespace Volamus_v1
             {
                 if (direction == -1)
                 {
-                    if (oldgamepadstate.IsButtonDown(r) && gamma >= -90)
+                    if (keyboard.IsKeyDown(r) && gamma >= -90)
                     {
                         gamma -= 1.0f; //Ein Grad mehr/weniger
                     }
-                    if (oldgamepadstate.IsButtonDown(l) && gamma <= 90)
+                    if (keyboard.IsKeyDown(l) && gamma <= 90)
                     {
                         gamma += 1.0f; //Ein Grad mehr/weniger
                     }
                 }
             }
+
             //Spieler hat gerade Aufschlag -> Position hinten, Bewegung nur links un rechts, Sprung
             if (is_serving)
             {
@@ -625,7 +318,7 @@ namespace Volamus_v1
 
                 if (!is_jumping)
                 {
-                    if (oldgamepadstate.IsButtonDown(Left))
+                    if (keyboard.IsKeyDown(Left))
                     {
                         if (direction == 1)
                         {
@@ -649,7 +342,7 @@ namespace Volamus_v1
                         }
                     }
 
-                    if (oldgamepadstate.IsButtonDown(Right))
+                    if (keyboard.IsKeyDown(Right))
                     {
                         if (direction == 1)
                         {
@@ -673,7 +366,7 @@ namespace Volamus_v1
                         }
                     }
 
-                    if (oldgamepadstate.IsButtonDown(Jump))
+                    if (keyboard.IsKeyDown(Jump))
                     {
                         is_jumping = true;
                         is_falling = false;
@@ -721,7 +414,7 @@ namespace Volamus_v1
 
                 if (!is_jumping)
                 {
-                    if (oldgamepadstate.IsButtonDown(Up))
+                    if (keyboard.IsKeyDown(Up))
                     {
                         if (direction == 1)
                         {
@@ -742,7 +435,7 @@ namespace Volamus_v1
                         }
                     }
 
-                    if (oldgamepadstate.IsButtonDown(Left))
+                    if (keyboard.IsKeyDown(Left))
                     {
                         if (direction == 1)
                         {
@@ -766,7 +459,7 @@ namespace Volamus_v1
                         }
                     }
 
-                    if (oldgamepadstate.IsButtonDown(Down))
+                    if (keyboard.IsKeyDown(Down))
                     {
                         if (direction == 1)
                         {
@@ -786,7 +479,7 @@ namespace Volamus_v1
                         }
                     }
 
-                    if (oldgamepadstate.IsButtonDown(Right))
+                    if (keyboard.IsKeyDown(Right))
                     {
                         if (direction == 1)
                         {
@@ -810,7 +503,7 @@ namespace Volamus_v1
                         }
                     }
 
-                    if (oldgamepadstate.IsButtonDown(Jump))
+                    if (keyboard.IsKeyDown(Jump))
                     {
                         is_jumping = true;
                         is_falling = false;
@@ -849,97 +542,466 @@ namespace Volamus_v1
                 Touch_Count = 0;
                 Enemy.Touch_Count = 0;
             }
+
+            keyboard.oldstate = keyboard.newstate;
         }
 
         //Schwacher Schlag
-        public void WeakThrow(Buttons weakthrow)
+        private void WeakThrow(Keys weakthrow)
         {
-            GamePadState newstate = GamePad.GetState(PlayerIndex.One);
+            bool double_hit;
 
-            if (newstate.IsButtonDown(weakthrow) && can_hit) //Drückt Knopf und darf schlagen
+            if (keyboard.oldstate.IsKeyUp(weakthrow))
             {
-                if (!oldgamepadstate.IsButtonDown(weakthrow))
+                double_hit = false;
+            }
+            else
+            {
+                double_hit = true;
+            }
+
+            if (Keyboard.GetState().IsKeyDown(weakthrow) && can_hit && !double_hit) //Drückt Knopf und darf schlagen
+            {
+                if (is_serving) //Falls man Aufschlag hatte, hat man nach dem Schlagen ihn erstmal nicht mehr (Ball fliegt ja jetzt)
                 {
-                    if (is_serving) //Falls man Aufschlag hatte, hat man nach dem Schlagen ihn erstmal nicht mehr (Ball fliegt ja jetzt)
-                    {
-                        is_serving = false;
-                    }
-
-                    if (Collision.Instance.LastTouched.Enemy == this)
-                    {
-                        Collision.Instance.LastTouched.Touch_Count = 0;
-                    }
-
-                    Touch_Count++;
-
-                    //Man darf nicht gleich nochmal schlagen, erst wenn der ball wieder die äußere BoundingBox des Spielers berührt
-                    can_hit = false;
-
-                    Collision.Instance.LastTouched = this; //Setze diese Person als die, die den Ball als letztes berührt hat
-                    Ball.Instance.IsFlying = true; //Ball fliegt
-
-                    //neue Parabel und an Ball übergeben
-                    Parabel weak = new Parabel(Ball.Instance.Position, 50.0f, gamma, 45.0f, 20.0f, direction);
-                    Ball.Instance.Active = weak;
-
-                    //Ball updaten
-                    Ball.Instance.Update();
+                    is_serving = false;
                 }
 
-                oldgamepadstate = newstate;
+                if (Collision.Instance.LastTouched.Enemy == this)
+                {
+                    Collision.Instance.LastTouched.Touch_Count = 0;
+                }
+
+                Touch_Count++;
+
+                //Man darf nicht gleich nochmal schlagen, erst wenn der ball wieder die äußere BoundingBox des Spielers berührt
+                can_hit = false;
+
+                Collision.Instance.LastTouched = this; //Setze diese Person als die, die den Ball als letztes berührt hat
+                Ball.Instance.IsFlying = true; //Ball fliegt
+
+                //neue Parabel und an Ball übergeben
+                Parabel weak = new Parabel(Ball.Instance.Position, 50.0f, gamma, 45.0f, 20.0f, direction);
+                Ball.Instance.Active = weak;
+
+                //Ball updaten
+                Ball.Instance.Update();
             }
         }
 
         //Starker Schlag
-        public void StrongThrow(Buttons strongthrow)
+        private void StrongThrow(Keys strongthrow)
         {
-            GamePadState newstate = GamePad.GetState(PlayerIndex.One);
+            bool double_hit;
 
-            if (newstate.IsButtonDown(strongthrow) && can_hit) //Drückt Knopf und darf schlagen
+            if (keyboard.oldstate.IsKeyUp(strongthrow))
             {
-                if (!oldgamepadstate.IsButtonDown(strongthrow))
+                double_hit = false;
+            }
+            else
+            {
+                double_hit = true;
+            }
+
+            if (Keyboard.GetState().IsKeyDown(strongthrow) && can_hit && !double_hit) //Drückt Knopf und darf schlagen
+            {
+                if (is_serving) //Falls man Aufschlag hatte, hat man nach dem Schlagen ihn erstmal nicht mehr (Ball fliegt ja jetzt)
                 {
-
-                    if (is_serving) //Falls man Aufschlag hatte, hat man nach dem Schlagen ihn erstmal nicht mehr (Ball fliegt ja jetzt)
-                    {
-                        is_serving = false;
-                    }
-
-                    if (Collision.Instance.LastTouched.Enemy == this)
-                    {
-                        Collision.Instance.LastTouched.Touch_Count = 0;
-                    }
-
-                    Touch_Count++;
-
-                    //Man darf nicht gleich nochmal schlagen, erst wenn der ball wieder die äußere BoundingBox des Spielers berührt
-                    can_hit = false;
-
-                    Collision.Instance.LastTouched = this; //Setze diese Person als die, die den Ball als letztes berührt hat
-                    Ball.Instance.IsFlying = true; //Ball fliegt
-
-                    //neue Parabel und an Ball übergeben
-                    Parabel strong = new Parabel(Ball.Instance.Position, 45.0f, gamma, 45.0f, 25.0f, direction);
-                    Ball.Instance.Active = strong;
-
-                    //Ball updaten
-                    Ball.Instance.Update();
+                    is_serving = false;
                 }
-                oldgamepadstate = newstate;
+
+                if (Collision.Instance.LastTouched.Enemy == this)
+                {
+                    Collision.Instance.LastTouched.Touch_Count = 0;
+                }
+
+                Touch_Count++;
+
+                //Man darf nicht gleich nochmal schlagen, erst wenn der ball wieder die äußere BoundingBox des Spielers berührt
+                can_hit = false;
+
+                Collision.Instance.LastTouched = this; //Setze diese Person als die, die den Ball als letztes berührt hat
+                Ball.Instance.IsFlying = true; //Ball fliegt
+
+                //neue Parabel und an Ball übergeben
+                Parabel strong = new Parabel(Ball.Instance.Position, 45.0f, gamma, 45.0f, 25.0f, direction);
+                Ball.Instance.Active = strong;
+
+                //Ball updaten
+                Ball.Instance.Update();
+            }
+        }
+
+        //  Controller  Anfang
+        private void UpdateController(Field field, Buttons Up, Buttons Down, Buttons Left, Buttons Right, Buttons Jump, Buttons weak, Buttons strong, Buttons l, Buttons r)
+        {
+
+            gamepad.newstate = GamePad.GetState(PlayerIndex.One);
+            camera.Update();
+
+
+            //jeder Spieler braucht einen Winkel Gamma, den er verändern kann mit Eingaben
+            if (direction == 1)
+            {
+                if (gamepad.IsButtonDown(r) && gamma <= 90)
+                {
+                    gamma += (direction) * 1.0f; //Ein Grad mehr/weniger
+                }
+                if (gamepad.IsButtonDown(l) && gamma >= -90)
+                {
+                    gamma -= (direction) * 1.0f; //Ein Grad mehr/weniger
+                }
+            }
+            else
+            {
+                if (direction == -1)
+                {
+                    if (gamepad.IsButtonDown(r) && gamma >= -90)
+                    {
+                        gamma -= 1.0f; //Ein Grad mehr/weniger
+                    }
+                    if (gamepad.IsButtonDown(l) && gamma <= 90)
+                    {
+                        gamma += 1.0f; //Ein Grad mehr/weniger
+                    }
+                }
+            }
+            //Spieler hat gerade Aufschlag -> Position hinten, Bewegung nur links un rechts, Sprung
+            if (is_serving)
+            {
+                WeakThrow(weak);
+                StrongThrow(strong);
+
+                float offset = position.Y - box[0].Y;
+                position.Y -= offset;
+                MovingBoundingBoxes(new Vector3(0, -offset, 0));
+
+                if (!is_jumping)
+                {
+                    if (gamepad.IsButtonDown(Left))
+                    {
+                        if (direction == 1)
+                        {
+                            if (position.X > box[0].X) //position.X > box[0].X
+                            {
+                                position.X -= movespeed;
+                                MovingBoundingBoxes(new Vector3(-movespeed, 0, 0));
+                                camera.AddPosition(new Vector3(-movespeed, 0, 0));
+                                camera.AddView(new Vector3(-movespeed, 0, 0));
+                            }
+                        }
+                        else if (direction == -1)
+                        {
+                            if (position.X < box[0].X) //position.X < box[0].X
+                            {
+                                position.X += movespeed;
+                                MovingBoundingBoxes(new Vector3(movespeed, 0, 0));
+                                camera.AddPosition(new Vector3(movespeed, 0, 0));
+                                camera.AddView(new Vector3(movespeed, 0, 0));
+                            }
+                        }
+                    }
+
+                    if (gamepad.IsButtonDown(Right))
+                    {
+                        if (direction == 1)
+                        {
+                            if (position.X < box[1].X) //position.X < box[1].X
+                            {
+                                position.X += movespeed;
+                                MovingBoundingBoxes(new Vector3(movespeed, 0, 0));
+                                camera.AddPosition(new Vector3(movespeed, 0, 0));
+                                camera.AddView(new Vector3(movespeed, 0, 0));
+                            }
+                        }
+                        else if (direction == -1)
+                        {
+                            if (position.X > box[1].X) //position.X > box[1].X
+                            {
+                                position.X -= movespeed;
+                                MovingBoundingBoxes(new Vector3(-movespeed, 0, 0));
+                                camera.AddPosition(new Vector3(-movespeed, 0, 0));
+                                camera.AddView(new Vector3(-movespeed, 0, 0));
+                            }
+                        }
+                    }
+
+                    if (gamepad.IsButtonDown(Jump))
+                    {
+                        is_jumping = true;
+                        is_falling = false;
+                    }
+                }
+                else
+                {
+                    if (position.Z <= max_jump_height && !is_falling)
+                    {
+                        position.Z += jump_velocity;
+                        MovingBoundingBoxes(new Vector3(0, 0, jump_velocity));
+                    }
+                    else
+                    {
+                        if (position.Z > 0)
+                        {
+                            position.Z -= jump_velocity;
+                            MovingBoundingBoxes(new Vector3(0, 0, -jump_velocity));
+                            is_falling = true;
+                        }
+                        else
+                        {
+                            is_jumping = false;
+                        }
+                    }
+                }
+
+                //Setze Ball-Position auf aktuelle Position des Aufschlägers
+                if (direction == 1)
+                {
+                    Ball.Instance.Position = new Vector3((OuterBoundingBox.Max.X + OuterBoundingBox.Min.X) / 2, OuterBoundingBox.Max.Y, OuterBoundingBox.Max.Z + 1);
+                }
+                else
+                {
+                    if (direction == -1)
+                    {
+                        Ball.Instance.Position = new Vector3((OuterBoundingBox.Max.X + OuterBoundingBox.Min.X) / 2, OuterBoundingBox.Min.Y, OuterBoundingBox.Max.Z + 1);
+                    }
+                }
+            }
+            else //Normales Spielen, alle Bewegungen
+            {
+                WeakThrow(weak);
+                StrongThrow(strong);
+
+                if (!is_jumping)
+                {
+                    if (gamepad.IsButtonDown(Up))
+                    {
+                        if (direction == 1)
+                        {
+                            if (!Collision.Instance.PlayerWithNet(this, field)) //Collision Spieler mit Netz
+                            {
+                                position.Y += movespeed;
+
+                                MovingBoundingBoxes(new Vector3(0, movespeed, 0));
+                            }
+                        }
+                        else if (direction == -1)
+                        {
+                            if (!Collision.Instance.PlayerWithNet(this, field)) //Collision Spieler mit Netz
+                            {
+                                position.Y -= movespeed;
+                                MovingBoundingBoxes(new Vector3(0, -movespeed, 0));
+                            }
+                        }
+                    }
+
+                    if (gamepad.IsButtonDown(Left))
+                    {
+                        if (direction == 1)
+                        {
+                            if (position.X > box[0].X) //position.X > box[0].X
+                            {
+                                position.X -= movespeed;
+                                MovingBoundingBoxes(new Vector3(-movespeed, 0, 0));
+                                camera.AddPosition(new Vector3(-movespeed, 0, 0));
+                                camera.AddView(new Vector3(-movespeed, 0, 0));
+                            }
+                        }
+                        else if (direction == -1)
+                        {
+                            if (position.X < box[0].X) //position.X < box[0].X
+                            {
+                                position.X += movespeed;
+                                MovingBoundingBoxes(new Vector3(movespeed, 0, 0));
+                                camera.AddPosition(new Vector3(movespeed, 0, 0));
+                                camera.AddView(new Vector3(movespeed, 0, 0));
+                            }
+                        }
+                    }
+
+                    if (gamepad.IsButtonDown(Down))
+                    {
+                        if (direction == 1)
+                        {
+                            if (position.Y > box[0].Y) //position.Y > box[0].Y
+                            {
+                                position.Y -= movespeed;
+                                MovingBoundingBoxes(new Vector3(0, -movespeed, 0));
+                            }
+                        }
+                        else if (direction == -1)
+                        {
+                            if (position.Y < box[0].Y) //position.Y < box[0].Y
+                            {
+                                position.Y += movespeed;
+                                MovingBoundingBoxes(new Vector3(0, movespeed, 0));
+                            }
+                        }
+                    }
+
+                    if (gamepad.IsButtonDown(Right))
+                    {
+                        if (direction == 1)
+                        {
+                            if (position.X < box[1].X) //position.X < box[1].X
+                            {
+                                position.X += movespeed;
+                                MovingBoundingBoxes(new Vector3(movespeed, 0, 0));
+                                camera.AddPosition(new Vector3(movespeed, 0, 0));
+                                camera.AddView(new Vector3(movespeed, 0, 0));
+                            }
+                        }
+                        else if (direction == -1)
+                        {
+                            if (position.X > box[1].X) //position.X > box[1].X
+                            {
+                                position.X -= movespeed;
+                                MovingBoundingBoxes(new Vector3(-movespeed, 0, 0));
+                                camera.AddPosition(new Vector3(-movespeed, 0, 0));
+                                camera.AddView(new Vector3(-movespeed, 0, 0));
+                            }
+                        }
+                    }
+
+                    if (gamepad.IsButtonDown(Jump))
+                    {
+                        is_jumping = true;
+                        is_falling = false;
+                    }
+                }
+                else
+                {
+                    if (position.Z <= max_jump_height && !is_falling)
+                    {
+                        position.Z += jump_velocity;
+                        MovingBoundingBoxes(new Vector3(0, 0, jump_velocity));
+                    }
+                    else
+                    {
+                        if (position.Z > 0)
+                        {
+                            position.Z -= jump_velocity;
+                            MovingBoundingBoxes(new Vector3(0, 0, -jump_velocity));
+                            is_falling = true;
+                        }
+                        else
+                        {
+                            is_jumping = false;
+                        }
+                    }
+                }
+            }
+
+            if (Touch_Count > 3)
+            {
+                Enemy.Points++;
+                Enemy.IsServing = true;
+                IsServing = false;
+                Ball.Instance.Active = null;
+
+                Touch_Count = 0;
+                Enemy.Touch_Count = 0;
+            }
+
+            gamepad.oldstate = gamepad.newstate;
+        }
+
+        //Schwacher Schlag
+        private void WeakThrow(Buttons weakthrow)
+        {
+            bool double_hit;
+
+            if (gamepad.oldstate.IsButtonUp(weakthrow))
+            {
+                double_hit = false;
+            }
+            else
+            {
+                double_hit = true;
+            }
+
+            if (gamepad.IsButtonDown(weakthrow) && can_hit && !double_hit) //Drückt Knopf und darf schlagen
+            {
+                if (is_serving) //Falls man Aufschlag hatte, hat man nach dem Schlagen ihn erstmal nicht mehr (Ball fliegt ja jetzt)
+                {
+                    is_serving = false;
+                }
+
+                if (Collision.Instance.LastTouched.Enemy == this)
+                {
+                    Collision.Instance.LastTouched.Touch_Count = 0;
+                }
+
+                Touch_Count++;
+
+                //Man darf nicht gleich nochmal schlagen, erst wenn der ball wieder die äußere BoundingBox des Spielers berührt
+                can_hit = false;
+
+                Collision.Instance.LastTouched = this; //Setze diese Person als die, die den Ball als letztes berührt hat
+                Ball.Instance.IsFlying = true; //Ball fliegt
+
+                //neue Parabel und an Ball übergeben
+                Parabel weak = new Parabel(Ball.Instance.Position, 50.0f, gamma, 45.0f, 20.0f, direction);
+                Ball.Instance.Active = weak;
+
+                //Ball updaten
+                Ball.Instance.Update();
+            }
+        }
+
+        //Starker Schlag
+        private void StrongThrow(Buttons strongthrow)
+        {
+            bool double_hit;
+
+            if (gamepad.oldstate.IsButtonUp(strongthrow))
+            {
+                double_hit = false;
+            }
+            else
+            {
+                double_hit = true;
+            }
+
+            if (gamepad.IsButtonDown(strongthrow) && can_hit && !double_hit) //Drückt Knopf und darf schlagen
+            {
+                if (is_serving) //Falls man Aufschlag hatte, hat man nach dem Schlagen ihn erstmal nicht mehr (Ball fliegt ja jetzt)
+                {
+                    is_serving = false;
+                }
+
+                if (Collision.Instance.LastTouched.Enemy == this)
+                {
+                    Collision.Instance.LastTouched.Touch_Count = 0;
+                }
+
+                Touch_Count++;
+
+                //Man darf nicht gleich nochmal schlagen, erst wenn der ball wieder die äußere BoundingBox des Spielers berührt
+                can_hit = false;
+
+                Collision.Instance.LastTouched = this; //Setze diese Person als die, die den Ball als letztes berührt hat
+                Ball.Instance.IsFlying = true; //Ball fliegt
+
+                //neue Parabel und an Ball übergeben
+                Parabel strong = new Parabel(Ball.Instance.Position, 45.0f, gamma, 45.0f, 25.0f, direction);
+                Ball.Instance.Active = strong;
+
+                //Ball updaten
+                Ball.Instance.Update();
             }
         }
         // Controller Ende
-
 
         public void Draw(Camera camera)
         {
             float temp = 0.0f;
 
-            if(direction == 1)
+            if (direction == 1)
             {
                 temp = 90.0f;
             }
-            else if(direction == -1)
+            else if (direction == -1)
             {
                 temp = -90.0f;
             }
@@ -963,7 +1025,7 @@ namespace Volamus_v1
                 mesh.Draw();
             }
 
-            d.Begin(camera.ViewMatrix,camera.ProjectionMatrix);
+            d.Begin(camera.ViewMatrix, camera.ProjectionMatrix);
             d.DrawWireBox(innerBoundingBox, Color.White);
             d.DrawWireBox(outerBoundingBox, Color.Black);
             d.End();
@@ -994,8 +1056,8 @@ namespace Volamus_v1
                     // Iterate through vertices (possibly) growing bounding box, all calculations are done in world space
                     for (int i = 0; i < vertexBufferSize / sizeof(float); i += vertexStride / sizeof(float))
                     {
-                        Vector3 transformedPosition = Vector3.Transform(new Vector3(vertexData[i], vertexData[i + 1], vertexData[i + 2]), 
-                            Matrix.CreateScale(scale)*Matrix.CreateRotationZ(MathHelper.ToRadians(90)));
+                        Vector3 transformedPosition = Vector3.Transform(new Vector3(vertexData[i], vertexData[i + 1], vertexData[i + 2]),
+                            Matrix.CreateScale(scale) * Matrix.CreateRotationZ(MathHelper.ToRadians(90)));
 
                         min = Vector3.Min(min, transformedPosition);
                         max = Vector3.Max(max, transformedPosition);
@@ -1005,7 +1067,7 @@ namespace Volamus_v1
 
             // Create and return bounding box
 
-            Vector3 mid = new Vector3((max.X + min.X)/2, (direction) * (max.Y + min.Y)/2, min.Z);
+            Vector3 mid = new Vector3((max.X + min.X) / 2, (direction) * (max.Y + min.Y) / 2, min.Z);
             Vector3 translate = mid - position;
 
             min.X -= translate.X;

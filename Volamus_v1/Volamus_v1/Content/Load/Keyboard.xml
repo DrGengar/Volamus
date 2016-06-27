@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<XnaContent>
+  <Asset Type="Volamus_v1.KeyboardControl">
+    <Up>W</Up>
+    <Down>S</Down>
+    <Left>A</Left>
+    <Right>D</Right>
+    <Jump>Space</Jump>
+    <Dir_Left>Left</Dir_Left>
+    <Dir_Right>Right</Dir_Right>
+    <Weak>Q</Weak>
+    <Strong>E</Strong>
+    <oldstate />
+    <newstate />
+    <XmlPath>Content/Load/Keyboard.xml</XmlPath>
+  </Asset>
+</XnaContent>

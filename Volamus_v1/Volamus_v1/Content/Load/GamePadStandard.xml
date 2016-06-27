@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<XnaContent>
+  <Asset Type="Volamus_v1.GamePadControl">
+    <Up>LeftThumbstickUp</Up>
+    <Down>LeftThumbstickDown</Down>
+    <Left>LeftThumbstickLeft</Left>
+    <Right>LeftThumbstickRight</Right>
+    <Jump>A</Jump>
+    <Dir_Left>RightThumbstickLeft</Dir_Left>
+    <Dir_Right>RightThumbstickRight</Dir_Right>
+    <Weak>LeftTrigger</Weak>
+    <Strong>RightTrigger</Strong>
+	<oldstate />
+    <newstate />
+    <XmlPath>Content/Load/GamePadStandard.xml</XmlPath>
+    <Index>One</Index>
+  </Asset>
+</XnaContent>

@@ -109,11 +109,10 @@ namespace Volamus_v1
                     Vector3 hitdirection = Ball.Instance.Active.Hit_Direction;
                     float angle_z = MathHelper.ToDegrees((float)Math.Atan((hitdirection.Z / hitdirection.Y)));
                     float angle_x = MathHelper.ToDegrees((float)Math.Atan((hitdirection.X / hitdirection.Y)));
-                    newParabel = new Parabel(Ball.Instance.Position, lastTouched.Direction * (-angle_z), angle_x, Ball.Instance.Active.Angles.Y, 0.6f * Ball.Instance.Active.Velocity,
+                    newParabel = new Parabel(Ball.Instance.Position, lastTouched.Direction * (angle_z), angle_x, Ball.Instance.Active.Angles.Y, 0.6f * Ball.Instance.Active.Velocity,
                         Ball.Instance.Active.Direction * (-1)); //Skalierung
                     Ball.Instance.Active = newParabel;
                 }
-                newParabel = null;
         }
 
         //Ball mit Ebene z=0
@@ -188,9 +187,16 @@ namespace Volamus_v1
                         Ball.Instance.Active.Direction * (-1)); //Skalierung
                 }
 
+                //Kollision von hinten
+                if (player.Direction * Ball.Instance.Position.Y <= player.Direction * back)
+                {
+                    newParabel = new Parabel(Ball.Instance.Position, player.Direction * (-angle_z), angle_x, Ball.Instance.Active.Angles.Y, 0.75f * Ball.Instance.Active.Velocity,
+                        Ball.Instance.Active.Direction); //Skalierung
+                }
+
                 //Kollision von der Seite
                 //Links
-                if(Ball.Instance.Position.X < left)
+                if (Ball.Instance.Position.X < left)
                 {
                     //Links
                     newParabel = new Parabel(Ball.Instance.Position, player.Direction * (-angle_z), player.Direction * angle_x, Ball.Instance.Active.Angles.Y, 0.75f * Ball.Instance.Active.Velocity,
@@ -215,9 +221,19 @@ namespace Volamus_v1
                 player.CanHit = false;
                 lastTouched = player;
 
-                if (!Keyboard.GetState().IsKeyDown(player.Weak) && !Keyboard.GetState().IsKeyDown(player.Strong))
+                if (player.Control)
                 {
-                    lastTouched.Touch_Count++;
+                    if (!GamePad.GetState(player.GamePadControl.Index).IsButtonDown(player.GamePadControl.Weak) && !GamePad.GetState(player.GamePadControl.Index).IsButtonDown(player.GamePadControl.Strong))
+                    {
+                        lastTouched.Touch_Count++;
+                    }
+                }
+                else
+                {
+                    if (!Keyboard.GetState().IsKeyDown(player.KeyboardControl.Weak) && !Keyboard.GetState().IsKeyDown(player.KeyboardControl.Strong))
+                    {
+                        lastTouched.Touch_Count++;
+                    }
                 }
 
                 Ball.Instance.Update();

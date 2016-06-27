@@ -112,7 +112,7 @@ namespace Volamus_v1
 
             referee = GameStateManager.Instance.Content.Load<Model>("3DAcaLogo");
 
-            texture = GameStateManager.Instance.Content.Load<Texture2D>("sand");
+            texture = GameStateManager.Instance.Content.Load<Texture2D>("field");
 
             CreateBoundingBox();
 
@@ -121,6 +121,10 @@ namespace Volamus_v1
 
         public void Draw(Camera camera)
         {
+            DrawIce(camera);
+            DrawNet(camera);
+            DrawReferee(camera);
+
             effect.View = camera.ViewMatrix;
             effect.Projection = camera.ProjectionMatrix;
 
@@ -133,10 +137,6 @@ namespace Volamus_v1
 
                 GameStateManager.Instance.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, fieldVertices, 0, 4);
             }
-
-            DrawIce(camera);
-            DrawNet(camera);
-            DrawReferee(camera);
 
             d.Begin(camera.ViewMatrix, camera.ProjectionMatrix);
             d.DrawWireBox(netBoundingBox, Color.White);
@@ -157,7 +157,7 @@ namespace Volamus_v1
                 {
                     effect.EnableDefaultLighting();
 
-                    effect.World = transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) * Matrix.CreateScale(0.05f, 0.15f, 0.01f)
+                    effect.World = transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) * Matrix.CreateScale(0.1f, 0.15f, 0.01f)
                         * Matrix.CreateTranslation(new Vector3(0, 0, -0.75f));
                     effect.View = camera.ViewMatrix;
                     effect.Projection = camera.ProjectionMatrix;
@@ -179,7 +179,7 @@ namespace Volamus_v1
                 {
                     effect.EnableDefaultLighting();
 
-                    effect.World = transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) * Matrix.CreateScale(0.025f, 0.025f, 0.025f)
+                    effect.World = transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) * Matrix.CreateScale(0.05f, 0.025f, 0.025f)
                         * Matrix.CreateTranslation(new Vector3(0, 0, 0));
                     effect.View = camera.ViewMatrix;
                     effect.Projection = camera.ProjectionMatrix;
@@ -202,7 +202,7 @@ namespace Volamus_v1
                     effect.EnableDefaultLighting();
 
                     effect.World = transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) * Matrix.CreateScale(0.075f, 0.075f, 0.075f)
-                        * Matrix.CreateTranslation(new Vector3(40, 0, 0));
+                        * Matrix.CreateTranslation(new Vector3(70, 0, 0));
                     effect.View = camera.ViewMatrix;
                     effect.Projection = camera.ProjectionMatrix;
                 }
@@ -240,7 +240,7 @@ namespace Volamus_v1
                 }
             }
 
-            netBoundingBox = new BoundingBox(new Vector3(-27,-0.2f, 10), new Vector3(27, 0.2f, 20));
+            netBoundingBox = new BoundingBox(new Vector3(-54,-0.2f, 10), new Vector3(54, 0.2f, 20));
         }
 
         private void CreateBoundingBox()
