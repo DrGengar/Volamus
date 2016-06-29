@@ -8,7 +8,7 @@ using System.IO;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Content.Pipeline.dll;
+using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Intermediate;
 
 namespace Volamus_v1
 {

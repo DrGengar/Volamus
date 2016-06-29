@@ -23,10 +23,10 @@ namespace Volamus_v1
         public Buttons Weak;
         public Buttons Strong;
 
-        [ContentSerializerIgnore]
+        //[ContentSerializerIgnore]
         public GamePadState oldstate;
 
-        [ContentSerializerIgnore]
+        //[ContentSerializerIgnore]
         public GamePadState newstate;
 
         public String XmlPath;

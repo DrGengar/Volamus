@@ -23,10 +23,10 @@ namespace Volamus_v1
         public Keys Weak;
         public Keys Strong;
 
-        [ContentSerializerIgnore]
+        //[ContentSerializerIgnore]
         public KeyboardState oldstate;
 
-        [ContentSerializerIgnore]
+        //[ContentSerializerIgnore]
         public KeyboardState newstate;
 
         public String XmlPath;
