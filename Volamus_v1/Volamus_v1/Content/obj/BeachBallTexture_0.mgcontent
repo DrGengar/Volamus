@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <SourceFile>C:/Users/Ich/Desktop/3dGame/Volamus_v1/Volamus_v1/BeachBallTexture.png</SourceFile>
-  <SourceTime>2016-06-29T13:11:34.3926204+02:00</SourceTime>
-  <DestFile>C:/Users/Ich/Desktop/3dGame/Volamus_v1/Volamus_v1/Content/bin/Windows/../BeachBallTexture_0.xnb</DestFile>
-  <DestTime>2016-06-29T13:12:09.0482432+02:00</DestTime>
+  <SourceFile>C:/Users/Lars/Desktop/3DGameProject/Volamus_v1/Volamus_v1/BeachBallTexture.png</SourceFile>
+  <SourceTime>2016-06-19T14:23:26.7774766+02:00</SourceTime>
+  <DestFile>C:/Users/Lars/Desktop/3DGameProject/Volamus_v1/Volamus_v1/Content/bin/Windows/../BeachBallTexture_0.xnb</DestFile>
+  <DestTime>2016-06-29T21:30:49.4301839+02:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2016-03-30T08:36:08+02:00</ImporterTime>
   <Processor>TextureProcessor</Processor>
