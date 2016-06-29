@@ -166,3 +166,6 @@ C:\Users\Lars\Desktop\3DGameProject\Volamus_v1\Volamus_v1\Microsoft.Xna.Framewor
 C:\Users\Lars\Desktop\3DGameProject\Volamus_v1\Volamus_v1\Microsoft.Xna.Framework.xml
 C:\Users\Lars\Desktop\3DGameProject\Volamus_v1\Volamus_v1\Microsoft.Xna.Framework.Graphics.xml
 C:\Users\Lars\Desktop\3DGameProject\Volamus_v1\Volamus_v1\Microsoft.Xna.Framework.Video.xml
+C:\Users\Ich\Desktop\3dGame\Volamus_v1\Volamus_v1\Volamus_v1.exe.config
+C:\Users\Ich\Desktop\3dGame\Volamus_v1\Volamus_v1\obj\x86\Debug\Volamus_v1.Properties.Resources.resources
+C:\Users\Ich\Desktop\3dGame\Volamus_v1\Volamus_v1\obj\x86\Debug\Volamus_v1.csproj.GenerateResource.Cache
