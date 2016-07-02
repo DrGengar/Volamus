@@ -1025,10 +1025,10 @@ namespace Volamus_v1
                 mesh.Draw();
             }
 
-            d.Begin(camera.ViewMatrix, camera.ProjectionMatrix);
+            /*d.Begin(camera.ViewMatrix, camera.ProjectionMatrix);
             d.DrawWireBox(innerBoundingBox, Color.White);
             d.DrawWireBox(outerBoundingBox, Color.Black);
-            d.End();
+            d.End();*/
         }
 
         private void CreateBoundingBoxes()

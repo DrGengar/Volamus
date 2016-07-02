@@ -139,9 +139,9 @@ namespace Volamus_v1
                 mesh.Draw();
             }
 
-            d.Begin(camera.ViewMatrix, camera.ProjectionMatrix);
+            /*d.Begin(camera.ViewMatrix, camera.ProjectionMatrix);
             d.DrawWireSphere(boundingSphere, Color.White);
-            d.End();
+            d.End();*/
         }
     }
 }

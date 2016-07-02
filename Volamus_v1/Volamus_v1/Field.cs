@@ -112,7 +112,7 @@ namespace Volamus_v1
 
             referee = GameStateManager.Instance.Content.Load<Model>("3DAcaLogo");
 
-            texture = GameStateManager.Instance.Content.Load<Texture2D>("field");
+            texture = GameStateManager.Instance.Content.Load<Texture2D>("field2");
 
             CreateBoundingBox();
 
@@ -138,10 +138,10 @@ namespace Volamus_v1
                 GameStateManager.Instance.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, fieldVertices, 0, 4);
             }
 
-            d.Begin(camera.ViewMatrix, camera.ProjectionMatrix);
+            /*d.Begin(camera.ViewMatrix, camera.ProjectionMatrix);
             d.DrawWireBox(netBoundingBox, Color.White);
             d.DrawWireBox(boundingBox, Color.White);
-            d.End();
+            d.End();*/
 
         }
 
