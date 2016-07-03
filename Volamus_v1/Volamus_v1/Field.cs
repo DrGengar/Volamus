@@ -22,6 +22,7 @@ namespace Volamus_v1
 
         //Schiedsrichter
         Model referee;
+        Model trillerpf;
 
 
         //Netz
@@ -112,6 +113,8 @@ namespace Volamus_v1
 
             referee = GameStateManager.Instance.Content.Load<Model>("3DAcaLogo");
 
+            trillerpf = GameStateManager.Instance.Content.Load<Model>("trillerpfeife");
+
             texture = GameStateManager.Instance.Content.Load<Texture2D>("field2");
 
             CreateBoundingBox();
@@ -124,6 +127,7 @@ namespace Volamus_v1
             DrawIce(camera);
             DrawNet(camera);
             DrawReferee(camera);
+            DrawTrillerpf(camera);
 
             effect.View = camera.ViewMatrix;
             effect.Projection = camera.ProjectionMatrix;
@@ -203,6 +207,27 @@ namespace Volamus_v1
 
                     effect.World = transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) * Matrix.CreateScale(0.075f, 0.075f, 0.075f)
                         * Matrix.CreateTranslation(new Vector3(70, 0, 0));
+                    effect.View = camera.ViewMatrix;
+                    effect.Projection = camera.ProjectionMatrix;
+                }
+                mesh.Draw();
+            }
+        }
+
+        private void DrawTrillerpf(Camera camera)
+        {
+            Matrix[] transforms = new Matrix[trillerpf.Bones.Count];
+            trillerpf.CopyAbsoluteBoneTransformsTo(transforms);
+
+            foreach (ModelMesh mesh in trillerpf.Meshes)
+            {
+                foreach (BasicEffect effect in mesh.Effects)
+                {
+                    effect.EnableDefaultLighting();
+
+                    effect.World = transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) 
+                        * Matrix.CreateRotationY(MathHelper.ToRadians(-10)) * Matrix.CreateScale(0.03f, 0.03f, 0.03f)
+                        * Matrix.CreateTranslation(new Vector3(66.5f, 0, 4));
                     effect.View = camera.ViewMatrix;
                     effect.Projection = camera.ProjectionMatrix;
                 }
