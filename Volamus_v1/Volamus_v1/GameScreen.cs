@@ -16,6 +16,8 @@ namespace Volamus_v1
         private Field field;
         private Player player_one, player_two;
 
+        private Wind wind;
+
         //SplitScreen
         private Viewport defaultView, leftView, rightView;
 
@@ -46,6 +48,8 @@ namespace Volamus_v1
             Collision.Instance.LastTouched = player_one;
 
             frameCounter = new FrameCounter();
+
+            wind = new Wind(0);
         }
 
         public override void LoadContent()
@@ -54,7 +58,7 @@ namespace Volamus_v1
 
             field.LoadContent();
 
-            Ball.Instance.LoadContent();
+            Ball.Instance.LoadContent(wind);
 
             player_one.LoadContent();
             player_two.LoadContent();

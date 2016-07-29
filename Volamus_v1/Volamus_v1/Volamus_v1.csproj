@@ -92,6 +92,7 @@
     </Compile>
     <Compile Include="SplashScreen.cs" />
     <Compile Include="TitleScreen.cs" />
+    <Compile Include="Wind.cs" />
     <Compile Include="XmlIntermediateManager.cs" />
     <Compile Include="XmlManager.cs" />
   </ItemGroup>

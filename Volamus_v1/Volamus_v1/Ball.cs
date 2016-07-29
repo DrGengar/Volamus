@@ -25,6 +25,8 @@ namespace Volamus_v1
 
         DebugDraw d;
 
+        Wind wind;
+
         public Vector3 Position
         {
             get { return position; }
@@ -58,6 +60,11 @@ namespace Volamus_v1
             get { return boundingSphere; }
         }
 
+        public Wind Wind
+        {
+            get { return wind; }
+        }
+
         public static Ball Instance
         {
             get
@@ -77,7 +84,7 @@ namespace Volamus_v1
             d = new DebugDraw(GameStateManager.Instance.GraphicsDevice);
         }
 
-        public void LoadContent()
+        public void LoadContent(Wind _wind)
         {
             model = GameStateManager.Instance.Content.Load<Model>("BeachBall");
 
@@ -95,6 +102,8 @@ namespace Volamus_v1
             boundingSphere.Radius *= 1.0f;
 
             boundingSphere.Center = position;
+
+            wind = _wind;
         }
 
         public void Update()
@@ -111,7 +120,7 @@ namespace Volamus_v1
             if (isflying && active!=null)
             {
                 //Position Updaten nach Flugbahn
-                position = active.Flug();
+                position = active.Flug(wind);
             }
 
             //BoundingSphere Position updaten auf aktuelle neue Position
@@ -138,6 +147,12 @@ namespace Volamus_v1
                 }
                 mesh.Draw();
             }
+
+            SpriteFont font = GameStateManager.Instance.Content.Load<SpriteFont>("SpriteFonts/Standard");
+            String text = Wind.Direction().ToString();
+
+            GameStateManager.Instance.SpriteBatch.DrawString(font, text,
+                new Vector2((GameStateManager.Instance.dimensions.X - font.MeasureString(text).X)/2, 0), Color.Black);
 
             /*d.Begin(camera.ViewMatrix, camera.ProjectionMatrix);
             d.DrawWireSphere(boundingSphere, Color.White);

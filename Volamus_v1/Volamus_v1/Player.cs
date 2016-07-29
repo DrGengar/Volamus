@@ -585,6 +585,7 @@ namespace Volamus_v1
                 Ball.Instance.Active = weak;
 
                 //Ball updaten
+                Ball.Instance.Wind.Update();
                 Ball.Instance.Update();
             }
         }
@@ -628,6 +629,7 @@ namespace Volamus_v1
                 Ball.Instance.Active = strong;
 
                 //Ball updaten
+                Ball.Instance.Wind.Update();
                 Ball.Instance.Update();
             }
         }
@@ -945,6 +947,7 @@ namespace Volamus_v1
                 Ball.Instance.Active = weak;
 
                 //Ball updaten
+                Ball.Instance.Wind.Update();
                 Ball.Instance.Update();
             }
         }
@@ -988,6 +991,7 @@ namespace Volamus_v1
                 Ball.Instance.Active = strong;
 
                 //Ball updaten
+                Ball.Instance.Wind.Update();
                 Ball.Instance.Update();
             }
         }

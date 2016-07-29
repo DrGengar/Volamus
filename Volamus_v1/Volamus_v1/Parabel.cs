@@ -65,18 +65,19 @@ namespace Volamus_v1
             lastPosition = pos;
         }
 
-        /*  x: rechts/links;  y: vorne/hinten,   z: oben/unten
+        /*
+         *  x: rechts/links;  y: vorne/hinten,   z: oben/unten
          *  v0: Abwurfgeschwindigkeit
          *  alpha: wie flach/steil   betta: wie weit in y Richtung    gamma: wie weit in x Richtung
          *  t: Zeit, bzw Darstellungsgeschwindigkeit ("Ballgeschwindigkeit" aber ohne Flugbahn zu verändern)
          *  g: Erdanziehungskraft 
-         * 
-         * */
-        public Vector3 Flug()
+         */
+
+        public Vector3 Flug(Wind wind)
         {
             position.Z = z + velocity * (float)Math.Sin(MathHelper.ToRadians(alpha)) * t - (g / 2) * t * t;
             position.Y = y + (direction) * velocity * (float)Math.Cos(MathHelper.ToRadians(betta)) * t;
-            position.X = x + velocity * (float)Math.Sin(MathHelper.ToRadians(gamma)) * t;
+            position.X = position.X + (float)Math.Sin(MathHelper.ToRadians(gamma)) + t * wind.Direction(); ;
             t = t + 0.04f;
 
             hitdirection = position - lastPosition;

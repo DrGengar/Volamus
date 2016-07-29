@@ -213,7 +213,7 @@ namespace Volamus_v1
                 //Kollision wenn von oben
                 if (Ball.Instance.Position.Z >= player.InnerBoundingBox.Max.Z)
                 {
-                    newParabel = new Parabel(Ball.Instance.Position, player.Direction * angle_z, angle_x, Ball.Instance.Active.Angles.Y, 0.75f * Ball.Instance.Active.Velocity,
+                    newParabel = new Parabel(Ball.Instance.Position, player.Direction * angle_z, player.Direction*(-angle_x), Ball.Instance.Active.Angles.Y, 0.75f * Ball.Instance.Active.Velocity,
                         Ball.Instance.Active.Direction); //Skalierung
                 }
 
@@ -236,6 +236,7 @@ namespace Volamus_v1
                     }
                 }
 
+                Ball.Instance.Wind.Update();
                 Ball.Instance.Update();
             }
         }
