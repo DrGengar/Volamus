@@ -71,6 +71,8 @@ namespace Volamus_v1
 
         Texture2D circle_angle, arrow;
 
+        Model pfeil;
+
         KeyboardControl keyboard;
         GamePadControl gamepad;
         bool controller;
@@ -253,6 +255,8 @@ namespace Volamus_v1
 
             circle_angle = GameStateManager.Instance.Content.Load<Texture2D>("Images/winkel");
             arrow = GameStateManager.Instance.Content.Load<Texture2D>("Images/pfeil");
+
+            pfeil = GameStateManager.Instance.Content.Load<Model>("pfeil");
 
             CreateBoundingBoxes();
         }
@@ -1001,15 +1005,10 @@ namespace Volamus_v1
         {
             float temp = 0.0f;
 
-            if (direction == 1)
+            if(direction == -1)
             {
-                temp = 90.0f;
+                temp = 180.0f;
             }
-            else if (direction == -1)
-            {
-                temp = -90.0f;
-            }
-
 
             Matrix[] transforms = new Matrix[model.Bones.Count];
             model.CopyAbsoluteBoneTransformsTo(transforms);
@@ -1020,9 +1019,27 @@ namespace Volamus_v1
                 {
                     effect.EnableDefaultLighting();
 
-                    effect.World = transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) * Matrix.CreateRotationZ(MathHelper.ToRadians(temp)) *
+                    effect.World = transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) * Matrix.CreateRotationZ(MathHelper.ToRadians(direction*90)) *
                         Matrix.CreateScale(scale)
                         * Matrix.CreateTranslation(position);
+                    effect.View = camera.ViewMatrix;
+                    effect.Projection = camera.ProjectionMatrix;
+                }
+                mesh.Draw();
+            }
+
+            transforms = new Matrix[pfeil.Bones.Count];
+            pfeil.CopyAbsoluteBoneTransformsTo(transforms);
+
+            foreach (ModelMesh mesh in pfeil.Meshes)
+            {
+                foreach (BasicEffect effect in mesh.Effects)
+                {
+                    effect.EnableDefaultLighting();
+
+                    effect.World = transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) * Matrix.CreateRotationZ(MathHelper.ToRadians(temp+(direction)*(-gamma))) *
+                        Matrix.CreateScale(0.03f, 0.05f, 0.01f)
+                        * Matrix.CreateTranslation(new Vector3(position.X, position.Y, 0));
                     effect.View = camera.ViewMatrix;
                     effect.Projection = camera.ProjectionMatrix;
                 }

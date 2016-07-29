@@ -62,6 +62,9 @@ namespace Volamus_v1
 
             player_one.LoadContent();
             player_two.LoadContent();
+
+            GameStateManager.Instance.SoundEngine.Play2D("Content//Sound//soproSound1.ogg", true);
+            GameStateManager.Instance.SoundEngine.SoundVolume = 0.1f;
         }
 
         public override void UnloadContent()
