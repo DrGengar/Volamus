@@ -97,6 +97,9 @@
     <Compile Include="XmlManager.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="irrKlang.NET4">
+      <HintPath>..\..\Referenzen\IrrKlang\irrKlang-64bit-1.5.0\bin\dotnet-4-64\irrKlang.NET4.dll</HintPath>
+    </Reference>
     <Reference Include="MonoGame.Framework">
       <HintPath>$(MonoGameInstallDirectory)\MonoGame\v3.0\Assemblies\Windows\MonoGame.Framework.dll</HintPath>
     </Reference>
