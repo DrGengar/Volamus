@@ -328,8 +328,9 @@ namespace Volamus_v1
                         {
                             if (position.X > box[0].X) //position.X > box[0].X
                             {
-                                position.X -= movespeed;
-                                MovingBoundingBoxes(new Vector3(-movespeed, 0, 0));
+                                bounce(movespeed, new Vector3(-0.1f, 0, 0));
+                                /*position.X -= movespeed;
+                                MovingBoundingBoxes(new Vector3(-movespeed, 0, 0));*/
                                 camera.AddPosition(new Vector3(-movespeed, 0, 0));
                                 camera.AddView(new Vector3(-movespeed, 0, 0));
                             }
@@ -338,8 +339,9 @@ namespace Volamus_v1
                         {
                             if (position.X < box[0].X) //position.X < box[0].X
                             {
-                                position.X += movespeed;
-                                MovingBoundingBoxes(new Vector3(movespeed, 0, 0));
+                                bounce(movespeed, new Vector3(0.1f, 0, 0));
+                                /*position.X += movespeed;
+                                MovingBoundingBoxes(new Vector3(movespeed, 0, 0));*/
                                 camera.AddPosition(new Vector3(movespeed, 0, 0));
                                 camera.AddView(new Vector3(movespeed, 0, 0));
                             }
@@ -352,8 +354,9 @@ namespace Volamus_v1
                         {
                             if (position.X < box[1].X) //position.X < box[1].X
                             {
-                                position.X += movespeed;
-                                MovingBoundingBoxes(new Vector3(movespeed, 0, 0));
+                                bounce(movespeed, new Vector3(0.1f, 0, 0));
+                                /*position.X += movespeed;
+                                MovingBoundingBoxes(new Vector3(movespeed, 0, 0));*/
                                 camera.AddPosition(new Vector3(movespeed, 0, 0));
                                 camera.AddView(new Vector3(movespeed, 0, 0));
                             }
@@ -362,8 +365,9 @@ namespace Volamus_v1
                         {
                             if (position.X > box[1].X) //position.X > box[1].X
                             {
-                                position.X -= movespeed;
-                                MovingBoundingBoxes(new Vector3(-movespeed, 0, 0));
+                                bounce(movespeed, new Vector3(-0.1f, 0, 0));
+                                /*position.X -= movespeed;
+                                MovingBoundingBoxes(new Vector3(-movespeed, 0, 0));*/
                                 camera.AddPosition(new Vector3(-movespeed, 0, 0));
                                 camera.AddView(new Vector3(-movespeed, 0, 0));
                             }
@@ -424,17 +428,18 @@ namespace Volamus_v1
                         {
                             if (!Collision.Instance.PlayerWithNet(this, field)) //Collision Spieler mit Netz
                             {
-                                position.Y += movespeed;
-
-                                MovingBoundingBoxes(new Vector3(0, movespeed, 0));
+                                bounce(movespeed, new Vector3(0, 0.1f, 0));
+                                /*position.Y += movespeed;
+                                MovingBoundingBoxes(new Vector3(0, movespeed, 0));*/
                             }
                         }
                         else if (direction == -1)
                         {
                             if (!Collision.Instance.PlayerWithNet(this, field)) //Collision Spieler mit Netz
                             {
-                                position.Y -= movespeed;
-                                MovingBoundingBoxes(new Vector3(0, -movespeed, 0));
+                                bounce(movespeed, new Vector3(0, -0.1f, 0));
+                                /*position.Y -= movespeed;
+                                MovingBoundingBoxes(new Vector3(0, -movespeed, 0));*/
                             }
                         }
                     }
@@ -445,8 +450,9 @@ namespace Volamus_v1
                         {
                             if (position.X > box[0].X) //position.X > box[0].X
                             {
-                                position.X -= movespeed;
-                                MovingBoundingBoxes(new Vector3(-movespeed, 0, 0));
+                                bounce(movespeed, new Vector3(-0.1f, 0, 0));
+                                /*position.X -= movespeed;
+                                MovingBoundingBoxes(new Vector3(-movespeed, 0, 0));*/
                                 camera.AddPosition(new Vector3(-movespeed, 0, 0));
                                 camera.AddView(new Vector3(-movespeed, 0, 0));
                             }
@@ -455,8 +461,9 @@ namespace Volamus_v1
                         {
                             if (position.X < box[0].X) //position.X < box[0].X
                             {
-                                position.X += movespeed;
-                                MovingBoundingBoxes(new Vector3(movespeed, 0, 0));
+                                bounce(movespeed, new Vector3(0.1f, 0, 0));
+                                /*position.X += movespeed;
+                                MovingBoundingBoxes(new Vector3(movespeed, 0, 0));*/
                                 camera.AddPosition(new Vector3(movespeed, 0, 0));
                                 camera.AddView(new Vector3(movespeed, 0, 0));
                             }
@@ -469,16 +476,18 @@ namespace Volamus_v1
                         {
                             if (position.Y > box[0].Y) //position.Y > box[0].Y
                             {
-                                position.Y -= movespeed;
-                                MovingBoundingBoxes(new Vector3(0, -movespeed, 0));
+                                bounce(movespeed, new Vector3(0, -0.1f, 0));
+                                /*position.Y -= movespeed;
+                                MovingBoundingBoxes(new Vector3(0, -movespeed, 0));*/
                             }
                         }
                         else if (direction == -1)
                         {
                             if (position.Y < box[0].Y) //position.Y < box[0].Y
                             {
-                                position.Y += movespeed;
-                                MovingBoundingBoxes(new Vector3(0, movespeed, 0));
+                                bounce(movespeed, new Vector3(0, 0.1f, 0));
+                                /*position.Y += movespeed;
+                                MovingBoundingBoxes(new Vector3(0, movespeed, 0));*/
                             }
                         }
                     }
@@ -489,8 +498,9 @@ namespace Volamus_v1
                         {
                             if (position.X < box[1].X) //position.X < box[1].X
                             {
-                                position.X += movespeed;
-                                MovingBoundingBoxes(new Vector3(movespeed, 0, 0));
+                                bounce(movespeed, new Vector3(0.1f, 0, 0));
+                                /*position.X += movespeed;
+                                MovingBoundingBoxes(new Vector3(movespeed, 0, 0));*/
                                 camera.AddPosition(new Vector3(movespeed, 0, 0));
                                 camera.AddView(new Vector3(movespeed, 0, 0));
                             }
@@ -499,8 +509,9 @@ namespace Volamus_v1
                         {
                             if (position.X > box[1].X) //position.X > box[1].X
                             {
-                                position.X -= movespeed;
-                                MovingBoundingBoxes(new Vector3(-movespeed, 0, 0));
+                                bounce(movespeed, new Vector3(-0.1f, 0, 0));
+                                /*position.X -= movespeed;
+                                MovingBoundingBoxes(new Vector3(-movespeed, 0, 0));*/
                                 camera.AddPosition(new Vector3(-movespeed, 0, 0));
                                 camera.AddView(new Vector3(-movespeed, 0, 0));
                             }
@@ -1000,16 +1011,30 @@ namespace Volamus_v1
             }
         }
         // Controller Ende
+        
+        private void bounce(float distance, Vector3 offset)
+        {
+            float half_distance = distance / 2;
+            while(distance > 0)
+            {
+                if(distance > half_distance)
+                {
+                    position.Z += jump_velocity;
+                    MovingBoundingBoxes(new Vector3(offset.X, offset.Y, jump_velocity));
+                }
+                else
+                {
+                    position.Z -= jump_velocity;
+                    MovingBoundingBoxes(new Vector3(offset.X, offset.Y, -jump_velocity));
+                }
+
+                position += offset;
+                distance -= 0.1f;
+            }
+        }
 
         public void Draw(Camera camera)
         {
-            float temp = 0.0f;
-
-            if(direction == -1)
-            {
-                temp = 180.0f;
-            }
-
             Matrix[] transforms = new Matrix[model.Bones.Count];
             model.CopyAbsoluteBoneTransformsTo(transforms);
 
@@ -1019,27 +1044,9 @@ namespace Volamus_v1
                 {
                     effect.EnableDefaultLighting();
 
-                    effect.World = transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) * Matrix.CreateRotationZ(MathHelper.ToRadians(direction*90)) *
+                    effect.World = transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) * Matrix.CreateRotationZ(MathHelper.ToRadians(direction*90 + direction * (-gamma))) *
                         Matrix.CreateScale(scale)
                         * Matrix.CreateTranslation(position);
-                    effect.View = camera.ViewMatrix;
-                    effect.Projection = camera.ProjectionMatrix;
-                }
-                mesh.Draw();
-            }
-
-            transforms = new Matrix[pfeil.Bones.Count];
-            pfeil.CopyAbsoluteBoneTransformsTo(transforms);
-
-            foreach (ModelMesh mesh in pfeil.Meshes)
-            {
-                foreach (BasicEffect effect in mesh.Effects)
-                {
-                    effect.EnableDefaultLighting();
-
-                    effect.World = transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) * Matrix.CreateRotationZ(MathHelper.ToRadians(temp+(direction)*(-gamma))) *
-                        Matrix.CreateScale(0.03f, 0.05f, 0.01f)
-                        * Matrix.CreateTranslation(new Vector3(position.X, position.Y, 0));
                     effect.View = camera.ViewMatrix;
                     effect.Projection = camera.ProjectionMatrix;
                 }
@@ -1050,6 +1057,34 @@ namespace Volamus_v1
             d.DrawWireBox(innerBoundingBox, Color.White);
             d.DrawWireBox(outerBoundingBox, Color.Black);
             d.End();*/
+        }
+
+        public void DrawArrow(Camera camera)
+        {
+            float temp = 0.0f;
+
+            if (direction == -1)
+            {
+                temp = 180.0f;
+            }
+
+            Matrix[] transforms = new Matrix[pfeil.Bones.Count];
+            pfeil.CopyAbsoluteBoneTransformsTo(transforms);
+
+            foreach (ModelMesh mesh in pfeil.Meshes)
+            {
+                foreach (BasicEffect effect in mesh.Effects)
+                {
+                    effect.EnableDefaultLighting();
+
+                    effect.World = transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) * Matrix.CreateRotationZ(MathHelper.ToRadians(temp + (direction) * (-gamma))) *
+                        Matrix.CreateScale(0.03f, 0.04f, 0.01f)
+                        * Matrix.CreateTranslation(new Vector3(position.X, position.Y, 0));
+                    effect.View = camera.ViewMatrix;
+                    effect.Projection = camera.ProjectionMatrix;
+                }
+                mesh.Draw();
+            }
         }
 
         private void CreateBoundingBoxes()
