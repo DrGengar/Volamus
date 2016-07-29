@@ -3,6 +3,8 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 
+using IrrKlang;
+
 namespace Volamus_v1
 {
 
@@ -38,6 +40,7 @@ namespace Volamus_v1
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
+            GameStateManager.Instance.SoundEngine = new ISoundEngine();
             GameStateManager.Instance.GraphicsDevice = GraphicsDevice;
             GameStateManager.Instance.GraphicsDeviceManager = graphics;
             GameStateManager.Instance.SpriteBatch = spriteBatch;

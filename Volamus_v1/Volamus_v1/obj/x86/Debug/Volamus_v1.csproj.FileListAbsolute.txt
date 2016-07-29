@@ -225,3 +225,4 @@ C:\Users\Lars\Desktop\3dGame\Volamus_v1\Volamus_v1\SharpDX.Direct2D1.xml
 C:\Users\Lars\Desktop\3dGame\Volamus_v1\Volamus_v1\SharpDX.XInput.xml
 C:\Users\Lars\Desktop\3dGame\Volamus_v1\Volamus_v1\SharpDX.RawInput.xml
 C:\Users\Lars\Desktop\3dGame\Volamus_v1\Volamus_v1\SharpDX.Direct3D9.xml
+C:\Users\Lars\Desktop\3dGame\Volamus_v1\Volamus_v1\irrKlang.NET4.dll

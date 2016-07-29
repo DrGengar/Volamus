@@ -10,11 +10,14 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
+using IrrKlang;
+
 namespace Volamus_v1
 {
     public class GameStateManager
     {
         private static GameStateManager instance;
+
         [XmlIgnore]
         public Vector2 dimensions { private set; get; }
         [XmlIgnore]
@@ -26,6 +29,8 @@ namespace Volamus_v1
         public GraphicsDevice GraphicsDevice;
         [XmlIgnore]
         public GraphicsDeviceManager GraphicsDeviceManager;
+        [XmlIgnore]
+        public ISoundEngine SoundEngine;
 
         [XmlIgnore]
         public SpriteBatch SpriteBatch;
