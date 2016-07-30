@@ -28,6 +28,21 @@ namespace Volamus_v1
             get { return projectionMatrix; }
         }
 
+        public Vector3 Position
+        {
+            get { return cameraPos; }
+        }
+
+        public Vector3 View
+        {
+            get { return cameraView; }
+        }
+
+        public Vector3 Up
+        {
+            get { return cameraUp; }
+        }
+
         public Camera(Vector3 camP, Vector3 camV, Vector3 camU)
         {
             cameraPos = camP;

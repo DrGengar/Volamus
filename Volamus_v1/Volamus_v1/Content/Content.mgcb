@@ -343,3 +343,9 @@
 /processorParam:TextureFormat=DxtCompressed
 /build:pfeil.fbx
 
+#begin shader.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:shader.fx
+
