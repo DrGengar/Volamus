@@ -141,7 +141,7 @@ namespace Volamus_v1
         private void BallWithInnerBoundingBox(Player player)
         {
             //Ball mit InnerBoundingBox vom Spieler -> Ball soll abprallen vom Spieler
-            if (Ball.Instance.BoundingSphere.Intersects(player.InnerBoundingBox) && Ball.Instance.IsFlying == true && !player.IsServing && colliding == 0)
+            if (Ball.Instance.BoundingSphere.Intersects(player.InnerBoundingBox) && Ball.Instance.IsFlying == true && !player.IsServing && colliding == 0 && Ball.Instance.Active!=null)
             {
                 Vector3 hitdirection = Ball.Instance.Active.Hit_Direction;
                 float angle_z = MathHelper.ToDegrees((float)Math.Atan((hitdirection.Z / hitdirection.Y)));

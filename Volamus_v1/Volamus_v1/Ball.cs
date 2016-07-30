@@ -13,6 +13,9 @@ namespace Volamus_v1
 {
     public class Ball
     {
+        Effect effect;
+        Vector3 viewVector;
+
         Vector3 position;
         Model model;
         BoundingSphere boundingSphere;
@@ -113,6 +116,8 @@ namespace Volamus_v1
 
         public void LoadContent(Wind _wind)
         {
+            effect = GameStateManager.Instance.Content.Load<Effect>("shader");
+
             model = GameStateManager.Instance.Content.Load<Model>("BeachBall");
             ballShadow = GameStateManager.Instance.Content.Load<Texture2D>("Images/BallShadow");
 
@@ -184,21 +189,29 @@ namespace Volamus_v1
             Matrix[] transforms = new Matrix[model.Bones.Count];
             model.CopyAbsoluteBoneTransformsTo(transforms);
 
-
             foreach (ModelMesh mesh in model.Meshes)
             {
-                foreach (BasicEffect effect in mesh.Effects)
+                foreach (ModelMeshPart part in mesh.MeshParts)
                 {
-                    effect.EnableDefaultLighting();
+                    part.Effect = effect;
+                    effect.Parameters["World"].SetValue(transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) *
+                            Matrix.CreateScale(1.0f, 1.0f, 1.0f)
+                            * Matrix.CreateTranslation(position));
+                    effect.Parameters["View"].SetValue(camera.ViewMatrix);
+                    effect.Parameters["Projection"].SetValue(camera.ProjectionMatrix);
+                    Matrix WorldInverseTransposeMatrix = Matrix.Transpose(Matrix.Invert(transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) *
+                            Matrix.CreateScale(1.0f, 1.0f, 1.0f)
+                            * Matrix.CreateTranslation(position)));
+                    effect.Parameters["WorldInverseTranspose"].SetValue(WorldInverseTransposeMatrix);
 
-                    effect.World = transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) *
-                        Matrix.CreateScale(1.0f, 1.0f, 1.0f)
-                        * Matrix.CreateTranslation(position);
-                    effect.View = camera.ViewMatrix;
-                    effect.Projection = camera.ProjectionMatrix;
+                    viewVector = Vector3.Transform(camera.View - camera.Position, Matrix.CreateRotationY(0));
+                    viewVector.Normalize();
+                    effect.Parameters["ViewVector"].SetValue(viewVector);
                 }
                 mesh.Draw();
             }
+
+
 
             SpriteFont font = GameStateManager.Instance.Content.Load<SpriteFont>("SpriteFonts/Standard");
             String text = Wind.Direction().ToString();

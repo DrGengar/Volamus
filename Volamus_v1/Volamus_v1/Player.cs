@@ -206,7 +206,7 @@ namespace Volamus_v1
                 box[1] = new Vector2(-field.Width / 2, 0);
             }
 
-            camera = new Camera(new Vector3(0, direction * (-60), 20), new Vector3(0, 0, 0), new Vector3(0, direction * 1, 1)); //0,-60,20  0,0,0   0,1,1
+            camera = new Camera(new Vector3(0, direction * (-80), 20), new Vector3(0, 0, 0), new Vector3(0, direction * 1, 1)); //0,-60,20  0,0,0   0,1,1
 
             max_jump_height = m_j_height;
             jump_velocity = j_velo;
@@ -985,6 +985,8 @@ namespace Volamus_v1
                 double_hit = true;
             }
 
+            bool temp = gamepad.IsButtonDown(strongthrow);
+
             if (gamepad.IsButtonDown(strongthrow) && can_hit && !double_hit) //Drückt Knopf und darf schlagen
             {
                 if (is_serving) //Falls man Aufschlag hatte, hat man nach dem Schlagen ihn erstmal nicht mehr (Ball fliegt ja jetzt)
@@ -1060,15 +1062,15 @@ namespace Volamus_v1
 
                     viewVector = Vector3.Transform(camera.View - camera.Position, Matrix.CreateRotationY(0));
                     viewVector.Normalize();
-                    //effect.Parameters["ViewVector"].SetValue(viewVector);
+                    effect.Parameters["ViewVector"].SetValue(viewVector);
                 }
                 mesh.Draw();
             }
 
-            /*d.Begin(camera.ViewMatrix, camera.ProjectionMatrix);
+            d.Begin(camera.ViewMatrix, camera.ProjectionMatrix);
             d.DrawWireBox(innerBoundingBox, Color.White);
             d.DrawWireBox(outerBoundingBox, Color.Black);
-            d.End();*/
+            d.End();
         }
 
     

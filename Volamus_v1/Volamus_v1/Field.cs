@@ -13,6 +13,9 @@ namespace Volamus_v1
     {
         VertexPositionTexture[] fieldVertices = new VertexPositionTexture[12];
 
+        Effect effect;
+        Vector3 viewVector;
+
         int width;
         int length;
         int net_height;
@@ -31,7 +34,7 @@ namespace Volamus_v1
         BoundingBox boundingBox;
 
         //Texturen
-        BasicEffect effect;
+        BasicEffect e;
         Texture2D texture;
 
         DebugDraw d;
@@ -100,13 +103,15 @@ namespace Volamus_v1
             fieldVertices[10].TextureCoordinate = new Vector2(1, 1);
             fieldVertices[11].TextureCoordinate = fieldVertices[2].TextureCoordinate;
 
-            effect = new BasicEffect(GameStateManager.Instance.GraphicsDevice);
+            e = new BasicEffect(GameStateManager.Instance.GraphicsDevice);
 
             d = new DebugDraw(GameStateManager.Instance.GraphicsDevice);
         }
 
         public void LoadContent()
         {
+            effect = GameStateManager.Instance.Content.Load<Effect>("shader");
+
             net = GameStateManager.Instance.Content.Load<Model>("netzv4");
 
             ice = GameStateManager.Instance.Content.Load<Model>("eisschollev1");
@@ -129,13 +134,13 @@ namespace Volamus_v1
             DrawReferee(camera);
             DrawTrillerpf(camera);
 
-            effect.View = camera.ViewMatrix;
-            effect.Projection = camera.ProjectionMatrix;
+            e.View = camera.ViewMatrix;
+            e.Projection = camera.ProjectionMatrix;
 
-            effect.TextureEnabled = true;
-            effect.Texture = texture;
+            e.TextureEnabled = true;
+            e.Texture = texture;
             
-            foreach (var pass in effect.CurrentTechnique.Passes)
+            foreach (var pass in e.CurrentTechnique.Passes)
             {
                 pass.Apply();
 
@@ -154,20 +159,39 @@ namespace Volamus_v1
         {
             Matrix[] transforms = new Matrix[ice.Bones.Count];
             ice.CopyAbsoluteBoneTransformsTo(transforms);
-
             foreach (ModelMesh mesh in ice.Meshes)
             {
-                foreach (BasicEffect effect in mesh.Effects)
+                foreach (ModelMeshPart part in mesh.MeshParts)
                 {
-                    effect.EnableDefaultLighting();
+                    part.Effect = effect;
+                    effect.Parameters["World"].SetValue(transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) * Matrix.CreateScale(0.1f, 0.15f, 0.01f)
+                           * Matrix.CreateTranslation(new Vector3(0, 0, -0.75f)));
+                    effect.Parameters["View"].SetValue(camera.ViewMatrix);
+                    effect.Parameters["Projection"].SetValue(camera.ProjectionMatrix);
+                    Matrix WorldInverseTransposeMatrix = Matrix.Transpose(Matrix.Invert(transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) * Matrix.CreateScale(0.1f, 0.15f, 0.01f)
+                           * Matrix.CreateTranslation(new Vector3(0, 0, -0.75f))));
+                    effect.Parameters["WorldInverseTranspose"].SetValue(WorldInverseTransposeMatrix);
 
-                    effect.World = transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) * Matrix.CreateScale(0.1f, 0.15f, 0.01f)
-                        * Matrix.CreateTranslation(new Vector3(0, 0, -0.75f));
-                    effect.View = camera.ViewMatrix;
-                    effect.Projection = camera.ProjectionMatrix;
+                    viewVector = Vector3.Transform(camera.View - camera.Position, Matrix.CreateRotationY(0));
+                    viewVector.Normalize();
+                    effect.Parameters["ViewVector"].SetValue(viewVector);
                 }
                 mesh.Draw();
             }
+
+            /*   foreach (ModelMesh mesh in ice.Meshes)
+               {
+                   foreach (BasicEffect effect in mesh.Effects)
+                   {
+                       effect.EnableDefaultLighting();
+
+                       effect.World = transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) * Matrix.CreateScale(0.1f, 0.15f, 0.01f)
+                           * Matrix.CreateTranslation(new Vector3(0, 0, -0.75f));
+                       effect.View = camera.ViewMatrix;
+                       effect.Projection = camera.ProjectionMatrix;
+                   }
+                   mesh.Draw();
+               }*/
         }
 
 
@@ -179,17 +203,37 @@ namespace Volamus_v1
 
             foreach (ModelMesh mesh in net.Meshes)
             {
-                foreach (BasicEffect effect in mesh.Effects)
+                foreach (ModelMeshPart part in mesh.MeshParts)
                 {
-                    effect.EnableDefaultLighting();
+                    part.Effect = effect;
+                    effect.Parameters["World"].SetValue(transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) * Matrix.CreateScale(0.05f, 0.025f, 0.025f)
+                            * Matrix.CreateTranslation(new Vector3(0, 0, 0)));
+                    effect.Parameters["View"].SetValue(camera.ViewMatrix);
+                    effect.Parameters["Projection"].SetValue(camera.ProjectionMatrix);
+                    Matrix WorldInverseTransposeMatrix = Matrix.Transpose(transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) * Matrix.CreateScale(0.05f, 0.025f, 0.025f)
+                            * Matrix.CreateTranslation(new Vector3(0, 0, 0)));
+                    effect.Parameters["WorldInverseTranspose"].SetValue(WorldInverseTransposeMatrix);
 
-                    effect.World = transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) * Matrix.CreateScale(0.05f, 0.025f, 0.025f)
-                        * Matrix.CreateTranslation(new Vector3(0, 0, 0));
-                    effect.View = camera.ViewMatrix;
-                    effect.Projection = camera.ProjectionMatrix;
+                    viewVector = Vector3.Transform(camera.View - camera.Position, Matrix.CreateRotationY(0));
+                    viewVector.Normalize();
+                    effect.Parameters["ViewVector"].SetValue(viewVector);
                 }
                 mesh.Draw();
             }
+
+            /*    foreach (ModelMesh mesh in net.Meshes)
+                {
+                    foreach (BasicEffect effect in mesh.Effects)
+                    {
+                        effect.EnableDefaultLighting();
+
+                        effect.World = transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) * Matrix.CreateScale(0.05f, 0.025f, 0.025f)
+                            * Matrix.CreateTranslation(new Vector3(0, 0, 0));
+                        effect.View = camera.ViewMatrix;
+                        effect.Projection = camera.ProjectionMatrix;
+                    }
+                    mesh.Draw();
+                }*/
         }
 
 
@@ -201,38 +245,80 @@ namespace Volamus_v1
 
             foreach (ModelMesh mesh in referee.Meshes)
             {
-                foreach (BasicEffect effect in mesh.Effects)
+                foreach (ModelMeshPart part in mesh.MeshParts)
                 {
-                    effect.EnableDefaultLighting();
+                    part.Effect = effect;
+                    effect.Parameters["World"].SetValue(transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) * Matrix.CreateScale(0.075f, 0.075f, 0.075f)
+                          * Matrix.CreateTranslation(new Vector3(70, 0, 0)));
+                    effect.Parameters["View"].SetValue(camera.ViewMatrix);
+                    effect.Parameters["Projection"].SetValue(camera.ProjectionMatrix);
+                    Matrix WorldInverseTransposeMatrix = Matrix.Transpose(Matrix.Invert(transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) * Matrix.CreateScale(0.075f, 0.075f, 0.075f)
+                          * Matrix.CreateTranslation(new Vector3(70, 0, 0))));
+                    effect.Parameters["WorldInverseTranspose"].SetValue(WorldInverseTransposeMatrix);
 
-                    effect.World = transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) * Matrix.CreateScale(0.075f, 0.075f, 0.075f)
-                        * Matrix.CreateTranslation(new Vector3(70, 0, 0));
-                    effect.View = camera.ViewMatrix;
-                    effect.Projection = camera.ProjectionMatrix;
+                    viewVector = Vector3.Transform(camera.View - camera.Position, Matrix.CreateRotationY(0));
+                    viewVector.Normalize();
+                    effect.Parameters["ViewVector"].SetValue(viewVector);
                 }
                 mesh.Draw();
             }
+
+            /*  foreach (ModelMesh mesh in referee.Meshes)
+              {
+                  foreach (BasicEffect effect in mesh.Effects)
+                  {
+                      effect.EnableDefaultLighting();
+
+                      effect.World = transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) * Matrix.CreateScale(0.075f, 0.075f, 0.075f)
+                          * Matrix.CreateTranslation(new Vector3(70, 0, 0));
+                      effect.View = camera.ViewMatrix;
+                      effect.Projection = camera.ProjectionMatrix;
+                  }
+                  mesh.Draw();
+              }*/
         }
 
         private void DrawTrillerpf(Camera camera)
         {
             Matrix[] transforms = new Matrix[trillerpf.Bones.Count];
             trillerpf.CopyAbsoluteBoneTransformsTo(transforms);
-
             foreach (ModelMesh mesh in trillerpf.Meshes)
             {
-                foreach (BasicEffect effect in mesh.Effects)
+                foreach (ModelMeshPart part in mesh.MeshParts)
                 {
-                    effect.EnableDefaultLighting();
+                    part.Effect = effect;
+                    effect.Parameters["World"].SetValue(transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90))
+                           * Matrix.CreateRotationY(MathHelper.ToRadians(-10)) * Matrix.CreateScale(0.03f, 0.03f, 0.03f)
+                           * Matrix.CreateTranslation(new Vector3(66.5f, 0, 4)));
+                    effect.Parameters["View"].SetValue(camera.ViewMatrix);
+                    effect.Parameters["Projection"].SetValue(camera.ProjectionMatrix);
+                    Matrix WorldInverseTransposeMatrix = Matrix.Transpose(Matrix.Invert(transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90))
+                           * Matrix.CreateRotationY(MathHelper.ToRadians(-10)) * Matrix.CreateScale(0.03f, 0.03f, 0.03f)
+                           * Matrix.CreateTranslation(new Vector3(66.5f, 0, 4))));
+                    effect.Parameters["WorldInverseTranspose"].SetValue(WorldInverseTransposeMatrix);
 
-                    effect.World = transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) 
-                        * Matrix.CreateRotationY(MathHelper.ToRadians(-10)) * Matrix.CreateScale(0.03f, 0.03f, 0.03f)
-                        * Matrix.CreateTranslation(new Vector3(66.5f, 0, 4));
-                    effect.View = camera.ViewMatrix;
-                    effect.Projection = camera.ProjectionMatrix;
+                    viewVector = Vector3.Transform(camera.View - camera.Position, Matrix.CreateRotationY(0));
+                    viewVector.Normalize();
+                    effect.Parameters["ViewVector"].SetValue(viewVector);
                 }
                 mesh.Draw();
             }
+
+
+            /*   foreach (ModelMesh mesh in trillerpf.Meshes)
+               {
+                   foreach (BasicEffect effect in mesh.Effects)
+                   {
+                       effect.EnableDefaultLighting();
+
+                       effect.World = transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) 
+                           * Matrix.CreateRotationY(MathHelper.ToRadians(-10)) * Matrix.CreateScale(0.03f, 0.03f, 0.03f)
+                           * Matrix.CreateTranslation(new Vector3(66.5f, 0, 4));
+                       effect.View = camera.ViewMatrix;
+                       effect.Projection = camera.ProjectionMatrix;
+                   }
+                   mesh.Draw();
+               }*/
         }
 
         private void CreateNetBoundingBox()

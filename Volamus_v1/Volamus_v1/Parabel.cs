@@ -78,7 +78,12 @@ namespace Volamus_v1
             position.Z = z + velocity * (float)Math.Sin(MathHelper.ToRadians(alpha)) * t - (g / 2) * t * t;
             position.Y = y + (direction) * velocity * (float)Math.Cos(MathHelper.ToRadians(betta)) * t;
             position.X = position.X + (float)Math.Sin(MathHelper.ToRadians(gamma)) + t * wind.Direction(); ;
-            t = t + 0.04f;
+            t = t + 0.01f;
+
+            if(position.Z - Ball.Instance.BoundingSphere.Radius < 0)
+            {
+                position.Z = Ball.Instance.BoundingSphere.Radius;
+            }
 
             hitdirection = position - lastPosition;
             
