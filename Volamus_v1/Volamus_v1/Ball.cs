@@ -16,6 +16,10 @@ namespace Volamus_v1
         Vector3 position;
         Model model;
         BoundingSphere boundingSphere;
+        Texture2D ballShadow;
+
+        VertexPositionTexture[] shadowVertices = new VertexPositionTexture[6];
+        BasicEffect e;
 
         private static Ball instance;
 
@@ -84,9 +88,33 @@ namespace Volamus_v1
             d = new DebugDraw(GameStateManager.Instance.GraphicsDevice);
         }
 
+        public void Initialize()
+        {
+            float r = boundingSphere.Radius;
+            shadowVertices[0].Position = new Vector3(position.X - r, position.Y - r, 0.01f);
+            shadowVertices[1].Position = new Vector3(position.X - r, position.Y + r, 0.01f);
+            shadowVertices[2].Position = new Vector3(position.X + r, position.Y - r, 0.01f);
+
+            shadowVertices[3].Position = shadowVertices[1].Position;
+            shadowVertices[4].Position = new Vector3(position.X + r, position.Y + r, 0.01f);
+            shadowVertices[5].Position = shadowVertices[2].Position;
+
+            shadowVertices[0].TextureCoordinate = new Vector2(0, 0);
+            shadowVertices[1].TextureCoordinate = new Vector2(0, 1);
+            shadowVertices[2].TextureCoordinate = new Vector2(1, 0);
+
+            shadowVertices[3].TextureCoordinate = shadowVertices[1].TextureCoordinate;
+            shadowVertices[4].TextureCoordinate = new Vector2(1, 1);
+            shadowVertices[5].TextureCoordinate = shadowVertices[2].TextureCoordinate;
+
+
+            e = new BasicEffect(GameStateManager.Instance.GraphicsDevice);
+        }
+
         public void LoadContent(Wind _wind)
         {
             model = GameStateManager.Instance.Content.Load<Model>("BeachBall");
+            ballShadow = GameStateManager.Instance.Content.Load<Texture2D>("Images/BallShadow");
 
             //BoundingSphere erstellen
             boundingSphere = new BoundingSphere();
@@ -104,6 +132,8 @@ namespace Volamus_v1
             boundingSphere.Center = position;
 
             wind = _wind;
+
+            Initialize();
         }
 
         public void Update()
@@ -125,10 +155,32 @@ namespace Volamus_v1
 
             //BoundingSphere Position updaten auf aktuelle neue Position
             boundingSphere.Center = position;
+
+            float r = boundingSphere.Radius;
+            shadowVertices[0].Position = new Vector3(position.X - r, position.Y - r, 0.01f);
+            shadowVertices[1].Position = new Vector3(position.X - r, position.Y + r, 0.01f);
+            shadowVertices[2].Position = new Vector3(position.X + r, position.Y - r, 0.01f);
+
+            shadowVertices[3].Position = shadowVertices[1].Position;
+            shadowVertices[4].Position = new Vector3(position.X + r, position.Y + r, 0.01f);
+            shadowVertices[5].Position = shadowVertices[2].Position;
         }
 
         public void Draw(Camera camera)
         {
+            e.View = camera.ViewMatrix;
+            e.Projection = camera.ProjectionMatrix;
+
+            e.TextureEnabled = true;
+            e.Texture = ballShadow;
+
+            foreach (var pass in e.CurrentTechnique.Passes)
+            {
+                pass.Apply();
+
+                GameStateManager.Instance.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, shadowVertices, 0, 2);
+            }
+
             Matrix[] transforms = new Matrix[model.Bones.Count];
             model.CopyAbsoluteBoneTransformsTo(transforms);
 
