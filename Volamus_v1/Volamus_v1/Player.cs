@@ -216,7 +216,7 @@ namespace Volamus_v1
             gamma = 0.0f;
             touch_count = 0;
 
-            scale = new Vector3(3.0f, 3.0f, 3.0f);
+            scale = new Vector3(3.0f, 3.0f, 3.0f); //0.025
 
             d = new DebugDraw(GameStateManager.Instance.GraphicsDevice);
         }
@@ -253,7 +253,7 @@ namespace Volamus_v1
         {
             effect = GameStateManager.Instance.Content.Load<Effect>("shader");
 
-            model = GameStateManager.Instance.Content.Load<Model>("pinguinv2");
+            model = GameStateManager.Instance.Content.Load<Model>("pinguin");
 
             points_font = GameStateManager.Instance.Content.Load<SpriteFont>("SpriteFonts/Standard");
 

@@ -298,3 +298,6 @@ C:\Users\Lars\Desktop\3dGame2\Volamus_v1\Volamus_v1\SharpDX.RawInput.xml
 C:\Users\Lars\Desktop\3dGame2\Volamus_v1\Volamus_v1\SharpDX.Direct3D9.xml
 C:\Users\Lars\Desktop\3dGame2\Volamus_v1\Volamus_v1\Content\Images\BallShadow.xnb
 C:\Users\Ich\Desktop\3dGame\Volamus_v1\Volamus_v1\Content\Images\BallShadow.xnb
+C:\Users\Ich\Desktop\3dGame\Volamus_v1\Volamus_v1\Content\Images\pinguinSubDiv.xnb
+C:\Users\Ich\Desktop\3dGame\Volamus_v1\Volamus_v1\Content\pinguinSubDiv.xnb
+C:\Users\Ich\Desktop\3dGame\Volamus_v1\Volamus_v1\Content\pinguin.xnb
