@@ -593,6 +593,9 @@ namespace Volamus_v1
 
             if (Keyboard.GetState().IsKeyDown(weakthrow) && can_hit && !double_hit) //Drückt Knopf und darf schlagen
             {
+                GameStateManager.Instance.SoundEffects.SoundVolume = 0.4f;
+                GameStateManager.Instance.SoundEffects.Play2D("Content//Sound//Ball.ogg");
+
                 if (is_serving) //Falls man Aufschlag hatte, hat man nach dem Schlagen ihn erstmal nicht mehr (Ball fliegt ja jetzt)
                 {
                     is_serving = false;
@@ -637,6 +640,9 @@ namespace Volamus_v1
 
             if (Keyboard.GetState().IsKeyDown(strongthrow) && can_hit && !double_hit) //Drückt Knopf und darf schlagen
             {
+                GameStateManager.Instance.SoundEffects.SoundVolume = 1.0f;
+                GameStateManager.Instance.SoundEffects.Play2D("Content//Sound//Ball.ogg");
+
                 if (is_serving) //Falls man Aufschlag hatte, hat man nach dem Schlagen ihn erstmal nicht mehr (Ball fliegt ja jetzt)
                 {
                     is_serving = false;
@@ -958,6 +964,9 @@ namespace Volamus_v1
 
             if (gamepad.IsButtonDown(weakthrow) && can_hit && !double_hit) //Drückt Knopf und darf schlagen
             {
+                GameStateManager.Instance.SoundEffects.SoundVolume = 0.4f;
+                GameStateManager.Instance.SoundEffects.Play2D("Content//Sound//Ball.ogg");
+
                 if (is_serving) //Falls man Aufschlag hatte, hat man nach dem Schlagen ihn erstmal nicht mehr (Ball fliegt ja jetzt)
                 {
                     is_serving = false;
@@ -1004,6 +1013,9 @@ namespace Volamus_v1
 
             if (gamepad.IsButtonDown(strongthrow) && can_hit && !double_hit) //Drückt Knopf und darf schlagen
             {
+                GameStateManager.Instance.SoundEffects.SoundVolume = 1.0f;
+                GameStateManager.Instance.SoundEffects.Play2D("Content//Sound//Ball.ogg");
+
                 if (is_serving) //Falls man Aufschlag hatte, hat man nach dem Schlagen ihn erstmal nicht mehr (Ball fliegt ja jetzt)
                 {
                     is_serving = false;

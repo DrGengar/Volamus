@@ -303,3 +303,7 @@ C:\Users\Ich\Desktop\3dGame\Volamus_v1\Volamus_v1\Content\pinguinSubDiv.xnb
 C:\Users\Ich\Desktop\3dGame\Volamus_v1\Volamus_v1\Content\pinguin.xnb
 C:\Users\Ich\Desktop\3dGame\Volamus_v1\Volamus_v1\Content\PingWingLeft.xnb
 C:\Users\Ich\Desktop\3dGame\Volamus_v1\Volamus_v1\Content\PingWingRight.xnb
+C:\Users\Ich\Desktop\3dGame\Volamus_v1\Volamus_v1\Content\Sound\Ball.wma
+C:\Users\Ich\Desktop\3dGame\Volamus_v1\Volamus_v1\Content\Sound\Ball.xnb
+C:\Users\Ich\Desktop\3dGame\Volamus_v1\Volamus_v1\Content\Sound\child_crowd_cheering.wma
+C:\Users\Ich\Desktop\3dGame\Volamus_v1\Volamus_v1\Content\Sound\child_crowd_cheering.xnb

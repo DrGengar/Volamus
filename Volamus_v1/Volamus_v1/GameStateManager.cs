@@ -30,7 +30,9 @@ namespace Volamus_v1
         [XmlIgnore]
         public GraphicsDeviceManager GraphicsDeviceManager;
         [XmlIgnore]
-        public ISoundEngine SoundEngine;
+        public ISoundEngine BackgroundSound;
+        [XmlIgnore]
+        public ISoundEngine SoundEffects;
 
         [XmlIgnore]
         public SpriteBatch SpriteBatch;

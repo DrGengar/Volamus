@@ -40,7 +40,8 @@ namespace Volamus_v1
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            GameStateManager.Instance.SoundEngine = new ISoundEngine();
+            GameStateManager.Instance.BackgroundSound = new ISoundEngine();
+            GameStateManager.Instance.SoundEffects = new ISoundEngine();
             GameStateManager.Instance.GraphicsDevice = GraphicsDevice;
             GameStateManager.Instance.GraphicsDeviceManager = graphics;
             GameStateManager.Instance.SpriteBatch = spriteBatch;

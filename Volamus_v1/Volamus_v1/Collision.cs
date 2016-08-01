@@ -59,6 +59,9 @@ namespace Volamus_v1
                     //Wenn außerhalb des Feldes: Gegner von LastTouched +1 Punkt und bekommt Aufschlag
                     if (Ball.Instance.Position.X > (field.Width / 2) || Ball.Instance.Position.X < -(field.Width / 2) || Ball.Instance.Position.Y > (field.Length / 2) || Ball.Instance.Position.Y < -(field.Length / 2))
                     {
+                        GameStateManager.Instance.SoundEffects.SoundVolume = 0.3f;
+                        GameStateManager.Instance.SoundEffects.Play2D("Content//Sound//child_crowd_cheering.ogg");
+
                         lastTouched.Enemy.Points += 1;
                         lastTouched.Enemy.IsServing = true;
 
@@ -72,6 +75,9 @@ namespace Volamus_v1
 
                         if (lastTouched.Direction * Ball.Instance.Position.Y < min)
                         {
+                            GameStateManager.Instance.SoundEffects.SoundVolume = 0.3f;
+                            GameStateManager.Instance.SoundEffects.Play2D("Content//Sound//child_crowd_cheering.ogg");
+
                             lastTouched.Enemy.Points += 1;
                             lastTouched.Enemy.IsServing = true;
 
@@ -80,6 +86,9 @@ namespace Volamus_v1
                         }
                         else
                         {
+                            GameStateManager.Instance.SoundEffects.SoundVolume = 0.3f;
+                            GameStateManager.Instance.SoundEffects.Play2D("Content//Sound//child_crowd_cheering.ogg");
+
                             lastTouched.Points += 1;
                             lastTouched.IsServing = true;
 

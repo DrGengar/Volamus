@@ -380,3 +380,15 @@
 /processorParam:TextureFormat=DxtCompressed
 /build:PingWingRight.fbx
 
+#begin Sound/Ball.ogg
+/importer:OggImporter
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Sound/Ball.ogg
+
+#begin Sound/child_crowd_cheering.ogg
+/importer:OggImporter
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Sound/child_crowd_cheering.ogg
+
