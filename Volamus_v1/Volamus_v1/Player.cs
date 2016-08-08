@@ -63,6 +63,7 @@ namespace Volamus_v1
         Model rightWing;
         Vector3 rightWingPosition;
 
+
         int direction; //1, if Position.Y < 0, -1 if Position.Y > 0
         bool is_jumping = false;
         bool is_falling = false;
@@ -258,8 +259,19 @@ namespace Volamus_v1
             effect = GameStateManager.Instance.Content.Load<Effect>("shader");
 
             model = GameStateManager.Instance.Content.Load<Model>("pinguin");
-            leftWing = GameStateManager.Instance.Content.Load<Model>("PingWingLeft");
-            rightWing = GameStateManager.Instance.Content.Load<Model>("PingWingRight");
+
+            // right und left jeweils aus der Sicht des Pinguins
+            if (direction == 1)
+            {
+                leftWing = GameStateManager.Instance.Content.Load<Model>("Left"); //PingWingLeft
+                rightWing = GameStateManager.Instance.Content.Load<Model>("Right2");
+            }
+            else
+            {
+                leftWing = GameStateManager.Instance.Content.Load<Model>("Right2"); //PingWingLeft
+                rightWing = GameStateManager.Instance.Content.Load<Model>("Left");
+            }
+
 
             points_font = GameStateManager.Instance.Content.Load<SpriteFont>("SpriteFonts/Standard");
 
@@ -289,7 +301,7 @@ namespace Volamus_v1
         //Update
         private void UpdateKeyboard(Field field, Keys Up, Keys Down, Keys Left, Keys Right, Keys Jump, Keys weak, Keys strong, Keys l, Keys r)
         {
-            
+
             keyboard.newstate = Keyboard.GetState();
 
             camera.Update();
@@ -571,10 +583,20 @@ namespace Volamus_v1
 
             keyboard.oldstate = keyboard.newstate;
 
-    
-            leftWingPosition = new Vector3(position.X - 2, position.Y, position.Z-3);
-            rightWingPosition = new Vector3(position.X +2, position.Y, position.Z-3);
-            
+            if (direction == 1)
+            {
+                leftWingPosition = new Vector3(position.X - 2, position.Y + 1, position.Z - 2);
+                rightWingPosition = new Vector3(position.X + 2, position.Y + 1, position.Z - 2);
+            }
+            else
+            {
+                leftWingPosition = new Vector3(position.X - 2, position.Y - 1, position.Z - 2);
+                rightWingPosition = new Vector3(position.X + 2, position.Y - 1, position.Z - 2);
+            }
+
+
+
+
         }
 
         //Schwacher Schlag
@@ -944,8 +966,19 @@ namespace Volamus_v1
 
             gamepad.oldstate = gamepad.newstate;
 
-            leftWingPosition = new Vector3(position.X - 2, position.Y, position.Z-3);
-            rightWingPosition = new Vector3(position.X + 2, position.Y, position.Z-3);
+            if (direction == 1)
+            {
+                leftWingPosition = new Vector3(position.X - 2, position.Y + 1, position.Z - 2);
+                rightWingPosition = new Vector3(position.X + 2, position.Y + 1, position.Z - 2);
+            }
+            else
+            {
+                leftWingPosition = new Vector3(position.X - 2, position.Y - 1, position.Z - 2);
+                rightWingPosition = new Vector3(position.X + 2, position.Y - 1, position.Z - 2);
+            }
+
+
+
         }
 
         //Schwacher Schlag
@@ -1044,13 +1077,13 @@ namespace Volamus_v1
             }
         }
         // Controller Ende
-        
+
         private void bounce(float distance, Vector3 offset)
         {
             float half_distance = distance / 2;
-            while(distance > 0)
+            while (distance > 0)
             {
-                if(distance > half_distance)
+                if (distance > half_distance)
                 {
                     position.Z += jump_velocity;
                     MovingBoundingBoxes(new Vector3(offset.X, offset.Y, jump_velocity));
@@ -1093,8 +1126,9 @@ namespace Volamus_v1
                 }
                 mesh.Draw();
 
-                DrawWingLeft(camera);
-                DrawWingRight(camera);
+                DrawWing(camera, leftWing, leftWingPosition);
+                DrawWing(camera, rightWing, rightWingPosition);
+
 
 
             }
@@ -1105,24 +1139,25 @@ namespace Volamus_v1
             d.End();
         }
 
-        public void DrawWingLeft(Camera camera)
-        {
-            Matrix[] transforms = new Matrix[leftWing.Bones.Count];
-            leftWing.CopyAbsoluteBoneTransformsTo(transforms);
 
-            foreach (ModelMesh mesh in leftWing.Meshes)
+        public void DrawWing(Camera camera, Model wing, Vector3 position)
+        {
+            Matrix[] transforms = new Matrix[wing.Bones.Count];
+            wing.CopyAbsoluteBoneTransformsTo(transforms);
+
+            foreach (ModelMesh mesh in wing.Meshes)
             {
                 foreach (ModelMeshPart part in mesh.MeshParts)
                 {
                     part.Effect = effect;
                     effect.Parameters["World"].SetValue(transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) * Matrix.CreateRotationZ(MathHelper.ToRadians(direction * 90 + direction * (-gamma))) *
-                          Matrix.CreateScale(scale*5)
-                          * Matrix.CreateTranslation(leftWingPosition));
+                          Matrix.CreateScale(scale * 4)
+                          * Matrix.CreateTranslation(position));
                     effect.Parameters["View"].SetValue(camera.ViewMatrix);
                     effect.Parameters["Projection"].SetValue(camera.ProjectionMatrix);
                     Matrix WorldInverseTransposeMatrix = Matrix.Transpose(Matrix.Invert(transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) * Matrix.CreateRotationZ(MathHelper.ToRadians(direction * 90 + direction * (-gamma))) *
-                          Matrix.CreateScale(scale*5)
-                          * Matrix.CreateTranslation(leftWingPosition)));
+                          Matrix.CreateScale(scale * 5)
+                          * Matrix.CreateTranslation(position)));
                     effect.Parameters["WorldInverseTranspose"].SetValue(WorldInverseTransposeMatrix);
 
                     viewVector = Vector3.Transform(camera.View - camera.Position, Matrix.CreateRotationY(0));
@@ -1133,33 +1168,6 @@ namespace Volamus_v1
             }
         }
 
-        public void DrawWingRight(Camera camera)
-        {
-            Matrix[] transforms = new Matrix[rightWing.Bones.Count];
-            rightWing.CopyAbsoluteBoneTransformsTo(transforms);
-
-            foreach (ModelMesh mesh in rightWing.Meshes)
-            {
-                foreach (ModelMeshPart part in mesh.MeshParts)
-                {
-                    part.Effect = effect;
-                    effect.Parameters["World"].SetValue(transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) * Matrix.CreateRotationZ(MathHelper.ToRadians(direction * 90 + direction * (-gamma))) *
-                          Matrix.CreateScale(scale*2)
-                          * Matrix.CreateTranslation(rightWingPosition));
-                    effect.Parameters["View"].SetValue(camera.ViewMatrix);
-                    effect.Parameters["Projection"].SetValue(camera.ProjectionMatrix);
-                    Matrix WorldInverseTransposeMatrix = Matrix.Transpose(Matrix.Invert(transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) * Matrix.CreateRotationZ(MathHelper.ToRadians(direction * 90 + direction * (-gamma))) *
-                          Matrix.CreateScale(scale*2)
-                          * Matrix.CreateTranslation(rightWingPosition)));
-                    effect.Parameters["WorldInverseTranspose"].SetValue(WorldInverseTransposeMatrix);
-
-                    viewVector = Vector3.Transform(camera.View - camera.Position, Matrix.CreateRotationY(0));
-                    viewVector.Normalize();
-                    effect.Parameters["ViewVector"].SetValue(viewVector);
-                }
-                mesh.Draw();
-            }
-        }
 
         public void DrawArrow(Camera camera)
         {
