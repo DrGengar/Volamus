@@ -62,6 +62,8 @@ namespace Volamus_v1
         Vector3 leftWingPosition;
         Model rightWing;
         Vector3 rightWingPosition;
+        float betta;
+        float bettaAlt;
 
 
         int direction; //1, if Position.Y < 0, -1 if Position.Y > 0
@@ -198,6 +200,7 @@ namespace Volamus_v1
         {
             position = pos;
 
+
             if (position.Y < 0)
             {
                 direction = 1;
@@ -220,8 +223,10 @@ namespace Volamus_v1
             points = 0;
             gamma = 0.0f;
             touch_count = 0;
+            betta = 0.0f;
+            bettaAlt = 1.0f;
 
-            scale = new Vector3(3.0f, 3.0f, 3.0f); //0.025
+            scale = new Vector3(4.0f, 4.0f, 4.0f); //0.025
 
             d = new DebugDraw(GameStateManager.Instance.GraphicsDevice);
         }
@@ -263,13 +268,13 @@ namespace Volamus_v1
             // right und left jeweils aus der Sicht des Pinguins
             if (direction == 1)
             {
-                leftWing = GameStateManager.Instance.Content.Load<Model>("Left"); //PingWingLeft
-                rightWing = GameStateManager.Instance.Content.Load<Model>("Right2");
+                leftWing = GameStateManager.Instance.Content.Load<Model>("leftneu2"); //PingWingLeft
+                rightWing = GameStateManager.Instance.Content.Load<Model>("rightneu2");
             }
             else
             {
-                leftWing = GameStateManager.Instance.Content.Load<Model>("Right2"); //PingWingLeft
-                rightWing = GameStateManager.Instance.Content.Load<Model>("Left");
+                leftWing = GameStateManager.Instance.Content.Load<Model>("rightneu2"); //PingWingLeft
+                rightWing = GameStateManager.Instance.Content.Load<Model>("leftneu2");
             }
 
 
@@ -305,6 +310,13 @@ namespace Volamus_v1
             keyboard.newstate = Keyboard.GetState();
 
             camera.Update();
+
+            //wenn der Spieler steht, werden die Bettas zurückgesetzt
+            if (keyboard.IsKeyUp(Up) && keyboard.IsKeyUp(Down) && keyboard.IsKeyUp(Left) && keyboard.IsKeyUp(Right))
+            {
+                betta = 0.0f;
+                bettaAlt = 1.0f;
+            }
 
             //jeder Spieler braucht einen Winkel Gamma, den er verändern kann mit Eingaben
             if (direction == 1)
@@ -347,6 +359,38 @@ namespace Volamus_v1
                 {
                     if (keyboard.IsKeyDown(Left))
                     {
+                        //watscheln
+                        if (betta <= 0 && betta >= -5 && betta <= bettaAlt)
+                        {
+                            bettaAlt = betta;
+                            betta--;
+                        }
+                        if (betta < -5)
+                        {
+                            betta = -5;
+                            bettaAlt = -6;
+                        }
+                        if (betta <= 0 && betta >= -5 && betta >= bettaAlt)
+                        {
+                            bettaAlt = betta;
+                            betta++;
+                        }
+                        if (betta <= 5 && betta >= 0 && betta >= bettaAlt)
+                        {
+                            bettaAlt = betta;
+                            betta++;
+                        }
+                        if (betta > 5)
+                        {
+                            betta = 5;
+                            bettaAlt = 6;
+                        }
+                        if (betta <= 5 && betta >= 0 && betta <= bettaAlt)
+                        {
+                            bettaAlt = betta;
+                            betta--;
+                        }
+
                         if (direction == 1)
                         {
                             if (position.X > box[0].X) //position.X > box[0].X
@@ -373,6 +417,38 @@ namespace Volamus_v1
 
                     if (keyboard.IsKeyDown(Right))
                     {
+                        //watscheln
+                        if (betta <= 0 && betta >= -5 && betta <= bettaAlt)
+                        {
+                            bettaAlt = betta;
+                            betta--;
+                        }
+                        if (betta < -5)
+                        {
+                            betta = -5;
+                            bettaAlt = -6;
+                        }
+                        if (betta <= 0 && betta >= -5 && betta >= bettaAlt)
+                        {
+                            bettaAlt = betta;
+                            betta++;
+                        }
+                        if (betta <= 5 && betta >= 0 && betta >= bettaAlt)
+                        {
+                            bettaAlt = betta;
+                            betta++;
+                        }
+                        if (betta > 5)
+                        {
+                            betta = 5;
+                            bettaAlt = 6;
+                        }
+                        if (betta <= 5 && betta >= 0 && betta <= bettaAlt)
+                        {
+                            bettaAlt = betta;
+                            betta--;
+                        }
+
                         if (direction == 1)
                         {
                             if (position.X < box[1].X) //position.X < box[1].X
@@ -443,10 +519,45 @@ namespace Volamus_v1
                 WeakThrow(weak);
                 StrongThrow(strong);
 
+
+
                 if (!is_jumping)
                 {
                     if (keyboard.IsKeyDown(Up))
                     {
+                        //watscheln
+                        if (betta <= 0 && betta >= -5 && betta <= bettaAlt)
+                        {
+                            bettaAlt = betta;
+                            betta--;
+                        }
+                        if (betta < -5)
+                        {
+                            betta = -5;
+                            bettaAlt = -6;
+                        }
+                        if (betta <= 0 && betta >= -5 && betta >= bettaAlt)
+                        {
+                            bettaAlt = betta;
+                            betta++;
+                        }
+                        if (betta <= 5 && betta >= 0 && betta >= bettaAlt)
+                        {
+                            bettaAlt = betta;
+                            betta++;
+                        }
+                        if (betta > 5)
+                        {
+                            betta = 5;
+                            bettaAlt = 6;
+                        }
+                        if (betta <= 5 && betta >= 0 && betta <= bettaAlt)
+                        {
+                            bettaAlt = betta;
+                            betta--;
+                        }
+
+
                         if (direction == 1)
                         {
                             if (!Collision.Instance.PlayerWithNet(this, field)) //Collision Spieler mit Netz
@@ -469,8 +580,41 @@ namespace Volamus_v1
 
                     if (keyboard.IsKeyDown(Left))
                     {
+                        //watscheln
+                        if (betta <= 0 && betta >= -5 && betta <= bettaAlt)
+                        {
+                            bettaAlt = betta;
+                            betta--;
+                        }
+                        if (betta < -5)
+                        {
+                            betta = -5;
+                            bettaAlt = -6;
+                        }
+                        if (betta <= 0 && betta >= -5 && betta >= bettaAlt)
+                        {
+                            bettaAlt = betta;
+                            betta++;
+                        }
+                        if (betta <= 5 && betta >= 0 && betta >= bettaAlt)
+                        {
+                            bettaAlt = betta;
+                            betta++;
+                        }
+                        if (betta > 5)
+                        {
+                            betta = 5;
+                            bettaAlt = 6;
+                        }
+                        if (betta <= 5 && betta >= 0 && betta <= bettaAlt)
+                        {
+                            bettaAlt = betta;
+                            betta--;
+                        }
+
                         if (direction == 1)
                         {
+
                             if (position.X > box[0].X) //position.X > box[0].X
                             {
                                 bounce(movespeed, new Vector3(-0.1f, 0, 0));
@@ -495,6 +639,38 @@ namespace Volamus_v1
 
                     if (keyboard.IsKeyDown(Down))
                     {
+                        //watscheln
+                        if (betta <= 0 && betta >= -5 && betta <= bettaAlt)
+                        {
+                            bettaAlt = betta;
+                            betta--;
+                        }
+                        if (betta < -5)
+                        {
+                            betta = -5;
+                            bettaAlt = -6;
+                        }
+                        if (betta <= 0 && betta >= -5 && betta >= bettaAlt)
+                        {
+                            bettaAlt = betta;
+                            betta++;
+                        }
+                        if (betta <= 5 && betta >= 0 && betta >= bettaAlt)
+                        {
+                            bettaAlt = betta;
+                            betta++;
+                        }
+                        if (betta > 5)
+                        {
+                            betta = 5;
+                            bettaAlt = 6;
+                        }
+                        if (betta <= 5 && betta >= 0 && betta <= bettaAlt)
+                        {
+                            bettaAlt = betta;
+                            betta--;
+                        }
+
                         if (direction == 1)
                         {
                             if (position.Y > box[0].Y) //position.Y > box[0].Y
@@ -517,8 +693,41 @@ namespace Volamus_v1
 
                     if (keyboard.IsKeyDown(Right))
                     {
+                        //watscheln
+                        if (betta <= 0 && betta >= -5 && betta <= bettaAlt)
+                        {
+                            bettaAlt = betta;
+                            betta--;
+                        }
+                        if (betta < -5)
+                        {
+                            betta = -5;
+                            bettaAlt = -6;
+                        }
+                        if (betta <= 0 && betta >= -5 && betta >= bettaAlt)
+                        {
+                            bettaAlt = betta;
+                            betta++;
+                        }
+                        if (betta <= 5 && betta >= 0 && betta >= bettaAlt)
+                        {
+                            bettaAlt = betta;
+                            betta++;
+                        }
+                        if (betta > 5)
+                        {
+                            betta = 5;
+                            bettaAlt = 6;
+                        }
+                        if (betta <= 5 && betta >= 0 && betta <= bettaAlt)
+                        {
+                            bettaAlt = betta;
+                            betta--;
+                        }
+
                         if (direction == 1)
                         {
+
                             if (position.X < box[1].X) //position.X < box[1].X
                             {
                                 bounce(movespeed, new Vector3(0.1f, 0, 0));
@@ -585,13 +794,13 @@ namespace Volamus_v1
 
             if (direction == 1)
             {
-                leftWingPosition = new Vector3(position.X - 2, position.Y + 1, position.Z - 2);
-                rightWingPosition = new Vector3(position.X + 2, position.Y + 1, position.Z - 2);
+                leftWingPosition = new Vector3(position.X, position.Y, position.Z - 1);
+                rightWingPosition = new Vector3(position.X, position.Y, position.Z - 1);
             }
             else
             {
-                leftWingPosition = new Vector3(position.X - 2, position.Y - 1, position.Z - 2);
-                rightWingPosition = new Vector3(position.X + 2, position.Y - 1, position.Z - 2);
+                leftWingPosition = new Vector3(position.X, position.Y, position.Z - 1);
+                rightWingPosition = new Vector3(position.X, position.Y, position.Z - 1);
             }
 
 
@@ -700,6 +909,12 @@ namespace Volamus_v1
             gamepad.newstate = GamePad.GetState(PlayerIndex.One);
             camera.Update();
 
+            //wenn der Spieler steht, werden die Bettas zurückgesetzt
+            if (gamepad.IsButtonUp(Up) && gamepad.IsButtonUp(Down) && gamepad.IsButtonUp(Left) && gamepad.IsButtonUp(Right))
+            {
+                betta = 0.0f;
+                bettaAlt = 1.0f;
+            }
 
             //jeder Spieler braucht einen Winkel Gamma, den er verändern kann mit Eingaben
             if (direction == 1)
@@ -741,6 +956,38 @@ namespace Volamus_v1
                 {
                     if (gamepad.IsButtonDown(Left))
                     {
+                        //watscheln
+                        if (betta <= 0 && betta >= -5 && betta <= bettaAlt)
+                        {
+                            bettaAlt = betta;
+                            betta--;
+                        }
+                        if (betta < -5)
+                        {
+                            betta = -5;
+                            bettaAlt = -6;
+                        }
+                        if (betta <= 0 && betta >= -5 && betta >= bettaAlt)
+                        {
+                            bettaAlt = betta;
+                            betta++;
+                        }
+                        if (betta <= 5 && betta >= 0 && betta >= bettaAlt)
+                        {
+                            bettaAlt = betta;
+                            betta++;
+                        }
+                        if (betta > 5)
+                        {
+                            betta = 5;
+                            bettaAlt = 6;
+                        }
+                        if (betta <= 5 && betta >= 0 && betta <= bettaAlt)
+                        {
+                            bettaAlt = betta;
+                            betta--;
+                        }
+
                         if (direction == 1)
                         {
                             if (position.X > box[0].X) //position.X > box[0].X
@@ -765,6 +1012,38 @@ namespace Volamus_v1
 
                     if (gamepad.IsButtonDown(Right))
                     {
+                        //watscheln
+                        if (betta <= 0 && betta >= -5 && betta <= bettaAlt)
+                        {
+                            bettaAlt = betta;
+                            betta--;
+                        }
+                        if (betta < -5)
+                        {
+                            betta = -5;
+                            bettaAlt = -6;
+                        }
+                        if (betta <= 0 && betta >= -5 && betta >= bettaAlt)
+                        {
+                            bettaAlt = betta;
+                            betta++;
+                        }
+                        if (betta <= 5 && betta >= 0 && betta >= bettaAlt)
+                        {
+                            bettaAlt = betta;
+                            betta++;
+                        }
+                        if (betta > 5)
+                        {
+                            betta = 5;
+                            bettaAlt = 6;
+                        }
+                        if (betta <= 5 && betta >= 0 && betta <= bettaAlt)
+                        {
+                            bettaAlt = betta;
+                            betta--;
+                        }
+
                         if (direction == 1)
                         {
                             if (position.X < box[1].X) //position.X < box[1].X
@@ -835,8 +1114,42 @@ namespace Volamus_v1
 
                 if (!is_jumping)
                 {
+
                     if (gamepad.IsButtonDown(Up))
                     {
+                        //watscheln
+                        if (betta <= 0 && betta >= -5 && betta <= bettaAlt)
+                        {
+                            bettaAlt = betta;
+                            betta--;
+                        }
+                        if (betta < -5)
+                        {
+                            betta = -5;
+                            bettaAlt = -6;
+                        }
+                        if (betta <= 0 && betta >= -5 && betta >= bettaAlt)
+                        {
+                            bettaAlt = betta;
+                            betta++;
+                        }
+                        if (betta <= 5 && betta >= 0 && betta >= bettaAlt)
+                        {
+                            bettaAlt = betta;
+                            betta++;
+                        }
+                        if (betta > 5)
+                        {
+                            betta = 5;
+                            bettaAlt = 6;
+                        }
+                        if (betta <= 5 && betta >= 0 && betta <= bettaAlt)
+                        {
+                            bettaAlt = betta;
+                            betta--;
+                        }
+
+
                         if (direction == 1)
                         {
                             if (!Collision.Instance.PlayerWithNet(this, field)) //Collision Spieler mit Netz
@@ -856,8 +1169,41 @@ namespace Volamus_v1
                         }
                     }
 
+
                     if (gamepad.IsButtonDown(Left))
                     {
+                        //watscheln
+                        if (betta <= 0 && betta >= -5 && betta <= bettaAlt)
+                        {
+                            bettaAlt = betta;
+                            betta--;
+                        }
+                        if (betta < -5)
+                        {
+                            betta = -5;
+                            bettaAlt = -6;
+                        }
+                        if (betta <= 0 && betta >= -5 && betta >= bettaAlt)
+                        {
+                            bettaAlt = betta;
+                            betta++;
+                        }
+                        if (betta <= 5 && betta >= 0 && betta >= bettaAlt)
+                        {
+                            bettaAlt = betta;
+                            betta++;
+                        }
+                        if (betta > 5)
+                        {
+                            betta = 5;
+                            bettaAlt = 6;
+                        }
+                        if (betta <= 5 && betta >= 0 && betta <= bettaAlt)
+                        {
+                            bettaAlt = betta;
+                            betta--;
+                        }
+
                         if (direction == 1)
                         {
                             if (position.X > box[0].X) //position.X > box[0].X
@@ -880,8 +1226,41 @@ namespace Volamus_v1
                         }
                     }
 
+
                     if (gamepad.IsButtonDown(Down))
                     {
+                        //watscheln
+                        if (betta <= 0 && betta >= -5 && betta <= bettaAlt)
+                        {
+                            bettaAlt = betta;
+                            betta--;
+                        }
+                        if (betta < -5)
+                        {
+                            betta = -5;
+                            bettaAlt = -6;
+                        }
+                        if (betta <= 0 && betta >= -5 && betta >= bettaAlt)
+                        {
+                            bettaAlt = betta;
+                            betta++;
+                        }
+                        if (betta <= 5 && betta >= 0 && betta >= bettaAlt)
+                        {
+                            bettaAlt = betta;
+                            betta++;
+                        }
+                        if (betta > 5)
+                        {
+                            betta = 5;
+                            bettaAlt = 6;
+                        }
+                        if (betta <= 5 && betta >= 0 && betta <= bettaAlt)
+                        {
+                            bettaAlt = betta;
+                            betta--;
+                        }
+
                         if (direction == 1)
                         {
                             if (position.Y > box[0].Y) //position.Y > box[0].Y
@@ -900,8 +1279,41 @@ namespace Volamus_v1
                         }
                     }
 
+
                     if (gamepad.IsButtonDown(Right))
                     {
+                        //watscheln
+                        if (betta <= 0 && betta >= -5 && betta <= bettaAlt)
+                        {
+                            bettaAlt = betta;
+                            betta--;
+                        }
+                        if (betta < -5)
+                        {
+                            betta = -5;
+                            bettaAlt = -6;
+                        }
+                        if (betta <= 0 && betta >= -5 && betta >= bettaAlt)
+                        {
+                            bettaAlt = betta;
+                            betta++;
+                        }
+                        if (betta <= 5 && betta >= 0 && betta >= bettaAlt)
+                        {
+                            bettaAlt = betta;
+                            betta++;
+                        }
+                        if (betta > 5)
+                        {
+                            betta = 5;
+                            bettaAlt = 6;
+                        }
+                        if (betta <= 5 && betta >= 0 && betta <= bettaAlt)
+                        {
+                            bettaAlt = betta;
+                            betta--;
+                        }
+
                         if (direction == 1)
                         {
                             if (position.X < box[1].X) //position.X < box[1].X
@@ -968,18 +1380,20 @@ namespace Volamus_v1
 
             if (direction == 1)
             {
-                leftWingPosition = new Vector3(position.X - 2, position.Y + 1, position.Z - 2);
-                rightWingPosition = new Vector3(position.X + 2, position.Y + 1, position.Z - 2);
+                leftWingPosition = new Vector3(position.X, position.Y, position.Z - 1);
+                rightWingPosition = new Vector3(position.X, position.Y, position.Z - 1);
             }
             else
             {
-                leftWingPosition = new Vector3(position.X - 2, position.Y - 1, position.Z - 2);
-                rightWingPosition = new Vector3(position.X + 2, position.Y - 1, position.Z - 2);
+                leftWingPosition = new Vector3(position.X, position.Y, position.Z - 1);
+                rightWingPosition = new Vector3(position.X, position.Y, position.Z - 1);
             }
 
 
 
         }
+
+
 
         //Schwacher Schlag
         private void WeakThrow(Buttons weakthrow)
@@ -997,6 +1411,7 @@ namespace Volamus_v1
 
             if (gamepad.IsButtonDown(weakthrow) && can_hit && !double_hit) //Drückt Knopf und darf schlagen
             {
+
                 GameStateManager.Instance.SoundEffects.SoundVolume = 0.4f;
                 GameStateManager.Instance.SoundEffects.Play2D("Content//Sound//Ball.ogg");
 
@@ -1110,7 +1525,7 @@ namespace Volamus_v1
                 foreach (ModelMeshPart part in mesh.MeshParts)
                 {
                     part.Effect = effect;
-                    effect.Parameters["World"].SetValue(transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) * Matrix.CreateRotationZ(MathHelper.ToRadians(direction * 90 + direction * (-gamma))) *
+                    effect.Parameters["World"].SetValue(transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90 + betta)) * Matrix.CreateRotationZ(MathHelper.ToRadians(direction * 90 + direction * (-gamma))) *
                           Matrix.CreateScale(scale)
                           * Matrix.CreateTranslation(position));
                     effect.Parameters["View"].SetValue(camera.ViewMatrix);
@@ -1150,13 +1565,13 @@ namespace Volamus_v1
                 foreach (ModelMeshPart part in mesh.MeshParts)
                 {
                     part.Effect = effect;
-                    effect.Parameters["World"].SetValue(transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) * Matrix.CreateRotationZ(MathHelper.ToRadians(direction * 90 + direction * (-gamma))) *
-                          Matrix.CreateScale(scale * 4)
+                    effect.Parameters["World"].SetValue(transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90 + betta)) * Matrix.CreateRotationZ(MathHelper.ToRadians(direction * 90 + direction * (-gamma))) *
+                          Matrix.CreateScale(scale * 3) //scale *4
                           * Matrix.CreateTranslation(position));
                     effect.Parameters["View"].SetValue(camera.ViewMatrix);
                     effect.Parameters["Projection"].SetValue(camera.ProjectionMatrix);
                     Matrix WorldInverseTransposeMatrix = Matrix.Transpose(Matrix.Invert(transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) * Matrix.CreateRotationZ(MathHelper.ToRadians(direction * 90 + direction * (-gamma))) *
-                          Matrix.CreateScale(scale * 5)
+                          Matrix.CreateScale(scale)
                           * Matrix.CreateTranslation(position)));
                     effect.Parameters["WorldInverseTranspose"].SetValue(WorldInverseTransposeMatrix);
 

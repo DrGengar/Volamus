@@ -30,7 +30,7 @@ namespace Volamus_v1
             field = new Field(100, 90, 15);
 
             player_one = new Player(new Vector3(0, -25, 0), 5, 0.5f, 0.8f, field, PlayerIndex.One);
-            player_two = new Player(new Vector3(0, 25, 0), 5, 0.5f, 0.8f, field, PlayerIndex.Two);
+            player_two = new Player(new Vector3(0, 25, 0), 5, 0.5f, 0.8f, field);
 
             player_one.Enemy = player_two;
             player_two.Enemy = player_one;

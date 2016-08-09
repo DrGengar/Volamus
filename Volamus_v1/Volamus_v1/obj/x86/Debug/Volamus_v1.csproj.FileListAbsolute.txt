@@ -305,5 +305,5 @@ C:\Users\Ich\Desktop\3dGame\Volamus_v1\Volamus_v1\Content\Sound\Ball.wma
 C:\Users\Ich\Desktop\3dGame\Volamus_v1\Volamus_v1\Content\Sound\Ball.xnb
 C:\Users\Ich\Desktop\3dGame\Volamus_v1\Volamus_v1\Content\Sound\child_crowd_cheering.wma
 C:\Users\Ich\Desktop\3dGame\Volamus_v1\Volamus_v1\Content\Sound\child_crowd_cheering.xnb
-C:\Users\Ich\Desktop\3dGame\Volamus_v1\Volamus_v1\Content\Left.xnb
-C:\Users\Ich\Desktop\3dGame\Volamus_v1\Volamus_v1\Content\Right2.xnb
+C:\Users\Ich\Desktop\3dGame\Volamus_v1\Volamus_v1\Content\leftneu2.xnb
+C:\Users\Ich\Desktop\3dGame\Volamus_v1\Volamus_v1\Content\rightneu2.xnb

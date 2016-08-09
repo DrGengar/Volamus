@@ -354,7 +354,7 @@
 /processorParam:Quality=Best
 /build:Sound/child_crowd_cheering.ogg
 
-#begin Left.fbx
+#begin leftneu2.fbx
 /importer:FbxImporter
 /processor:ModelProcessor
 /processorParam:ColorKeyColor=0,0,0,0
@@ -371,9 +371,9 @@
 /processorParam:Scale=1
 /processorParam:SwapWindingOrder=False
 /processorParam:TextureFormat=DxtCompressed
-/build:Left.fbx
+/build:leftneu2.fbx
 
-#begin Right2.fbx
+#begin rightneu2.fbx
 /importer:FbxImporter
 /processor:ModelProcessor
 /processorParam:ColorKeyColor=0,0,0,0
@@ -390,5 +390,5 @@
 /processorParam:Scale=1
 /processorParam:SwapWindingOrder=False
 /processorParam:TextureFormat=DxtCompressed
-/build:Right2.fbx
+/build:rightneu2.fbx
 
