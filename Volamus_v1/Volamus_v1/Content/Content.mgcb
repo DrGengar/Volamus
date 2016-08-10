@@ -392,3 +392,9 @@
 /processorParam:TextureFormat=DxtCompressed
 /build:rightneu2.fbx
 
+#begin Sound/single_blow_from_police_whistle.ogg
+/importer:OggImporter
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Sound/single_blow_from_police_whistle.ogg
+

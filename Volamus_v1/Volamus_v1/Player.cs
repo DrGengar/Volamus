@@ -64,6 +64,11 @@ namespace Volamus_v1
         Vector3 rightWingPosition;
         float betta;
         float bettaAlt;
+        float hitAngleLeft;
+        float hitAngleRight;
+        float hitAngleHigh;
+
+
 
 
         int direction; //1, if Position.Y < 0, -1 if Position.Y > 0
@@ -214,6 +219,7 @@ namespace Volamus_v1
                 box[1] = new Vector2(-field.Width / 2, 0);
             }
 
+
             camera = new Camera(new Vector3(0, direction * (-80), 20), new Vector3(0, 0, 0), new Vector3(0, direction * 1, 1)); //0,-60,20  0,0,0   0,1,1
 
             max_jump_height = m_j_height;
@@ -225,6 +231,10 @@ namespace Volamus_v1
             touch_count = 0;
             betta = 0.0f;
             bettaAlt = 1.0f;
+            hitAngleLeft = 90;
+            hitAngleRight = 90;
+            hitAngleHigh = 0;
+
 
             scale = new Vector3(4.0f, 4.0f, 4.0f); //0.025
 
@@ -306,6 +316,33 @@ namespace Volamus_v1
         //Update
         private void UpdateKeyboard(Field field, Keys Up, Keys Down, Keys Left, Keys Right, Keys Jump, Keys weak, Keys strong, Keys l, Keys r)
         {
+            // Schlaganimation
+            if (is_serving || enemy.is_serving)
+            {
+                hitAngleLeft = 90;
+                hitAngleRight = 90;
+                hitAngleHigh = 0;
+            }
+            if (Ball.Instance.IsFlying)
+            {
+                hitAngleLeft = 90;
+                hitAngleRight = 90;
+                hitAngleHigh = 0;
+            }
+            if (keyboard.IsKeyDown(weak))
+            {
+                hitAngleRight = 135;
+                hitAngleLeft = 45;
+                hitAngleHigh = 10;
+
+            }
+            if (keyboard.IsKeyDown(strong))
+            {
+                hitAngleRight = 135;
+                hitAngleLeft = 45;
+                hitAngleHigh = 10;
+            }
+
 
             keyboard.newstate = Keyboard.GetState();
 
@@ -348,6 +385,7 @@ namespace Volamus_v1
             //Spieler hat gerade Aufschlag -> Position hinten, Bewegung nur links un rechts, Sprung
             if (is_serving)
             {
+
                 WeakThrow(weak);
                 StrongThrow(strong);
 
@@ -824,6 +862,7 @@ namespace Volamus_v1
 
             if (Keyboard.GetState().IsKeyDown(weakthrow) && can_hit && !double_hit) //Drückt Knopf und darf schlagen
             {
+
                 GameStateManager.Instance.SoundEffects.SoundVolume = 0.4f;
                 GameStateManager.Instance.SoundEffects.Play2D("Content//Sound//Ball.ogg");
 
@@ -908,6 +947,34 @@ namespace Volamus_v1
 
             gamepad.newstate = GamePad.GetState(PlayerIndex.One);
             camera.Update();
+
+            //Schlaganimation
+            if (is_serving || enemy.is_serving)
+            {
+                hitAngleLeft = 90;
+                hitAngleRight = 90;
+                hitAngleHigh = 0;
+            }
+            if (Ball.Instance.IsFlying)
+            {
+                hitAngleLeft = 90;
+                hitAngleRight = 90;
+                hitAngleHigh = 0;
+            }
+            if (gamepad.IsButtonDown(weak))
+            {
+                hitAngleRight = 135;
+                hitAngleLeft = 45;
+                hitAngleHigh = 10;
+
+            }
+
+            if (gamepad.IsButtonDown(strong))
+            {
+                hitAngleRight = 135;
+                hitAngleLeft = 45;
+                hitAngleHigh = 10;
+            }
 
             //wenn der Spieler steht, werden die Bettas zurückgesetzt
             if (gamepad.IsButtonUp(Up) && gamepad.IsButtonUp(Down) && gamepad.IsButtonUp(Left) && gamepad.IsButtonUp(Right))
@@ -1541,8 +1608,9 @@ namespace Volamus_v1
                 }
                 mesh.Draw();
 
-                DrawWing(camera, leftWing, leftWingPosition);
-                DrawWing(camera, rightWing, rightWingPosition);
+
+                DrawWingLeft(camera, leftWing, leftWingPosition);
+                DrawWingRight(camera, rightWing, rightWingPosition);
 
 
 
@@ -1555,7 +1623,7 @@ namespace Volamus_v1
         }
 
 
-        public void DrawWing(Camera camera, Model wing, Vector3 position)
+        public void DrawWingRight(Camera camera, Model wing, Vector3 position)
         {
             Matrix[] transforms = new Matrix[wing.Bones.Count];
             wing.CopyAbsoluteBoneTransformsTo(transforms);
@@ -1565,7 +1633,7 @@ namespace Volamus_v1
                 foreach (ModelMeshPart part in mesh.MeshParts)
                 {
                     part.Effect = effect;
-                    effect.Parameters["World"].SetValue(transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90 + betta)) * Matrix.CreateRotationZ(MathHelper.ToRadians(direction * 90 + direction * (-gamma))) *
+                    effect.Parameters["World"].SetValue(transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90 + (-direction) * hitAngleHigh + betta)) * Matrix.CreateRotationZ(MathHelper.ToRadians(direction * hitAngleRight + direction * (-gamma))) *
                           Matrix.CreateScale(scale * 3) //scale *4
                           * Matrix.CreateTranslation(position));
                     effect.Parameters["View"].SetValue(camera.ViewMatrix);
@@ -1583,7 +1651,36 @@ namespace Volamus_v1
             }
         }
 
+        // für linken Flügel
 
+        public void DrawWingLeft(Camera camera, Model wing, Vector3 position)
+        {
+            Matrix[] transforms = new Matrix[wing.Bones.Count];
+            wing.CopyAbsoluteBoneTransformsTo(transforms);
+
+            foreach (ModelMesh mesh in wing.Meshes)
+            {
+                foreach (ModelMeshPart part in mesh.MeshParts)
+                {
+                    part.Effect = effect;
+                    effect.Parameters["World"].SetValue(transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90 - (-direction) * hitAngleHigh + betta)) * Matrix.CreateRotationZ(MathHelper.ToRadians(direction * hitAngleLeft + direction * (-gamma))) *
+                          Matrix.CreateScale(scale * 3) //scale *4
+                          * Matrix.CreateTranslation(position));
+                    effect.Parameters["View"].SetValue(camera.ViewMatrix);
+                    effect.Parameters["Projection"].SetValue(camera.ProjectionMatrix);
+                    Matrix WorldInverseTransposeMatrix = Matrix.Transpose(Matrix.Invert(transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) * Matrix.CreateRotationZ(MathHelper.ToRadians(direction * 90 + direction * (-gamma))) *
+                          Matrix.CreateScale(scale)
+                          * Matrix.CreateTranslation(position)));
+                    effect.Parameters["WorldInverseTranspose"].SetValue(WorldInverseTransposeMatrix);
+
+                    viewVector = Vector3.Transform(camera.View - camera.Position, Matrix.CreateRotationY(0));
+                    viewVector.Normalize();
+                    effect.Parameters["ViewVector"].SetValue(viewVector);
+                }
+                mesh.Draw();
+            }
+        }
+        //
         public void DrawArrow(Camera camera)
         {
             float temp = 0.0f;

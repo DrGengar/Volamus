@@ -307,3 +307,5 @@ C:\Users\Ich\Desktop\3dGame\Volamus_v1\Volamus_v1\Content\Sound\child_crowd_chee
 C:\Users\Ich\Desktop\3dGame\Volamus_v1\Volamus_v1\Content\Sound\child_crowd_cheering.xnb
 C:\Users\Ich\Desktop\3dGame\Volamus_v1\Volamus_v1\Content\leftneu2.xnb
 C:\Users\Ich\Desktop\3dGame\Volamus_v1\Volamus_v1\Content\rightneu2.xnb
+C:\Users\Ich\Desktop\3dGame\Volamus_v1\Volamus_v1\Content\Sound\single_blow_from_police_whistle.wma
+C:\Users\Ich\Desktop\3dGame\Volamus_v1\Volamus_v1\Content\Sound\single_blow_from_police_whistle.xnb
