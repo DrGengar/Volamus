@@ -126,8 +126,6 @@ C:\Users\Ich\Desktop\3dGame\Volamus_v1\Volamus_v1\Content\Netzv1.xnb
 C:\Users\Ich\Desktop\3dGame\Volamus_v1\Volamus_v1\Content\Netzv2.xnb
 C:\Users\Ich\Desktop\3dGame\Volamus_v1\Volamus_v1\Content\Netzv3.xnb
 C:\Users\Ich\Desktop\3dGame\Volamus_v1\Volamus_v1\Content\netzv4.xnb
-C:\Users\Ich\Desktop\3dGame\Volamus_v1\Volamus_v1\Content\pinguinv1.xnb
-C:\Users\Ich\Desktop\3dGame\Volamus_v1\Volamus_v1\Content\pinguinv2.xnb
 C:\Users\Ich\Desktop\3dGame\Volamus_v1\Volamus_v1\Content\sand.xnb
 C:\Users\Ich\Desktop\3dGame\Volamus_v1\Volamus_v1\Content\trillerpfeife.xnb
 C:\Users\Ich\Desktop\3dGame\Volamus_v1\Volamus_v1\Content\GameStateManager\FadeScreen.xnb
@@ -298,8 +296,6 @@ C:\Users\Lars\Desktop\3dGame2\Volamus_v1\Volamus_v1\SharpDX.RawInput.xml
 C:\Users\Lars\Desktop\3dGame2\Volamus_v1\Volamus_v1\SharpDX.Direct3D9.xml
 C:\Users\Lars\Desktop\3dGame2\Volamus_v1\Volamus_v1\Content\Images\BallShadow.xnb
 C:\Users\Ich\Desktop\3dGame\Volamus_v1\Volamus_v1\Content\Images\BallShadow.xnb
-C:\Users\Ich\Desktop\3dGame\Volamus_v1\Volamus_v1\Content\Images\pinguinSubDiv.xnb
-C:\Users\Ich\Desktop\3dGame\Volamus_v1\Volamus_v1\Content\pinguinSubDiv.xnb
 C:\Users\Ich\Desktop\3dGame\Volamus_v1\Volamus_v1\Content\pinguin.xnb
 C:\Users\Ich\Desktop\3dGame\Volamus_v1\Volamus_v1\Content\Sound\Ball.wma
 C:\Users\Ich\Desktop\3dGame\Volamus_v1\Volamus_v1\Content\Sound\Ball.xnb
