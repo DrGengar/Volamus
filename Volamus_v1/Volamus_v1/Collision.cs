@@ -19,7 +19,7 @@ namespace Volamus_v1
         private int colliding;
         private int groundContact;   //Bodenberührungen des Balls
 
-        public int match = 3;
+        public int match = 2;
         public bool matchIsFinish = false;
         public Player winner;
 
@@ -77,7 +77,19 @@ namespace Volamus_v1
                     {
                         GameStateManager.Instance.SoundEffects.SoundVolume = 0.3f;
                         GameStateManager.Instance.SoundEffects.Play2D("Content//Sound//single_blow_from_police_whistle.ogg");
-                        GameStateManager.Instance.SoundEffects.Play2D("Content//Sound//child_crowd_cheering.ogg");
+
+                        if (lastTouched.Points == match - 1 || lastTouched.Enemy.Points == match - 1)
+                        {
+                            GameStateManager.Instance.SoundEffects.SoundVolume = 0.6f;
+                            GameStateManager.Instance.SoundEffects.Play2D("Content//Sound//child_crowd_cheering.ogg");
+                        }
+
+                        else
+                        {
+                            GameStateManager.Instance.SoundEffects.SoundVolume = 0.3f;
+                            GameStateManager.Instance.SoundEffects.Play2D("Content//Sound//child_crowd_cheering.ogg");
+                        }
+
 
                         //Wenn außerhalb des Feldes: Gegner von LastTouched +1 Punkt und bekommt Aufschlag
                         if (Ball.Instance.Position.X > (field.Width / 2) || Ball.Instance.Position.X < -(field.Width / 2) || Ball.Instance.Position.Y > (field.Length / 2) || Ball.Instance.Position.Y < -(field.Length / 2))
@@ -116,7 +128,7 @@ namespace Volamus_v1
                     }
 
                     //Hüpfen des Balls
-                    if (groundContact <= 1)
+                    if (groundContact <= 1 && lastTouched.Points != match && lastTouched.Enemy.Points != match)
                     {
                         Vector3 hitdirection = Ball.Instance.Active.Hit_Direction;
                         float angle_z = MathHelper.ToDegrees((float)Math.Atan((hitdirection.Z / hitdirection.Y)));
@@ -132,6 +144,7 @@ namespace Volamus_v1
                     //zurücksetzen
                     else
                     {
+
                         if (lastTouched.Points == match || lastTouched.Enemy.Points == match)
                         {
                             if (lastTouched.Points == match)
@@ -142,9 +155,7 @@ namespace Volamus_v1
                             {
                                 winner = lastTouched.Enemy;
                             }
-                            /*EndOfMatch end = new EndOfMatch();
-                            end.LoadContent();
-                            new EndOfMatch(winner);*/
+
                             matchIsFinish = true;
                         }
                         groundContact = 0;
