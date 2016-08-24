@@ -60,6 +60,7 @@
     <Compile Include="Ball.cs" />
     <Compile Include="Collision.cs" />
     <Compile Include="DebugDraw.cs" />
+    <Compile Include="EndOfMatch.cs" />
     <Compile Include="FadeEffect.cs" />
     <Compile Include="FrameCounter.cs" />
     <Compile Include="Game1.cs" />

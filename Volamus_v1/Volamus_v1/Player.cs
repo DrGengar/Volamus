@@ -108,6 +108,21 @@ namespace Volamus_v1
         {
             get { return position; }
         }
+        public float PositionZ
+        {
+            get { return position.Z; }
+            set { position.Z = value; }
+        }
+        public Vector3 PositionLeftWing
+        {
+            get { return leftWingPosition; }
+            set { leftWingPosition = value; }
+        }
+        public Vector3 PositionRightWing
+        {
+            get { return rightWingPosition; }
+            set { rightWingPosition = value; }
+        }
 
         public int Points
         {
@@ -176,6 +191,22 @@ namespace Volamus_v1
             set { can_hit = value; }
         }
 
+        public bool IsFalling
+        {
+            get { return is_falling; }
+            set { is_falling = value; }
+        }
+        public float JumpVelocity
+        {
+            get { return jump_velocity; }
+        }
+
+        public float HitAngleHigh
+        {
+            get { return hitAngleHigh; }
+            set { hitAngleHigh = value; }
+        }
+
         public bool IsServing
         {
             get { return is_serving; }
@@ -229,11 +260,13 @@ namespace Volamus_v1
             points = 0;
             gamma = 0.0f;
             touch_count = 0;
+            //bettas für die Laufanimation
             betta = 0.0f;
             bettaAlt = 1.0f;
-            hitAngleLeft = 90;
-            hitAngleRight = 90;
-            hitAngleHigh = 0;
+            //für die Schlaganimation
+            hitAngleLeft = 90;  //Rotation nach vorne
+            hitAngleRight = 90; //  -"-
+            hitAngleHigh = 0;   // Rotation nach oben
 
 
             scale = new Vector3(4.0f, 4.0f, 4.0f); //0.025
@@ -316,530 +349,535 @@ namespace Volamus_v1
         //Update
         private void UpdateKeyboard(Field field, Keys Up, Keys Down, Keys Left, Keys Right, Keys Jump, Keys weak, Keys strong, Keys l, Keys r)
         {
-            // Schlaganimation
-            if (is_serving || enemy.is_serving)
+            if (Collision.Instance.matchIsFinish != true)
             {
-                hitAngleLeft = 90;
-                hitAngleRight = 90;
-                hitAngleHigh = 0;
-            }
-            if (Ball.Instance.IsFlying)
-            {
-                hitAngleLeft = 90;
-                hitAngleRight = 90;
-                hitAngleHigh = 0;
-            }
-            if (keyboard.IsKeyDown(weak))
-            {
-                hitAngleRight = 135;
-                hitAngleLeft = 45;
-                hitAngleHigh = 10;
-
-            }
-            if (keyboard.IsKeyDown(strong))
-            {
-                hitAngleRight = 135;
-                hitAngleLeft = 45;
-                hitAngleHigh = 10;
-            }
-
-
-            keyboard.newstate = Keyboard.GetState();
-
-            camera.Update();
-
-            //wenn der Spieler steht, werden die Bettas zurückgesetzt
-            if (keyboard.IsKeyUp(Up) && keyboard.IsKeyUp(Down) && keyboard.IsKeyUp(Left) && keyboard.IsKeyUp(Right))
-            {
-                betta = 0.0f;
-                bettaAlt = 1.0f;
-            }
-
-            //jeder Spieler braucht einen Winkel Gamma, den er verändern kann mit Eingaben
-            if (direction == 1)
-            {
-                if (keyboard.IsKeyDown(r) && gamma <= 90)
+                // Schlaganimation
+                if (is_serving || enemy.is_serving)
                 {
-                    gamma += (direction) * 1.0f; //Ein Grad mehr/weniger
+                    hitAngleLeft = 90;
+                    hitAngleRight = 90;
+                    hitAngleHigh = 0;
                 }
-                if (keyboard.IsKeyDown(l) && gamma >= -90)
+                if (Ball.Instance.IsFlying)
                 {
-                    gamma -= (direction) * 1.0f; //Ein Grad mehr/weniger
+                    hitAngleLeft = 90;
+                    hitAngleRight = 90;
+                    hitAngleHigh = 0;
                 }
-            }
-            else
-            {
-                if (direction == -1)
+                if (keyboard.IsKeyDown(weak))
                 {
-                    if (keyboard.IsKeyDown(r) && gamma >= -90)
-                    {
-                        gamma -= 1.0f; //Ein Grad mehr/weniger
-                    }
-                    if (keyboard.IsKeyDown(l) && gamma <= 90)
-                    {
-                        gamma += 1.0f; //Ein Grad mehr/weniger
-                    }
+                    hitAngleRight = 135;
+                    hitAngleLeft = 45;
+                    hitAngleHigh = 10;
+
                 }
-            }
-
-            //Spieler hat gerade Aufschlag -> Position hinten, Bewegung nur links un rechts, Sprung
-            if (is_serving)
-            {
-
-                WeakThrow(weak);
-                StrongThrow(strong);
-
-                float offset = position.Y - box[0].Y;
-                position.Y -= offset;
-                MovingBoundingBoxes(new Vector3(0, -offset, 0));
-
-                if (!is_jumping)
+                if (keyboard.IsKeyDown(strong))
                 {
-                    if (keyboard.IsKeyDown(Left))
-                    {
-                        //watscheln
-                        if (betta <= 0 && betta >= -5 && betta <= bettaAlt)
-                        {
-                            bettaAlt = betta;
-                            betta--;
-                        }
-                        if (betta < -5)
-                        {
-                            betta = -5;
-                            bettaAlt = -6;
-                        }
-                        if (betta <= 0 && betta >= -5 && betta >= bettaAlt)
-                        {
-                            bettaAlt = betta;
-                            betta++;
-                        }
-                        if (betta <= 5 && betta >= 0 && betta >= bettaAlt)
-                        {
-                            bettaAlt = betta;
-                            betta++;
-                        }
-                        if (betta > 5)
-                        {
-                            betta = 5;
-                            bettaAlt = 6;
-                        }
-                        if (betta <= 5 && betta >= 0 && betta <= bettaAlt)
-                        {
-                            bettaAlt = betta;
-                            betta--;
-                        }
-
-                        if (direction == 1)
-                        {
-                            if (position.X > box[0].X) //position.X > box[0].X
-                            {
-                                bounce(movespeed, new Vector3(-0.1f, 0, 0));
-                                /*position.X -= movespeed;
-                                MovingBoundingBoxes(new Vector3(-movespeed, 0, 0));*/
-                                camera.AddPosition(new Vector3(-movespeed, 0, 0));
-                                camera.AddView(new Vector3(-movespeed, 0, 0));
-                            }
-                        }
-                        else if (direction == -1)
-                        {
-                            if (position.X < box[0].X) //position.X < box[0].X
-                            {
-                                bounce(movespeed, new Vector3(0.1f, 0, 0));
-                                /*position.X += movespeed;
-                                MovingBoundingBoxes(new Vector3(movespeed, 0, 0));*/
-                                camera.AddPosition(new Vector3(movespeed, 0, 0));
-                                camera.AddView(new Vector3(movespeed, 0, 0));
-                            }
-                        }
-                    }
-
-                    if (keyboard.IsKeyDown(Right))
-                    {
-                        //watscheln
-                        if (betta <= 0 && betta >= -5 && betta <= bettaAlt)
-                        {
-                            bettaAlt = betta;
-                            betta--;
-                        }
-                        if (betta < -5)
-                        {
-                            betta = -5;
-                            bettaAlt = -6;
-                        }
-                        if (betta <= 0 && betta >= -5 && betta >= bettaAlt)
-                        {
-                            bettaAlt = betta;
-                            betta++;
-                        }
-                        if (betta <= 5 && betta >= 0 && betta >= bettaAlt)
-                        {
-                            bettaAlt = betta;
-                            betta++;
-                        }
-                        if (betta > 5)
-                        {
-                            betta = 5;
-                            bettaAlt = 6;
-                        }
-                        if (betta <= 5 && betta >= 0 && betta <= bettaAlt)
-                        {
-                            bettaAlt = betta;
-                            betta--;
-                        }
-
-                        if (direction == 1)
-                        {
-                            if (position.X < box[1].X) //position.X < box[1].X
-                            {
-                                bounce(movespeed, new Vector3(0.1f, 0, 0));
-                                /*position.X += movespeed;
-                                MovingBoundingBoxes(new Vector3(movespeed, 0, 0));*/
-                                camera.AddPosition(new Vector3(movespeed, 0, 0));
-                                camera.AddView(new Vector3(movespeed, 0, 0));
-                            }
-                        }
-                        else if (direction == -1)
-                        {
-                            if (position.X > box[1].X) //position.X > box[1].X
-                            {
-                                bounce(movespeed, new Vector3(-0.1f, 0, 0));
-                                /*position.X -= movespeed;
-                                MovingBoundingBoxes(new Vector3(-movespeed, 0, 0));*/
-                                camera.AddPosition(new Vector3(-movespeed, 0, 0));
-                                camera.AddView(new Vector3(-movespeed, 0, 0));
-                            }
-                        }
-                    }
-
-                    if (keyboard.IsKeyDown(Jump))
-                    {
-                        is_jumping = true;
-                        is_falling = false;
-                    }
-                }
-                else
-                {
-                    if (position.Z <= max_jump_height && !is_falling)
-                    {
-                        position.Z += jump_velocity;
-                        MovingBoundingBoxes(new Vector3(0, 0, jump_velocity));
-                    }
-                    else
-                    {
-                        if (position.Z > 0)
-                        {
-                            position.Z -= jump_velocity;
-                            MovingBoundingBoxes(new Vector3(0, 0, -jump_velocity));
-                            is_falling = true;
-                        }
-                        else
-                        {
-                            is_jumping = false;
-                        }
-                    }
+                    hitAngleRight = 135;
+                    hitAngleLeft = 45;
+                    hitAngleHigh = 10;
                 }
 
-                //Setze Ball-Position auf aktuelle Position des Aufschlägers
+
+                keyboard.newstate = Keyboard.GetState();
+
+                camera.Update();
+
+                //wenn der Spieler steht, werden die Bettas zurückgesetzt
+                if (keyboard.IsKeyUp(Up) && keyboard.IsKeyUp(Down) && keyboard.IsKeyUp(Left) && keyboard.IsKeyUp(Right))
+                {
+                    betta = 0.0f;
+                    bettaAlt = 1.0f;
+                }
+
+                //jeder Spieler braucht einen Winkel Gamma, den er verändern kann mit Eingaben
                 if (direction == 1)
                 {
-                    Ball.Instance.Position = new Vector3((OuterBoundingBox.Max.X + OuterBoundingBox.Min.X) / 2, OuterBoundingBox.Max.Y, OuterBoundingBox.Max.Z + 1);
+                    if (keyboard.IsKeyDown(r) && gamma <= 90)
+                    {
+                        gamma += (direction) * 1.0f; //Ein Grad mehr/weniger
+                    }
+                    if (keyboard.IsKeyDown(l) && gamma >= -90)
+                    {
+                        gamma -= (direction) * 1.0f; //Ein Grad mehr/weniger
+                    }
                 }
                 else
                 {
                     if (direction == -1)
                     {
-                        Ball.Instance.Position = new Vector3((OuterBoundingBox.Max.X + OuterBoundingBox.Min.X) / 2, OuterBoundingBox.Min.Y, OuterBoundingBox.Max.Z + 1);
+                        if (keyboard.IsKeyDown(r) && gamma >= -90)
+                        {
+                            gamma -= 1.0f; //Ein Grad mehr/weniger
+                        }
+                        if (keyboard.IsKeyDown(l) && gamma <= 90)
+                        {
+                            gamma += 1.0f; //Ein Grad mehr/weniger
+                        }
                     }
                 }
-            }
-            else //Normales Spielen, alle Bewegungen
-            {
-                WeakThrow(weak);
-                StrongThrow(strong);
 
-
-
-                if (!is_jumping)
+                //Spieler hat gerade Aufschlag -> Position hinten, Bewegung nur links un rechts, Sprung
+                if (is_serving)
                 {
-                    if (keyboard.IsKeyDown(Up))
+
+                    WeakThrow(weak);
+                    StrongThrow(strong);
+
+                    float offset = position.Y - box[0].Y;
+                    position.Y -= offset;
+                    MovingBoundingBoxes(new Vector3(0, -offset, 0));
+
+                    if (!is_jumping)
                     {
-                        //watscheln
-                        if (betta <= 0 && betta >= -5 && betta <= bettaAlt)
+                        if (keyboard.IsKeyDown(Left))
                         {
-                            bettaAlt = betta;
-                            betta--;
-                        }
-                        if (betta < -5)
-                        {
-                            betta = -5;
-                            bettaAlt = -6;
-                        }
-                        if (betta <= 0 && betta >= -5 && betta >= bettaAlt)
-                        {
-                            bettaAlt = betta;
-                            betta++;
-                        }
-                        if (betta <= 5 && betta >= 0 && betta >= bettaAlt)
-                        {
-                            bettaAlt = betta;
-                            betta++;
-                        }
-                        if (betta > 5)
-                        {
-                            betta = 5;
-                            bettaAlt = 6;
-                        }
-                        if (betta <= 5 && betta >= 0 && betta <= bettaAlt)
-                        {
-                            bettaAlt = betta;
-                            betta--;
-                        }
-
-
-                        if (direction == 1)
-                        {
-                            if (!Collision.Instance.PlayerWithNet(this, field)) //Collision Spieler mit Netz
+                            //watscheln
+                            if (betta <= 0 && betta >= -5 && betta <= bettaAlt)
                             {
-                                bounce(movespeed, new Vector3(0, 0.1f, 0));
-                                /*position.Y += movespeed;
-                                MovingBoundingBoxes(new Vector3(0, movespeed, 0));*/
+                                bettaAlt = betta;
+                                betta--;
+                            }
+                            if (betta < -5)
+                            {
+                                betta = -5;
+                                bettaAlt = -6;
+                            }
+                            if (betta <= 0 && betta >= -5 && betta >= bettaAlt)
+                            {
+                                bettaAlt = betta;
+                                betta++;
+                            }
+                            if (betta <= 5 && betta >= 0 && betta >= bettaAlt)
+                            {
+                                bettaAlt = betta;
+                                betta++;
+                            }
+                            if (betta > 5)
+                            {
+                                betta = 5;
+                                bettaAlt = 6;
+                            }
+                            if (betta <= 5 && betta >= 0 && betta <= bettaAlt)
+                            {
+                                bettaAlt = betta;
+                                betta--;
+                            }
+
+                            if (direction == 1)
+                            {
+                                if (position.X > box[0].X) //position.X > box[0].X
+                                {
+                                    bounce(movespeed, new Vector3(-0.1f, 0, 0));
+                                    /*position.X -= movespeed;
+                                    MovingBoundingBoxes(new Vector3(-movespeed, 0, 0));*/
+                                    camera.AddPosition(new Vector3(-movespeed, 0, 0));
+                                    camera.AddView(new Vector3(-movespeed, 0, 0));
+                                }
+                            }
+                            else if (direction == -1)
+                            {
+                                if (position.X < box[0].X) //position.X < box[0].X
+                                {
+                                    bounce(movespeed, new Vector3(0.1f, 0, 0));
+                                    /*position.X += movespeed;
+                                    MovingBoundingBoxes(new Vector3(movespeed, 0, 0));*/
+                                    camera.AddPosition(new Vector3(movespeed, 0, 0));
+                                    camera.AddView(new Vector3(movespeed, 0, 0));
+                                }
                             }
                         }
-                        else if (direction == -1)
+
+                        if (keyboard.IsKeyDown(Right))
                         {
-                            if (!Collision.Instance.PlayerWithNet(this, field)) //Collision Spieler mit Netz
+                            //watscheln
+                            if (betta <= 0 && betta >= -5 && betta <= bettaAlt)
                             {
-                                bounce(movespeed, new Vector3(0, -0.1f, 0));
-                                /*position.Y -= movespeed;
-                                MovingBoundingBoxes(new Vector3(0, -movespeed, 0));*/
+                                bettaAlt = betta;
+                                betta--;
+                            }
+                            if (betta < -5)
+                            {
+                                betta = -5;
+                                bettaAlt = -6;
+                            }
+                            if (betta <= 0 && betta >= -5 && betta >= bettaAlt)
+                            {
+                                bettaAlt = betta;
+                                betta++;
+                            }
+                            if (betta <= 5 && betta >= 0 && betta >= bettaAlt)
+                            {
+                                bettaAlt = betta;
+                                betta++;
+                            }
+                            if (betta > 5)
+                            {
+                                betta = 5;
+                                bettaAlt = 6;
+                            }
+                            if (betta <= 5 && betta >= 0 && betta <= bettaAlt)
+                            {
+                                bettaAlt = betta;
+                                betta--;
+                            }
+
+                            if (direction == 1)
+                            {
+                                if (position.X < box[1].X) //position.X < box[1].X
+                                {
+                                    bounce(movespeed, new Vector3(0.1f, 0, 0));
+                                    /*position.X += movespeed;
+                                    MovingBoundingBoxes(new Vector3(movespeed, 0, 0));*/
+                                    camera.AddPosition(new Vector3(movespeed, 0, 0));
+                                    camera.AddView(new Vector3(movespeed, 0, 0));
+                                }
+                            }
+                            else if (direction == -1)
+                            {
+                                if (position.X > box[1].X) //position.X > box[1].X
+                                {
+                                    bounce(movespeed, new Vector3(-0.1f, 0, 0));
+                                    /*position.X -= movespeed;
+                                    MovingBoundingBoxes(new Vector3(-movespeed, 0, 0));*/
+                                    camera.AddPosition(new Vector3(-movespeed, 0, 0));
+                                    camera.AddView(new Vector3(-movespeed, 0, 0));
+                                }
                             }
                         }
-                    }
 
-                    if (keyboard.IsKeyDown(Left))
-                    {
-                        //watscheln
-                        if (betta <= 0 && betta >= -5 && betta <= bettaAlt)
+                        if (keyboard.IsKeyDown(Jump))
                         {
-                            bettaAlt = betta;
-                            betta--;
+                            is_jumping = true;
+                            is_falling = false;
                         }
-                        if (betta < -5)
-                        {
-                            betta = -5;
-                            bettaAlt = -6;
-                        }
-                        if (betta <= 0 && betta >= -5 && betta >= bettaAlt)
-                        {
-                            bettaAlt = betta;
-                            betta++;
-                        }
-                        if (betta <= 5 && betta >= 0 && betta >= bettaAlt)
-                        {
-                            bettaAlt = betta;
-                            betta++;
-                        }
-                        if (betta > 5)
-                        {
-                            betta = 5;
-                            bettaAlt = 6;
-                        }
-                        if (betta <= 5 && betta >= 0 && betta <= bettaAlt)
-                        {
-                            bettaAlt = betta;
-                            betta--;
-                        }
-
-                        if (direction == 1)
-                        {
-
-                            if (position.X > box[0].X) //position.X > box[0].X
-                            {
-                                bounce(movespeed, new Vector3(-0.1f, 0, 0));
-                                /*position.X -= movespeed;
-                                MovingBoundingBoxes(new Vector3(-movespeed, 0, 0));*/
-                                camera.AddPosition(new Vector3(-movespeed, 0, 0));
-                                camera.AddView(new Vector3(-movespeed, 0, 0));
-                            }
-                        }
-                        else if (direction == -1)
-                        {
-                            if (position.X < box[0].X) //position.X < box[0].X
-                            {
-                                bounce(movespeed, new Vector3(0.1f, 0, 0));
-                                /*position.X += movespeed;
-                                MovingBoundingBoxes(new Vector3(movespeed, 0, 0));*/
-                                camera.AddPosition(new Vector3(movespeed, 0, 0));
-                                camera.AddView(new Vector3(movespeed, 0, 0));
-                            }
-                        }
-                    }
-
-                    if (keyboard.IsKeyDown(Down))
-                    {
-                        //watscheln
-                        if (betta <= 0 && betta >= -5 && betta <= bettaAlt)
-                        {
-                            bettaAlt = betta;
-                            betta--;
-                        }
-                        if (betta < -5)
-                        {
-                            betta = -5;
-                            bettaAlt = -6;
-                        }
-                        if (betta <= 0 && betta >= -5 && betta >= bettaAlt)
-                        {
-                            bettaAlt = betta;
-                            betta++;
-                        }
-                        if (betta <= 5 && betta >= 0 && betta >= bettaAlt)
-                        {
-                            bettaAlt = betta;
-                            betta++;
-                        }
-                        if (betta > 5)
-                        {
-                            betta = 5;
-                            bettaAlt = 6;
-                        }
-                        if (betta <= 5 && betta >= 0 && betta <= bettaAlt)
-                        {
-                            bettaAlt = betta;
-                            betta--;
-                        }
-
-                        if (direction == 1)
-                        {
-                            if (position.Y > box[0].Y) //position.Y > box[0].Y
-                            {
-                                bounce(movespeed, new Vector3(0, -0.1f, 0));
-                                /*position.Y -= movespeed;
-                                MovingBoundingBoxes(new Vector3(0, -movespeed, 0));*/
-                            }
-                        }
-                        else if (direction == -1)
-                        {
-                            if (position.Y < box[0].Y) //position.Y < box[0].Y
-                            {
-                                bounce(movespeed, new Vector3(0, 0.1f, 0));
-                                /*position.Y += movespeed;
-                                MovingBoundingBoxes(new Vector3(0, movespeed, 0));*/
-                            }
-                        }
-                    }
-
-                    if (keyboard.IsKeyDown(Right))
-                    {
-                        //watscheln
-                        if (betta <= 0 && betta >= -5 && betta <= bettaAlt)
-                        {
-                            bettaAlt = betta;
-                            betta--;
-                        }
-                        if (betta < -5)
-                        {
-                            betta = -5;
-                            bettaAlt = -6;
-                        }
-                        if (betta <= 0 && betta >= -5 && betta >= bettaAlt)
-                        {
-                            bettaAlt = betta;
-                            betta++;
-                        }
-                        if (betta <= 5 && betta >= 0 && betta >= bettaAlt)
-                        {
-                            bettaAlt = betta;
-                            betta++;
-                        }
-                        if (betta > 5)
-                        {
-                            betta = 5;
-                            bettaAlt = 6;
-                        }
-                        if (betta <= 5 && betta >= 0 && betta <= bettaAlt)
-                        {
-                            bettaAlt = betta;
-                            betta--;
-                        }
-
-                        if (direction == 1)
-                        {
-
-                            if (position.X < box[1].X) //position.X < box[1].X
-                            {
-                                bounce(movespeed, new Vector3(0.1f, 0, 0));
-                                /*position.X += movespeed;
-                                MovingBoundingBoxes(new Vector3(movespeed, 0, 0));*/
-                                camera.AddPosition(new Vector3(movespeed, 0, 0));
-                                camera.AddView(new Vector3(movespeed, 0, 0));
-                            }
-                        }
-                        else if (direction == -1)
-                        {
-                            if (position.X > box[1].X) //position.X > box[1].X
-                            {
-                                bounce(movespeed, new Vector3(-0.1f, 0, 0));
-                                /*position.X -= movespeed;
-                                MovingBoundingBoxes(new Vector3(-movespeed, 0, 0));*/
-                                camera.AddPosition(new Vector3(-movespeed, 0, 0));
-                                camera.AddView(new Vector3(-movespeed, 0, 0));
-                            }
-                        }
-                    }
-
-                    if (keyboard.IsKeyDown(Jump))
-                    {
-                        is_jumping = true;
-                        is_falling = false;
-                    }
-                }
-                else
-                {
-                    if (position.Z <= max_jump_height && !is_falling)
-                    {
-                        position.Z += jump_velocity;
-                        MovingBoundingBoxes(new Vector3(0, 0, jump_velocity));
                     }
                     else
                     {
-                        if (position.Z > 0)
+                        if (position.Z <= max_jump_height && !is_falling)
                         {
-                            position.Z -= jump_velocity;
-                            MovingBoundingBoxes(new Vector3(0, 0, -jump_velocity));
-                            is_falling = true;
+                            position.Z += jump_velocity;
+                            MovingBoundingBoxes(new Vector3(0, 0, jump_velocity));
                         }
                         else
                         {
-                            is_jumping = false;
+                            if (position.Z > 0)
+                            {
+                                position.Z -= jump_velocity;
+                                MovingBoundingBoxes(new Vector3(0, 0, -jump_velocity));
+                                is_falling = true;
+                            }
+                            else
+                            {
+                                is_jumping = false;
+                            }
+                        }
+                    }
+
+                    //Setze Ball-Position auf aktuelle Position des Aufschlägers
+                    if (direction == 1)
+                    {
+                        Ball.Instance.Position = new Vector3((OuterBoundingBox.Max.X + OuterBoundingBox.Min.X) / 2, OuterBoundingBox.Max.Y, OuterBoundingBox.Max.Z + 1);
+                    }
+                    else
+                    {
+                        if (direction == -1)
+                        {
+                            Ball.Instance.Position = new Vector3((OuterBoundingBox.Max.X + OuterBoundingBox.Min.X) / 2, OuterBoundingBox.Min.Y, OuterBoundingBox.Max.Z + 1);
                         }
                     }
                 }
+                else //Normales Spielen, alle Bewegungen
+                {
+                    WeakThrow(weak);
+                    StrongThrow(strong);
+
+
+
+                    if (!is_jumping)
+                    {
+                        if (keyboard.IsKeyDown(Up))
+                        {
+                            //watscheln
+                            if (betta <= 0 && betta >= -5 && betta <= bettaAlt)
+                            {
+                                bettaAlt = betta;
+                                betta--;
+                            }
+                            if (betta < -5)
+                            {
+                                betta = -5;
+                                bettaAlt = -6;
+                            }
+                            if (betta <= 0 && betta >= -5 && betta >= bettaAlt)
+                            {
+                                bettaAlt = betta;
+                                betta++;
+                            }
+                            if (betta <= 5 && betta >= 0 && betta >= bettaAlt)
+                            {
+                                bettaAlt = betta;
+                                betta++;
+                            }
+                            if (betta > 5)
+                            {
+                                betta = 5;
+                                bettaAlt = 6;
+                            }
+                            if (betta <= 5 && betta >= 0 && betta <= bettaAlt)
+                            {
+                                bettaAlt = betta;
+                                betta--;
+                            }
+
+
+                            if (direction == 1)
+                            {
+                                if (!Collision.Instance.PlayerWithNet(this, field)) //Collision Spieler mit Netz
+                                {
+                                    bounce(movespeed, new Vector3(0, 0.1f, 0));
+                                    /*position.Y += movespeed;
+                                    MovingBoundingBoxes(new Vector3(0, movespeed, 0));*/
+                                }
+                            }
+                            else if (direction == -1)
+                            {
+                                if (!Collision.Instance.PlayerWithNet(this, field)) //Collision Spieler mit Netz
+                                {
+                                    bounce(movespeed, new Vector3(0, -0.1f, 0));
+                                    /*position.Y -= movespeed;
+                                    MovingBoundingBoxes(new Vector3(0, -movespeed, 0));*/
+                                }
+                            }
+                        }
+
+                        if (keyboard.IsKeyDown(Left))
+                        {
+                            //watscheln
+                            if (betta <= 0 && betta >= -5 && betta <= bettaAlt)
+                            {
+                                bettaAlt = betta;
+                                betta--;
+                            }
+                            if (betta < -5)
+                            {
+                                betta = -5;
+                                bettaAlt = -6;
+                            }
+                            if (betta <= 0 && betta >= -5 && betta >= bettaAlt)
+                            {
+                                bettaAlt = betta;
+                                betta++;
+                            }
+                            if (betta <= 5 && betta >= 0 && betta >= bettaAlt)
+                            {
+                                bettaAlt = betta;
+                                betta++;
+                            }
+                            if (betta > 5)
+                            {
+                                betta = 5;
+                                bettaAlt = 6;
+                            }
+                            if (betta <= 5 && betta >= 0 && betta <= bettaAlt)
+                            {
+                                bettaAlt = betta;
+                                betta--;
+                            }
+
+                            if (direction == 1)
+                            {
+
+                                if (position.X > box[0].X) //position.X > box[0].X
+                                {
+                                    bounce(movespeed, new Vector3(-0.1f, 0, 0));
+                                    /*position.X -= movespeed;
+                                    MovingBoundingBoxes(new Vector3(-movespeed, 0, 0));*/
+                                    camera.AddPosition(new Vector3(-movespeed, 0, 0));
+                                    camera.AddView(new Vector3(-movespeed, 0, 0));
+                                }
+                            }
+                            else if (direction == -1)
+                            {
+                                if (position.X < box[0].X) //position.X < box[0].X
+                                {
+                                    bounce(movespeed, new Vector3(0.1f, 0, 0));
+                                    /*position.X += movespeed;
+                                    MovingBoundingBoxes(new Vector3(movespeed, 0, 0));*/
+                                    camera.AddPosition(new Vector3(movespeed, 0, 0));
+                                    camera.AddView(new Vector3(movespeed, 0, 0));
+                                }
+                            }
+                        }
+
+                        if (keyboard.IsKeyDown(Down))
+                        {
+                            //watscheln
+                            if (betta <= 0 && betta >= -5 && betta <= bettaAlt)
+                            {
+                                bettaAlt = betta;
+                                betta--;
+                            }
+                            if (betta < -5)
+                            {
+                                betta = -5;
+                                bettaAlt = -6;
+                            }
+                            if (betta <= 0 && betta >= -5 && betta >= bettaAlt)
+                            {
+                                bettaAlt = betta;
+                                betta++;
+                            }
+                            if (betta <= 5 && betta >= 0 && betta >= bettaAlt)
+                            {
+                                bettaAlt = betta;
+                                betta++;
+                            }
+                            if (betta > 5)
+                            {
+                                betta = 5;
+                                bettaAlt = 6;
+                            }
+                            if (betta <= 5 && betta >= 0 && betta <= bettaAlt)
+                            {
+                                bettaAlt = betta;
+                                betta--;
+                            }
+
+                            if (direction == 1)
+                            {
+                                if (position.Y > box[0].Y) //position.Y > box[0].Y
+                                {
+                                    bounce(movespeed, new Vector3(0, -0.1f, 0));
+                                    /*position.Y -= movespeed;
+                                    MovingBoundingBoxes(new Vector3(0, -movespeed, 0));*/
+                                }
+                            }
+                            else if (direction == -1)
+                            {
+                                if (position.Y < box[0].Y) //position.Y < box[0].Y
+                                {
+                                    bounce(movespeed, new Vector3(0, 0.1f, 0));
+                                    /*position.Y += movespeed;
+                                    MovingBoundingBoxes(new Vector3(0, movespeed, 0));*/
+                                }
+                            }
+                        }
+
+                        if (keyboard.IsKeyDown(Right))
+                        {
+                            //watscheln
+                            if (betta <= 0 && betta >= -5 && betta <= bettaAlt)
+                            {
+                                bettaAlt = betta;
+                                betta--;
+                            }
+                            if (betta < -5)
+                            {
+                                betta = -5;
+                                bettaAlt = -6;
+                            }
+                            if (betta <= 0 && betta >= -5 && betta >= bettaAlt)
+                            {
+                                bettaAlt = betta;
+                                betta++;
+                            }
+                            if (betta <= 5 && betta >= 0 && betta >= bettaAlt)
+                            {
+                                bettaAlt = betta;
+                                betta++;
+                            }
+                            if (betta > 5)
+                            {
+                                betta = 5;
+                                bettaAlt = 6;
+                            }
+                            if (betta <= 5 && betta >= 0 && betta <= bettaAlt)
+                            {
+                                bettaAlt = betta;
+                                betta--;
+                            }
+
+                            if (direction == 1)
+                            {
+
+                                if (position.X < box[1].X) //position.X < box[1].X
+                                {
+                                    bounce(movespeed, new Vector3(0.1f, 0, 0));
+                                    /*position.X += movespeed;
+                                    MovingBoundingBoxes(new Vector3(movespeed, 0, 0));*/
+                                    camera.AddPosition(new Vector3(movespeed, 0, 0));
+                                    camera.AddView(new Vector3(movespeed, 0, 0));
+                                }
+                            }
+                            else if (direction == -1)
+                            {
+                                if (position.X > box[1].X) //position.X > box[1].X
+                                {
+                                    bounce(movespeed, new Vector3(-0.1f, 0, 0));
+                                    /*position.X -= movespeed;
+                                    MovingBoundingBoxes(new Vector3(-movespeed, 0, 0));*/
+                                    camera.AddPosition(new Vector3(-movespeed, 0, 0));
+                                    camera.AddView(new Vector3(-movespeed, 0, 0));
+                                }
+                            }
+                        }
+
+                        if (keyboard.IsKeyDown(Jump))
+                        {
+                            is_jumping = true;
+                            is_falling = false;
+                        }
+                    }
+                    else
+                    {
+                        if (position.Z <= max_jump_height && !is_falling)
+                        {
+                            position.Z += jump_velocity;
+                            MovingBoundingBoxes(new Vector3(0, 0, jump_velocity));
+                        }
+                        else
+                        {
+                            if (position.Z > 0)
+                            {
+                                position.Z -= jump_velocity;
+                                MovingBoundingBoxes(new Vector3(0, 0, -jump_velocity));
+                                is_falling = true;
+                            }
+                            else
+                            {
+                                is_jumping = false;
+                            }
+                        }
+                    }
+                }
+
+                if (Touch_Count > 3)
+                {
+                    Enemy.Points++;
+                    Enemy.IsServing = true;
+                    IsServing = false;
+                    Ball.Instance.Active = null;
+
+                    Touch_Count = 0;
+                    Enemy.Touch_Count = 0;
+                }
+
+                keyboard.oldstate = keyboard.newstate;
+                //
+                if (direction == 1)
+                {
+                    leftWingPosition = new Vector3(position.X, position.Y, position.Z - 1);
+                    rightWingPosition = new Vector3(position.X, position.Y, position.Z - 1);
+                }
+                else
+                {
+                    leftWingPosition = new Vector3(position.X, position.Y, position.Z - 1);
+                    rightWingPosition = new Vector3(position.X, position.Y, position.Z - 1);
+                }
             }
 
-            if (Touch_Count > 3)
-            {
-                Enemy.Points++;
-                Enemy.IsServing = true;
-                IsServing = false;
-                Ball.Instance.Active = null;
 
-                Touch_Count = 0;
-                Enemy.Touch_Count = 0;
-            }
-
-            keyboard.oldstate = keyboard.newstate;
-
-            if (direction == 1)
-            {
-                leftWingPosition = new Vector3(position.X, position.Y, position.Z - 1);
-                rightWingPosition = new Vector3(position.X, position.Y, position.Z - 1);
-            }
-            else
-            {
-                leftWingPosition = new Vector3(position.X, position.Y, position.Z - 1);
-                rightWingPosition = new Vector3(position.X, position.Y, position.Z - 1);
-            }
 
 
 
@@ -944,517 +982,520 @@ namespace Volamus_v1
         //  Controller  Anfang
         private void UpdateController(Field field, Buttons Up, Buttons Down, Buttons Left, Buttons Right, Buttons Jump, Buttons weak, Buttons strong, Buttons l, Buttons r)
         {
-
-            gamepad.newstate = GamePad.GetState(PlayerIndex.One);
-            camera.Update();
-
-            //Schlaganimation
-            if (is_serving || enemy.is_serving)
+            if (Collision.Instance.matchIsFinish == false)
             {
-                hitAngleLeft = 90;
-                hitAngleRight = 90;
-                hitAngleHigh = 0;
-            }
-            if (Ball.Instance.IsFlying)
-            {
-                hitAngleLeft = 90;
-                hitAngleRight = 90;
-                hitAngleHigh = 0;
-            }
-            if (gamepad.IsButtonDown(weak))
-            {
-                hitAngleRight = 135;
-                hitAngleLeft = 45;
-                hitAngleHigh = 10;
+                gamepad.newstate = GamePad.GetState(PlayerIndex.One);
+                camera.Update();
 
-            }
-
-            if (gamepad.IsButtonDown(strong))
-            {
-                hitAngleRight = 135;
-                hitAngleLeft = 45;
-                hitAngleHigh = 10;
-            }
-
-            //wenn der Spieler steht, werden die Bettas zurückgesetzt
-            if (gamepad.IsButtonUp(Up) && gamepad.IsButtonUp(Down) && gamepad.IsButtonUp(Left) && gamepad.IsButtonUp(Right))
-            {
-                betta = 0.0f;
-                bettaAlt = 1.0f;
-            }
-
-            //jeder Spieler braucht einen Winkel Gamma, den er verändern kann mit Eingaben
-            if (direction == 1)
-            {
-                if (gamepad.IsButtonDown(r) && gamma <= 90)
+                //Schlaganimation
+                if (is_serving || enemy.is_serving)
                 {
-                    gamma += (direction) * 1.0f; //Ein Grad mehr/weniger
+                    hitAngleLeft = 90;
+                    hitAngleRight = 90;
+                    hitAngleHigh = 0;
                 }
-                if (gamepad.IsButtonDown(l) && gamma >= -90)
+                if (Ball.Instance.IsFlying)
                 {
-                    gamma -= (direction) * 1.0f; //Ein Grad mehr/weniger
+                    hitAngleLeft = 90;
+                    hitAngleRight = 90;
+                    hitAngleHigh = 0;
                 }
-            }
-            else
-            {
-                if (direction == -1)
+                if (gamepad.IsButtonDown(weak))
                 {
-                    if (gamepad.IsButtonDown(r) && gamma >= -90)
-                    {
-                        gamma -= 1.0f; //Ein Grad mehr/weniger
-                    }
-                    if (gamepad.IsButtonDown(l) && gamma <= 90)
-                    {
-                        gamma += 1.0f; //Ein Grad mehr/weniger
-                    }
-                }
-            }
-            //Spieler hat gerade Aufschlag -> Position hinten, Bewegung nur links un rechts, Sprung
-            if (is_serving)
-            {
-                WeakThrow(weak);
-                StrongThrow(strong);
+                    hitAngleRight = 135;
+                    hitAngleLeft = 45;
+                    hitAngleHigh = 10;
 
-                float offset = position.Y - box[0].Y;
-                position.Y -= offset;
-                MovingBoundingBoxes(new Vector3(0, -offset, 0));
-
-                if (!is_jumping)
-                {
-                    if (gamepad.IsButtonDown(Left))
-                    {
-                        //watscheln
-                        if (betta <= 0 && betta >= -5 && betta <= bettaAlt)
-                        {
-                            bettaAlt = betta;
-                            betta--;
-                        }
-                        if (betta < -5)
-                        {
-                            betta = -5;
-                            bettaAlt = -6;
-                        }
-                        if (betta <= 0 && betta >= -5 && betta >= bettaAlt)
-                        {
-                            bettaAlt = betta;
-                            betta++;
-                        }
-                        if (betta <= 5 && betta >= 0 && betta >= bettaAlt)
-                        {
-                            bettaAlt = betta;
-                            betta++;
-                        }
-                        if (betta > 5)
-                        {
-                            betta = 5;
-                            bettaAlt = 6;
-                        }
-                        if (betta <= 5 && betta >= 0 && betta <= bettaAlt)
-                        {
-                            bettaAlt = betta;
-                            betta--;
-                        }
-
-                        if (direction == 1)
-                        {
-                            if (position.X > box[0].X) //position.X > box[0].X
-                            {
-                                position.X -= movespeed;
-                                MovingBoundingBoxes(new Vector3(-movespeed, 0, 0));
-                                camera.AddPosition(new Vector3(-movespeed, 0, 0));
-                                camera.AddView(new Vector3(-movespeed, 0, 0));
-                            }
-                        }
-                        else if (direction == -1)
-                        {
-                            if (position.X < box[0].X) //position.X < box[0].X
-                            {
-                                position.X += movespeed;
-                                MovingBoundingBoxes(new Vector3(movespeed, 0, 0));
-                                camera.AddPosition(new Vector3(movespeed, 0, 0));
-                                camera.AddView(new Vector3(movespeed, 0, 0));
-                            }
-                        }
-                    }
-
-                    if (gamepad.IsButtonDown(Right))
-                    {
-                        //watscheln
-                        if (betta <= 0 && betta >= -5 && betta <= bettaAlt)
-                        {
-                            bettaAlt = betta;
-                            betta--;
-                        }
-                        if (betta < -5)
-                        {
-                            betta = -5;
-                            bettaAlt = -6;
-                        }
-                        if (betta <= 0 && betta >= -5 && betta >= bettaAlt)
-                        {
-                            bettaAlt = betta;
-                            betta++;
-                        }
-                        if (betta <= 5 && betta >= 0 && betta >= bettaAlt)
-                        {
-                            bettaAlt = betta;
-                            betta++;
-                        }
-                        if (betta > 5)
-                        {
-                            betta = 5;
-                            bettaAlt = 6;
-                        }
-                        if (betta <= 5 && betta >= 0 && betta <= bettaAlt)
-                        {
-                            bettaAlt = betta;
-                            betta--;
-                        }
-
-                        if (direction == 1)
-                        {
-                            if (position.X < box[1].X) //position.X < box[1].X
-                            {
-                                position.X += movespeed;
-                                MovingBoundingBoxes(new Vector3(movespeed, 0, 0));
-                                camera.AddPosition(new Vector3(movespeed, 0, 0));
-                                camera.AddView(new Vector3(movespeed, 0, 0));
-                            }
-                        }
-                        else if (direction == -1)
-                        {
-                            if (position.X > box[1].X) //position.X > box[1].X
-                            {
-                                position.X -= movespeed;
-                                MovingBoundingBoxes(new Vector3(-movespeed, 0, 0));
-                                camera.AddPosition(new Vector3(-movespeed, 0, 0));
-                                camera.AddView(new Vector3(-movespeed, 0, 0));
-                            }
-                        }
-                    }
-
-                    if (gamepad.IsButtonDown(Jump))
-                    {
-                        is_jumping = true;
-                        is_falling = false;
-                    }
-                }
-                else
-                {
-                    if (position.Z <= max_jump_height && !is_falling)
-                    {
-                        position.Z += jump_velocity;
-                        MovingBoundingBoxes(new Vector3(0, 0, jump_velocity));
-                    }
-                    else
-                    {
-                        if (position.Z > 0)
-                        {
-                            position.Z -= jump_velocity;
-                            MovingBoundingBoxes(new Vector3(0, 0, -jump_velocity));
-                            is_falling = true;
-                        }
-                        else
-                        {
-                            is_jumping = false;
-                        }
-                    }
                 }
 
-                //Setze Ball-Position auf aktuelle Position des Aufschlägers
+                if (gamepad.IsButtonDown(strong))
+                {
+                    hitAngleRight = 135;
+                    hitAngleLeft = 45;
+                    hitAngleHigh = 10;
+                }
+
+                //wenn der Spieler steht, werden die Bettas zurückgesetzt
+                if (gamepad.IsButtonUp(Up) && gamepad.IsButtonUp(Down) && gamepad.IsButtonUp(Left) && gamepad.IsButtonUp(Right))
+                {
+                    betta = 0.0f;
+                    bettaAlt = 1.0f;
+                }
+
+                //jeder Spieler braucht einen Winkel Gamma, den er verändern kann mit Eingaben
                 if (direction == 1)
                 {
-                    Ball.Instance.Position = new Vector3((OuterBoundingBox.Max.X + OuterBoundingBox.Min.X) / 2, OuterBoundingBox.Max.Y, OuterBoundingBox.Max.Z + 1);
+                    if (gamepad.IsButtonDown(r) && gamma <= 90)
+                    {
+                        gamma += (direction) * 1.0f; //Ein Grad mehr/weniger
+                    }
+                    if (gamepad.IsButtonDown(l) && gamma >= -90)
+                    {
+                        gamma -= (direction) * 1.0f; //Ein Grad mehr/weniger
+                    }
                 }
                 else
                 {
                     if (direction == -1)
                     {
-                        Ball.Instance.Position = new Vector3((OuterBoundingBox.Max.X + OuterBoundingBox.Min.X) / 2, OuterBoundingBox.Min.Y, OuterBoundingBox.Max.Z + 1);
+                        if (gamepad.IsButtonDown(r) && gamma >= -90)
+                        {
+                            gamma -= 1.0f; //Ein Grad mehr/weniger
+                        }
+                        if (gamepad.IsButtonDown(l) && gamma <= 90)
+                        {
+                            gamma += 1.0f; //Ein Grad mehr/weniger
+                        }
                     }
                 }
-            }
-            else //Normales Spielen, alle Bewegungen
-            {
-                WeakThrow(weak);
-                StrongThrow(strong);
-
-                if (!is_jumping)
+                //Spieler hat gerade Aufschlag -> Position hinten, Bewegung nur links un rechts, Sprung
+                if (is_serving)
                 {
+                    WeakThrow(weak);
+                    StrongThrow(strong);
 
-                    if (gamepad.IsButtonDown(Up))
+                    float offset = position.Y - box[0].Y;
+                    position.Y -= offset;
+                    MovingBoundingBoxes(new Vector3(0, -offset, 0));
+
+                    if (!is_jumping)
                     {
-                        //watscheln
-                        if (betta <= 0 && betta >= -5 && betta <= bettaAlt)
+                        if (gamepad.IsButtonDown(Left))
                         {
-                            bettaAlt = betta;
-                            betta--;
-                        }
-                        if (betta < -5)
-                        {
-                            betta = -5;
-                            bettaAlt = -6;
-                        }
-                        if (betta <= 0 && betta >= -5 && betta >= bettaAlt)
-                        {
-                            bettaAlt = betta;
-                            betta++;
-                        }
-                        if (betta <= 5 && betta >= 0 && betta >= bettaAlt)
-                        {
-                            bettaAlt = betta;
-                            betta++;
-                        }
-                        if (betta > 5)
-                        {
-                            betta = 5;
-                            bettaAlt = 6;
-                        }
-                        if (betta <= 5 && betta >= 0 && betta <= bettaAlt)
-                        {
-                            bettaAlt = betta;
-                            betta--;
-                        }
-
-
-                        if (direction == 1)
-                        {
-                            if (!Collision.Instance.PlayerWithNet(this, field)) //Collision Spieler mit Netz
+                            //watscheln
+                            if (betta <= 0 && betta >= -5 && betta <= bettaAlt)
                             {
-                                position.Y += movespeed;
+                                bettaAlt = betta;
+                                betta--;
+                            }
+                            if (betta < -5)
+                            {
+                                betta = -5;
+                                bettaAlt = -6;
+                            }
+                            if (betta <= 0 && betta >= -5 && betta >= bettaAlt)
+                            {
+                                bettaAlt = betta;
+                                betta++;
+                            }
+                            if (betta <= 5 && betta >= 0 && betta >= bettaAlt)
+                            {
+                                bettaAlt = betta;
+                                betta++;
+                            }
+                            if (betta > 5)
+                            {
+                                betta = 5;
+                                bettaAlt = 6;
+                            }
+                            if (betta <= 5 && betta >= 0 && betta <= bettaAlt)
+                            {
+                                bettaAlt = betta;
+                                betta--;
+                            }
 
-                                MovingBoundingBoxes(new Vector3(0, movespeed, 0));
+                            if (direction == 1)
+                            {
+                                if (position.X > box[0].X) //position.X > box[0].X
+                                {
+                                    position.X -= movespeed;
+                                    MovingBoundingBoxes(new Vector3(-movespeed, 0, 0));
+                                    camera.AddPosition(new Vector3(-movespeed, 0, 0));
+                                    camera.AddView(new Vector3(-movespeed, 0, 0));
+                                }
+                            }
+                            else if (direction == -1)
+                            {
+                                if (position.X < box[0].X) //position.X < box[0].X
+                                {
+                                    position.X += movespeed;
+                                    MovingBoundingBoxes(new Vector3(movespeed, 0, 0));
+                                    camera.AddPosition(new Vector3(movespeed, 0, 0));
+                                    camera.AddView(new Vector3(movespeed, 0, 0));
+                                }
                             }
                         }
-                        else if (direction == -1)
+
+                        if (gamepad.IsButtonDown(Right))
                         {
-                            if (!Collision.Instance.PlayerWithNet(this, field)) //Collision Spieler mit Netz
+                            //watscheln
+                            if (betta <= 0 && betta >= -5 && betta <= bettaAlt)
                             {
-                                position.Y -= movespeed;
-                                MovingBoundingBoxes(new Vector3(0, -movespeed, 0));
+                                bettaAlt = betta;
+                                betta--;
+                            }
+                            if (betta < -5)
+                            {
+                                betta = -5;
+                                bettaAlt = -6;
+                            }
+                            if (betta <= 0 && betta >= -5 && betta >= bettaAlt)
+                            {
+                                bettaAlt = betta;
+                                betta++;
+                            }
+                            if (betta <= 5 && betta >= 0 && betta >= bettaAlt)
+                            {
+                                bettaAlt = betta;
+                                betta++;
+                            }
+                            if (betta > 5)
+                            {
+                                betta = 5;
+                                bettaAlt = 6;
+                            }
+                            if (betta <= 5 && betta >= 0 && betta <= bettaAlt)
+                            {
+                                bettaAlt = betta;
+                                betta--;
+                            }
+
+                            if (direction == 1)
+                            {
+                                if (position.X < box[1].X) //position.X < box[1].X
+                                {
+                                    position.X += movespeed;
+                                    MovingBoundingBoxes(new Vector3(movespeed, 0, 0));
+                                    camera.AddPosition(new Vector3(movespeed, 0, 0));
+                                    camera.AddView(new Vector3(movespeed, 0, 0));
+                                }
+                            }
+                            else if (direction == -1)
+                            {
+                                if (position.X > box[1].X) //position.X > box[1].X
+                                {
+                                    position.X -= movespeed;
+                                    MovingBoundingBoxes(new Vector3(-movespeed, 0, 0));
+                                    camera.AddPosition(new Vector3(-movespeed, 0, 0));
+                                    camera.AddView(new Vector3(-movespeed, 0, 0));
+                                }
                             }
                         }
-                    }
 
-
-                    if (gamepad.IsButtonDown(Left))
-                    {
-                        //watscheln
-                        if (betta <= 0 && betta >= -5 && betta <= bettaAlt)
+                        if (gamepad.IsButtonDown(Jump))
                         {
-                            bettaAlt = betta;
-                            betta--;
+                            is_jumping = true;
+                            is_falling = false;
                         }
-                        if (betta < -5)
-                        {
-                            betta = -5;
-                            bettaAlt = -6;
-                        }
-                        if (betta <= 0 && betta >= -5 && betta >= bettaAlt)
-                        {
-                            bettaAlt = betta;
-                            betta++;
-                        }
-                        if (betta <= 5 && betta >= 0 && betta >= bettaAlt)
-                        {
-                            bettaAlt = betta;
-                            betta++;
-                        }
-                        if (betta > 5)
-                        {
-                            betta = 5;
-                            bettaAlt = 6;
-                        }
-                        if (betta <= 5 && betta >= 0 && betta <= bettaAlt)
-                        {
-                            bettaAlt = betta;
-                            betta--;
-                        }
-
-                        if (direction == 1)
-                        {
-                            if (position.X > box[0].X) //position.X > box[0].X
-                            {
-                                position.X -= movespeed;
-                                MovingBoundingBoxes(new Vector3(-movespeed, 0, 0));
-                                camera.AddPosition(new Vector3(-movespeed, 0, 0));
-                                camera.AddView(new Vector3(-movespeed, 0, 0));
-                            }
-                        }
-                        else if (direction == -1)
-                        {
-                            if (position.X < box[0].X) //position.X < box[0].X
-                            {
-                                position.X += movespeed;
-                                MovingBoundingBoxes(new Vector3(movespeed, 0, 0));
-                                camera.AddPosition(new Vector3(movespeed, 0, 0));
-                                camera.AddView(new Vector3(movespeed, 0, 0));
-                            }
-                        }
-                    }
-
-
-                    if (gamepad.IsButtonDown(Down))
-                    {
-                        //watscheln
-                        if (betta <= 0 && betta >= -5 && betta <= bettaAlt)
-                        {
-                            bettaAlt = betta;
-                            betta--;
-                        }
-                        if (betta < -5)
-                        {
-                            betta = -5;
-                            bettaAlt = -6;
-                        }
-                        if (betta <= 0 && betta >= -5 && betta >= bettaAlt)
-                        {
-                            bettaAlt = betta;
-                            betta++;
-                        }
-                        if (betta <= 5 && betta >= 0 && betta >= bettaAlt)
-                        {
-                            bettaAlt = betta;
-                            betta++;
-                        }
-                        if (betta > 5)
-                        {
-                            betta = 5;
-                            bettaAlt = 6;
-                        }
-                        if (betta <= 5 && betta >= 0 && betta <= bettaAlt)
-                        {
-                            bettaAlt = betta;
-                            betta--;
-                        }
-
-                        if (direction == 1)
-                        {
-                            if (position.Y > box[0].Y) //position.Y > box[0].Y
-                            {
-                                position.Y -= movespeed;
-                                MovingBoundingBoxes(new Vector3(0, -movespeed, 0));
-                            }
-                        }
-                        else if (direction == -1)
-                        {
-                            if (position.Y < box[0].Y) //position.Y < box[0].Y
-                            {
-                                position.Y += movespeed;
-                                MovingBoundingBoxes(new Vector3(0, movespeed, 0));
-                            }
-                        }
-                    }
-
-
-                    if (gamepad.IsButtonDown(Right))
-                    {
-                        //watscheln
-                        if (betta <= 0 && betta >= -5 && betta <= bettaAlt)
-                        {
-                            bettaAlt = betta;
-                            betta--;
-                        }
-                        if (betta < -5)
-                        {
-                            betta = -5;
-                            bettaAlt = -6;
-                        }
-                        if (betta <= 0 && betta >= -5 && betta >= bettaAlt)
-                        {
-                            bettaAlt = betta;
-                            betta++;
-                        }
-                        if (betta <= 5 && betta >= 0 && betta >= bettaAlt)
-                        {
-                            bettaAlt = betta;
-                            betta++;
-                        }
-                        if (betta > 5)
-                        {
-                            betta = 5;
-                            bettaAlt = 6;
-                        }
-                        if (betta <= 5 && betta >= 0 && betta <= bettaAlt)
-                        {
-                            bettaAlt = betta;
-                            betta--;
-                        }
-
-                        if (direction == 1)
-                        {
-                            if (position.X < box[1].X) //position.X < box[1].X
-                            {
-                                position.X += movespeed;
-                                MovingBoundingBoxes(new Vector3(movespeed, 0, 0));
-                                camera.AddPosition(new Vector3(movespeed, 0, 0));
-                                camera.AddView(new Vector3(movespeed, 0, 0));
-                            }
-                        }
-                        else if (direction == -1)
-                        {
-                            if (position.X > box[1].X) //position.X > box[1].X
-                            {
-                                position.X -= movespeed;
-                                MovingBoundingBoxes(new Vector3(-movespeed, 0, 0));
-                                camera.AddPosition(new Vector3(-movespeed, 0, 0));
-                                camera.AddView(new Vector3(-movespeed, 0, 0));
-                            }
-                        }
-                    }
-
-                    if (gamepad.IsButtonDown(Jump))
-                    {
-                        is_jumping = true;
-                        is_falling = false;
-                    }
-                }
-                else
-                {
-                    if (position.Z <= max_jump_height && !is_falling)
-                    {
-                        position.Z += jump_velocity;
-                        MovingBoundingBoxes(new Vector3(0, 0, jump_velocity));
                     }
                     else
                     {
-                        if (position.Z > 0)
+                        if (position.Z <= max_jump_height && !is_falling)
                         {
-                            position.Z -= jump_velocity;
-                            MovingBoundingBoxes(new Vector3(0, 0, -jump_velocity));
-                            is_falling = true;
+                            position.Z += jump_velocity;
+                            MovingBoundingBoxes(new Vector3(0, 0, jump_velocity));
                         }
                         else
                         {
-                            is_jumping = false;
+                            if (position.Z > 0)
+                            {
+                                position.Z -= jump_velocity;
+                                MovingBoundingBoxes(new Vector3(0, 0, -jump_velocity));
+                                is_falling = true;
+                            }
+                            else
+                            {
+                                is_jumping = false;
+                            }
+                        }
+                    }
+
+                    //Setze Ball-Position auf aktuelle Position des Aufschlägers
+                    if (direction == 1)
+                    {
+                        Ball.Instance.Position = new Vector3((OuterBoundingBox.Max.X + OuterBoundingBox.Min.X) / 2, OuterBoundingBox.Max.Y, OuterBoundingBox.Max.Z + 1);
+                    }
+                    else
+                    {
+                        if (direction == -1)
+                        {
+                            Ball.Instance.Position = new Vector3((OuterBoundingBox.Max.X + OuterBoundingBox.Min.X) / 2, OuterBoundingBox.Min.Y, OuterBoundingBox.Max.Z + 1);
                         }
                     }
                 }
+                else //Normales Spielen, alle Bewegungen
+                {
+                    WeakThrow(weak);
+                    StrongThrow(strong);
+
+                    if (!is_jumping)
+                    {
+
+                        if (gamepad.IsButtonDown(Up))
+                        {
+                            //watscheln
+                            if (betta <= 0 && betta >= -5 && betta <= bettaAlt)
+                            {
+                                bettaAlt = betta;
+                                betta--;
+                            }
+                            if (betta < -5)
+                            {
+                                betta = -5;
+                                bettaAlt = -6;
+                            }
+                            if (betta <= 0 && betta >= -5 && betta >= bettaAlt)
+                            {
+                                bettaAlt = betta;
+                                betta++;
+                            }
+                            if (betta <= 5 && betta >= 0 && betta >= bettaAlt)
+                            {
+                                bettaAlt = betta;
+                                betta++;
+                            }
+                            if (betta > 5)
+                            {
+                                betta = 5;
+                                bettaAlt = 6;
+                            }
+                            if (betta <= 5 && betta >= 0 && betta <= bettaAlt)
+                            {
+                                bettaAlt = betta;
+                                betta--;
+                            }
+
+
+                            if (direction == 1)
+                            {
+                                if (!Collision.Instance.PlayerWithNet(this, field)) //Collision Spieler mit Netz
+                                {
+                                    position.Y += movespeed;
+
+                                    MovingBoundingBoxes(new Vector3(0, movespeed, 0));
+                                }
+                            }
+                            else if (direction == -1)
+                            {
+                                if (!Collision.Instance.PlayerWithNet(this, field)) //Collision Spieler mit Netz
+                                {
+                                    position.Y -= movespeed;
+                                    MovingBoundingBoxes(new Vector3(0, -movespeed, 0));
+                                }
+                            }
+                        }
+
+
+                        if (gamepad.IsButtonDown(Left))
+                        {
+                            //watscheln
+                            if (betta <= 0 && betta >= -5 && betta <= bettaAlt)
+                            {
+                                bettaAlt = betta;
+                                betta--;
+                            }
+                            if (betta < -5)
+                            {
+                                betta = -5;
+                                bettaAlt = -6;
+                            }
+                            if (betta <= 0 && betta >= -5 && betta >= bettaAlt)
+                            {
+                                bettaAlt = betta;
+                                betta++;
+                            }
+                            if (betta <= 5 && betta >= 0 && betta >= bettaAlt)
+                            {
+                                bettaAlt = betta;
+                                betta++;
+                            }
+                            if (betta > 5)
+                            {
+                                betta = 5;
+                                bettaAlt = 6;
+                            }
+                            if (betta <= 5 && betta >= 0 && betta <= bettaAlt)
+                            {
+                                bettaAlt = betta;
+                                betta--;
+                            }
+
+                            if (direction == 1)
+                            {
+                                if (position.X > box[0].X) //position.X > box[0].X
+                                {
+                                    position.X -= movespeed;
+                                    MovingBoundingBoxes(new Vector3(-movespeed, 0, 0));
+                                    camera.AddPosition(new Vector3(-movespeed, 0, 0));
+                                    camera.AddView(new Vector3(-movespeed, 0, 0));
+                                }
+                            }
+                            else if (direction == -1)
+                            {
+                                if (position.X < box[0].X) //position.X < box[0].X
+                                {
+                                    position.X += movespeed;
+                                    MovingBoundingBoxes(new Vector3(movespeed, 0, 0));
+                                    camera.AddPosition(new Vector3(movespeed, 0, 0));
+                                    camera.AddView(new Vector3(movespeed, 0, 0));
+                                }
+                            }
+                        }
+
+
+                        if (gamepad.IsButtonDown(Down))
+                        {
+                            //watscheln
+                            if (betta <= 0 && betta >= -5 && betta <= bettaAlt)
+                            {
+                                bettaAlt = betta;
+                                betta--;
+                            }
+                            if (betta < -5)
+                            {
+                                betta = -5;
+                                bettaAlt = -6;
+                            }
+                            if (betta <= 0 && betta >= -5 && betta >= bettaAlt)
+                            {
+                                bettaAlt = betta;
+                                betta++;
+                            }
+                            if (betta <= 5 && betta >= 0 && betta >= bettaAlt)
+                            {
+                                bettaAlt = betta;
+                                betta++;
+                            }
+                            if (betta > 5)
+                            {
+                                betta = 5;
+                                bettaAlt = 6;
+                            }
+                            if (betta <= 5 && betta >= 0 && betta <= bettaAlt)
+                            {
+                                bettaAlt = betta;
+                                betta--;
+                            }
+
+                            if (direction == 1)
+                            {
+                                if (position.Y > box[0].Y) //position.Y > box[0].Y
+                                {
+                                    position.Y -= movespeed;
+                                    MovingBoundingBoxes(new Vector3(0, -movespeed, 0));
+                                }
+                            }
+                            else if (direction == -1)
+                            {
+                                if (position.Y < box[0].Y) //position.Y < box[0].Y
+                                {
+                                    position.Y += movespeed;
+                                    MovingBoundingBoxes(new Vector3(0, movespeed, 0));
+                                }
+                            }
+                        }
+
+
+                        if (gamepad.IsButtonDown(Right))
+                        {
+                            //watscheln
+                            if (betta <= 0 && betta >= -5 && betta <= bettaAlt)
+                            {
+                                bettaAlt = betta;
+                                betta--;
+                            }
+                            if (betta < -5)
+                            {
+                                betta = -5;
+                                bettaAlt = -6;
+                            }
+                            if (betta <= 0 && betta >= -5 && betta >= bettaAlt)
+                            {
+                                bettaAlt = betta;
+                                betta++;
+                            }
+                            if (betta <= 5 && betta >= 0 && betta >= bettaAlt)
+                            {
+                                bettaAlt = betta;
+                                betta++;
+                            }
+                            if (betta > 5)
+                            {
+                                betta = 5;
+                                bettaAlt = 6;
+                            }
+                            if (betta <= 5 && betta >= 0 && betta <= bettaAlt)
+                            {
+                                bettaAlt = betta;
+                                betta--;
+                            }
+
+                            if (direction == 1)
+                            {
+                                if (position.X < box[1].X) //position.X < box[1].X
+                                {
+                                    position.X += movespeed;
+                                    MovingBoundingBoxes(new Vector3(movespeed, 0, 0));
+                                    camera.AddPosition(new Vector3(movespeed, 0, 0));
+                                    camera.AddView(new Vector3(movespeed, 0, 0));
+                                }
+                            }
+                            else if (direction == -1)
+                            {
+                                if (position.X > box[1].X) //position.X > box[1].X
+                                {
+                                    position.X -= movespeed;
+                                    MovingBoundingBoxes(new Vector3(-movespeed, 0, 0));
+                                    camera.AddPosition(new Vector3(-movespeed, 0, 0));
+                                    camera.AddView(new Vector3(-movespeed, 0, 0));
+                                }
+                            }
+                        }
+
+                        if (gamepad.IsButtonDown(Jump))
+                        {
+                            is_jumping = true;
+                            is_falling = false;
+                        }
+                    }
+                    else
+                    {
+                        if (position.Z <= max_jump_height && !is_falling)
+                        {
+                            position.Z += jump_velocity;
+                            MovingBoundingBoxes(new Vector3(0, 0, jump_velocity));
+                        }
+                        else
+                        {
+                            if (position.Z > 0)
+                            {
+                                position.Z -= jump_velocity;
+                                MovingBoundingBoxes(new Vector3(0, 0, -jump_velocity));
+                                is_falling = true;
+                            }
+                            else
+                            {
+                                is_jumping = false;
+                            }
+                        }
+                    }
+                }
+
+                if (Touch_Count > 3)
+                {
+                    Enemy.Points++;
+                    Enemy.IsServing = true;
+                    IsServing = false;
+                    Ball.Instance.Active = null;
+
+                    Touch_Count = 0;
+                    Enemy.Touch_Count = 0;
+                }
+
+                gamepad.oldstate = gamepad.newstate;
+
+                if (direction == 1)
+                {
+                    leftWingPosition = new Vector3(position.X, position.Y, position.Z - 1);
+                    rightWingPosition = new Vector3(position.X, position.Y, position.Z - 1);
+                }
+                else
+                {
+                    leftWingPosition = new Vector3(position.X, position.Y, position.Z - 1);
+                    rightWingPosition = new Vector3(position.X, position.Y, position.Z - 1);
+                }
             }
 
-            if (Touch_Count > 3)
-            {
-                Enemy.Points++;
-                Enemy.IsServing = true;
-                IsServing = false;
-                Ball.Instance.Active = null;
-
-                Touch_Count = 0;
-                Enemy.Touch_Count = 0;
-            }
-
-            gamepad.oldstate = gamepad.newstate;
-
-            if (direction == 1)
-            {
-                leftWingPosition = new Vector3(position.X, position.Y, position.Z - 1);
-                rightWingPosition = new Vector3(position.X, position.Y, position.Z - 1);
-            }
-            else
-            {
-                leftWingPosition = new Vector3(position.X, position.Y, position.Z - 1);
-                rightWingPosition = new Vector3(position.X, position.Y, position.Z - 1);
-            }
 
 
 

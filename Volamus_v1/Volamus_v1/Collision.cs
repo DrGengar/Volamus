@@ -17,7 +17,11 @@ namespace Volamus_v1
 
         private static Collision instance;
         private int colliding;
-        private int groundContact;
+        private int groundContact;   //Bodenberührungen des Balls
+
+        public int match = 3;
+        public bool matchIsFinish = false;
+        public Player winner;
 
 
         public static Collision Instance
@@ -53,97 +57,31 @@ namespace Volamus_v1
 
         public void CollisionMethod(Field field)
         {
-            //Ball mit Ebene z=0
-            if (BallWithPlane())
+            if (matchIsFinish == true)
             {
-                //beim ersten Bodenkontakt werden die Punkte,... angepasst, Sound,..
-                if (groundContact == 0)
-                {
-                    GameStateManager.Instance.SoundEffects.SoundVolume = 0.3f;
-                    GameStateManager.Instance.SoundEffects.Play2D("Content//Sound//single_blow_from_police_whistle.ogg");
-                    GameStateManager.Instance.SoundEffects.Play2D("Content//Sound//child_crowd_cheering.ogg");
 
-                    //Wenn außerhalb des Feldes: Gegner von LastTouched +1 Punkt und bekommt Aufschlag
-                    if (Ball.Instance.Position.X > (field.Width / 2) || Ball.Instance.Position.X < -(field.Width / 2) || Ball.Instance.Position.Y > (field.Length / 2) || Ball.Instance.Position.Y < -(field.Length / 2))
-                    {
+                EndOfMatch endwin = new EndOfMatch();
+                endwin.EndOfMatchWinner(winner);
+                EndOfMatch endlose = new EndOfMatch();
+                endlose.EndOfMatchLoser(winner.Enemy);
 
-                        lastTouched.Enemy.Points += 1;
-                        lastTouched.Enemy.IsServing = true;
-
-                        lastTouched.Touch_Count = 0;
-                        lastTouched.Enemy.Touch_Count = 0;
-                    }
-                    //Sonst muss der ball im Feld gelandet sein -> Unterscheidung eigenes (gegner bekommt Punkt)/gegnerisches feld(ich selbst bekomme Punkt)
-                    else
-                    {
-                        float min = lastTouched.Box[1].Y;
-
-                        if (lastTouched.Direction * Ball.Instance.Position.Y < min)
-                        {
-
-                            lastTouched.Enemy.Points += 1;
-                            lastTouched.Enemy.IsServing = true;
-
-                            lastTouched.Touch_Count = 0;
-                            lastTouched.Enemy.Touch_Count = 0;
-                        }
-                        else
-                        {
-                            lastTouched.Points += 1;
-                            lastTouched.IsServing = true;
-
-                            lastTouched.Touch_Count = 0;
-                            lastTouched.Enemy.Touch_Count = 0;
-                        }
-                    }
-
-                }
-
-                //Hüpfen des Balls
-                if (groundContact <= 1)
-                {
-                    Vector3 hitdirection = Ball.Instance.Active.Hit_Direction;
-                    float angle_z = MathHelper.ToDegrees((float)Math.Atan((hitdirection.Z / hitdirection.Y)));
-                    float angle_x = MathHelper.ToDegrees((float)Math.Atan((hitdirection.X / hitdirection.Y)));
-                    Ball.Instance.Position = new Vector3(Ball.Instance.Position.X, Ball.Instance.Position.Y, Ball.Instance.Position.Z + 3);
-                    newParabel = new Parabel(Ball.Instance.Position, Ball.Instance.Active.Angles.X, Ball.Instance.Active.Angles.Z, Ball.Instance.Active.Angles.Y, 0.6f * Ball.Instance.Active.Velocity,
-                        Ball.Instance.Active.Direction);
-
-                    Ball.Instance.Active = newParabel;
-                    groundContact++;
-                }
-
-                //zurücksetzen
-                else
-                {
-                    groundContact = 0;
-                    Ball.Instance.IsFlying = false;
-                }
             }
-                 /*   Ball.Instance.IsFlying = false;
-                    //Wenn außerhalb des Feldes: Gegner von LastTouched +1 Punkt und bekommt Aufschlag
-                    if (Ball.Instance.Position.X > (field.Width / 2) || Ball.Instance.Position.X < -(field.Width / 2) || Ball.Instance.Position.Y > (field.Length / 2) || Ball.Instance.Position.Y < -(field.Length / 2))
+            if (matchIsFinish == false)
+            {
+
+                //Ball mit Ebene z=0
+                if (BallWithPlane())
+                {
+                    //beim ersten Bodenkontakt werden die Punkte,... angepasst, Sound,..
+                    if (groundContact == 0)
                     {
                         GameStateManager.Instance.SoundEffects.SoundVolume = 0.3f;
                         GameStateManager.Instance.SoundEffects.Play2D("Content//Sound//single_blow_from_police_whistle.ogg");
                         GameStateManager.Instance.SoundEffects.Play2D("Content//Sound//child_crowd_cheering.ogg");
 
-                        lastTouched.Enemy.Points += 1;
-                        lastTouched.Enemy.IsServing = true;
-
-                        lastTouched.Touch_Count = 0;
-                        lastTouched.Enemy.Touch_Count = 0;
-                    }
-                    //Sonst muss der ball im Feld gelandet sein -> Unterscheidung eigenes (gegner bekommt Punkt)/gegnerisches feld(ich selbst bekomme Punkt)
-                    else
-                    {
-                        float min = lastTouched.Box[1].Y;
-
-                        if (lastTouched.Direction * Ball.Instance.Position.Y < min)
+                        //Wenn außerhalb des Feldes: Gegner von LastTouched +1 Punkt und bekommt Aufschlag
+                        if (Ball.Instance.Position.X > (field.Width / 2) || Ball.Instance.Position.X < -(field.Width / 2) || Ball.Instance.Position.Y > (field.Length / 2) || Ball.Instance.Position.Y < -(field.Length / 2))
                         {
-                            GameStateManager.Instance.SoundEffects.SoundVolume = 0.3f;
-                            GameStateManager.Instance.SoundEffects.Play2D("Content//Sound//single_blow_from_police_whistle.ogg");
-                            GameStateManager.Instance.SoundEffects.Play2D("Content//Sound//child_crowd_cheering.ogg");
 
                             lastTouched.Enemy.Points += 1;
                             lastTouched.Enemy.IsServing = true;
@@ -151,20 +89,155 @@ namespace Volamus_v1
                             lastTouched.Touch_Count = 0;
                             lastTouched.Enemy.Touch_Count = 0;
                         }
+                        //Sonst muss der ball im Feld gelandet sein -> Unterscheidung eigenes (gegner bekommt Punkt)/gegnerisches feld(ich selbst bekomme Punkt)
                         else
                         {
+                            float min = lastTouched.Box[1].Y;
+
+                            if (lastTouched.Direction * Ball.Instance.Position.Y < min)
+                            {
+
+                                lastTouched.Enemy.Points += 1;
+                                lastTouched.Enemy.IsServing = true;
+
+                                lastTouched.Touch_Count = 0;
+                                lastTouched.Enemy.Touch_Count = 0;
+                            }
+                            else
+                            {
+                                lastTouched.Points += 1;
+                                lastTouched.IsServing = true;
+
+                                lastTouched.Touch_Count = 0;
+                                lastTouched.Enemy.Touch_Count = 0;
+                            }
+                        }
+
+                    }
+
+                    //Hüpfen des Balls
+                    if (groundContact <= 1)
+                    {
+                        Vector3 hitdirection = Ball.Instance.Active.Hit_Direction;
+                        float angle_z = MathHelper.ToDegrees((float)Math.Atan((hitdirection.Z / hitdirection.Y)));
+                        float angle_x = MathHelper.ToDegrees((float)Math.Atan((hitdirection.X / hitdirection.Y)));
+                        Ball.Instance.Position = new Vector3(Ball.Instance.Position.X, Ball.Instance.Position.Y, Ball.Instance.Position.Z + 3);
+                        newParabel = new Parabel(Ball.Instance.Position, Ball.Instance.Active.Angles.X, Ball.Instance.Active.Angles.Z, Ball.Instance.Active.Angles.Y, 0.6f * Ball.Instance.Active.Velocity,
+                            Ball.Instance.Active.Direction);
+
+                        Ball.Instance.Active = newParabel;
+                        groundContact++;
+                    }
+
+                    //zurücksetzen
+                    else
+                    {
+                        if (lastTouched.Points == match || lastTouched.Enemy.Points == match)
+                        {
+                            if (lastTouched.Points == match)
+                            {
+                                winner = lastTouched;
+                            }
+                            else
+                            {
+                                winner = lastTouched.Enemy;
+                            }
+                            /*EndOfMatch end = new EndOfMatch();
+                            end.LoadContent();
+                            new EndOfMatch(winner);*/
+                            matchIsFinish = true;
+                        }
+                        groundContact = 0;
+                        Ball.Instance.IsFlying = false;
+
+                    }
+                    /*   //Wenn außerhalb des Feldes: Gegner von LastTouched +1 Punkt und bekommt Aufschlag
+                       if (Ball.Instance.Position.X > (field.Width / 2) || Ball.Instance.Position.X < -(field.Width / 2) || Ball.Instance.Position.Y > (field.Length / 2) || Ball.Instance.Position.Y < -(field.Length / 2))
+                       {
+
+                           lastTouched.Enemy.Points += 1;
+                           lastTouched.Enemy.IsServing = true;
+
+                           lastTouched.Touch_Count = 0;
+                           lastTouched.Enemy.Touch_Count = 0;
+                       }
+                       //Sonst muss der ball im Feld gelandet sein -> Unterscheidung eigenes (gegner bekommt Punkt)/gegnerisches feld(ich selbst bekomme Punkt)
+                       else
+                       {
+                           float min = lastTouched.Box[1].Y;
+
+                           if (lastTouched.Direction * Ball.Instance.Position.Y < min)
+                           {
+
+                               lastTouched.Enemy.Points += 1;
+                               lastTouched.Enemy.IsServing = true;
+
+                               lastTouched.Touch_Count = 0;
+                               lastTouched.Enemy.Touch_Count = 0;
+                           }
+                           else
+                           {
+                               lastTouched.Points += 1;
+                               lastTouched.IsServing = true;
+
+                               lastTouched.Touch_Count = 0;
+                               lastTouched.Enemy.Touch_Count = 0;
+                           }
+                       }*/
+
+
+
+
+                    /*
+                    groundContact = 0;
+                        Ball.Instance.IsFlying = false;
+                        //Wenn außerhalb des Feldes: Gegner von LastTouched +1 Punkt und bekommt Aufschlag
+                        if (Ball.Instance.Position.X > (field.Width / 2) || Ball.Instance.Position.X < -(field.Width / 2) || Ball.Instance.Position.Y > (field.Length / 2) || Ball.Instance.Position.Y < -(field.Length / 2))
+                        {
+
                             GameStateManager.Instance.SoundEffects.SoundVolume = 0.3f;
                             GameStateManager.Instance.SoundEffects.Play2D("Content//Sound//single_blow_from_police_whistle.ogg");
                             GameStateManager.Instance.SoundEffects.Play2D("Content//Sound//child_crowd_cheering.ogg");
 
-                            lastTouched.Points += 1;
-                            lastTouched.IsServing = true;
+
+                            lastTouched.Enemy.Points += 1;
+                            lastTouched.Enemy.IsServing = true;
 
                             lastTouched.Touch_Count = 0;
                             lastTouched.Enemy.Touch_Count = 0;
                         }
-                    }
-                }*/
+                        //Sonst muss der ball im Feld gelandet sein -> Unterscheidung eigenes (gegner bekommt Punkt)/gegnerisches feld(ich selbst bekomme Punkt)
+                        else
+                        {
+                            float min = lastTouched.Box[1].Y;
+
+                            if (lastTouched.Direction * Ball.Instance.Position.Y < min)
+                            {
+                                GameStateManager.Instance.SoundEffects.SoundVolume = 0.3f;
+                                GameStateManager.Instance.SoundEffects.Play2D("Content//Sound//single_blow_from_police_whistle.ogg");
+                                GameStateManager.Instance.SoundEffects.Play2D("Content//Sound//child_crowd_cheering.ogg");
+
+                                lastTouched.Enemy.Points += 1;
+                                lastTouched.Enemy.IsServing = true;
+
+                                lastTouched.Touch_Count = 0;
+                                lastTouched.Enemy.Touch_Count = 0;
+                            }
+                            else
+                            {
+                                GameStateManager.Instance.SoundEffects.SoundVolume = 0.3f;
+                                GameStateManager.Instance.SoundEffects.Play2D("Content//Sound//single_blow_from_police_whistle.ogg");
+                                GameStateManager.Instance.SoundEffects.Play2D("Content//Sound//child_crowd_cheering.ogg");
+
+                                lastTouched.Points += 1;
+                                lastTouched.IsServing = true;
+
+                                lastTouched.Touch_Count = 0;
+                                lastTouched.Enemy.Touch_Count = 0;
+                            }
+                        }*/
+
+                }
 
                 if (!Ball.Instance.BoundingSphere.Intersects(lastTouched.InnerBoundingBox) && !Ball.Instance.BoundingSphere.Intersects(lastTouched.Enemy.InnerBoundingBox) && !Ball.Instance.BoundingSphere.Intersects(field.NetBoundingBox))
                 {
@@ -190,16 +263,24 @@ namespace Volamus_v1
                         Ball.Instance.Active.Direction * (-1)); //Skalierung
                     Ball.Instance.Active = newParabel;
                 }
+            }
+
+
+
         }
 
         //Ball mit Ebene z=0
         public bool BallWithPlane()
         {
-            if(Ball.Instance.BoundingSphere.Intersects(new Plane(new Vector3(0,0,0), new Vector3(1,0,0), new Vector3(0,1,0))) != (PlaneIntersectionType) 0)
+            if (matchIsFinish == false)
             {
-                return true;
-            }
+                if (Ball.Instance.BoundingSphere.Intersects(new Plane(new Vector3(0, 0, 0), new Vector3(1, 0, 0), new Vector3(0, 1, 0))) != (PlaneIntersectionType)0)
+                {
+                    return true;
+                }
 
+                return false;
+            }
             return false;
         }
 
@@ -218,13 +299,13 @@ namespace Volamus_v1
         private void BallWithInnerBoundingBox(Player player)
         {
             //Ball mit InnerBoundingBox vom Spieler -> Ball soll abprallen vom Spieler
-            if (Ball.Instance.BoundingSphere.Intersects(player.InnerBoundingBox) && Ball.Instance.IsFlying == true && !player.IsServing && colliding == 0 && Ball.Instance.Active!=null)
+            if (Ball.Instance.BoundingSphere.Intersects(player.InnerBoundingBox) && Ball.Instance.IsFlying == true && !player.IsServing && colliding == 0 && Ball.Instance.Active != null)
             {
                 Vector3 hitdirection = Ball.Instance.Active.Hit_Direction;
                 float angle_z = MathHelper.ToDegrees((float)Math.Atan((hitdirection.Z / hitdirection.Y)));
                 float angle_x = MathHelper.ToDegrees((float)Math.Atan((hitdirection.X / hitdirection.Y)));
 
-                if(hitdirection.Y == 0.0f)
+                if (hitdirection.Y == 0.0f)
                 {
                     angle_z = 90.0f;
                     angle_x = 0.0f;
@@ -244,7 +325,7 @@ namespace Volamus_v1
                     front = player.InnerBoundingBox.Max.Y;
                     back = player.InnerBoundingBox.Min.Y;
                 }
-                else if(player.Direction == -1)
+                else if (player.Direction == -1)
                 {
                     left = player.InnerBoundingBox.Min.X;
                     right = player.InnerBoundingBox.Max.X;
@@ -252,7 +333,7 @@ namespace Volamus_v1
                     back = player.InnerBoundingBox.Max.Y;
                 }
 
-                if(lastTouched.Enemy == player)
+                if (lastTouched.Enemy == player)
                 {
                     lastTouched.Enemy.Touch_Count = 0;
                 }
@@ -286,11 +367,11 @@ namespace Volamus_v1
                     newParabel = new Parabel(Ball.Instance.Position, player.Direction * (-angle_z), player.Direction * angle_x, Ball.Instance.Active.Angles.Y, 0.75f * Ball.Instance.Active.Velocity,
                         Ball.Instance.Active.Direction); //Skalierung
                 }
-                
+
                 //Kollision wenn von oben
                 if (Ball.Instance.Position.Z >= player.InnerBoundingBox.Max.Z)
                 {
-                    newParabel = new Parabel(Ball.Instance.Position, player.Direction * angle_z, player.Direction*(-angle_x), Ball.Instance.Active.Angles.Y, 0.75f * Ball.Instance.Active.Velocity,
+                    newParabel = new Parabel(Ball.Instance.Position, player.Direction * angle_z, player.Direction * (-angle_x), Ball.Instance.Active.Angles.Y, 0.75f * Ball.Instance.Active.Velocity,
                         Ball.Instance.Active.Direction); //Skalierung
                 }
 
