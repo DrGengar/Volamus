@@ -94,6 +94,7 @@ namespace Volamus_v1
         PlayerIndex index;
 
         //Get-Methods
+
         public int Direction
         {
             get { return direction; }
@@ -577,13 +578,13 @@ namespace Volamus_v1
                     //Setze Ball-Position auf aktuelle Position des Aufschlägers
                     if (direction == 1)
                     {
-                        Ball.Instance.Position = new Vector3((OuterBoundingBox.Max.X + OuterBoundingBox.Min.X) / 2, OuterBoundingBox.Max.Y, OuterBoundingBox.Max.Z + 1);
+                        Ball.Instance.Position = new Vector3((OuterBoundingBox.Max.X + OuterBoundingBox.Min.X) / 2, OuterBoundingBox.Max.Y, OuterBoundingBox.Max.Z + Ball.Instance.EffectDrop);
                     }
                     else
                     {
                         if (direction == -1)
                         {
-                            Ball.Instance.Position = new Vector3((OuterBoundingBox.Max.X + OuterBoundingBox.Min.X) / 2, OuterBoundingBox.Min.Y, OuterBoundingBox.Max.Z + 1);
+                            Ball.Instance.Position = new Vector3((OuterBoundingBox.Max.X + OuterBoundingBox.Min.X) / 2, OuterBoundingBox.Min.Y, OuterBoundingBox.Max.Z + Ball.Instance.EffectDrop);//+ 1);Ball.Instance.EffectDrop
                         }
                     }
                 }
@@ -877,7 +878,10 @@ namespace Volamus_v1
                 }
             }
 
-
+            else
+            {
+                gamma = 0;
+            }
 
 
 
@@ -1495,7 +1499,10 @@ namespace Volamus_v1
                     rightWingPosition = new Vector3(position.X, position.Y, position.Z - 1);
                 }
             }
-
+            else
+            {
+                gamma = 0;
+            }
 
 
 

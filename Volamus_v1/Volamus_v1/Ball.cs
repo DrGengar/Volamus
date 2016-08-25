@@ -13,6 +13,8 @@ namespace Volamus_v1
 {
     public class Ball
     {
+        Pick pick;
+        float effectDrop = 1f;
         Effect effect;
         Vector3 viewVector;
 
@@ -20,6 +22,7 @@ namespace Volamus_v1
         Model model;
         BoundingSphere boundingSphere;
         Texture2D ballShadow;
+        float originalRadius;
 
         VertexPositionTexture[] shadowVertices = new VertexPositionTexture[6];
         BasicEffect e;
@@ -33,6 +36,17 @@ namespace Volamus_v1
         DebugDraw d;
 
         Wind wind;
+
+        public float EffectDrop
+        {
+            get { return effectDrop; }
+            set { effectDrop = value; }
+        }
+        public float OriginalRadius
+        {
+            get { return originalRadius; }
+
+        }
 
         public Vector3 Position
         {
@@ -53,7 +67,7 @@ namespace Volamus_v1
         public bool IsFlying
         {
             get { return isflying; }
-            set { isflying = value;  }
+            set { isflying = value; }
         }
 
         public Parabel Active
@@ -65,6 +79,11 @@ namespace Volamus_v1
         public BoundingSphere BoundingSphere
         {
             get { return boundingSphere; }
+        }
+        public float BoundingSphereRadius
+        {
+            get { return BoundingSphere.Radius; }
+            set { boundingSphere.Radius = value; }
         }
 
         public Wind Wind
@@ -93,6 +112,7 @@ namespace Volamus_v1
 
         public void Initialize()
         {
+
             float r = boundingSphere.Radius;
             shadowVertices[0].Position = new Vector3(position.X - r, position.Y - r, 0.01f);
             shadowVertices[1].Position = new Vector3(position.X - r, position.Y + r, 0.01f);
@@ -116,6 +136,7 @@ namespace Volamus_v1
 
         public void LoadContent(Wind _wind)
         {
+            pick = new Pick();
             effect = GameStateManager.Instance.Content.Load<Effect>("shader");
 
             model = GameStateManager.Instance.Content.Load<Model>("BeachBall");
@@ -133,6 +154,7 @@ namespace Volamus_v1
             }
 
             boundingSphere.Radius *= 1.0f;
+            originalRadius = boundingSphere.Radius;
 
             boundingSphere.Center = position;
 
@@ -143,6 +165,7 @@ namespace Volamus_v1
 
         public void Update()
         {
+
             if (!isflying)
             {
                 //Setze t auf 0 zurück
@@ -152,7 +175,7 @@ namespace Volamus_v1
                 }
             }
 
-            if (isflying && active!=null)
+            if (isflying && active != null)
             {
                 //Position Updaten nach Flugbahn
                 position = active.Flug(wind);
@@ -169,6 +192,11 @@ namespace Volamus_v1
             shadowVertices[3].Position = shadowVertices[1].Position;
             shadowVertices[4].Position = new Vector3(position.X + r, position.Y + r, 0.01f);
             shadowVertices[5].Position = shadowVertices[2].Position;
+
+
+            boundingSphere.Radius = BoundingSphereRadius;
+
+            pick.Update();
         }
 
         public void Draw(Camera camera)
@@ -195,7 +223,7 @@ namespace Volamus_v1
                 {
                     part.Effect = effect;
                     effect.Parameters["World"].SetValue(transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) *
-                            Matrix.CreateScale(1.0f, 1.0f, 1.0f)
+                            Matrix.CreateScale(1.0f * effectDrop, 1.0f * effectDrop, 1.0f * effectDrop)
                             * Matrix.CreateTranslation(position));
                     effect.Parameters["View"].SetValue(camera.ViewMatrix);
                     effect.Parameters["Projection"].SetValue(camera.ProjectionMatrix);
@@ -217,11 +245,12 @@ namespace Volamus_v1
             String text = Wind.Direction().ToString();
 
             GameStateManager.Instance.SpriteBatch.DrawString(font, text,
-                new Vector2((GameStateManager.Instance.dimensions.X - font.MeasureString(text).X)/2, 0), Color.Black);
+                new Vector2((GameStateManager.Instance.dimensions.X - font.MeasureString(text).X) / 2, 0), Color.Black);
 
-            /*d.Begin(camera.ViewMatrix, camera.ProjectionMatrix);
-            d.DrawWireSphere(boundingSphere, Color.White);
-            d.End();*/
+            d.Begin(camera.ViewMatrix, camera.ProjectionMatrix);
+            d.DrawWireSphere(boundingSphere, Color.Red);
+            d.End();
+            pick.Draw(camera, effect);
         }
     }
 }

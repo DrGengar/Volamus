@@ -19,7 +19,7 @@ namespace Volamus_v1
         private int colliding;
         private int groundContact;   //Bodenberührungen des Balls
 
-        public int match = 2;
+        public int match = 10;
         public bool matchIsFinish = false;
         public Player winner;
 
@@ -72,6 +72,7 @@ namespace Volamus_v1
                 //Ball mit Ebene z=0
                 if (BallWithPlane())
                 {
+
                     //beim ersten Bodenkontakt werden die Punkte,... angepasst, Sound,..
                     if (groundContact == 0)
                     {
@@ -144,7 +145,8 @@ namespace Volamus_v1
                     //zurücksetzen
                     else
                     {
-
+                        Ball.Instance.EffectDrop = 1.0f;
+                        Ball.Instance.BoundingSphereRadius = Ball.Instance.OriginalRadius;
                         if (lastTouched.Points == match || lastTouched.Enemy.Points == match)
                         {
                             if (lastTouched.Points == match)
@@ -305,6 +307,15 @@ namespace Volamus_v1
         public bool PlayerWithField(Player player, Field field)
         {
             return player.InnerBoundingBox.Intersects(field.BoundingBox);
+        }
+
+        public bool PlayerWithDrop(Drop d)
+        {
+            if (d.BoundingSphere.Intersects(lastTouched.InnerBoundingBox) || d.BoundingSphere.Intersects(lastTouched.Enemy.InnerBoundingBox))
+            {
+                return true;
+            }
+            else return false;
         }
 
         private void BallWithInnerBoundingBox(Player player)

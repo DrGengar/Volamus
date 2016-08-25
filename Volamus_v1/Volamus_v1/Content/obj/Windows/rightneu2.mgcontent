@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <SourceFile>C:/Users/Iam/Desktop/3dGame/Volamus_v1/Volamus_v1/Content/rightneu2.fbx</SourceFile>
-  <SourceTime>2016-08-25T12:23:01.8316524+02:00</SourceTime>
-  <DestFile>C:/Users/Iam/Desktop/3dGame/Volamus_v1/Volamus_v1/Content/bin/Windows/rightneu2.xnb</DestFile>
-  <DestTime>2016-08-25T13:07:00.5442146+02:00</DestTime>
+  <SourceFile>C:/Users/Ich/Desktop/3dGame/Volamus_v1/Volamus_v1/Content/rightneu2.fbx</SourceFile>
+  <SourceTime>2016-08-11T16:05:53.5483282+02:00</SourceTime>
+  <DestFile>C:/Users/Ich/Desktop/3dGame/Volamus_v1/Volamus_v1/Content/bin/Windows/rightneu2.xnb</DestFile>
+  <DestTime>2016-08-25T14:42:05.3756703+02:00</DestTime>
   <Importer>FbxImporter</Importer>
   <ImporterTime>2016-03-30T08:36:08+02:00</ImporterTime>
   <Processor>ModelProcessor</Processor>

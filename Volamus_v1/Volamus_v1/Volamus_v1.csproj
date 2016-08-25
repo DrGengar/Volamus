@@ -60,6 +60,7 @@
     <Compile Include="Ball.cs" />
     <Compile Include="Collision.cs" />
     <Compile Include="DebugDraw.cs" />
+    <Compile Include="Drop.cs" />
     <Compile Include="EndOfMatch.cs" />
     <Compile Include="FadeEffect.cs" />
     <Compile Include="FrameCounter.cs" />
@@ -77,6 +78,7 @@
     <Compile Include="MenuItem.cs" />
     <Compile Include="MenuManager.cs" />
     <Compile Include="Parabel.cs" />
+    <Compile Include="Pick.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Player.cs" />

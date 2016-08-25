@@ -124,7 +124,7 @@ namespace Volamus_v1
 
             //Punkte vom linken Spieler
             GameStateManager.Instance.SpriteBatch.DrawString(player_one.Font, player_one.Points.ToString() + "/" + Collision.Instance.match.ToString(), 
-                new Vector2(leftView.Width/2, 0), Color.Black);
+                new Vector2(leftView.Width/2, 0), Color.White);
 
             //Rechter SplitScreen: Rechter Spieler (player_two)
             GameStateManager.Instance.GraphicsDevice.Viewport = rightView;
@@ -146,14 +146,14 @@ namespace Volamus_v1
 
             //Punkte vom rechten Spieler
             GameStateManager.Instance.SpriteBatch.DrawString(player_two.Font, player_two.Points.ToString() + "/" + Collision.Instance.match.ToString(), 
-                new Vector2(leftView.Width + rightView.Width/2, 0), Color.Black);
+                new Vector2(leftView.Width + rightView.Width/2, 0), Color.White);
 
             //Ganzes Bild
             GameStateManager.Instance.GraphicsDevice.Viewport = defaultView;
 
             //FPS Anzeige
             var fps = string.Format("FPS: {0}", frameCounter.AverageFramesPerSecond);
-            spriteBatch.DrawString(GameStateManager.Instance.Content.Load<SpriteFont>("SpriteFonts/Standard"), fps, new Vector2(1, 1), Color.Black);
+            spriteBatch.DrawString(GameStateManager.Instance.Content.Load<SpriteFont>("SpriteFonts/Standard"), fps, new Vector2(1, 1), Color.White);
 
             base.Draw(spriteBatch);
         }
