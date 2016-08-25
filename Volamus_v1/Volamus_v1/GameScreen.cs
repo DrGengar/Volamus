@@ -18,6 +18,8 @@ namespace Volamus_v1
 
         private Wind wind;
 
+        private Skydome skydome;
+
         //SplitScreen
         private Viewport defaultView, leftView, rightView;
 
@@ -50,6 +52,9 @@ namespace Volamus_v1
             frameCounter = new FrameCounter();
 
             wind = new Wind(0);
+
+            skydome = new Skydome(5.0f);
+            skydome.Initialize();
         }
 
         public override void LoadContent()
@@ -57,6 +62,8 @@ namespace Volamus_v1
             Initialize();
 
             field.LoadContent();
+
+            skydome.Load();
 
             Ball.Instance.LoadContent(wind);
 
@@ -105,6 +112,8 @@ namespace Volamus_v1
 
             player_two.Draw(player_one.Camera);
 
+            skydome.Draw(player_one.Camera);
+
             //Halbkreis und Pfeil zeichnen
             /* GameStateManager.Instance.SpriteBatch.Draw(player_one.Circle, new Rectangle(leftView.X, leftView.Height - (player_one.Circle.Height), 
                 player_one.Circle.Width, player_one.Circle.Height), Color.White);
@@ -124,6 +133,8 @@ namespace Volamus_v1
             player_one.Draw(player_two.Camera);
             player_two.Draw(player_two.Camera);
             player_two.DrawArrow(player_two.Camera);
+
+            skydome.Draw(player_two.Camera);
 
             //Halbkreis und Pfeil zeichnen
             /*

@@ -91,6 +91,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="Skydome.cs" />
     <Compile Include="SplashScreen.cs" />
     <Compile Include="TitleScreen.cs" />
     <Compile Include="Wind.cs" />
