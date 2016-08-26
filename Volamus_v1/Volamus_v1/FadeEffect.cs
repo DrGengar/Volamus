@@ -15,7 +15,7 @@ namespace Volamus_v1
 
         public FadeEffect()
         {
-            FadeSpeed = 1;
+            FadeSpeed = 1.5f;
             Increase = false;
         }
 

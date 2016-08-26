@@ -60,12 +60,11 @@ namespace Volamus_v1
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            
 
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+            if (GameStateManager.Instance.Exit)
+            {
                 Exit();
-
-            // TODO: Add your update logic here
+            }
 
             GameStateManager.Instance.Update(gameTime);
 

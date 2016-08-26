@@ -62,6 +62,7 @@
     <Compile Include="DebugDraw.cs" />
     <Compile Include="Drop.cs" />
     <Compile Include="EndOfMatch.cs" />
+    <Compile Include="EndScreen.cs" />
     <Compile Include="FadeEffect.cs" />
     <Compile Include="FrameCounter.cs" />
     <Compile Include="Game1.cs" />
@@ -72,6 +73,7 @@
     <Compile Include="GameStateManager.cs" />
     <Compile Include="Image.cs" />
     <Compile Include="ImageEffect.cs" />
+    <Compile Include="InGameMenu.cs" />
     <Compile Include="InputManager.cs" />
     <Compile Include="KeyboardControl.cs" />
     <Compile Include="Menu.cs" />
@@ -116,10 +118,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\Load\GameScreen.xml" />
     <Content Include="Content\Load\GameStateManager.xml" />
+    <Content Include="Content\Load\Menu\InGameMenu.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Content\Load\SplashScreen.xml" />
-    <Content Include="Content\Load\Menu\TitleMenu.xml" />
+    <Content Include="Content\Load\Menu\TitleScreen.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Icon.ico" />
   </ItemGroup>
   <ItemGroup>

@@ -15,6 +15,7 @@ namespace Volamus_v1
     {
         Pick pick;
         PickVelo pickv;
+
         Random rnd = new Random();
         EndOfMatch endofmatch;
         float effectDrop = 1f;

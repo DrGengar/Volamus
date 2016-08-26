@@ -51,7 +51,7 @@ namespace Volamus_v1
             Volamus.Update(gameTime);
             Enter.Update(gameTime);
 
-            if (InputManager.Instance.KeyPressed(Keys.Enter, Keys.Space))
+            if (InputManager.Instance.KeyPressed(Keys.Enter) || InputManager.Instance.ButtonPressed(Buttons.A))
             {
                 GameStateManager.Instance.ChangeScreens("TitleScreen");
             }

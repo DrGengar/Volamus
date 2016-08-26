@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Menu>
+  <Axis>Y</Axis>
+  <Item>
+    <LinkType>Screen</LinkType>
+    <LinkID>GameScreen</LinkID>
+    <Image>
+      <Text>Back to Game</Text>
+    </Image>
+  </Item>
+
+  <Item>
+    <Image>
+      <Text>Reset</Text>
+    </Image>
+  </Item>
+
+  <Item>
+    <Image>
+      <Text>Options</Text>
+    </Image>
+  </Item>
+
+  <Item>
+    <LinkType>Screen</LinkType>
+    <LinkID>TitleScreen</LinkID>
+    <Image>
+      <Text>Hauptmenu</Text>
+    </Image>
+  </Item>
+</Menu>

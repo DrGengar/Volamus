@@ -25,7 +25,22 @@ namespace Volamus_v1
 
         private FrameCounter frameCounter;
 
-        private void Initialize()
+        private static GameScreen instance;
+
+        public static GameScreen Instance
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    instance = new GameScreen();
+                }
+
+                return instance;
+            }
+        }
+
+        private GameScreen()
         {
             content = GameStateManager.Instance.Content;
 
@@ -53,14 +68,15 @@ namespace Volamus_v1
 
             wind = new Wind(0);
 
+            GameStateManager.Instance.BackgroundSound.Play2D("Content//Sound//soproSound1.ogg", true);
+            GameStateManager.Instance.BackgroundSound.SoundVolume = 0.2f;
+
             skydome = new Skydome(5.0f);
             skydome.Initialize();
         }
 
         public override void LoadContent()
         {
-            Initialize();
-
             field.LoadContent();
 
             skydome.Load();
@@ -69,10 +85,6 @@ namespace Volamus_v1
 
             player_one.LoadContent();
             player_two.LoadContent();
-
-            GameStateManager.Instance.BackgroundSound.Play2D("Content//Sound//soproSound1.ogg", true);
-            GameStateManager.Instance.BackgroundSound.SoundVolume = 0.2f;
-            
         }
 
         public override void UnloadContent()
@@ -93,6 +105,11 @@ namespace Volamus_v1
             Ball.Instance.Update();
 
             Collision.Instance.CollisionMethod(field);
+
+            if (InputManager.Instance.KeyPressed(Keys.Escape) || InputManager.Instance.ButtonPressed(Buttons.Back))
+            {
+                GameStateManager.Instance.ChangeScreens("InGameMenu");
+            }
 
             base.Update(gameTime);
         }

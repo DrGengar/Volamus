@@ -5,11 +5,13 @@ using System.Text;
 using System.Threading.Tasks;
 
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework;
 
 namespace Volamus_v1
 {
     public class InputManager
     {
+        GamePadState currentButtonState, prevButtonState;
         KeyboardState currentKeyState, prevKeyState;
 
         private static InputManager instance;
@@ -30,9 +32,11 @@ namespace Volamus_v1
         public void Update()
         {
             prevKeyState = currentKeyState;
+            prevButtonState = currentButtonState;
             if (!GameStateManager.Instance.isTransitioning)
             {
                 currentKeyState = Keyboard.GetState();
+                currentButtonState = GamePad.GetState(PlayerIndex.One);
             }
         }
 
@@ -65,6 +69,42 @@ namespace Volamus_v1
             foreach (Keys key in keys)
             {
                 if (currentKeyState.IsKeyDown(key))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public bool ButtonPressed(params Buttons[] buttons)
+        {
+            foreach (Buttons button in buttons)
+            {
+                if (currentButtonState.IsButtonDown(button) && prevButtonState.IsButtonUp(button))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public bool ButtonReleased(params Buttons[] buttons)
+        {
+            foreach (Buttons button in buttons)
+            {
+                if (currentButtonState.IsButtonUp(button) && currentButtonState.IsButtonDown(button))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public bool ButtonDown(params Buttons[] buttons)
+        {
+            foreach (Buttons button in buttons)
+            {
+                if (currentButtonState.IsButtonDown(button))
                 {
                     return true;
                 }

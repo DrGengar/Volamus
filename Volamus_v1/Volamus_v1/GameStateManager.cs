@@ -33,6 +33,8 @@ namespace Volamus_v1
         public ISoundEngine BackgroundSound;
         [XmlIgnore]
         public ISoundEngine SoundEffects;
+        [XmlIgnore]
+        public bool Exit;
 
         [XmlIgnore]
         public SpriteBatch SpriteBatch;
@@ -57,7 +59,15 @@ namespace Volamus_v1
 
         public void ChangeScreens(string screenName)
         {
-            newState = (GameState)Activator.CreateInstance(Type.GetType("Volamus_v1." + screenName));
+            if (screenName == "GameScreen")
+            {
+                newState = (GameState)GameScreen.Instance;
+            }
+            else
+            {
+                newState = (GameState)Activator.CreateInstance(Type.GetType("Volamus_v1." + screenName));
+            }
+
             Image.isActive = true;
             Image.FadeEffect.Increase = true;
             Image.Alpha = 0.0f;
@@ -94,10 +104,11 @@ namespace Volamus_v1
         private GameStateManager()
         {
             dimensions = new Vector2(GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height); //Laden von XML Datei einfügen
-            currentState = new GameScreen();
+            currentState = new SplashScreen(); //SplashScreen
             xmlGameStateManager = new XmlManager<GameState>();
             xmlGameStateManager.Type = currentState.Type;
-            currentState = xmlGameStateManager.Load("Content/Load/GameScreen.xml"); //SplashScreen.xml
+            currentState = xmlGameStateManager.Load("Content/Load/SplashScreen.xml"); //SplashScreen.xml
+            Exit = false;
         }
 
         public void LoadContent(ContentManager Content)
