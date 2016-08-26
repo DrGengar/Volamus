@@ -202,6 +202,12 @@ namespace Volamus_v1
             get { return jump_velocity; }
         }
 
+        public float Movespeed
+        {
+            get { return movespeed; }
+            set { movespeed = value; }
+        }
+
         public float HitAngleHigh
         {
             get { return hitAngleHigh; }
@@ -469,9 +475,9 @@ namespace Volamus_v1
                             {
                                 if (position.X > box[0].X) //position.X > box[0].X
                                 {
-                                    bounce(movespeed, new Vector3(-0.1f, 0, 0));
-                                    /*position.X -= movespeed;
-                                    MovingBoundingBoxes(new Vector3(-movespeed, 0, 0));*/
+                                    position.X -= movespeed;
+                                    MovingBoundingBoxes(new Vector3(-movespeed, 0, 0));
+
                                     camera.AddPosition(new Vector3(-movespeed, 0, 0));
                                     camera.AddView(new Vector3(-movespeed, 0, 0));
                                 }
@@ -480,9 +486,9 @@ namespace Volamus_v1
                             {
                                 if (position.X < box[0].X) //position.X < box[0].X
                                 {
-                                    bounce(movespeed, new Vector3(0.1f, 0, 0));
-                                    /*position.X += movespeed;
-                                    MovingBoundingBoxes(new Vector3(movespeed, 0, 0));*/
+                                    position.X += movespeed;
+                                    MovingBoundingBoxes(new Vector3(movespeed, 0, 0));
+
                                     camera.AddPosition(new Vector3(movespeed, 0, 0));
                                     camera.AddView(new Vector3(movespeed, 0, 0));
                                 }
@@ -527,9 +533,9 @@ namespace Volamus_v1
                             {
                                 if (position.X < box[1].X) //position.X < box[1].X
                                 {
-                                    bounce(movespeed, new Vector3(0.1f, 0, 0));
-                                    /*position.X += movespeed;
-                                    MovingBoundingBoxes(new Vector3(movespeed, 0, 0));*/
+                                    position.X += movespeed;
+                                    MovingBoundingBoxes(new Vector3(movespeed, 0, 0));
+
                                     camera.AddPosition(new Vector3(movespeed, 0, 0));
                                     camera.AddView(new Vector3(movespeed, 0, 0));
                                 }
@@ -538,9 +544,9 @@ namespace Volamus_v1
                             {
                                 if (position.X > box[1].X) //position.X > box[1].X
                                 {
-                                    bounce(movespeed, new Vector3(-0.1f, 0, 0));
-                                    /*position.X -= movespeed;
-                                    MovingBoundingBoxes(new Vector3(-movespeed, 0, 0));*/
+                                    position.X -= movespeed;
+                                    MovingBoundingBoxes(new Vector3(-movespeed, 0, 0));
+
                                     camera.AddPosition(new Vector3(-movespeed, 0, 0));
                                     camera.AddView(new Vector3(-movespeed, 0, 0));
                                 }
@@ -636,18 +642,16 @@ namespace Volamus_v1
                             {
                                 if (!Collision.Instance.PlayerWithNet(this, field)) //Collision Spieler mit Netz
                                 {
-                                    bounce(movespeed, new Vector3(0, 0.1f, 0));
-                                    /*position.Y += movespeed;
-                                    MovingBoundingBoxes(new Vector3(0, movespeed, 0));*/
+                                    position.Y += movespeed;
+                                    MovingBoundingBoxes(new Vector3(0, movespeed, 0));
                                 }
                             }
                             else if (direction == -1)
                             {
                                 if (!Collision.Instance.PlayerWithNet(this, field)) //Collision Spieler mit Netz
                                 {
-                                    bounce(movespeed, new Vector3(0, -0.1f, 0));
-                                    /*position.Y -= movespeed;
-                                    MovingBoundingBoxes(new Vector3(0, -movespeed, 0));*/
+                                    position.Y -= movespeed;
+                                    MovingBoundingBoxes(new Vector3(0, -movespeed, 0));
                                 }
                             }
                         }
@@ -691,9 +695,9 @@ namespace Volamus_v1
 
                                 if (position.X > box[0].X) //position.X > box[0].X
                                 {
-                                    bounce(movespeed, new Vector3(-0.1f, 0, 0));
-                                    /*position.X -= movespeed;
-                                    MovingBoundingBoxes(new Vector3(-movespeed, 0, 0));*/
+                                    position.X -= movespeed;
+                                    MovingBoundingBoxes(new Vector3(-movespeed, 0, 0));
+
                                     camera.AddPosition(new Vector3(-movespeed, 0, 0));
                                     camera.AddView(new Vector3(-movespeed, 0, 0));
                                 }
@@ -702,9 +706,9 @@ namespace Volamus_v1
                             {
                                 if (position.X < box[0].X) //position.X < box[0].X
                                 {
-                                    bounce(movespeed, new Vector3(0.1f, 0, 0));
-                                    /*position.X += movespeed;
-                                    MovingBoundingBoxes(new Vector3(movespeed, 0, 0));*/
+                                    position.X += movespeed;
+                                    MovingBoundingBoxes(new Vector3(movespeed, 0, 0));
+
                                     camera.AddPosition(new Vector3(movespeed, 0, 0));
                                     camera.AddView(new Vector3(movespeed, 0, 0));
                                 }
@@ -749,18 +753,16 @@ namespace Volamus_v1
                             {
                                 if (position.Y > box[0].Y) //position.Y > box[0].Y
                                 {
-                                    bounce(movespeed, new Vector3(0, -0.1f, 0));
-                                    /*position.Y -= movespeed;
-                                    MovingBoundingBoxes(new Vector3(0, -movespeed, 0));*/
+                                    position.Y -= movespeed;
+                                    MovingBoundingBoxes(new Vector3(0, -movespeed, 0));
                                 }
                             }
                             else if (direction == -1)
                             {
                                 if (position.Y < box[0].Y) //position.Y < box[0].Y
                                 {
-                                    bounce(movespeed, new Vector3(0, 0.1f, 0));
-                                    /*position.Y += movespeed;
-                                    MovingBoundingBoxes(new Vector3(0, movespeed, 0));*/
+                                    position.Y += movespeed;
+                                    MovingBoundingBoxes(new Vector3(0, movespeed, 0));
                                 }
                             }
                         }
@@ -804,9 +806,9 @@ namespace Volamus_v1
 
                                 if (position.X < box[1].X) //position.X < box[1].X
                                 {
-                                    bounce(movespeed, new Vector3(0.1f, 0, 0));
-                                    /*position.X += movespeed;
-                                    MovingBoundingBoxes(new Vector3(movespeed, 0, 0));*/
+                                    position.X += movespeed;
+                                    MovingBoundingBoxes(new Vector3(movespeed, 0, 0));
+
                                     camera.AddPosition(new Vector3(movespeed, 0, 0));
                                     camera.AddView(new Vector3(movespeed, 0, 0));
                                 }
@@ -815,9 +817,8 @@ namespace Volamus_v1
                             {
                                 if (position.X > box[1].X) //position.X > box[1].X
                                 {
-                                    bounce(movespeed, new Vector3(-0.1f, 0, 0));
-                                    /*position.X -= movespeed;
-                                    MovingBoundingBoxes(new Vector3(-movespeed, 0, 0));*/
+                                    position.X -= movespeed;
+                                    MovingBoundingBoxes(new Vector3(-movespeed, 0, 0));
                                     camera.AddPosition(new Vector3(-movespeed, 0, 0));
                                     camera.AddView(new Vector3(-movespeed, 0, 0));
                                 }
@@ -880,6 +881,7 @@ namespace Volamus_v1
 
             else
             {
+                betta = 0;
                 gamma = 0;
             }
 
@@ -1501,6 +1503,7 @@ namespace Volamus_v1
             }
             else
             {
+                betta = 0;
                 gamma = 0;
             }
 
@@ -1607,28 +1610,6 @@ namespace Volamus_v1
             }
         }
         // Controller Ende
-
-        private void bounce(float distance, Vector3 offset)
-        {
-            float half_distance = distance / 2;
-            while (distance > 0)
-            {
-                if (distance > half_distance)
-                {
-                    position.Z += jump_velocity;
-                    MovingBoundingBoxes(new Vector3(offset.X, offset.Y, jump_velocity));
-                }
-                else
-                {
-                    position.Z -= jump_velocity;
-                    MovingBoundingBoxes(new Vector3(offset.X, offset.Y, -jump_velocity));
-                }
-
-                position += offset;
-                distance -= 0.1f;
-            }
-        }
-
 
         public void Draw(Camera camera)
         {

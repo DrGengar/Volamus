@@ -19,7 +19,7 @@ namespace Volamus_v1
         private int colliding;
         private int groundContact;   //Bodenberührungen des Balls
 
-        public int match = 10;
+        public int match = 5;
         public bool matchIsFinish = false;
         public Player winner;
 
@@ -145,8 +145,12 @@ namespace Volamus_v1
                     //zurücksetzen
                     else
                     {
+                        //Die Veränderungen durch Drops zurücksetzen
                         Ball.Instance.EffectDrop = 1.0f;
                         Ball.Instance.BoundingSphereRadius = Ball.Instance.OriginalRadius;
+                        lastTouched.Movespeed = 0.8f;
+                        lastTouched.Enemy.Movespeed = 0.8f;
+
                         if (lastTouched.Points == match || lastTouched.Enemy.Points == match)
                         {
                             if (lastTouched.Points == match)
@@ -164,92 +168,6 @@ namespace Volamus_v1
                         Ball.Instance.IsFlying = false;
 
                     }
-                    /*   //Wenn außerhalb des Feldes: Gegner von LastTouched +1 Punkt und bekommt Aufschlag
-                       if (Ball.Instance.Position.X > (field.Width / 2) || Ball.Instance.Position.X < -(field.Width / 2) || Ball.Instance.Position.Y > (field.Length / 2) || Ball.Instance.Position.Y < -(field.Length / 2))
-                       {
-
-                           lastTouched.Enemy.Points += 1;
-                           lastTouched.Enemy.IsServing = true;
-
-                           lastTouched.Touch_Count = 0;
-                           lastTouched.Enemy.Touch_Count = 0;
-                       }
-                       //Sonst muss der ball im Feld gelandet sein -> Unterscheidung eigenes (gegner bekommt Punkt)/gegnerisches feld(ich selbst bekomme Punkt)
-                       else
-                       {
-                           float min = lastTouched.Box[1].Y;
-
-                           if (lastTouched.Direction * Ball.Instance.Position.Y < min)
-                           {
-
-                               lastTouched.Enemy.Points += 1;
-                               lastTouched.Enemy.IsServing = true;
-
-                               lastTouched.Touch_Count = 0;
-                               lastTouched.Enemy.Touch_Count = 0;
-                           }
-                           else
-                           {
-                               lastTouched.Points += 1;
-                               lastTouched.IsServing = true;
-
-                               lastTouched.Touch_Count = 0;
-                               lastTouched.Enemy.Touch_Count = 0;
-                           }
-                       }*/
-
-
-
-
-                    /*
-                    groundContact = 0;
-                        Ball.Instance.IsFlying = false;
-                        //Wenn außerhalb des Feldes: Gegner von LastTouched +1 Punkt und bekommt Aufschlag
-                        if (Ball.Instance.Position.X > (field.Width / 2) || Ball.Instance.Position.X < -(field.Width / 2) || Ball.Instance.Position.Y > (field.Length / 2) || Ball.Instance.Position.Y < -(field.Length / 2))
-                        {
-
-                            GameStateManager.Instance.SoundEffects.SoundVolume = 0.3f;
-                            GameStateManager.Instance.SoundEffects.Play2D("Content//Sound//single_blow_from_police_whistle.ogg");
-                            GameStateManager.Instance.SoundEffects.Play2D("Content//Sound//child_crowd_cheering.ogg");
-
-
-                            lastTouched.Enemy.Points += 1;
-                            lastTouched.Enemy.IsServing = true;
-
-                            lastTouched.Touch_Count = 0;
-                            lastTouched.Enemy.Touch_Count = 0;
-                        }
-                        //Sonst muss der ball im Feld gelandet sein -> Unterscheidung eigenes (gegner bekommt Punkt)/gegnerisches feld(ich selbst bekomme Punkt)
-                        else
-                        {
-                            float min = lastTouched.Box[1].Y;
-
-                            if (lastTouched.Direction * Ball.Instance.Position.Y < min)
-                            {
-                                GameStateManager.Instance.SoundEffects.SoundVolume = 0.3f;
-                                GameStateManager.Instance.SoundEffects.Play2D("Content//Sound//single_blow_from_police_whistle.ogg");
-                                GameStateManager.Instance.SoundEffects.Play2D("Content//Sound//child_crowd_cheering.ogg");
-
-                                lastTouched.Enemy.Points += 1;
-                                lastTouched.Enemy.IsServing = true;
-
-                                lastTouched.Touch_Count = 0;
-                                lastTouched.Enemy.Touch_Count = 0;
-                            }
-                            else
-                            {
-                                GameStateManager.Instance.SoundEffects.SoundVolume = 0.3f;
-                                GameStateManager.Instance.SoundEffects.Play2D("Content//Sound//single_blow_from_police_whistle.ogg");
-                                GameStateManager.Instance.SoundEffects.Play2D("Content//Sound//child_crowd_cheering.ogg");
-
-                                lastTouched.Points += 1;
-                                lastTouched.IsServing = true;
-
-                                lastTouched.Touch_Count = 0;
-                                lastTouched.Enemy.Touch_Count = 0;
-                            }
-                        }*/
-
                 }
 
                 if (!Ball.Instance.BoundingSphere.Intersects(lastTouched.InnerBoundingBox) && !Ball.Instance.BoundingSphere.Intersects(lastTouched.Enemy.InnerBoundingBox) && !Ball.Instance.BoundingSphere.Intersects(field.NetBoundingBox))
@@ -309,13 +227,18 @@ namespace Volamus_v1
             return player.InnerBoundingBox.Intersects(field.BoundingBox);
         }
 
-        public bool PlayerWithDrop(Drop d)
+        //Spieler mit Drop
+        public Player PlayerWithDrop(Drop d)
         {
-            if (d.BoundingSphere.Intersects(lastTouched.InnerBoundingBox) || d.BoundingSphere.Intersects(lastTouched.Enemy.InnerBoundingBox))
+            if (d.BoundingSphere.Intersects(lastTouched.InnerBoundingBox))
             {
-                return true;
+                return lastTouched;
             }
-            else return false;
+            if (d.BoundingSphere.Intersects(lastTouched.Enemy.InnerBoundingBox))
+            {
+                return lastTouched.Enemy;
+            }
+            else return null;
         }
 
         private void BallWithInnerBoundingBox(Player player)

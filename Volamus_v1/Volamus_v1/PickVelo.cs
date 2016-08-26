@@ -8,37 +8,37 @@ using System.Threading.Tasks;
 
 namespace Volamus_v1
 {
-    class Pick
+    class PickVelo
     {
-        List<Drop> drops;
+        List<Drop> dropsVelo;
 
 
-
-        public Pick()
+        // Einsammeln verringert die Laufgeschwindigkeit des Gegeners, bis der Ball den Boden berührt
+        public PickVelo()
         {
-            this.drops = new List<Drop>();
+            this.dropsVelo = new List<Drop>();
         }
 
         public void Update(Random rnd)
-        {
+        {   //hinzufügen neuer Drops
             int total = rnd.Next(3);
-            if (drops.Count < total)
+            if (dropsVelo.Count < total)
             {
-                drops.Add(Generate(rnd));
+                dropsVelo.Add(Generate(rnd));
             }
-
-            for (int Drop = 0; Drop < drops.Count; Drop++)
+            //aktualisieren der Drops
+            for (int Drop = 0; Drop < dropsVelo.Count; Drop++)
             {
-                drops[Drop].Update();
-                if (drops[Drop].ttl <= 0)
+                dropsVelo[Drop].UpdateVelo();
+                if (dropsVelo[Drop].ttl <= 0)
                 {
-                    drops.RemoveAt(Drop);
+                    dropsVelo.RemoveAt(Drop);
                     Drop--;
                 }
             }
             if (Collision.Instance.matchIsFinish)
             {
-                drops.RemoveAll(item => item.ttl != 0);  //alle Drops die aktuell noch leben werden entfernt
+                dropsVelo.RemoveAll(item => item.ttl != 0);  //alle Drops die aktuell noch leben werden entfernt
             }
         }
 
@@ -50,17 +50,18 @@ namespace Volamus_v1
             int zufall = rnd.Next(1, 11);
             int timeToLive = 200 + rnd.Next(80);
 
-            Model dr = GameStateManager.Instance.Content.Load<Model>("drop");
+            Model dr = GameStateManager.Instance.Content.Load<Model>("dropGeschwindigkeit");
             return new Drop(new Vector3(x, y, 2), timeToLive, dr);
+
         }
 
         public void Draw(Camera camera, Effect effect)
         {
 
-            for (int index = 0; index < drops.Count; index++)
+            for (int index = 0; index < dropsVelo.Count; index++)
             {
 
-                drops[index].Draw(camera, effect);
+                dropsVelo[index].Draw(camera, effect);
             }
 
         }

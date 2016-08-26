@@ -10,11 +10,14 @@ namespace Volamus_v1
 {
     public class Drop
     {
+        Model size = GameStateManager.Instance.Content.Load<Model>("drop");
+        Model velo = GameStateManager.Instance.Content.Load<Model>("dropGeschwindigkeit");
         Effect effect;
         Vector3 viewVector;
         DebugDraw d;
 
         Vector3 position;
+        Vector3 velocity;
         Model drop;
         int timeToLive;
         BoundingSphere boundingSphere;
@@ -29,6 +32,7 @@ namespace Volamus_v1
             get { return boundingSphere; }
         }
 
+        //Drop während dem Spiel
         public Drop(Vector3 pos, int ttl, Model dr)
         {
             position = pos;
@@ -48,23 +52,32 @@ namespace Volamus_v1
             boundingSphere.Radius *= 1.0f;
         }
 
+        //Drop ende mit Bewegung
+        public Drop(Vector3 pos, int ttl, Model dr, Vector3 velo)
+        {
+            position = pos;
+            timeToLive = ttl;
+            drop = dr;
+            velocity = velo;
+        }
 
 
         public void LoadContent()
         {
             effect = GameStateManager.Instance.Content.Load<Effect>("shader");
             boundingSphere.Radius *= 1.0f;
+
             boundingSphere.Center = position;
         }
 
-        //Kollidiert der Spieler mit einem Drop, wird die Größe des Balls zufällig verändert; Lebensdauer wird runtergezählt
+        //Update für die Drops, die die Ballgröße verändern
         public void Update()
         {
             boundingSphere.Center = position;
-            if (Collision.Instance.PlayerWithDrop(this))
+            if (Collision.Instance.PlayerWithDrop(this) != null)
             {
                 Random rand = new Random();
-                float komma = rand.Next(6, 20);
+                float komma = rand.Next(6, 20); //Ballskalierung zwischen 1,6 und 2
                 komma = komma / 10;
                 Ball.Instance.EffectDrop = komma;
 
@@ -74,6 +87,34 @@ namespace Volamus_v1
             }
             else timeToLive--;
         }
+
+        //Update für die Drops, die die Bewegungsgeschwindigkeit des Gegners verringern
+        public void UpdateVelo()
+        {
+            boundingSphere.Center = position;
+            if (Collision.Instance.PlayerWithDrop(this) == Collision.Instance.LastTouched)
+            {
+                Collision.Instance.LastTouched.Enemy.Movespeed = 0.4f;
+                timeToLive = 0;
+            }
+
+            if (Collision.Instance.PlayerWithDrop(this) == Collision.Instance.LastTouched.Enemy)
+            {
+
+                Collision.Instance.LastTouched.Movespeed = 0.4f;
+                timeToLive = 0;
+            }
+
+            else timeToLive--;
+        }
+
+        //Update für die Konfetties
+        public void UpdateEnd()
+        {
+            position += velocity;
+            timeToLive--;
+        }
+
 
         public void Draw(Camera camera, Effect effect)
         {
@@ -100,11 +141,11 @@ namespace Volamus_v1
                     effect.Parameters["ViewVector"].SetValue(viewVector);
                 }
                 mesh.Draw();
-                /* d = new DebugDraw(GameStateManager.Instance.GraphicsDevice);
-                 boundingSphere.Center = position;
-                 d.Begin(camera.ViewMatrix, camera.ProjectionMatrix);
-                 d.DrawWireSphere(boundingSphere, Color.Black);
-                 d.End();*/
+                /*    d = new DebugDraw(GameStateManager.Instance.GraphicsDevice);
+                    boundingSphere.Center = position;
+                    d.Begin(camera.ViewMatrix, camera.ProjectionMatrix);
+                    d.DrawWireSphere(boundingSphere, Color.Black);
+                    d.End();*/
             }
 
         }

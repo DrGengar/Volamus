@@ -14,6 +14,9 @@ namespace Volamus_v1
     public class Ball
     {
         Pick pick;
+        PickVelo pickv;
+        Random rnd = new Random();
+        EndOfMatch endofmatch;
         float effectDrop = 1f;
         Effect effect;
         Vector3 viewVector;
@@ -113,6 +116,7 @@ namespace Volamus_v1
         public void Initialize()
         {
 
+
             float r = boundingSphere.Radius;
             shadowVertices[0].Position = new Vector3(position.X - r, position.Y - r, 0.01f);
             shadowVertices[1].Position = new Vector3(position.X - r, position.Y + r, 0.01f);
@@ -137,6 +141,8 @@ namespace Volamus_v1
         public void LoadContent(Wind _wind)
         {
             pick = new Pick();
+            pickv = new PickVelo();
+            endofmatch = new EndOfMatch();
             effect = GameStateManager.Instance.Content.Load<Effect>("shader");
 
             model = GameStateManager.Instance.Content.Load<Model>("BeachBall");
@@ -196,7 +202,17 @@ namespace Volamus_v1
 
             boundingSphere.Radius = BoundingSphereRadius;
 
-            pick.Update();
+
+            if (Collision.Instance.matchIsFinish)
+            {
+                Ball.Instance.EffectDrop = 1;
+                endofmatch.Update(Collision.Instance.winner);
+            }
+            else
+            {
+                pickv.Update(rnd);
+                pick.Update(rnd);
+            }
         }
 
         public void Draw(Camera camera)
@@ -247,10 +263,12 @@ namespace Volamus_v1
             GameStateManager.Instance.SpriteBatch.DrawString(font, text,
                 new Vector2((GameStateManager.Instance.dimensions.X - font.MeasureString(text).X) / 2, 0), Color.Black);
 
-            d.Begin(camera.ViewMatrix, camera.ProjectionMatrix);
+          /*  d.Begin(camera.ViewMatrix, camera.ProjectionMatrix);
             d.DrawWireSphere(boundingSphere, Color.Red);
             d.End();
             pick.Draw(camera, effect);
+            pickv.Draw(camera, effect);
+            endofmatch.Draw(camera, effect);*/
         }
     }
 }

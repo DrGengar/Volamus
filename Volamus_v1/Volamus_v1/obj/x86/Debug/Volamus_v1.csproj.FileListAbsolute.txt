@@ -309,3 +309,5 @@ C:\Users\Ich\Desktop\3dGame\Volamus_v1\Volamus_v1\Content\skydome.xnb
 C:\Users\Ich\Desktop\3dGame\Volamus_v1\Volamus_v1\Content\skydomeUVtry.xnb
 C:\Users\Ich\Desktop\3dGame\Volamus_v1\Volamus_v1\Content\skydomeUVtry_0.xnb
 C:\Users\Ich\Desktop\3dGame\Volamus_v1\Volamus_v1\Content\drop.xnb
+C:\Users\Ich\Desktop\3dGame\Volamus_v1\Volamus_v1\Content\confetti2.xnb
+C:\Users\Ich\Desktop\3dGame\Volamus_v1\Volamus_v1\Content\dropGeschwindigkeit.xnb
