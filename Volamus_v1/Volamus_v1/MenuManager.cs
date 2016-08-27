@@ -92,7 +92,7 @@ namespace Volamus_v1
                 menu.Update(gameTime);
             }
 
-            if (InputManager.Instance.KeyPressed(Keys.Enter) && !isTransitioning)
+            if ((InputManager.Instance.KeyPressed(Keys.Enter) || InputManager.Instance.ButtonPressed(Buttons.A)) && !isTransitioning)
             {
                 if (menu.Items[menu.ItemNumber].LinkType == "Screen")
                 {

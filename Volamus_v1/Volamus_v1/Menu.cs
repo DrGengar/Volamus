@@ -121,13 +121,13 @@ namespace Volamus_v1
         {
             if (Axis == "X")
             {
-                if (InputManager.Instance.KeyPressed(Keys.Right))
+                if (InputManager.Instance.KeyPressed(Keys.Right) || InputManager.Instance.ButtonPressed(Buttons.DPadRight, Buttons.LeftThumbstickRight))
                 {
                     itemNumber++;
                 }
                 else
                 {
-                    if (InputManager.Instance.KeyPressed(Keys.Left))
+                    if (InputManager.Instance.KeyPressed(Keys.Left) || InputManager.Instance.ButtonPressed(Buttons.DPadLeft, Buttons.LeftThumbstickLeft))
                     {
                         itemNumber--;
                     }
@@ -137,13 +137,13 @@ namespace Volamus_v1
             {
                 if (Axis == "Y")
                 {
-                    if (InputManager.Instance.KeyPressed(Keys.Down))
+                    if (InputManager.Instance.KeyPressed(Keys.Down) || InputManager.Instance.ButtonPressed(Buttons.DPadDown, Buttons.LeftThumbstickDown))
                     {
                         itemNumber++;
                     }
                     else
                     {
-                        if (InputManager.Instance.KeyPressed(Keys.Up))
+                        if (InputManager.Instance.KeyPressed(Keys.Up) || InputManager.Instance.ButtonPressed(Buttons.DPadUp, Buttons.LeftThumbstickUp))
                         {
                             itemNumber--;
                         }

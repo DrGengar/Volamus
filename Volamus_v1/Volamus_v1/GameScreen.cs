@@ -46,8 +46,8 @@ namespace Volamus_v1
 
             field = new Field(100, 90, 15);
 
-            player_one = new Player(new Vector3(0, -25, 0), 5, 0.5f, 0.8f, field, PlayerIndex.One);
-            player_two = new Player(new Vector3(0, 25, 0), 5, 0.5f, 0.8f, field);
+            player_one = new Player(new Vector3(0, -25, 0), 5, 0.5f, 0.8f, field);
+            player_two = new Player(new Vector3(0, 25, 0), 5, 0.5f, 0.8f, field, PlayerIndex.One);
 
             player_one.Enemy = player_two;
             player_two.Enemy = player_one;
@@ -68,11 +68,11 @@ namespace Volamus_v1
 
             wind = new Wind(0);
 
-            GameStateManager.Instance.BackgroundSound.Play2D("Content//Sound//soproSound1.ogg", true);
-            GameStateManager.Instance.BackgroundSound.SoundVolume = 0.2f;
-
             skydome = new Skydome(5.0f);
             skydome.Initialize();
+
+            GameStateManager.Instance.BackgroundSound.Play2D("Content//Sound//soproSound1.ogg", true);
+            GameStateManager.Instance.BackgroundSound.SoundVolume = 0.2f;
         }
 
         public override void LoadContent()
@@ -85,11 +85,14 @@ namespace Volamus_v1
 
             player_one.LoadContent();
             player_two.LoadContent();
+
+            GameStateManager.Instance.BackgroundSound.SetAllSoundsPaused(false);
         }
 
         public override void UnloadContent()
         {
             base.UnloadContent();
+            GameStateManager.Instance.BackgroundSound.SetAllSoundsPaused(true);
         }
 
         public override void Update(GameTime gameTime)

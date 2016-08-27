@@ -18,8 +18,9 @@ namespace Volamus_v1
         private static Collision instance;
         private int colliding;
         private int groundContact;   //Bodenberührungen des Balls
+        private bool collision_with_net;
 
-        public int match = 5;
+        public int match = 200;
         public bool matchIsFinish = false;
         public Player winner;
 
@@ -50,7 +51,6 @@ namespace Volamus_v1
             }
         }
 
-        //Constructor
         private Collision()
         {
         }
@@ -66,6 +66,7 @@ namespace Volamus_v1
                 endlose.EndOfMatchLoser(winner.Enemy);
 
             }
+
             if (matchIsFinish == false)
             {
 
@@ -79,13 +80,13 @@ namespace Volamus_v1
                         GameStateManager.Instance.SoundEffects.SoundVolume = 0.3f;
                         GameStateManager.Instance.SoundEffects.Play2D("Content//Sound//single_blow_from_police_whistle.ogg");
 
+                        //Jubeln weil gewonnen
                         if (lastTouched.Points == match - 1 || lastTouched.Enemy.Points == match - 1)
                         {
                             GameStateManager.Instance.SoundEffects.SoundVolume = 0.6f;
                             GameStateManager.Instance.SoundEffects.Play2D("Content//Sound//child_crowd_cheering.ogg");
                         }
-
-                        else
+                        else //Jubeln weil Punktgewinn
                         {
                             GameStateManager.Instance.SoundEffects.SoundVolume = 0.3f;
                             GameStateManager.Instance.SoundEffects.Play2D("Content//Sound//child_crowd_cheering.ogg");
@@ -128,15 +129,23 @@ namespace Volamus_v1
 
                     }
 
-                    //Hüpfen des Balls
+                    //Hüpfen des Balls -> Überarbeiten
                     if (groundContact <= 1 && lastTouched.Points != match && lastTouched.Enemy.Points != match)
                     {
                         Vector3 hitdirection = Ball.Instance.Active.Hit_Direction;
                         float angle_z = MathHelper.ToDegrees((float)Math.Atan((hitdirection.Z / hitdirection.Y)));
                         float angle_x = MathHelper.ToDegrees((float)Math.Atan((hitdirection.X / hitdirection.Y)));
-                        Ball.Instance.Position = new Vector3(Ball.Instance.Position.X, Ball.Instance.Position.Y, Ball.Instance.Position.Z + 3);
-                        newParabel = new Parabel(Ball.Instance.Position, Ball.Instance.Active.Angles.X, Ball.Instance.Active.Angles.Z, Ball.Instance.Active.Angles.Y, 0.6f * Ball.Instance.Active.Velocity,
+                        Ball.Instance.Position = new Vector3(Ball.Instance.Position.X, Ball.Instance.Position.Y, Ball.Instance.Position.Z + 0.1f);
+
+                        newParabel = new Parabel(Ball.Instance.Position, Ball.Instance.Active.Direction * (-angle_z), Ball.Instance.Active.Direction * angle_x, Ball.Instance.Active.Angles.Y, 0.75f * Ball.Instance.Active.Velocity,
                             Ball.Instance.Active.Direction);
+
+                        if(collision_with_net)
+                        {
+                            newParabel = new Parabel(Ball.Instance.Position, lastTouched.Direction * (angle_z), lastTouched.Direction * (-angle_x), Ball.Instance.Active.Angles.Y, 0.6f * Ball.Instance.Active.Velocity,
+                            Ball.Instance.Active.Direction);
+                            collision_with_net = false;
+                        }
 
                         Ball.Instance.Active = newParabel;
                         groundContact++;
@@ -164,9 +173,9 @@ namespace Volamus_v1
 
                             matchIsFinish = true;
                         }
+
                         groundContact = 0;
                         Ball.Instance.IsFlying = false;
-
                     }
                 }
 
@@ -190,9 +199,10 @@ namespace Volamus_v1
                     Vector3 hitdirection = Ball.Instance.Active.Hit_Direction;
                     float angle_z = MathHelper.ToDegrees((float)Math.Atan((hitdirection.Z / hitdirection.Y)));
                     float angle_x = MathHelper.ToDegrees((float)Math.Atan((hitdirection.X / hitdirection.Y)));
-                    newParabel = new Parabel(Ball.Instance.Position, lastTouched.Direction * (angle_z), angle_x, Ball.Instance.Active.Angles.Y, 0.6f * Ball.Instance.Active.Velocity,
+                    newParabel = new Parabel(Ball.Instance.Position, lastTouched.Direction * (angle_z), lastTouched.Direction * angle_x, Ball.Instance.Active.Angles.Y, 0.6f * Ball.Instance.Active.Velocity,
                         Ball.Instance.Active.Direction * (-1)); //Skalierung
                     Ball.Instance.Active = newParabel;
+                    collision_with_net = true;
                 }
             }
 
@@ -244,7 +254,7 @@ namespace Volamus_v1
         private void BallWithInnerBoundingBox(Player player)
         {
             //Ball mit InnerBoundingBox vom Spieler -> Ball soll abprallen vom Spieler
-            if (Ball.Instance.BoundingSphere.Intersects(player.InnerBoundingBox) && Ball.Instance.IsFlying == true && !player.IsServing && colliding == 0 && Ball.Instance.Active != null)
+            if (Ball.Instance.BoundingSphere.Intersects(player.InnerBoundingBox) && colliding == 0)
             {
                 Vector3 hitdirection = Ball.Instance.Active.Hit_Direction;
                 float angle_z = MathHelper.ToDegrees((float)Math.Atan((hitdirection.Z / hitdirection.Y)));
@@ -338,9 +348,6 @@ namespace Volamus_v1
                         lastTouched.Touch_Count++;
                     }
                 }
-
-                Ball.Instance.Wind.Update();
-                Ball.Instance.Update();
             }
         }
 

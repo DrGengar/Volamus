@@ -79,6 +79,7 @@
     <Compile Include="Menu.cs" />
     <Compile Include="MenuItem.cs" />
     <Compile Include="MenuManager.cs" />
+    <Compile Include="Options.cs" />
     <Compile Include="Parabel.cs" />
     <Compile Include="Pick.cs" />
     <Compile Include="PickVelo.cs" />

@@ -19,7 +19,7 @@ namespace Volamus_v1
         public Wind(int index) //index is {0,1,2}
         {
             //Stärke des Winds: 0 kein Wind, 1 leichter Wind, 2 starker Wind
-            strength = ((float)index)/20; //scale: 10
+            strength = ((float)index)/2; //scale: 10
 
             standard_direction = new Vector2(0, 1);
 
@@ -37,14 +37,14 @@ namespace Volamus_v1
             {
                 if (angle != 0.0f)
                 {
-                    angle -= (MathHelper.Pi / 6);
+                    angle -= (MathHelper.Pi / 90);
                 }
             }
             else
             {
                 if (angle != MathHelper.TwoPi)
                 {
-                    angle += (MathHelper.Pi / 6);
+                    angle += (MathHelper.Pi / 90);
                 }
             }
         }
