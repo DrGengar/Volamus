@@ -114,7 +114,7 @@ namespace Volamus_v1
 
             net = GameStateManager.Instance.Content.Load<Model>("netzv4");
 
-            ice = GameStateManager.Instance.Content.Load<Model>("eisschollev1");
+            ice = GameStateManager.Instance.Content.Load<Model>("eisscholle");
 
             referee = GameStateManager.Instance.Content.Load<Model>("3DAcaLogo");
 
