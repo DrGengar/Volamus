@@ -22,6 +22,7 @@ namespace Volamus_v1
 
         //Eisscholle
         Model ice;
+        private Texture2D iceTexture;
 
         //Schiedsrichter
         Model referee;
@@ -115,6 +116,7 @@ namespace Volamus_v1
             net = GameStateManager.Instance.Content.Load<Model>("netzv4");
 
             ice = GameStateManager.Instance.Content.Load<Model>("eisscholle");
+            iceTexture = GameStateManager.Instance.Content.Load<Texture2D>("Images/iceTexture");
 
             referee = GameStateManager.Instance.Content.Load<Model>("3DAcaLogo");
 
@@ -171,6 +173,9 @@ namespace Volamus_v1
                     Matrix WorldInverseTransposeMatrix = Matrix.Transpose(Matrix.Invert(transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) * Matrix.CreateScale(0.1f, 0.15f, 0.01f)
                            * Matrix.CreateTranslation(new Vector3(0, 0, -0.75f))));
                     effect.Parameters["WorldInverseTranspose"].SetValue(WorldInverseTransposeMatrix);
+
+                    //hier kommt immer die warnung
+                    effect.Parameters["ModelTexture"].SetValue(iceTexture);
 
                     viewVector = Vector3.Transform(camera.View - camera.Position, Matrix.CreateRotationY(0));
                     viewVector.Normalize();

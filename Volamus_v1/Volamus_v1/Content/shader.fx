@@ -21,10 +21,21 @@ float4 SpecularColor = float4(0, 1, 1, 1);
 float SpecularIntensity = 1.0f;
 float3 ViewVector = float3(1, 0, 0);
 
+texture ModelTexture;
+
+sampler2D textureSampler = sampler_state {
+	Texture = (ModelTexture);
+	MinFilter = Linear;
+	MagFilter = Linear;
+	AddressU = Clamp;
+	AddressV = Clamp;
+};
+
 //Input des Vertex Shaders
 struct VertexShaderInput {
 	float4 Position : POSITION0;
 	float4 Normal : NORMAL0;
+	float2 TexCoords : TEXCOORD0;
 };
 
 // Output des Vertex Shaders = Input des Pixel Shaders
@@ -32,6 +43,7 @@ struct VertexShaderOutput {
 	float4 Position : POSITION0;
 	float4 Color : COLOR0 ;
 	float3 Normal : TEXCOORD0; 
+	float2 TexCoords : TEXCOORD1;
 };
 
 //Vertices werden transformiert
@@ -48,11 +60,17 @@ VertexShaderOutput VertexShaderFunction(VertexShaderInput input) {
 	output.Color = saturate(DiffuseColor * DiffuseIntensity * lightIntensity);
 
 	output.Normal = normal;
+	output.TexCoords = input.TexCoords;
 
 	return output;
 }
 
 float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0{
+
+	//texture
+	float4 colorInTexture = tex2D(textureSampler, input.TexCoords);
+
+
 	float3 light = normalize(DiffuseLightDirection);
 	float3 normal = normalize(input.Normal);
 	float3 r = normalize(2 * dot(light, normal) * normal - light);
