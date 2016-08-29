@@ -134,14 +134,6 @@ namespace Volamus_v1
 
             skydome.Draw(player_one.Camera);
 
-            //Halbkreis und Pfeil zeichnen
-            /* GameStateManager.Instance.SpriteBatch.Draw(player_one.Circle, new Rectangle(leftView.X, leftView.Height - (player_one.Circle.Height), 
-                player_one.Circle.Width, player_one.Circle.Height), Color.White);
-               GameStateManager.Instance.SpriteBatch.Draw(player_one.Arrow, new Rectangle(leftView.X + player_one.Circle.Width/2, leftView.Height, player_one.Arrow.Width, player_one.Arrow.Height), null,
-                Color.White, player_one.Direction*player_one.Gamma, new Vector2(player_one.Arrow.Width / 2f, player_one.Arrow.Height), SpriteEffects.None, 0f);
-            */
-
-
             //Punkte vom linken Spieler
             GameStateManager.Instance.SpriteBatch.DrawString(player_one.Font, player_one.Points.ToString() + "/" + Collision.Instance.match.ToString(), 
                 new Vector2(leftView.Width/2, 0), Color.White);
@@ -155,14 +147,6 @@ namespace Volamus_v1
             player_two.DrawArrow(player_two.Camera);
 
             skydome.Draw(player_two.Camera);
-
-            //Halbkreis und Pfeil zeichnen
-            /*
-             GameStateManager.Instance.SpriteBatch.Draw(player_two.Circle, new Rectangle(rightView.X, rightView.Height - (player_two.Circle.Height), 
-                player_two.Circle.Width, player_two.Circle.Height), Color.White);
-             GameStateManager.Instance.SpriteBatch.Draw(player_two.Arrow, new Rectangle(rightView.X + player_two.Circle.Width / 2, rightView.Height, player_two.Arrow.Width, player_two.Arrow.Height), null,
-                Color.White, player_two.Direction*player_two.Gamma, new Vector2(player_two.Arrow.Width / 2f, player_two.Arrow.Height), SpriteEffects.None, 0f);
-            */
 
             //Punkte vom rechten Spieler
             GameStateManager.Instance.SpriteBatch.DrawString(player_two.Font, player_two.Points.ToString() + "/" + Collision.Instance.match.ToString(), 

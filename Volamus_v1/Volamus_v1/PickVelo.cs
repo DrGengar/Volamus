@@ -50,7 +50,7 @@ namespace Volamus_v1
             int zufall = rnd.Next(1, 11);
             int timeToLive = 200 + rnd.Next(80);
 
-            Model dr = GameStateManager.Instance.Content.Load<Model>("dropGeschwindigkeit");
+            Model dr = GameStateManager.Instance.Content.Load<Model>("Models/dropGeschwindigkeit");
             return new Drop(new Vector3(x, y, 2), timeToLive, dr);
 
         }

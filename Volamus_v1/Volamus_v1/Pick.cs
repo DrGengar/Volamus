@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Volamus_v1
 {
-    class Pick
+    public class Pick
     {
         List<Drop> drops;
 
@@ -50,7 +50,7 @@ namespace Volamus_v1
             int zufall = rnd.Next(1, 11);
             int timeToLive = 200 + rnd.Next(80);
 
-            Model dr = GameStateManager.Instance.Content.Load<Model>("drop");
+            Model dr = GameStateManager.Instance.Content.Load<Model>("Models/drop");
             return new Drop(new Vector3(x, y, 2), timeToLive, dr);
         }
 

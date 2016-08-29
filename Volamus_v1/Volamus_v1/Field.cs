@@ -13,6 +13,7 @@ namespace Volamus_v1
     {
         VertexPositionTexture[] fieldVertices = new VertexPositionTexture[12];
 
+        Effect effect2;
         Effect effect;
         Vector3 viewVector;
 
@@ -111,18 +112,19 @@ namespace Volamus_v1
 
         public void LoadContent()
         {
-            effect = GameStateManager.Instance.Content.Load<Effect>("shader");
+            effect = GameStateManager.Instance.Content.Load<Effect>("Effects/shaderTest");
+            effect2 = GameStateManager.Instance.Content.Load<Effect>("Effects/shaderTestWithTexture");
 
-            net = GameStateManager.Instance.Content.Load<Model>("netzv4");
+            net = GameStateManager.Instance.Content.Load<Model>("Models/netzv4");
 
-            ice = GameStateManager.Instance.Content.Load<Model>("eisscholle");
+            ice = GameStateManager.Instance.Content.Load<Model>("Models/eisscholle");
             iceTexture = GameStateManager.Instance.Content.Load<Texture2D>("Images/iceTexture");
 
-            referee = GameStateManager.Instance.Content.Load<Model>("3DAcaLogo");
+            referee = GameStateManager.Instance.Content.Load<Model>("Models/3DAcaLogo");
 
-            trillerpf = GameStateManager.Instance.Content.Load<Model>("trillerpfeife");
+            trillerpf = GameStateManager.Instance.Content.Load<Model>("Models/trillerpfeife");
 
-            texture = GameStateManager.Instance.Content.Load<Texture2D>("field2");
+            texture = GameStateManager.Instance.Content.Load<Texture2D>("Images/field2");
 
             CreateBoundingBox();
 
@@ -136,6 +138,7 @@ namespace Volamus_v1
             DrawReferee(camera);
             DrawTrillerpf(camera);
 
+            
             e.View = camera.ViewMatrix;
             e.Projection = camera.ProjectionMatrix;
 
@@ -165,21 +168,21 @@ namespace Volamus_v1
             {
                 foreach (ModelMeshPart part in mesh.MeshParts)
                 {
-                    part.Effect = effect;
-                    effect.Parameters["World"].SetValue(transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) * Matrix.CreateScale(0.1f, 0.15f, 0.01f)
+                    part.Effect = effect2;
+                    effect2.Parameters["World"].SetValue(transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) * Matrix.CreateScale(0.1f, 0.15f, 0.01f)
                            * Matrix.CreateTranslation(new Vector3(0, 0, -0.75f)));
-                    effect.Parameters["View"].SetValue(camera.ViewMatrix);
-                    effect.Parameters["Projection"].SetValue(camera.ProjectionMatrix);
+                    effect2.Parameters["View"].SetValue(camera.ViewMatrix);
+                    effect2.Parameters["Projection"].SetValue(camera.ProjectionMatrix);
                     Matrix WorldInverseTransposeMatrix = Matrix.Transpose(Matrix.Invert(transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) * Matrix.CreateScale(0.1f, 0.15f, 0.01f)
                            * Matrix.CreateTranslation(new Vector3(0, 0, -0.75f))));
-                    effect.Parameters["WorldInverseTranspose"].SetValue(WorldInverseTransposeMatrix);
+                    effect2.Parameters["WorldInverseTranspose"].SetValue(WorldInverseTransposeMatrix);
 
                     //hier kommt immer die warnung
-                    effect.Parameters["ModelTexture"].SetValue(iceTexture);
+                    effect2.Parameters["ModelTexture"].SetValue(iceTexture);
 
                     viewVector = Vector3.Transform(camera.View - camera.Position, Matrix.CreateRotationY(0));
                     viewVector.Normalize();
-                    effect.Parameters["ViewVector"].SetValue(viewVector);
+                    effect2.Parameters["ViewVector"].SetValue(viewVector);
                 }
                 mesh.Draw();
             }

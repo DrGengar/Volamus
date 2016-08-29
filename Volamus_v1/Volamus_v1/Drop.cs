@@ -10,8 +10,8 @@ namespace Volamus_v1
 {
     public class Drop
     {
-        Model size = GameStateManager.Instance.Content.Load<Model>("drop");
-        Model velo = GameStateManager.Instance.Content.Load<Model>("dropGeschwindigkeit");
+        Model size = GameStateManager.Instance.Content.Load<Model>("Models/drop");
+        Model velo = GameStateManager.Instance.Content.Load<Model>("Models/dropGeschwindigkeit");
         Effect effect;
         Vector3 viewVector;
         DebugDraw d;
@@ -64,7 +64,7 @@ namespace Volamus_v1
 
         public void LoadContent()
         {
-            effect = GameStateManager.Instance.Content.Load<Effect>("shader");
+            effect = GameStateManager.Instance.Content.Load<Effect>("Effects/shaderTest");
             boundingSphere.Radius *= 1.0f;
 
             boundingSphere.Center = position;

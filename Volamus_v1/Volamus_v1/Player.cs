@@ -42,6 +42,7 @@ namespace Volamus_v1
 
     public class Player
     {
+        Effect effect2;
         Effect effect;
         Vector3 viewVector;
         Vector3 position;
@@ -69,8 +70,6 @@ namespace Volamus_v1
         float hitAngleHigh;
 
 
-
-
         int direction; //1, if Position.Y < 0, -1 if Position.Y > 0
         bool is_jumping = false;
         bool is_falling = false;
@@ -83,9 +82,8 @@ namespace Volamus_v1
 
         DebugDraw d;
 
-        Texture2D circle_angle, arrow;
-
         Model pfeil;
+        Texture2D arrowTexture;
 
         KeyboardControl keyboard;
         GamePadControl gamepad;
@@ -171,16 +169,6 @@ namespace Volamus_v1
             get { return model; }
         }
 
-        public Texture2D Circle
-        {
-            get { return circle_angle; }
-        }
-
-        public Texture2D Arrow
-        {
-            get { return arrow; }
-        }
-
         public float Gamma
         {
             get { return MathHelper.ToRadians(gamma); }
@@ -217,10 +205,7 @@ namespace Volamus_v1
         public bool IsServing
         {
             get { return is_serving; }
-            set
-            {
-                is_serving = value;
-            }
+            set { is_serving = value; }
         }
 
         public bool Control
@@ -311,36 +296,46 @@ namespace Volamus_v1
         //LoadContent
         public void LoadContent()
         {
-            effect = GameStateManager.Instance.Content.Load<Effect>("shader");
+            effect = GameStateManager.Instance.Content.Load<Effect>("Effects/shaderTest");
+            effect2 = GameStateManager.Instance.Content.Load<Effect>("Effects/shaderTestWithTexture");
 
-            model = GameStateManager.Instance.Content.Load<Model>("pinguin");
+            model = GameStateManager.Instance.Content.Load<Model>("Models/pinguin");
+            arrowTexture = GameStateManager.Instance.Content.Load<Texture2D>("Textures/red");
 
             // right und left jeweils aus der Sicht des Pinguins
             if (direction == 1)
             {
-                leftWing = GameStateManager.Instance.Content.Load<Model>("leftneu2"); //PingWingLeft
-                rightWing = GameStateManager.Instance.Content.Load<Model>("rightneu2");
+                leftWing = GameStateManager.Instance.Content.Load<Model>("Models/leftneu2"); //PingWingLeft
+                rightWing = GameStateManager.Instance.Content.Load<Model>("Models/rightneu2");
             }
             else
             {
-                leftWing = GameStateManager.Instance.Content.Load<Model>("rightneu2"); //PingWingLeft
-                rightWing = GameStateManager.Instance.Content.Load<Model>("leftneu2");
+                leftWing = GameStateManager.Instance.Content.Load<Model>("Models/rightneu2"); //PingWingLeft
+                rightWing = GameStateManager.Instance.Content.Load<Model>("Models/leftneu2");
             }
 
 
             points_font = GameStateManager.Instance.Content.Load<SpriteFont>("SpriteFonts/Standard");
 
-            circle_angle = GameStateManager.Instance.Content.Load<Texture2D>("Images/winkel");
-            arrow = GameStateManager.Instance.Content.Load<Texture2D>("Images/pfeil");
-
-            pfeil = GameStateManager.Instance.Content.Load<Model>("pfeil");
+            pfeil = GameStateManager.Instance.Content.Load<Model>("Models/pfeil");
 
             CreateBoundingBoxes();
         }
 
+        public void UnloadContent(){}
+
         //Update
         public void Update(Field field)
         {
+            /*if (can_hit)
+            {
+                arrowTexture = GameStateManager.Instance.Content.Load<Texture2D>("Textures/green");
+            }
+            else
+            {
+                arrowTexture = GameStateManager.Instance.Content.Load<Texture2D>("Textures/red");
+            }*/
+
             if (controller)
             {
                 UpdateController(field, gamepad.Up, gamepad.Down, gamepad.Left, gamepad.Right, gamepad.Jump, gamepad.Weak,
@@ -353,7 +348,7 @@ namespace Volamus_v1
             }
         }
 
-        //Update
+        //Tastatur Anfang
         private void UpdateKeyboard(Field field, Keys Up, Keys Down, Keys Left, Keys Right, Keys Jump, Keys weak, Keys strong, Keys l, Keys r)
         {
             if (Collision.Instance.matchIsFinish != true)
@@ -984,6 +979,7 @@ namespace Volamus_v1
                 Ball.Instance.Update();
             }
         }
+        //Tastatur Ende
 
         //  Controller  Anfang
         private void UpdateController(Field field, Buttons Up, Buttons Down, Buttons Left, Buttons Right, Buttons Jump, Buttons weak, Buttons strong, Buttons l, Buttons r)
@@ -1511,8 +1507,6 @@ namespace Volamus_v1
 
         }
 
-
-
         //Schwacher Schlag
         private void WeakThrow(Buttons weakthrow)
         {
@@ -1637,12 +1631,8 @@ namespace Volamus_v1
                 }
                 mesh.Draw();
 
-
                 DrawWingLeft(camera, leftWing, leftWingPosition);
                 DrawWingRight(camera, rightWing, rightWingPosition);
-
-
-
             }
 
             d.Begin(camera.ViewMatrix, camera.ProjectionMatrix);
@@ -1651,7 +1641,7 @@ namespace Volamus_v1
             d.End();
         }
 
-
+        // für rechten Flügel
         public void DrawWingRight(Camera camera, Model wing, Vector3 position)
         {
             Matrix[] transforms = new Matrix[wing.Bones.Count];
@@ -1681,7 +1671,6 @@ namespace Volamus_v1
         }
 
         // für linken Flügel
-
         public void DrawWingLeft(Camera camera, Model wing, Vector3 position)
         {
             Matrix[] transforms = new Matrix[wing.Bones.Count];
@@ -1709,7 +1698,7 @@ namespace Volamus_v1
                 mesh.Draw();
             }
         }
-        //
+
         public void DrawArrow(Camera camera)
         {
             float temp = 0.0f;

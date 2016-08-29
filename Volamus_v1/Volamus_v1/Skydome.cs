@@ -26,7 +26,7 @@ namespace Volamus_v1
 
         public void Load()
         {
-            skydome = GameStateManager.Instance.Content.Load<Model>("skydome");
+            skydome = GameStateManager.Instance.Content.Load<Model>("Models/skydome");
         }
 
         public void Draw(Camera camera)
