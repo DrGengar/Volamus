@@ -118,7 +118,7 @@ namespace Volamus_v1
             net = GameStateManager.Instance.Content.Load<Model>("Models/netzv4");
 
             ice = GameStateManager.Instance.Content.Load<Model>("Models/eisscholle");
-            iceTexture = GameStateManager.Instance.Content.Load<Texture2D>("Images/iceTexture");
+            iceTexture = GameStateManager.Instance.Content.Load<Texture2D>("Textures/iceTexture");
 
             referee = GameStateManager.Instance.Content.Load<Model>("Models/3DAcaLogo");
 

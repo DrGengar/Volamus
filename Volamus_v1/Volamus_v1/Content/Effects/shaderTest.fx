@@ -11,16 +11,18 @@ float4x4 View;
 float4x4 Projection;
 float4x4 WorldInverseTranspose;
 
-float4 AmbientColor = float4(1, 1, 1, 1);
-float AmbientIntensity = 1.0;
 
-float3 DiffuseLightDirection = float3(1, 0, 0);
+float4 AmbientColor = float4(1, 1, 1, 1);
+float AmbientIntensity = 0.1;
+
+float3 DiffuseLightDirection = float3(0, 0, 20);
 float4 DiffuseColor = float4(1, 1, 1, 1);
 float DiffuseIntensity = 1.0;
 
 float Shininess = 200;
 float4 SpecularColor = float4(1, 1, 1, 1);
 float SpecularIntensity = 1;
+
 float3 ViewVector = float3(1, 0, 0);
 
 //Input des Vertex Shaders
@@ -61,9 +63,11 @@ float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0{
 	float3 v = normalize(mul(normalize(ViewVector), World));
 
 	float dotProduct = dot(r, v);
-	float4 specular = SpecularIntensity * SpecularColor * max(pow(dotProduct, Shininess), 1.0) * length(input.Color);
+	float4 specular = SpecularIntensity * SpecularColor * max(pow(dotProduct, Shininess), 0) * length(input.Color);
 
-	return saturate(input.Color + AmbientColor * AmbientIntensity + specular);
+	float4 color = saturate((input.Color) + AmbientColor * AmbientIntensity + specular);
+	color.a = 1.0;
+	return color;
 }
 
 
