@@ -18,7 +18,7 @@ namespace Volamus_v1
 
         private Wind wind;
 
-        private Skydome skydome;
+        private Match match;
 
         //SplitScreen
         private Viewport defaultView, leftView, rightView;
@@ -45,14 +45,14 @@ namespace Volamus_v1
             content = GameStateManager.Instance.Content;
 
             field = new Field(100, 90, 15);
+            field.Initialize();
 
             player_one = new Player(new Vector3(0, -25, 0), 5, 0.5f, 0.8f, field);
             player_two = new Player(new Vector3(0, 25, 0), 5, 0.5f, 0.8f, field, PlayerIndex.One);
-
             player_one.Enemy = player_two;
             player_two.Enemy = player_one;
 
-            field.Initialize();
+            match = new Match(player_one, player_two, field, 200, 0,  false, false);
 
             defaultView = GameStateManager.Instance.GraphicsDevice.Viewport;
             leftView = defaultView;
@@ -61,15 +61,12 @@ namespace Volamus_v1
             rightView.Width = rightView.Width / 2;
             rightView.X = leftView.Width + 1;
 
-            player_one.IsServing = true;
-            Collision.Instance.LastTouched = player_one;
+            //player_one.IsServing = true;
+            //Collision.Instance.LastTouched = player_one;
 
             frameCounter = new FrameCounter();
 
-            wind = new Wind(0);
-
-            skydome = new Skydome(5.0f);
-            skydome.Initialize();
+            //wind = new Wind(0);
 
             GameStateManager.Instance.BackgroundSound.Play2D("Content//Sound//soproSound1.ogg", true);
             GameStateManager.Instance.BackgroundSound.SoundVolume = 0.2f;
@@ -77,14 +74,14 @@ namespace Volamus_v1
 
         public override void LoadContent()
         {
-            field.LoadContent();
-
-            skydome.Load();
+            /*field.LoadContent();
 
             Ball.Instance.LoadContent(wind);
 
             player_one.LoadContent();
-            player_two.LoadContent();
+            player_two.LoadContent();*/
+
+            match.LoadContent();
 
             GameStateManager.Instance.BackgroundSound.SetAllSoundsPaused(false);
         }
@@ -92,6 +89,7 @@ namespace Volamus_v1
         public override void UnloadContent()
         {
             base.UnloadContent();
+            match.Unloadcontent();
             GameStateManager.Instance.BackgroundSound.SetAllSoundsPaused(true);
         }
 
@@ -101,13 +99,15 @@ namespace Volamus_v1
 
             frameCounter.Update(deltaTime);
 
-            player_one.Update(field);
+            /*player_one.Update(field);
             player_two.Update(field);
 
 
             Ball.Instance.Update();
 
-            Collision.Instance.CollisionMethod(field);
+            Collision.Instance.CollisionMethod(field);*/
+
+            match.Update(gameTime);
 
             if (InputManager.Instance.KeyPressed(Keys.Escape) || InputManager.Instance.ButtonPressed(Buttons.Back))
             {
@@ -121,36 +121,36 @@ namespace Volamus_v1
         {
             GameStateManager.Instance.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
 
-            GameStateManager.Instance.GraphicsDevice.Clear(Color.CornflowerBlue);
+            GameStateManager.Instance.GraphicsDevice.Clear(Color.Black);
 
             //Linker SplitScreen: Linker Spieler (player_one)
             GameStateManager.Instance.GraphicsDevice.Viewport = leftView;
-            field.Draw(player_one.Camera);
+            /*field.Draw(player_one.Camera);
             Ball.Instance.Draw(player_one.Camera);
             player_one.Draw(player_one.Camera);
             player_one.DrawArrow(player_one.Camera);
 
-            player_two.Draw(player_one.Camera);
+            player_two.Draw(player_one.Camera);*/
 
-            skydome.Draw(player_one.Camera);
+            match.Draw(match.One.Camera, leftView);
 
             //Punkte vom linken Spieler
-            GameStateManager.Instance.SpriteBatch.DrawString(player_one.Font, player_one.Points.ToString() + "/" + Collision.Instance.match.ToString(), 
-                new Vector2(leftView.Width/2, 0), Color.White);
+            /*GameStateManager.Instance.SpriteBatch.DrawString(player_one.Font, player_one.Points.ToString() + "/" + Collision.Instance.match.ToString(), 
+                new Vector2(leftView.Width/2, 0), Color.White);*/
 
             //Rechter SplitScreen: Rechter Spieler (player_two)
             GameStateManager.Instance.GraphicsDevice.Viewport = rightView;
-            field.Draw(player_two.Camera);
+            /*field.Draw(player_two.Camera);
             Ball.Instance.Draw(player_two.Camera);
             player_one.Draw(player_two.Camera);
             player_two.Draw(player_two.Camera);
-            player_two.DrawArrow(player_two.Camera);
+            player_two.DrawArrow(player_two.Camera);*/
 
-            skydome.Draw(player_two.Camera);
+            match.Draw(match.Two.Camera, rightView);
 
             //Punkte vom rechten Spieler
-            GameStateManager.Instance.SpriteBatch.DrawString(player_two.Font, player_two.Points.ToString() + "/" + Collision.Instance.match.ToString(), 
-                new Vector2(leftView.Width + rightView.Width/2, 0), Color.White);
+            /*GameStateManager.Instance.SpriteBatch.DrawString(player_two.Font, player_two.Points.ToString() + "/" + Collision.Instance.match.ToString(), 
+                new Vector2(leftView.Width + rightView.Width/2, 0), Color.White);*/
 
             //Ganzes Bild
             GameStateManager.Instance.GraphicsDevice.Viewport = defaultView;

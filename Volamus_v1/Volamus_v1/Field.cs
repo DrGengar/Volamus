@@ -41,6 +41,8 @@ namespace Volamus_v1
 
         DebugDraw d;
 
+        Skydome skydome;
+
         public VertexPositionTexture[] FieldVertices
         {
             get { return fieldVertices; }
@@ -108,6 +110,9 @@ namespace Volamus_v1
             e = new BasicEffect(GameStateManager.Instance.GraphicsDevice);
 
             d = new DebugDraw(GameStateManager.Instance.GraphicsDevice);
+
+            skydome = new Skydome(5.0f);
+            skydome.Initialize();
         }
 
         public void LoadContent()
@@ -126,6 +131,8 @@ namespace Volamus_v1
 
             texture = GameStateManager.Instance.Content.Load<Texture2D>("Images/field2");
 
+            skydome.Load();
+
             CreateBoundingBox();
 
             CreateNetBoundingBox();
@@ -137,7 +144,7 @@ namespace Volamus_v1
             DrawNet(camera);
             DrawReferee(camera);
             DrawTrillerpf(camera);
-
+            skydome.Draw(camera);
             
             e.View = camera.ViewMatrix;
             e.Projection = camera.ProjectionMatrix;

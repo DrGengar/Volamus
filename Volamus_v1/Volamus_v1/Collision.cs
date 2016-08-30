@@ -257,6 +257,7 @@ namespace Volamus_v1
             if (Ball.Instance.BoundingSphere.Intersects(player.InnerBoundingBox) && colliding == 0)
             {
                 Vector3 hitdirection = Ball.Instance.Active.Hit_Direction;
+
                 float angle_z = MathHelper.ToDegrees((float)Math.Atan((hitdirection.Z / hitdirection.Y)));
                 float angle_x = MathHelper.ToDegrees((float)Math.Atan((hitdirection.X / hitdirection.Y)));
 

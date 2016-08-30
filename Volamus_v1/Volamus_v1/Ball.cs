@@ -118,8 +118,6 @@ namespace Volamus_v1
 
         public void Initialize()
         {
-
-
             float r = boundingSphere.Radius;
             shadowVertices[0].Position = new Vector3(position.X - r, position.Y - r, 0.01f);
             shadowVertices[1].Position = new Vector3(position.X - r, position.Y + r, 0.01f);

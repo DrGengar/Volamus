@@ -30,35 +30,45 @@ namespace Volamus_v1
             get { return wind; }
         }
 
-        Player One, Two;
+        public Player One, Two;
         Field field;
         Wind wind;
         bool change_size;
         bool change_velocity;
+        int maxPoints;
 
-        //Ball.Instance
-        //Collision.Instance;
+        RockPaperSciccors rpsOne, rpsTwo;
+        private bool preMatch;
+        private const float delay = 2;
+        private float remainingDelay = delay;
 
-        public Match(Player one, Player two, Field f, int w, bool c_s, bool c_v)
+
+        public Match(Player one, Player two, Field f,int points, int w, bool c_s, bool c_v)
         {
             One = one;
             Two = two;
             field = f;
+            maxPoints = points;
             wind = new Wind(w);
             change_size = c_s;
             change_velocity = c_v;
+
+            preMatch = true;
+            rpsOne = new RockPaperSciccors(One);
+            rpsTwo = new RockPaperSciccors(Two);
         }
 
         public void LoadContent()
         {
+            field.LoadContent();
+
+            Ball.Instance.LoadContent(wind);
+
             One.LoadContent();
             Two.LoadContent();
 
-            field.LoadContent();
-
-            //skydome.Load();
-
-            Ball.Instance.LoadContent(wind);
+            rpsOne.LoadContent();
+            rpsTwo.LoadContent();
         }
 
         public void Unloadcontent()
@@ -71,10 +81,139 @@ namespace Volamus_v1
 
         public void Update(GameTime gameTime)
         {
-            One.Update(field);
-            Two.Update(field);
+            var timer = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-            Ball.Instance.Update();
+            if (preMatch)
+            {
+                rpsOne.Update(gameTime);
+                rpsTwo.Update(gameTime);
+
+                if (rpsOne.Decision != 0 && rpsTwo.Decision != 0)
+                {
+                    rpsOne.ShowChoice = true;
+                    rpsTwo.ShowChoice = true;
+
+                    if (rpsOne.Ready && rpsTwo.Ready)
+                    {
+                        if (rpsOne.ThisBeats(rpsTwo))
+                        {
+                            rpsOne.Win = 1;
+                            rpsTwo.Win = 2;
+
+                            One.IsServing = true;
+                            Collision.Instance.LastTouched = One;
+                            One.Update(field);
+                            Two.Update(field);
+
+                            Ball.Instance.Update();
+
+                            remainingDelay -= timer;
+
+                            if (remainingDelay <= 0)
+                            {
+                                preMatch = false;
+                                remainingDelay = delay;
+                            }
+                        }
+                        else
+                        {
+                            if (rpsTwo.ThisBeats(rpsOne))
+                            {
+                                rpsTwo.Win = 1;
+                                rpsOne.Win = 2;
+
+                                Two.IsServing = true;
+                                Collision.Instance.LastTouched = Two;
+                                One.Update(field);
+                                Two.Update(field);
+
+                                Ball.Instance.Update();
+
+                                remainingDelay -= timer;
+
+                                if (remainingDelay <= 0)
+                                {
+                                    preMatch = false;
+                                    remainingDelay = delay;
+                                }
+                            }
+                            else
+                            {
+                                remainingDelay -= timer;
+
+                                if (remainingDelay <= 0)
+                                {
+                                    rpsOne.Decision = 0;
+                                    rpsTwo.Decision = 0;
+                                    rpsOne.ShowChoice = false;
+                                    rpsTwo.ShowChoice = false;
+                                    rpsOne.Ready = false;
+                                    rpsTwo.Ready = false;
+
+                                    remainingDelay = delay;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            else
+            {
+                if (One.Points == maxPoints)
+                {
+                    //winner == one -> Ende
+                }
+
+                if (Two.Points == maxPoints)
+                {
+                    //winner == two -> Ende
+                }
+
+                One.Update(field);
+                Two.Update(field);
+
+                Ball.Instance.Update();
+
+                Collision.Instance.CollisionMethod(field);
+            }
+        }
+
+        public void Draw(Camera camera, Viewport view)
+        {
+            if(preMatch)
+            {
+                if (camera == One.Camera)
+                {
+                    rpsOne.Draw(view);
+                }
+                else
+                {
+                    rpsTwo.Draw(view);
+                }
+
+                /*preMatch = false;
+                One.IsServing = true;
+                Collision.Instance.LastTouched = One;*/
+            }
+            else
+            {
+                field.Draw(camera);
+                Ball.Instance.Draw(camera);
+                One.Draw(camera);
+                if (camera == One.Camera)
+                {
+                    One.DrawArrow(camera);
+                    GameStateManager.Instance.SpriteBatch.DrawString(One.Font, One.Points.ToString() + "/" + Collision.Instance.match.ToString(),
+                        new Vector2(view.Width / 2, 0), Color.White);
+                }
+                else
+                {
+                    Two.DrawArrow(camera);
+                    GameStateManager.Instance.SpriteBatch.DrawString(Two.Font, Two.Points.ToString() + "/" + Collision.Instance.match.ToString(),
+                        new Vector2(view.X + view.Width / 2, 0), Color.White);
+                }
+                Two.Draw(camera);
+            }
         }
     }
 }
