@@ -395,26 +395,26 @@ namespace Volamus_v1
                 //jeder Spieler braucht einen Winkel Gamma, den er verändern kann mit Eingaben
                 if (direction == 1)
                 {
-                    if (keyboard.IsKeyDown(r) && gamma <= 90)
+                    if (keyboard.IsKeyDown(r) && gamma <= 45)
                     {
-                        gamma += (direction) * 1.0f; //Ein Grad mehr/weniger
+                        gamma += (direction) * 2.0f; //Ein Grad mehr/weniger
                     }
-                    if (keyboard.IsKeyDown(l) && gamma >= -90)
+                    if (keyboard.IsKeyDown(l) && gamma >= -45)
                     {
-                        gamma -= (direction) * 1.0f; //Ein Grad mehr/weniger
+                        gamma -= (direction) * 2.0f; //Ein Grad mehr/weniger
                     }
                 }
                 else
                 {
                     if (direction == -1)
                     {
-                        if (keyboard.IsKeyDown(r) && gamma >= -90)
+                        if (keyboard.IsKeyDown(r) && gamma >= -45)
                         {
-                            gamma -= 1.0f; //Ein Grad mehr/weniger
+                            gamma -= 2.0f; //Ein Grad mehr/weniger
                         }
-                        if (keyboard.IsKeyDown(l) && gamma <= 90)
+                        if (keyboard.IsKeyDown(l) && gamma <= 45)
                         {
-                            gamma += 1.0f; //Ein Grad mehr/weniger
+                            gamma += 2.0f; //Ein Grad mehr/weniger
                         }
                     }
                 }
@@ -879,10 +879,6 @@ namespace Volamus_v1
                 betta = 0;
                 gamma = 0;
             }
-
-
-
-
         }
 
         //Schwacher Schlag
@@ -1027,29 +1023,30 @@ namespace Volamus_v1
                 //jeder Spieler braucht einen Winkel Gamma, den er verändern kann mit Eingaben
                 if (direction == 1)
                 {
-                    if (gamepad.IsButtonDown(r) && gamma <= 90)
+                    if (gamepad.IsButtonDown(r) && gamma <= 45)
                     {
-                        gamma += (direction) * 1.0f; //Ein Grad mehr/weniger
+                        gamma += (direction) * 2.0f; //Ein Grad mehr/weniger
                     }
-                    if (gamepad.IsButtonDown(l) && gamma >= -90)
+                    if (gamepad.IsButtonDown(l) && gamma >= -45)
                     {
-                        gamma -= (direction) * 1.0f; //Ein Grad mehr/weniger
+                        gamma -= (direction) * 2.0f; //Ein Grad mehr/weniger
                     }
                 }
                 else
                 {
                     if (direction == -1)
                     {
-                        if (gamepad.IsButtonDown(r) && gamma >= -90)
+                        if (gamepad.IsButtonDown(r) && gamma >= -45)
                         {
-                            gamma -= 1.0f; //Ein Grad mehr/weniger
+                            gamma -= 2.0f; //Ein Grad mehr/weniger
                         }
-                        if (gamepad.IsButtonDown(l) && gamma <= 90)
+                        if (gamepad.IsButtonDown(l) && gamma <= 45)
                         {
-                            gamma += 1.0f; //Ein Grad mehr/weniger
+                            gamma += 2.0f; //Ein Grad mehr/weniger
                         }
                     }
                 }
+
                 //Spieler hat gerade Aufschlag -> Position hinten, Bewegung nur links un rechts, Sprung
                 if (is_serving)
                 {

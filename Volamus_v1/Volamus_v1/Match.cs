@@ -190,10 +190,6 @@ namespace Volamus_v1
                 {
                     rpsTwo.Draw(view);
                 }
-
-                /*preMatch = false;
-                One.IsServing = true;
-                Collision.Instance.LastTouched = One;*/
             }
             else
             {

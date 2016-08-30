@@ -77,7 +77,7 @@ namespace Volamus_v1
             if (Collision.Instance.PlayerWithDrop(this) != null)
             {
                 Random rand = new Random();
-                float komma = rand.Next(6, 20); //Ballskalierung zwischen 1,6 und 2
+                float komma = rand.Next(6, 20); //Ballskalierung zwischen 0,6 und 2
                 komma = komma / 10;
                 Ball.Instance.EffectDrop = komma;
 

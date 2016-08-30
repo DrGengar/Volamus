@@ -90,6 +90,7 @@ namespace Volamus_v1
         {
             base.UnloadContent();
             match.Unloadcontent();
+            instance = null;
             GameStateManager.Instance.BackgroundSound.SetAllSoundsPaused(true);
         }
 

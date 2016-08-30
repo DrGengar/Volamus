@@ -205,9 +205,6 @@ namespace Volamus_v1
                     collision_with_net = true;
                 }
             }
-
-
-
         }
 
         //Ball mit Ebene z=0
@@ -222,6 +219,7 @@ namespace Volamus_v1
 
                 return false;
             }
+
             return false;
         }
 
@@ -229,12 +227,6 @@ namespace Volamus_v1
         public bool PlayerWithNet(Player player, Field field)
         {
             return player.OuterBoundingBox.Intersects(field.NetBoundingBox);
-        }
-
-        //Spieler mit Feldgrenzen
-        public bool PlayerWithField(Player player, Field field)
-        {
-            return player.InnerBoundingBox.Intersects(field.BoundingBox);
         }
 
         //Spieler mit Drop
