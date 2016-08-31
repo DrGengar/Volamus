@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -42,7 +43,6 @@ namespace Volamus_v1
         private const float delay = 2;
         private float remainingDelay = delay;
 
-
         public Match(Player one, Player two, Field f,int points, int w, bool c_s, bool c_v)
         {
             One = one;
@@ -82,6 +82,13 @@ namespace Volamus_v1
         public void Update(GameTime gameTime)
         {
             var timer = (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+            if(InputManager.Instance.KeyPressed(Keys.F1))
+            {
+                preMatch = false;
+                One.IsServing = true;
+                Collision.Instance.LastTouched = One;
+            }
 
             if (preMatch)
             {

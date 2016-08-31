@@ -13,6 +13,11 @@ namespace Volamus_v1
     {
         Texture2D[] options;
 
+        public new Texture2D[] Array
+        {
+            get { return options; }
+        }
+
         public SelectableImage(Texture2D[] o, String n) : base(new[] {"Image"}, n)
         {
             options = o;

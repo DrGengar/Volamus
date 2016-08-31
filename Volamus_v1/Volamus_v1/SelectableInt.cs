@@ -12,6 +12,11 @@ namespace Volamus_v1
     {
         int[] options;
 
+        public new int[] Array
+        {
+            get { return options; }
+        }
+
         public SelectableInt(int[] o, String n) : base( new[] {"0"}, n)
         {
             options = o;
