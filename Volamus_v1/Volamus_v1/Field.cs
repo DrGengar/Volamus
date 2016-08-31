@@ -32,6 +32,7 @@ namespace Volamus_v1
 
         //Netz
         Model net;
+        private Texture2D netTexture;
         BoundingBox netBoundingBox;
         BoundingBox boundingBox;
 
@@ -121,6 +122,7 @@ namespace Volamus_v1
             effect2 = GameStateManager.Instance.Content.Load<Effect>("Effects/shaderTestWithTexture");
 
             net = GameStateManager.Instance.Content.Load<Model>("Models/netzv4");
+            netTexture = GameStateManager.Instance.Content.Load<Texture2D>("Textures/netzvUV");
 
             ice = GameStateManager.Instance.Content.Load<Model>("Models/eisscholle");
             iceTexture = GameStateManager.Instance.Content.Load<Texture2D>("Textures/iceTexture");
@@ -220,14 +222,15 @@ namespace Volamus_v1
             {
                 foreach (ModelMeshPart part in mesh.MeshParts)
                 {
-                    part.Effect = effect;
-                    effect.Parameters["World"].SetValue(transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) * Matrix.CreateScale(0.05f, 0.025f, 0.025f)
+                    part.Effect = effect2;
+                    effect2.Parameters["World"].SetValue(transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) * Matrix.CreateScale(0.05f, 0.025f, 0.025f)
                             * Matrix.CreateTranslation(new Vector3(0, 0, 0)));
-                    effect.Parameters["View"].SetValue(camera.ViewMatrix);
-                    effect.Parameters["Projection"].SetValue(camera.ProjectionMatrix);
+                    effect2.Parameters["View"].SetValue(camera.ViewMatrix);
+                    effect2.Parameters["Projection"].SetValue(camera.ProjectionMatrix);
                     Matrix WorldInverseTransposeMatrix = Matrix.Transpose(transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) * Matrix.CreateScale(0.05f, 0.025f, 0.025f)
                             * Matrix.CreateTranslation(new Vector3(0, 0, 0)));
-                    effect.Parameters["WorldInverseTranspose"].SetValue(WorldInverseTransposeMatrix);
+                    effect2.Parameters["WorldInverseTranspose"].SetValue(WorldInverseTransposeMatrix);
+                    effect2.Parameters["ModelTexture"].SetValue(netTexture);
 
                     viewVector = Vector3.Transform(camera.View - camera.Position, Matrix.CreateRotationY(0));
                     viewVector.Normalize();
