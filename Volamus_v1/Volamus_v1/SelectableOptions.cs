@@ -18,6 +18,11 @@ namespace Volamus_v1
         public SpriteFont spriteFont;
         public Texture2D markArrow;
 
+        public String[] Array
+        {
+            get { return options; }
+        }
+
         public bool Active
         {
             get { return is_active; }

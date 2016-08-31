@@ -13,6 +13,11 @@ namespace Volamus_v1
         bool[] options;
         String[] help;
 
+        public new bool[] Array
+        {
+            get { return options; }
+        }
+
         public SelectableBool(string n) : base(new[] {"Off", "On"}, n)
         {
             options = new[] { false, true };
