@@ -412,3 +412,9 @@ C:\Users\Lars\Desktop\Volamus\Volamus_v1\Volamus_v1\Content\Textures\HelicopterT
 C:\Users\Lars\Desktop\Volamus\Volamus_v1\Volamus_v1\Content\Images\paper.xnb
 C:\Users\Lars\Desktop\Volamus\Volamus_v1\Volamus_v1\Content\Images\rock.xnb
 C:\Users\Lars\Desktop\Volamus\Volamus_v1\Volamus_v1\Content\Images\scissor.xnb
+C:\Users\Lars\Desktop\Volamus\Volamus_v1\Volamus_v1\Content\Images\mark.xnb
+C:\Users\Lars\Desktop\Volamus\Volamus_v1\Volamus_v1\Content\Images\map1.xnb
+C:\Users\Lars\Desktop\Volamus\Volamus_v1\Volamus_v1\Content\Images\map2.xnb
+C:\Users\Lars\Desktop\Volamus\Volamus_v1\Volamus_v1\Content\Images\map3.xnb
+C:\Users\Lars\Desktop\Volamus\Volamus_v1\Volamus_v1\Content\Images\mark_pfeil.xnb
+C:\Users\Lars\Desktop\Volamus\Volamus_v1\Volamus_v1\Content\Images\mark2.xnb

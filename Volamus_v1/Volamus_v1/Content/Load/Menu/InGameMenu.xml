@@ -17,14 +17,6 @@
 
   <Item>
     <LinkType>Screen</LinkType>
-    <LinkID>Options</LinkID>
-    <Image>
-      <Text>Options</Text>
-    </Image>
-  </Item>
-
-  <Item>
-    <LinkType>Screen</LinkType>
     <LinkID>TitleScreen</LinkID>
     <Image>
       <Text>Hauptmenu</Text>

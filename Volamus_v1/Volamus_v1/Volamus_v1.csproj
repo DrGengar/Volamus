@@ -67,6 +67,7 @@
     <Compile Include="FrameCounter.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="Camera.cs" />
+    <Compile Include="MatchOptions.cs" />
     <Compile Include="GamePadControl.cs" />
     <Compile Include="GameScreen.cs" />
     <Compile Include="GameState.cs" />
@@ -99,6 +100,10 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="RockPaperSciccors.cs" />
+    <Compile Include="SelectableBool.cs" />
+    <Compile Include="SelectableImage.cs" />
+    <Compile Include="SelectableInt.cs" />
+    <Compile Include="SelectableOptions.cs" />
     <Compile Include="Skydome.cs" />
     <Compile Include="SplashScreen.cs" />
     <Compile Include="TitleScreen.cs" />

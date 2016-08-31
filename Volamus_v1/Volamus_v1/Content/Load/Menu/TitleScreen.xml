@@ -5,18 +5,12 @@
 
   <Item>
     <LinkType>Screen</LinkType>
-    <LinkID>GameScreen</LinkID>
+    <LinkID>MatchOptions</LinkID>
     <Image>
       <Text>Play</Text>
     </Image>
   </Item>
-
-  <Item>
-    <Image>
-      <Text>Collection</Text>
-    </Image>
-  </Item>
-
+  
   <Item>
     <LinkType>Screen</LinkType>
     <LinkID>Options</LinkID>
