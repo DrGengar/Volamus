@@ -1611,21 +1611,6 @@ namespace Volamus_v1
             {
                 foreach (ModelMeshPart part in mesh.MeshParts)
                 {
-                    part.Effect = effect;
-                     effect.Parameters["World"].SetValue(transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90 + betta)) * Matrix.CreateRotationZ(MathHelper.ToRadians(direction * 90 + direction * (-gamma))) *
-                           Matrix.CreateScale(scale)
-                           * Matrix.CreateTranslation(position));
-                     effect.Parameters["View"].SetValue(camera.ViewMatrix);
-                     effect.Parameters["Projection"].SetValue(camera.ProjectionMatrix);
-                     Matrix WorldInverseTransposeMatrix = Matrix.Transpose(Matrix.Invert(transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) * Matrix.CreateRotationZ(MathHelper.ToRadians(direction * 90 + direction * (-gamma))) *
-                           Matrix.CreateScale(scale)
-                           * Matrix.CreateTranslation(position)));
-                     effect.Parameters["WorldInverseTranspose"].SetValue(WorldInverseTransposeMatrix);
-
-                     viewVector = Vector3.Transform(camera.View - camera.Position, Matrix.CreateRotationY(0));
-                     viewVector.Normalize();
-                     effect.Parameters["ViewVector"].SetValue(viewVector);
-                    /*
                     part.Effect = effect2;
                     effect2.Parameters["World"].SetValue(transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90 + betta)) * Matrix.CreateRotationZ(MathHelper.ToRadians(direction * 90 + direction * (-gamma))) *
                           Matrix.CreateScale(scale)
@@ -1636,12 +1621,11 @@ namespace Volamus_v1
                           Matrix.CreateScale(scale)
                           * Matrix.CreateTranslation(position)));
                     effect2.Parameters["WorldInverseTranspose"].SetValue(WorldInverseTransposeMatrix);
-
                     effect2.Parameters["ModelTexture"].SetValue(penguinTexture);
 
                     viewVector = Vector3.Transform(camera.View - camera.Position, Matrix.CreateRotationY(0));
                     viewVector.Normalize();
-                    effect2.Parameters["ViewVector"].SetValue(viewVector);*/
+                    effect2.Parameters["ViewVector"].SetValue(viewVector);
 
 
                 }

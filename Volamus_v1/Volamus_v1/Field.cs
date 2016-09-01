@@ -27,7 +27,9 @@ namespace Volamus_v1
 
         //Schiedsrichter
         Model referee;
+        private Texture2D refTexture;
         Model trillerpf;
+        private Texture2D trillerTexture;
 
 
         //Netz
@@ -122,8 +124,10 @@ namespace Volamus_v1
             iceTexture = GameStateManager.Instance.Content.Load<Texture2D>("Textures/iceTexture");
 
             referee = GameStateManager.Instance.Content.Load<Model>("Models/3DAcaLogo");
+            refTexture = GameStateManager.Instance.Content.Load<Texture2D>("Textures/AcaTexture");
 
             trillerpf = GameStateManager.Instance.Content.Load<Model>("Models/trillerpfeife");
+            trillerTexture = GameStateManager.Instance.Content.Load<Texture2D>("Textures/AcaTexture");
 
             texture = GameStateManager.Instance.Content.Load<Texture2D>("Images/field2");
 
@@ -199,7 +203,6 @@ namespace Volamus_v1
                     Matrix WorldInverseTransposeMatrix = Matrix.Transpose(transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) * Matrix.CreateScale(0.05f, 0.025f, 0.025f)
                             * Matrix.CreateTranslation(new Vector3(0, 0, 0)));
                     effect2.Parameters["WorldInverseTranspose"].SetValue(WorldInverseTransposeMatrix);
-
                     effect2.Parameters["ModelTexture"].SetValue(netTexture);
 
                     viewVector = Vector3.Transform(camera.View - camera.Position, Matrix.CreateRotationY(0));
@@ -219,18 +222,19 @@ namespace Volamus_v1
             {
                 foreach (ModelMeshPart part in mesh.MeshParts)
                 {
-                    part.Effect = effect;
-                    effect.Parameters["World"].SetValue(transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) * Matrix.CreateScale(0.075f, 0.075f, 0.075f)
+                    part.Effect = effect2;
+                    effect2.Parameters["World"].SetValue(transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) * Matrix.CreateScale(0.075f, 0.075f, 0.075f)
                           * Matrix.CreateTranslation(new Vector3(70, 0, 0)));
-                    effect.Parameters["View"].SetValue(camera.ViewMatrix);
-                    effect.Parameters["Projection"].SetValue(camera.ProjectionMatrix);
+                    effect2.Parameters["View"].SetValue(camera.ViewMatrix);
+                    effect2.Parameters["Projection"].SetValue(camera.ProjectionMatrix);
                     Matrix WorldInverseTransposeMatrix = Matrix.Transpose(Matrix.Invert(transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) * Matrix.CreateScale(0.075f, 0.075f, 0.075f)
                           * Matrix.CreateTranslation(new Vector3(70, 0, 0))));
-                    effect.Parameters["WorldInverseTranspose"].SetValue(WorldInverseTransposeMatrix);
+                    effect2.Parameters["WorldInverseTranspose"].SetValue(WorldInverseTransposeMatrix);
+                    effect2.Parameters["ModelTexture"].SetValue(refTexture);
 
                     viewVector = Vector3.Transform(camera.View - camera.Position, Matrix.CreateRotationY(0));
                     viewVector.Normalize();
-                    effect.Parameters["ViewVector"].SetValue(viewVector);
+                    effect2.Parameters["ViewVector"].SetValue(viewVector);
                 }
                 mesh.Draw();
             }
@@ -254,6 +258,7 @@ namespace Volamus_v1
                            * Matrix.CreateRotationY(MathHelper.ToRadians(-10)) * Matrix.CreateScale(0.03f, 0.03f, 0.03f)
                            * Matrix.CreateTranslation(new Vector3(66.5f, 0, 4))));
                     effect.Parameters["WorldInverseTranspose"].SetValue(WorldInverseTransposeMatrix);
+                   // effect2.Parameters["ModelTexture"].SetValue(trillerTexture);
 
                     viewVector = Vector3.Transform(camera.View - camera.Position, Matrix.CreateRotationY(0));
                     viewVector.Normalize();

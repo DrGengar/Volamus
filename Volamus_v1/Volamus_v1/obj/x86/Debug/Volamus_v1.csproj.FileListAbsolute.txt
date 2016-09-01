@@ -502,3 +502,10 @@ C:\Users\Lars\Desktop\3dGame\Volamus_v1\Volamus_v1\Content\Textures\iceTexture.x
 C:\Users\Lars\Desktop\3dGame\Volamus_v1\Volamus_v1\Content\Textures\netzvUV.xnb
 C:\Users\Lars\Desktop\3dGame\Volamus_v1\Volamus_v1\Content\Textures\pinguinUV.xnb
 C:\Users\Lars\Desktop\3dGame\Volamus_v1\Volamus_v1\Content\Textures\red.xnb
+C:\Users\Iam\Desktop\3dGame\Volamus_v1\Volamus_v1\Content\Sound\button.wma
+C:\Users\Iam\Desktop\3dGame\Volamus_v1\Volamus_v1\Content\Sound\button.xnb
+C:\Users\Iam\Desktop\3dGame\Volamus_v1\Volamus_v1\Content\Sound\going_coastal.wma
+C:\Users\Iam\Desktop\3dGame\Volamus_v1\Volamus_v1\Content\Sound\going_coastal.xnb
+C:\Users\Iam\Desktop\3dGame\Volamus_v1\Volamus_v1\Content\Textures\green.xnb
+C:\Users\Iam\Desktop\3dGame\Volamus_v1\Volamus_v1\Content\Textures\AcaTexture.xnb
+C:\Users\Iam\Desktop\3dGame\Volamus_v1\Volamus_v1\Content\Textures\netTex.xnb
