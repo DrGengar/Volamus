@@ -38,6 +38,9 @@ namespace Volamus_v1
         public int IngameVolume;
 
         [XmlIgnore]
+        public ISoundEngine Menu;
+
+        [XmlIgnore]
         public bool Exit;
 
         [XmlIgnore]
@@ -120,6 +123,7 @@ namespace Volamus_v1
             this.Content = new ContentManager(Content.ServiceProvider, "Content");
             Music.SoundVolume = MusicVolume;
             Ingame.SoundVolume = IngameVolume;
+            Menu.SoundVolume = 1.0f;
             Music.Play2D("Content//Sound//going_coastal.ogg", true);
             currentState.LoadContent();
             Image.LoadContent();

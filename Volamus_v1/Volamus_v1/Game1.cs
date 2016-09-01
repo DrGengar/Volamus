@@ -42,6 +42,7 @@ namespace Volamus_v1
 
             GameStateManager.Instance.Music = new ISoundEngine();
             GameStateManager.Instance.Ingame = new ISoundEngine();
+            GameStateManager.Instance.Menu = new ISoundEngine();
             GameStateManager.Instance.GraphicsDevice = GraphicsDevice;
             GameStateManager.Instance.GraphicsDeviceManager = graphics;
             GameStateManager.Instance.SpriteBatch = spriteBatch;

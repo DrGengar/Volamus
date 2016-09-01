@@ -123,14 +123,14 @@ namespace Volamus_v1
             {
                 if (InputManager.Instance.KeyPressed(Keys.Right) || InputManager.Instance.ButtonPressed(Buttons.DPadRight, Buttons.LeftThumbstickRight))
                 {
-                    GameStateManager.Instance.Ingame.Play2D("Content//Sound//button.ogg", false);
+                    GameStateManager.Instance.Menu.Play2D("Content//Sound//button.ogg", false);
                     itemNumber++;
                 }
                 else
                 {
                     if (InputManager.Instance.KeyPressed(Keys.Left) || InputManager.Instance.ButtonPressed(Buttons.DPadLeft, Buttons.LeftThumbstickLeft))
                     {
-                        GameStateManager.Instance.Ingame.Play2D("Content//Sound//button.ogg", false);
+                        GameStateManager.Instance.Menu.Play2D("Content//Sound//button.ogg", false);
                         itemNumber--;
                     }
                 }
@@ -141,14 +141,14 @@ namespace Volamus_v1
                 {
                     if (InputManager.Instance.KeyPressed(Keys.Down) || InputManager.Instance.ButtonPressed(Buttons.DPadDown, Buttons.LeftThumbstickDown))
                     {
-                        GameStateManager.Instance.Ingame.Play2D("Content//Sound//button.ogg", false);
+                        GameStateManager.Instance.Menu.Play2D("Content//Sound//button.ogg", false);
                         itemNumber++;
                     }
                     else
                     {
                         if (InputManager.Instance.KeyPressed(Keys.Up) || InputManager.Instance.ButtonPressed(Buttons.DPadUp, Buttons.LeftThumbstickUp))
                         {
-                            GameStateManager.Instance.Ingame.Play2D("Content//Sound//button.ogg", false);
+                            GameStateManager.Instance.Menu.Play2D("Content//Sound//button.ogg", false);
                             itemNumber--;
                         }
                     }
