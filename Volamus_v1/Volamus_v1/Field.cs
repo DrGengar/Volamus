@@ -230,6 +230,7 @@ namespace Volamus_v1
                     Matrix WorldInverseTransposeMatrix = Matrix.Transpose(Matrix.Invert(transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) * Matrix.CreateScale(0.075f, 0.075f, 0.075f)
                           * Matrix.CreateTranslation(new Vector3(70, 0, 0))));
                     effect2.Parameters["WorldInverseTranspose"].SetValue(WorldInverseTransposeMatrix);
+
                     effect2.Parameters["ModelTexture"].SetValue(refTexture);
 
                     viewVector = Vector3.Transform(camera.View - camera.Position, Matrix.CreateRotationY(0));

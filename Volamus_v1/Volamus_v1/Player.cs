@@ -269,7 +269,7 @@ namespace Volamus_v1
             hitAngleHigh = 0;   // Rotation nach oben
 
 
-            scale = new Vector3(4.0f, 4.0f, 4.0f); //0.025
+            scale = new Vector3(3.0f, 3.0f, 3.0f); //0.025
 
             d = new DebugDraw(GameStateManager.Instance.GraphicsDevice);
         }
@@ -1621,6 +1621,7 @@ namespace Volamus_v1
                           Matrix.CreateScale(scale)
                           * Matrix.CreateTranslation(position)));
                     effect2.Parameters["WorldInverseTranspose"].SetValue(WorldInverseTransposeMatrix);
+
                     effect2.Parameters["ModelTexture"].SetValue(penguinTexture);
 
                     viewVector = Vector3.Transform(camera.View - camera.Position, Matrix.CreateRotationY(0));
@@ -1749,7 +1750,6 @@ namespace Volamus_v1
 
         private void CreateBoundingBoxes()
         {
-
             //Innere BoundingBox
 
             // Initialize minimum and maximum corners of the bounding box to max and min values
@@ -1782,6 +1782,9 @@ namespace Volamus_v1
             }
 
             // Create and return bounding box
+
+            min = new Vector3(-3, -3, 0);
+            max = new Vector3(3, 3, 12);
 
             Vector3 mid = new Vector3((max.X + min.X) / 2, (direction) * (max.Y + min.Y) / 2, min.Z);
             Vector3 translate = mid - position;
