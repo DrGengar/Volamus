@@ -464,3 +464,5 @@ C:\Users\Lars\Desktop\Volamus\Volamus_v1\Volamus_v1\Content\Textures\pinguinUV.x
 C:\Users\Lars\Desktop\Volamus\Volamus_v1\Volamus_v1\Content\Textures\green.xnb
 C:\Users\Lars\Desktop\Volamus\Volamus_v1\Volamus_v1\Content\Sound\going_coastal.wma
 C:\Users\Lars\Desktop\Volamus\Volamus_v1\Volamus_v1\Content\Sound\going_coastal.xnb
+C:\Users\Lars\Desktop\Volamus\Volamus_v1\Volamus_v1\Content\Sound\button.wma
+C:\Users\Lars\Desktop\Volamus\Volamus_v1\Volamus_v1\Content\Sound\button.xnb

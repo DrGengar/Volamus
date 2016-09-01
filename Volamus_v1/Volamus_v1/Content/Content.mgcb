@@ -641,3 +641,9 @@
 /processorParam:Quality=Best
 /build:Sound/going_coastal.ogg
 
+#begin Sound/button.ogg
+/importer:OggImporter
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Sound/button.ogg
+
