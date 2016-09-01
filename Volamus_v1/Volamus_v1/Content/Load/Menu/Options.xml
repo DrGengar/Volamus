@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Menu>
+  <Axis>Y</Axis>
+  <Item>
+    <LinkType>Screen</LinkType>
+    <LinkID>Settings</LinkID>
+    <Image>
+      <Text>Settings</Text>
+    </Image>
+  </Item>
+
+  <Item>
+    <LinkType>Screen</LinkType>
+    <LinkID>Controls</LinkID>
+    <Image>
+      <Text>Controls</Text>
+    </Image>
+  </Item>
+
+  <Item>
+    <Image>
+      <Text>Credits</Text>
+    </Image>
+  </Item>
+
+  <Item>
+    <LinkType>Screen</LinkType>
+    <LinkID>TitleScreen</LinkID>
+    <Image>
+      <Text>Back to Main Menu</Text>
+    </Image>
+  </Item>
+</Menu>

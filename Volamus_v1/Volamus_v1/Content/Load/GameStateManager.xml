@@ -1,11 +1,47 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<GameStateManager>
+<?xml version="1.0" encoding="utf-8"?>
+<GameStateManager xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <MusicVolume>100</MusicVolume>
+  <IngameVolume>100</IngameVolume>
   <Image>
+    <Alpha>0</Alpha>
+    <Text />
+    <FontName>SpriteFonts/Standard</FontName>
     <Path>GameStateManager/FadeScreen</Path>
-    <Effects>FadeEffect</Effects>
+    <Position>
+      <X>0</X>
+      <Y>0</Y>
+    </Position>
     <Scale>
       <X>1366</X>
       <Y>768</Y>
     </Scale>
+    <SourceRect>
+      <X>0</X>
+      <Y>0</Y>
+      <Width>1</Width>
+      <Height>1</Height>
+      <Location>
+        <X>0</X>
+        <Y>0</Y>
+      </Location>
+      <Size>
+        <X>1</X>
+        <Y>1</Y>
+      </Size>
+    </SourceRect>
+    <isActive>false</isActive>
+    <Color>
+      <B>255</B>
+      <G>255</G>
+      <R>255</R>
+      <A>255</A>
+      <PackedValue>4294967295</PackedValue>
+    </Color>
+    <Effects>FadeEffect</Effects>
+    <FadeEffect>
+      <isActive>true</isActive>
+      <FadeSpeed>1.5</FadeSpeed>
+      <Increase>true</Increase>
+    </FadeEffect>
   </Image>
 </GameStateManager>

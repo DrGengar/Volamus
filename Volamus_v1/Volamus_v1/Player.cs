@@ -44,29 +44,37 @@ namespace Volamus_v1
     {
         Effect effect2;
         Effect effect;
+
         Vector3 viewVector;
+
         Vector3 position;
         int max_jump_height;
         float jump_velocity;
         float movespeed;
         float gamma;
-
         int points;
         int touch_count;
 
         SpriteFont points_font;
+
         BoundingBox innerBoundingBox, outerBoundingBox;
+
         Vector3 scale;
+
         Camera camera;
+
         Model model;
         Texture2D penguinTexture;
+
         Texture2D wingTexture;
         Model leftWing;
         Vector3 leftWingPosition;
         Model rightWing;
         Vector3 rightWingPosition;
+
         float betta;
         float bettaAlt;
+
         float hitAngleLeft;
         float hitAngleRight;
         float hitAngleHigh;
@@ -108,17 +116,15 @@ namespace Volamus_v1
         public Vector3 Position
         {
             get { return position; }
+            set { position = value; }
         }
-        public float PositionZ
-        {
-            get { return position.Z; }
-            set { position.Z = value; }
-        }
+
         public Vector3 PositionLeftWing
         {
             get { return leftWingPosition; }
             set { leftWingPosition = value; }
         }
+
         public Vector3 PositionRightWing
         {
             get { return rightWingPosition; }
@@ -187,6 +193,7 @@ namespace Volamus_v1
             get { return is_falling; }
             set { is_falling = value; }
         }
+
         public float JumpVelocity
         {
             get { return jump_velocity; }
@@ -225,7 +232,6 @@ namespace Volamus_v1
             get { return gamepad; }
         }
 
-        //Constructor
         private void Construct(Vector3 pos, int m_j_height, float j_velo, float mvp, Field field)
         {
             position = pos;
@@ -275,7 +281,6 @@ namespace Volamus_v1
             controller = false;
 
             keyboard = new KeyboardControl();
-            keyboard.Initialize();
             keyboard = keyboard.LoadContent();
 
             keyboard.oldstate = Keyboard.GetState();
@@ -289,7 +294,6 @@ namespace Volamus_v1
             controller = true;
 
             gamepad = new GamePadControl(i);
-            gamepad.Initialize();
             gamepad = gamepad.LoadContent();
 
             gamepad.oldstate = GamePad.GetState(i);
@@ -333,15 +337,6 @@ namespace Volamus_v1
         //Update
         public void Update(Field field)
         {
-            /*if (can_hit)
-            {
-                arrowTexture = GameStateManager.Instance.Content.Load<Texture2D>("Textures/green");
-            }
-            else
-            {
-                arrowTexture = GameStateManager.Instance.Content.Load<Texture2D>("Textures/red");
-            }*/
-
             if (controller)
             {
                 UpdateController(field, gamepad.Up, gamepad.Down, gamepad.Left, gamepad.Right, gamepad.Jump, gamepad.Weak,
@@ -428,7 +423,6 @@ namespace Volamus_v1
                 //Spieler hat gerade Aufschlag -> Position hinten, Bewegung nur links un rechts, Sprung
                 if (is_serving)
                 {
-
                     WeakThrow(weak);
                     StrongThrow(strong);
 
@@ -599,8 +593,6 @@ namespace Volamus_v1
                 {
                     WeakThrow(weak);
                     StrongThrow(strong);
-
-
 
                     if (!is_jumping)
                     {
@@ -867,7 +859,7 @@ namespace Volamus_v1
                 }
 
                 keyboard.oldstate = keyboard.newstate;
-                //
+                
                 if (direction == 1)
                 {
                     leftWingPosition = new Vector3(position.X, position.Y, position.Z - 1);
@@ -904,8 +896,8 @@ namespace Volamus_v1
             if (Keyboard.GetState().IsKeyDown(weakthrow) && can_hit && !double_hit) //Drückt Knopf und darf schlagen
             {
 
-                GameStateManager.Instance.SoundEffects.SoundVolume = 0.4f;
-                GameStateManager.Instance.SoundEffects.Play2D("Content//Sound//Ball.ogg");
+                //GameStateManager.Instance.Ingame.SoundVolume = 0.4f;
+                GameStateManager.Instance.Ingame.Play2D("Content//Sound//Ball.ogg");
 
                 if (is_serving) //Falls man Aufschlag hatte, hat man nach dem Schlagen ihn erstmal nicht mehr (Ball fliegt ja jetzt)
                 {
@@ -951,8 +943,8 @@ namespace Volamus_v1
 
             if (Keyboard.GetState().IsKeyDown(strongthrow) && can_hit && !double_hit) //Drückt Knopf und darf schlagen
             {
-                GameStateManager.Instance.SoundEffects.SoundVolume = 1.0f;
-                GameStateManager.Instance.SoundEffects.Play2D("Content//Sound//Ball.ogg");
+                //GameStateManager.Instance.Ingame.SoundVolume = 1.0f;
+                GameStateManager.Instance.Ingame.Play2D("Content//Sound//Ball.ogg");
 
                 if (is_serving) //Falls man Aufschlag hatte, hat man nach dem Schlagen ihn erstmal nicht mehr (Ball fliegt ja jetzt)
                 {
@@ -998,12 +990,14 @@ namespace Volamus_v1
                     hitAngleRight = 90;
                     hitAngleHigh = 0;
                 }
+
                 if (Ball.Instance.IsFlying)
                 {
                     hitAngleLeft = 90;
                     hitAngleRight = 90;
                     hitAngleHigh = 0;
                 }
+
                 if (gamepad.IsButtonDown(weak))
                 {
                     hitAngleRight = 135;
@@ -1527,8 +1521,8 @@ namespace Volamus_v1
             if (gamepad.IsButtonDown(weakthrow) && can_hit && !double_hit) //Drückt Knopf und darf schlagen
             {
 
-                GameStateManager.Instance.SoundEffects.SoundVolume = 0.4f;
-                GameStateManager.Instance.SoundEffects.Play2D("Content//Sound//Ball.ogg");
+                //GameStateManager.Instance.Ingame.SoundVolume = 0.4f;
+                GameStateManager.Instance.Ingame.Play2D("Content//Sound//Ball.ogg");
 
                 if (is_serving) //Falls man Aufschlag hatte, hat man nach dem Schlagen ihn erstmal nicht mehr (Ball fliegt ja jetzt)
                 {
@@ -1576,8 +1570,8 @@ namespace Volamus_v1
 
             if (gamepad.IsButtonDown(strongthrow) && can_hit && !double_hit) //Drückt Knopf und darf schlagen
             {
-                GameStateManager.Instance.SoundEffects.SoundVolume = 1.0f;
-                GameStateManager.Instance.SoundEffects.Play2D("Content//Sound//Ball.ogg");
+                //GameStateManager.Instance.Ingame.SoundVolume = 1.0f;
+                GameStateManager.Instance.Ingame.Play2D("Content//Sound//Ball.ogg");
 
                 if (is_serving) //Falls man Aufschlag hatte, hat man nach dem Schlagen ihn erstmal nicht mehr (Ball fliegt ja jetzt)
                 {

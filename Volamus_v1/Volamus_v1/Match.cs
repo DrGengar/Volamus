@@ -38,6 +38,9 @@ namespace Volamus_v1
         bool change_velocity;
         int maxPoints;
 
+        bool isFinished;
+        Player Winner, Looser;
+
         RockPaperSciccors rpsOne, rpsTwo;
         private bool preMatch;
         private const float delay = 2;
@@ -56,6 +59,8 @@ namespace Volamus_v1
             preMatch = true;
             rpsOne = new RockPaperSciccors(One);
             rpsTwo = new RockPaperSciccors(Two);
+
+            isFinished = false;
         }
 
         public void LoadContent()
@@ -169,11 +174,21 @@ namespace Volamus_v1
                 if (One.Points == maxPoints)
                 {
                     //winner == one -> Ende
+                    isFinished = true;
+                    Winner = One;
+                    Looser = Two;
+
+                    //...
                 }
 
                 if (Two.Points == maxPoints)
                 {
                     //winner == two -> Ende
+                    isFinished = true;
+                    Winner = Two;
+                    Looser = One;
+
+                    //...
                 }
 
                 One.Update(field);

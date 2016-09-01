@@ -8,65 +8,37 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Volamus_v1
 {
-    class Options : GameState
+    public class Options : GameState
     {
-        SelectableInt bgSound;
-        SelectableBool music;
-        SelectableImage image;
+        MenuManager menuManager;
 
         public Options()
         {
-            int[] sound = new int[21];
-            for(int i = 0; i < 21; i++)
-            {
-                sound[i] = 5*i;
-            }
-
-            Texture2D image1, image2, image3;
-
-            image1 = GameStateManager.Instance.Content.Load<Texture2D>("Images/rock");
-            image2 = GameStateManager.Instance.Content.Load<Texture2D>("Images/paper");
-            image3 = GameStateManager.Instance.Content.Load<Texture2D>("Images/scissor");
-
-            Texture2D[] im = new[] { image1, image2, image3 };
-
-            bgSound = new SelectableInt(sound, "BackgroundSound");
-            music = new SelectableBool("Music");
-            image = new SelectableImage(im, "Image");
-
-            image.Active = true;
+            menuManager = new MenuManager();
         }
 
         public override void LoadContent()
         {
             base.LoadContent();
-            bgSound.LoadContent();
-            music.LoadContent();
-            image.LoadContent();
+            menuManager.LoadContent("Content/Load/Menu/Options.xml");
         }
 
         public override void UnloadContent()
         {
             base.UnloadContent();
-            bgSound.UnloadContent();
-            music.UnloadContent();
-            image.UnloadContent();
+            menuManager.UnloadContent();
         }
 
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-            bgSound.Update(gameTime);
-            music.Update(gameTime);
-            image.Update(gameTime);
+            menuManager.Update(gameTime);
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
             base.Draw(spriteBatch);
-            bgSound.Draw(100);
-            music.Draw(200);
-            image.Draw(300);
+            menuManager.Draw(spriteBatch);
         }
     }
 }

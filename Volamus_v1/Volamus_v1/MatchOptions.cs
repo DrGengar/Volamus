@@ -26,11 +26,11 @@ namespace Volamus_v1
 
         public MatchOptions()
         {
-            int[] p = new int[11];
+            int[] p = new int[10];
 
-            for(int i = 1; i < p.Length; i++)
+            for(int i = 0; i < p.Length; i++)
             {
-                p[i] = i * 5;
+                p[i] = i * 5 + 5;
             }
 
             points = new SelectableInt(p, "Maximum Points");
@@ -114,7 +114,9 @@ namespace Volamus_v1
 
             if(InputManager.Instance.ButtonPressed(Buttons.DPadDown, Buttons.LeftThumbstickDown, Buttons.RightThumbstickDown) || InputManager.Instance.KeyPressed(Keys.Down))
             {
-                if(active == 6)
+                GameStateManager.Instance.Ingame.Play2D("Content//Sound//button.ogg", false);
+
+                if (active == 6)
                 {
                     active = 0;
                 }
@@ -126,6 +128,8 @@ namespace Volamus_v1
 
             if (InputManager.Instance.ButtonPressed(Buttons.DPadUp, Buttons.LeftThumbstickUp, Buttons.RightThumbstickUp) || InputManager.Instance.KeyPressed(Keys.Up))
             {
+                GameStateManager.Instance.Ingame.Play2D("Content//Sound//button.ogg", false);
+
                 if (active == 0)
                 {
                     active = 6;
@@ -176,10 +180,23 @@ namespace Volamus_v1
                 Field field = new Field(100, 90, 15);
                 field.Initialize();
 
-                Player one = new Player(new Vector3(0, -25, 0), 5, 0.5f, 0.8f, field);
-                Player two = new Player(new Vector3(0, 25, 0), 5, 0.5f, 0.8f, field, PlayerIndex.One);
+                Player one, two;
+
+                if(GamePad.GetState(PlayerIndex.Two).IsConnected)
+                {
+                    one = new Player(new Vector3(0, -25, 0), 5, 0.5f, 0.8f, field, PlayerIndex.One);
+                    two = new Player(new Vector3(0, 25, 0), 5, 0.5f, 0.8f, field, PlayerIndex.Two);
+                }
+                else
+                {
+                    one = new Player(new Vector3(0, -25, 0), 5, 0.5f, 0.8f, field);
+                    two = new Player(new Vector3(0, 25, 0), 5, 0.5f, 0.8f, field, PlayerIndex.One);
+                }
+
                 one.Enemy = two;
                 two.Enemy = one;
+
+
 
                 int w = 0;
 

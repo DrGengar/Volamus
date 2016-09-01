@@ -10,8 +10,10 @@
   </Item>
 
   <Item>
+    <LinkType>Screen</LinkType>
+    <LinkID>MatchOptions</LinkID>
     <Image>
-      <Text>Reset</Text>
+      <Text>Restart Game</Text>
     </Image>
   </Item>
 
@@ -19,7 +21,7 @@
     <LinkType>Screen</LinkType>
     <LinkID>TitleScreen</LinkID>
     <Image>
-      <Text>Hauptmenu</Text>
+      <Text>Return to Main Menu</Text>
     </Image>
   </Item>
 </Menu>

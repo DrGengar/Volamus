@@ -59,6 +59,8 @@
   <ItemGroup>
     <Compile Include="Ball.cs" />
     <Compile Include="Collision.cs" />
+    <Compile Include="Credits.cs" />
+    <Compile Include="Controls.cs" />
     <Compile Include="DebugDraw.cs" />
     <Compile Include="Drop.cs" />
     <Compile Include="EndOfMatch.cs" />
@@ -82,6 +84,7 @@
     <Compile Include="MenuItem.cs" />
     <Compile Include="MenuManager.cs" />
     <Compile Include="Options.cs" />
+    <Compile Include="Settings.cs" />
     <Compile Include="Parabel.cs" />
     <Compile Include="Pick.cs" />
     <Compile Include="PickVelo.cs" />
@@ -127,6 +130,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\Load\GameStateManager.xml" />
+    <Content Include="Content\Load\Menu\Options.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Content\Load\Menu\InGameMenu.xml">
       <SubType>Designer</SubType>
     </Content>

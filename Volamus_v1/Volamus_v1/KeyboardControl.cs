@@ -34,10 +34,7 @@ namespace Volamus_v1
         public KeyboardControl()
         {
             XmlPath = "Content/Load/Keyboard.xml";
-        }
 
-        public void Initialize()
-        {
             if (!File.Exists(XmlPath))
             {
                 KeyboardControl standard = XmlIntermediatemanager.Deserialize<KeyboardControl>("Content/Load/KeyboardStandard.xml");

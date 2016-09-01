@@ -77,19 +77,19 @@ namespace Volamus_v1
                     //beim ersten Bodenkontakt werden die Punkte,... angepasst, Sound,..
                     if (groundContact == 0)
                     {
-                        GameStateManager.Instance.SoundEffects.SoundVolume = 0.3f;
-                        GameStateManager.Instance.SoundEffects.Play2D("Content//Sound//single_blow_from_police_whistle.ogg");
+                        //GameStateManager.Instance.Ingame.SoundVolume = 0.3f;
+                        GameStateManager.Instance.Ingame.Play2D("Content//Sound//single_blow_from_police_whistle.ogg");
 
                         //Jubeln weil gewonnen
                         if (lastTouched.Points == match - 1 || lastTouched.Enemy.Points == match - 1)
                         {
-                            GameStateManager.Instance.SoundEffects.SoundVolume = 0.6f;
-                            GameStateManager.Instance.SoundEffects.Play2D("Content//Sound//child_crowd_cheering.ogg");
+                            //GameStateManager.Instance.Ingame.SoundVolume = 0.6f;
+                            GameStateManager.Instance.Ingame.Play2D("Content//Sound//child_crowd_cheering.ogg");
                         }
                         else //Jubeln weil Punktgewinn
                         {
-                            GameStateManager.Instance.SoundEffects.SoundVolume = 0.3f;
-                            GameStateManager.Instance.SoundEffects.Play2D("Content//Sound//child_crowd_cheering.ogg");
+                            //GameStateManager.Instance.Ingame.SoundVolume = 0.3f;
+                            GameStateManager.Instance.Ingame.Play2D("Content//Sound//child_crowd_cheering.ogg");
                         }
 
 

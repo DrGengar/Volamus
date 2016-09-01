@@ -24,13 +24,13 @@ namespace Volamus_v1
             //hüpft
             if (winner.Position.Z < 7 && !winner.IsFalling)
             {
-                winner.PositionZ += winner.JumpVelocity;
+                winner.Position += winner.Position + new Vector3(0, 0, winner.JumpVelocity);
             }
             else
             {
                 if (winner.Position.Z > 0)
                 {
-                    winner.PositionZ -= winner.JumpVelocity;
+                    winner.Position -= winner.Position + new Vector3(0, 0, winner.JumpVelocity);
                     winner.IsFalling = true;
                 }
                 else
