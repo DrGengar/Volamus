@@ -511,3 +511,5 @@ C:\Users\Iam\Desktop\3dGame\Volamus_v1\Volamus_v1\Content\Textures\AcaTexture.xn
 C:\Users\Iam\Desktop\3dGame\Volamus_v1\Volamus_v1\Content\Textures\netTex.xnb
 C:\Users\Lars\Desktop\Volamus\Volamus_v1\Volamus_v1\Content\Textures\AcaTexture.xnb
 C:\Users\Lars\Desktop\Volamus\Volamus_v1\Volamus_v1\Content\Textures\netTex.xnb
+C:\Users\Lars\Desktop\3dGame\Volamus_v1\Volamus_v1\Content\Textures\AcaTexture.xnb
+C:\Users\Lars\Desktop\3dGame\Volamus_v1\Volamus_v1\Content\Textures\netTex.xnb

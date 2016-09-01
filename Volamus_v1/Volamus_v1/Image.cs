@@ -126,8 +126,10 @@ namespace Volamus_v1
             {
                 dimensions.X += Texture.Width;
             }
-
-            dimensions.X += font.MeasureString(Text).X;
+            else
+            {
+                dimensions.X += font.MeasureString(Text).X;
+            }
 
             if (Texture != null)
             {
@@ -151,8 +153,12 @@ namespace Volamus_v1
             if (Texture != null)
             {
                 GameStateManager.Instance.SpriteBatch.Draw(Texture, Vector2.Zero, Color.White);
+                GameStateManager.Instance.SpriteBatch.DrawString(font, Text, new Vector2((dimensions.X - font.MeasureString(Text).X) / 2, (dimensions.Y - font.MeasureString(Text).Y) / 2), Color.White);
             }
-            GameStateManager.Instance.SpriteBatch.DrawString(font, Text, Vector2.Zero, Color.White);
+            else
+            {
+                GameStateManager.Instance.SpriteBatch.DrawString(font, Text, Vector2.Zero, Color.White);
+            }
             GameStateManager.Instance.SpriteBatch.End();
 
             Texture = renderTarget;
