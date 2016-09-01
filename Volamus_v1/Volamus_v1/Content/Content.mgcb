@@ -561,18 +561,6 @@
 /processorParam:TextureFormat=NoChange
 /build:Models/pfeil.fbx
 
-#begin Textures/netzvUV.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Textures/netzvUV.png
-
 #begin Models/PingWingLeft.fbx
 /importer:FbxImporter
 /processor:ModelProcessor
@@ -622,4 +610,28 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Models/PingWingUV.png
+
+#begin Textures/netzvUV.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Textures/netzvUV.png
+
+#begin Textures/green.jpg
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Textures/green.jpg
 

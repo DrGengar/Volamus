@@ -203,18 +203,20 @@ namespace Volamus_v1
                 field.Draw(camera);
                 Ball.Instance.Draw(camera);
                 One.Draw(camera);
+
                 if (camera == One.Camera)
                 {
                     One.DrawArrow(camera);
-                    GameStateManager.Instance.SpriteBatch.DrawString(One.Font, One.Points.ToString() + "/" + Collision.Instance.match.ToString(),
+                    GameStateManager.Instance.SpriteBatch.DrawString(One.Font, One.Points.ToString() + " / " + maxPoints,
                         new Vector2(view.Width / 2, 0), Color.White);
                 }
                 else
                 {
                     Two.DrawArrow(camera);
-                    GameStateManager.Instance.SpriteBatch.DrawString(Two.Font, Two.Points.ToString() + "/" + Collision.Instance.match.ToString(),
+                    GameStateManager.Instance.SpriteBatch.DrawString(Two.Font, Two.Points.ToString() + " / " + maxPoints,
                         new Vector2(view.X + view.Width / 2, 0), Color.White);
                 }
+
                 Two.Draw(camera);
             }
         }

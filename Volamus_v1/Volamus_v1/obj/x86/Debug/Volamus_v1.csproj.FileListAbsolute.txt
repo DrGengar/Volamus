@@ -363,7 +363,6 @@ C:\Users\Lars\Desktop\Volamus\Volamus_v1\Volamus_v1\Content\Textures\iceTexture.
 C:\Users\Lars\Desktop\Volamus\Volamus_v1\Volamus_v1\Content\Images\field2.xnb
 C:\Users\Lars\Desktop\Volamus\Volamus_v1\Volamus_v1\Content\BeachBallTexture.xnb
 C:\Users\Lars\Desktop\Volamus\Volamus_v1\Volamus_v1\Content\Textures\red.xnb
-C:\Users\Lars\Desktop\Volamus\Volamus_v1\Volamus_v1\Content\Textures\HelicopterTexture.xnb
 C:\Users\Lars\Desktop\Volamus\Volamus_v1\Volamus_v1\Content\Images\paper.xnb
 C:\Users\Lars\Desktop\Volamus\Volamus_v1\Volamus_v1\Content\Images\rock.xnb
 C:\Users\Lars\Desktop\Volamus\Volamus_v1\Volamus_v1\Content\Images\scissor.xnb
@@ -455,3 +454,11 @@ C:\Users\Iam\Desktop\3dGame\Volamus_v1\Volamus_v1\Content\Models\PingWingLeft.xn
 C:\Users\Iam\Desktop\3dGame\Volamus_v1\Volamus_v1\Content\Models\PingWingRight.xnb
 C:\Users\Iam\Desktop\3dGame\Volamus_v1\Volamus_v1\Content\Models\PingWingUV.xnb
 C:\Users\Iam\Desktop\3dGame\Volamus_v1\Volamus_v1\Content\Models\PingWingUV_0.xnb
+C:\Users\Lars\Desktop\Volamus\Volamus_v1\Volamus_v1\Content\Models\netzvUV_0.xnb
+C:\Users\Lars\Desktop\Volamus\Volamus_v1\Volamus_v1\Content\Models\PingWingLeft.xnb
+C:\Users\Lars\Desktop\Volamus\Volamus_v1\Volamus_v1\Content\Models\PingWingRight.xnb
+C:\Users\Lars\Desktop\Volamus\Volamus_v1\Volamus_v1\Content\Models\PingWingUV.xnb
+C:\Users\Lars\Desktop\Volamus\Volamus_v1\Volamus_v1\Content\Models\PingWingUV_0.xnb
+C:\Users\Lars\Desktop\Volamus\Volamus_v1\Volamus_v1\Content\Textures\netzvUV.xnb
+C:\Users\Lars\Desktop\Volamus\Volamus_v1\Volamus_v1\Content\Textures\pinguinUV.xnb
+C:\Users\Lars\Desktop\Volamus\Volamus_v1\Volamus_v1\Content\Textures\green.xnb

@@ -34,7 +34,6 @@ namespace Volamus_v1
         Model net;
         private Texture2D netTexture;
         BoundingBox netBoundingBox;
-        BoundingBox boundingBox;
 
         //Texturen
         BasicEffect e;
@@ -62,11 +61,6 @@ namespace Volamus_v1
         public BoundingBox NetBoundingBox
         {
             get { return netBoundingBox; }
-        }
-
-        public BoundingBox BoundingBox
-        {
-            get { return boundingBox; }
         }
 
         public Field(int w, int l, int n_h) : base()
@@ -135,8 +129,6 @@ namespace Volamus_v1
 
             skydome.Load();
 
-            CreateBoundingBox();
-
             CreateNetBoundingBox();
         }
 
@@ -160,14 +152,7 @@ namespace Volamus_v1
 
                 GameStateManager.Instance.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, fieldVertices, 0, 4);
             }
-
-            /*d.Begin(camera.ViewMatrix, camera.ProjectionMatrix);
-            d.DrawWireBox(netBoundingBox, Color.White);
-            d.DrawWireBox(boundingBox, Color.White);
-            d.End();*/
-
         }
-
 
         private void DrawIce(Camera camera)
         {
@@ -178,11 +163,11 @@ namespace Volamus_v1
                 foreach (ModelMeshPart part in mesh.MeshParts)
                 {
                     part.Effect = effect2;
-                    effect2.Parameters["World"].SetValue(transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) * Matrix.CreateScale(0.1f, 0.15f, 0.01f)
+                    effect2.Parameters["World"].SetValue(transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) * Matrix.CreateScale(0.2f, 0.3f, 0.01f)
                            * Matrix.CreateTranslation(new Vector3(0, 0, -0.75f)));
                     effect2.Parameters["View"].SetValue(camera.ViewMatrix);
                     effect2.Parameters["Projection"].SetValue(camera.ProjectionMatrix);
-                    Matrix WorldInverseTransposeMatrix = Matrix.Transpose(Matrix.Invert(transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) * Matrix.CreateScale(0.1f, 0.15f, 0.01f)
+                    Matrix WorldInverseTransposeMatrix = Matrix.Transpose(Matrix.Invert(transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) * Matrix.CreateScale(0.2f, 0.3f, 0.01f)
                            * Matrix.CreateTranslation(new Vector3(0, 0, -0.75f))));
                     effect2.Parameters["WorldInverseTranspose"].SetValue(WorldInverseTransposeMatrix);
 
@@ -195,23 +180,7 @@ namespace Volamus_v1
                 }
                 mesh.Draw();
             }
-
-            /*   foreach (ModelMesh mesh in ice.Meshes)
-               {
-                   foreach (BasicEffect effect in mesh.Effects)
-                   {
-                       effect.EnableDefaultLighting();
-
-                       effect.World = transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) * Matrix.CreateScale(0.1f, 0.15f, 0.01f)
-                           * Matrix.CreateTranslation(new Vector3(0, 0, -0.75f));
-                       effect.View = camera.ViewMatrix;
-                       effect.Projection = camera.ProjectionMatrix;
-                   }
-                   mesh.Draw();
-               }*/
         }
-
-
 
         private void DrawNet(Camera camera)
         {
@@ -230,6 +199,7 @@ namespace Volamus_v1
                     Matrix WorldInverseTransposeMatrix = Matrix.Transpose(transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) * Matrix.CreateScale(0.05f, 0.025f, 0.025f)
                             * Matrix.CreateTranslation(new Vector3(0, 0, 0)));
                     effect2.Parameters["WorldInverseTranspose"].SetValue(WorldInverseTransposeMatrix);
+
                     effect2.Parameters["ModelTexture"].SetValue(netTexture);
 
                     viewVector = Vector3.Transform(camera.View - camera.Position, Matrix.CreateRotationY(0));
@@ -238,23 +208,7 @@ namespace Volamus_v1
                 }
                 mesh.Draw();
             }
-
-            /*    foreach (ModelMesh mesh in net.Meshes)
-                {
-                    foreach (BasicEffect effect in mesh.Effects)
-                    {
-                        effect.EnableDefaultLighting();
-
-                        effect.World = transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) * Matrix.CreateScale(0.05f, 0.025f, 0.025f)
-                            * Matrix.CreateTranslation(new Vector3(0, 0, 0));
-                        effect.View = camera.ViewMatrix;
-                        effect.Projection = camera.ProjectionMatrix;
-                    }
-                    mesh.Draw();
-                }*/
         }
-
-
 
         private void DrawReferee(Camera camera)
         {
@@ -280,20 +234,6 @@ namespace Volamus_v1
                 }
                 mesh.Draw();
             }
-
-            /*  foreach (ModelMesh mesh in referee.Meshes)
-              {
-                  foreach (BasicEffect effect in mesh.Effects)
-                  {
-                      effect.EnableDefaultLighting();
-
-                      effect.World = transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) * Matrix.CreateScale(0.075f, 0.075f, 0.075f)
-                          * Matrix.CreateTranslation(new Vector3(70, 0, 0));
-                      effect.View = camera.ViewMatrix;
-                      effect.Projection = camera.ProjectionMatrix;
-                  }
-                  mesh.Draw();
-              }*/
         }
 
         private void DrawTrillerpf(Camera camera)
@@ -321,60 +261,11 @@ namespace Volamus_v1
                 }
                 mesh.Draw();
             }
-
-
-            /*   foreach (ModelMesh mesh in trillerpf.Meshes)
-               {
-                   foreach (BasicEffect effect in mesh.Effects)
-                   {
-                       effect.EnableDefaultLighting();
-
-                       effect.World = transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) 
-                           * Matrix.CreateRotationY(MathHelper.ToRadians(-10)) * Matrix.CreateScale(0.03f, 0.03f, 0.03f)
-                           * Matrix.CreateTranslation(new Vector3(66.5f, 0, 4));
-                       effect.View = camera.ViewMatrix;
-                       effect.Projection = camera.ProjectionMatrix;
-                   }
-                   mesh.Draw();
-               }*/
         }
 
         private void CreateNetBoundingBox()
         {
-            // Initialize minimum and maximum corners of the bounding box to max and min values
-            Vector3 min = new Vector3(float.MaxValue, float.MaxValue, float.MaxValue);
-            Vector3 max = new Vector3(float.MinValue, float.MinValue, float.MinValue);
-
-            // For each mesh of the model
-            foreach (ModelMesh mesh in net.Meshes)
-            {
-                foreach (ModelMeshPart meshPart in mesh.MeshParts)
-                {
-                    // Vertex buffer parameters
-                    int vertexStride = meshPart.VertexBuffer.VertexDeclaration.VertexStride;
-                    int vertexBufferSize = meshPart.NumVertices * vertexStride;
-
-                    // Get vertex data as float
-                    float[] vertexData = new float[vertexBufferSize / sizeof(float)];
-                    meshPart.VertexBuffer.GetData<float>(vertexData);
-
-                    // Iterate through vertices (possibly) growing bounding box, all calculations are done in world space
-                    for (int i = 0; i < vertexBufferSize / sizeof(float); i += vertexStride / sizeof(float))
-                    {
-                        Vector3 transformedPosition = Vector3.Transform(new Vector3(vertexData[i], vertexData[i + 1], vertexData[i + 2]), Matrix.Identity);
-
-                        min = Vector3.Min(min, transformedPosition);
-                        max = Vector3.Max(max, transformedPosition);
-                    }
-                }
-            }
-
             netBoundingBox = new BoundingBox(new Vector3(-54,-0.2f, 10), new Vector3(54, 0.2f, 20));
-        }
-
-        private void CreateBoundingBox()
-        {
-            boundingBox = new BoundingBox(new Vector3(-(width/2), -(length/2), 0), new Vector3(width/2, length/2, 40));
         }
     }
 }
