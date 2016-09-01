@@ -41,10 +41,7 @@ namespace Volamus_v1
         {
             Index = i;
             XmlPath = "Content/Load/GamePad" + (i.ToString()) + ".xml";
-        }
 
-        public void Initialize()
-        {
             if (!File.Exists(XmlPath))
             {
                 GamePadControl standard = XmlIntermediatemanager.Deserialize<GamePadControl>("Content/Load/GamePadStandard.xml");

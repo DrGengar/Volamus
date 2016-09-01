@@ -12,8 +12,6 @@ namespace Volamus_v1
     {
         List<Drop> drops;
 
-
-
         public Pick()
         {
             this.drops = new List<Drop>();

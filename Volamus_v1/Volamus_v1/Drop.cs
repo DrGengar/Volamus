@@ -10,16 +10,15 @@ namespace Volamus_v1
 {
     public class Drop
     {
-        Model size = GameStateManager.Instance.Content.Load<Model>("Models/drop");
-        Model velo = GameStateManager.Instance.Content.Load<Model>("Models/dropGeschwindigkeit");
         Effect effect;
         Vector3 viewVector;
-        DebugDraw d;
 
         Vector3 position;
         Vector3 velocity;
+
         Model drop;
         int timeToLive;
+
         BoundingSphere boundingSphere;
 
         public int ttl
@@ -92,6 +91,7 @@ namespace Volamus_v1
         public void UpdateVelo()
         {
             boundingSphere.Center = position;
+
             if (Collision.Instance.PlayerWithDrop(this) == Collision.Instance.LastTouched)
             {
                 Collision.Instance.LastTouched.Enemy.Movespeed = 0.4f;
@@ -141,11 +141,6 @@ namespace Volamus_v1
                     effect.Parameters["ViewVector"].SetValue(viewVector);
                 }
                 mesh.Draw();
-                /*    d = new DebugDraw(GameStateManager.Instance.GraphicsDevice);
-                    boundingSphere.Center = position;
-                    d.Begin(camera.ViewMatrix, camera.ProjectionMatrix);
-                    d.DrawWireSphere(boundingSphere, Color.Black);
-                    d.End();*/
             }
 
         }

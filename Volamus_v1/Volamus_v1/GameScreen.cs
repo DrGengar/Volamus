@@ -22,6 +22,14 @@ namespace Volamus_v1
 
         private static GameScreen instance;
 
+        private bool pause = false;
+
+        public bool Pause
+        {
+            get { return pause; }
+            set { pause = value; }
+        }
+
         public Match Match
         {
             get { return match; }
@@ -55,23 +63,26 @@ namespace Volamus_v1
 
             frameCounter = new FrameCounter();
 
-            GameStateManager.Instance.BackgroundSound.Play2D("Content//Sound//soproSound1.ogg", true);
-            GameStateManager.Instance.BackgroundSound.SoundVolume = 0.2f;
+            //GameStateManager.Instance.Music.SoundVolume = 0.2f;
         }
 
         public override void LoadContent()
         {
             match.LoadContent();
 
-            GameStateManager.Instance.BackgroundSound.SetAllSoundsPaused(false);
+            GameStateManager.Instance.Music.RemoveSoundSource("Content//Sound//going_coastal.ogg");
+
+            GameStateManager.Instance.Music.Play2D("Content//Sound//soproSound1.ogg", true);
         }
 
         public override void UnloadContent()
         {
             base.UnloadContent();
-            match.Unloadcontent();
-            instance = null;
-            GameStateManager.Instance.BackgroundSound.SetAllSoundsPaused(true);
+
+            GameStateManager.Instance.Music.RemoveSoundSource("Content//Sound//soproSound1.ogg");
+
+            GameStateManager.Instance.Music.Play2D("Content//Sound//going_coastal.ogg", true);
+
         }
 
         public override void Update(GameTime gameTime)
@@ -85,6 +96,7 @@ namespace Volamus_v1
             if (InputManager.Instance.KeyPressed(Keys.Escape) || InputManager.Instance.ButtonPressed(Buttons.Back))
             {
                 GameStateManager.Instance.ChangeScreens("InGameMenu");
+                pause = true;
             }
 
             base.Update(gameTime);

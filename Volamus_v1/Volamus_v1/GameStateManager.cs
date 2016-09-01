@@ -30,9 +30,13 @@ namespace Volamus_v1
         [XmlIgnore]
         public GraphicsDeviceManager GraphicsDeviceManager;
         [XmlIgnore]
-        public ISoundEngine BackgroundSound;
+        public ISoundEngine Music;
+        public int MusicVolume;
+
         [XmlIgnore]
-        public ISoundEngine SoundEffects;
+        public ISoundEngine Ingame;
+        public int IngameVolume;
+
         [XmlIgnore]
         public bool Exit;
 
@@ -114,6 +118,7 @@ namespace Volamus_v1
         public void LoadContent(ContentManager Content)
         {
             this.Content = new ContentManager(Content.ServiceProvider, "Content");
+            GameStateManager.Instance.Music.Play2D("Content//Sound//going_coastal.ogg", true);
             currentState.LoadContent();
             Image.LoadContent();
         }

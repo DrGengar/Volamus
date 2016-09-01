@@ -635,3 +635,9 @@
 /processorParam:TextureFormat=Color
 /build:Textures/green.jpg
 
+#begin Sound/going_coastal.ogg
+/importer:OggImporter
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Sound/going_coastal.ogg
+

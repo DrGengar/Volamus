@@ -22,6 +22,7 @@ namespace Volamus_v1
         public override void LoadContent()
         {
             base.LoadContent();
+
             menuManager.LoadContent("Content/Load/Menu/TitleScreen.xml");
         }
 
