@@ -118,7 +118,7 @@ namespace Volamus_v1
             effect2 = GameStateManager.Instance.Content.Load<Effect>("Effects/shaderTestWithTexture");
 
             net = GameStateManager.Instance.Content.Load<Model>("Models/netzv4");
-            netTexture = GameStateManager.Instance.Content.Load<Texture2D>("Textures/netzvUV");
+            netTexture = GameStateManager.Instance.Content.Load<Texture2D>("Textures/iceTexture");
 
             ice = GameStateManager.Instance.Content.Load<Model>("Models/eisscholle");
             iceTexture = GameStateManager.Instance.Content.Load<Texture2D>("Textures/iceTexture");
@@ -174,8 +174,6 @@ namespace Volamus_v1
                     Matrix WorldInverseTransposeMatrix = Matrix.Transpose(Matrix.Invert(transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) * Matrix.CreateScale(0.2f, 0.3f, 0.01f)
                            * Matrix.CreateTranslation(new Vector3(0, 0, -0.75f))));
                     effect2.Parameters["WorldInverseTranspose"].SetValue(WorldInverseTransposeMatrix);
-
-                    //hier kommt immer die warnung
                     effect2.Parameters["ModelTexture"].SetValue(iceTexture);
 
                     viewVector = Vector3.Transform(camera.View - camera.Position, Matrix.CreateRotationY(0));
@@ -207,7 +205,7 @@ namespace Volamus_v1
 
                     viewVector = Vector3.Transform(camera.View - camera.Position, Matrix.CreateRotationY(0));
                     viewVector.Normalize();
-                    effect.Parameters["ViewVector"].SetValue(viewVector);
+                    effect2.Parameters["ViewVector"].SetValue(viewVector);
                 }
                 mesh.Draw();
             }
@@ -249,21 +247,21 @@ namespace Volamus_v1
             {
                 foreach (ModelMeshPart part in mesh.MeshParts)
                 {
-                    part.Effect = effect;
-                    effect.Parameters["World"].SetValue(transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90))
+                    part.Effect = effect2;
+                    effect2.Parameters["World"].SetValue(transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90))
                            * Matrix.CreateRotationY(MathHelper.ToRadians(-10)) * Matrix.CreateScale(0.03f, 0.03f, 0.03f)
                            * Matrix.CreateTranslation(new Vector3(66.5f, 0, 4)));
-                    effect.Parameters["View"].SetValue(camera.ViewMatrix);
-                    effect.Parameters["Projection"].SetValue(camera.ProjectionMatrix);
+                    effect2.Parameters["View"].SetValue(camera.ViewMatrix);
+                    effect2.Parameters["Projection"].SetValue(camera.ProjectionMatrix);
                     Matrix WorldInverseTransposeMatrix = Matrix.Transpose(Matrix.Invert(transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90))
                            * Matrix.CreateRotationY(MathHelper.ToRadians(-10)) * Matrix.CreateScale(0.03f, 0.03f, 0.03f)
                            * Matrix.CreateTranslation(new Vector3(66.5f, 0, 4))));
-                    effect.Parameters["WorldInverseTranspose"].SetValue(WorldInverseTransposeMatrix);
-                   // effect2.Parameters["ModelTexture"].SetValue(trillerTexture);
+                    effect2.Parameters["WorldInverseTranspose"].SetValue(WorldInverseTransposeMatrix);
+                    effect2.Parameters["ModelTexture"].SetValue(trillerTexture);
 
                     viewVector = Vector3.Transform(camera.View - camera.Position, Matrix.CreateRotationY(0));
                     viewVector.Normalize();
-                    effect.Parameters["ViewVector"].SetValue(viewVector);
+                    effect2.Parameters["ViewVector"].SetValue(viewVector);
                 }
                 mesh.Draw();
             }
