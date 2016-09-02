@@ -269,7 +269,7 @@ namespace Volamus_v1
             hitAngleHigh = 0;   // Rotation nach oben
 
 
-            scale = new Vector3(3.0f, 3.0f, 3.0f); //0.025
+            scale = new Vector3(2.9f, 2.9f, 2.9f); //0.025
 
             d = new DebugDraw(GameStateManager.Instance.GraphicsDevice);
         }
@@ -312,7 +312,8 @@ namespace Volamus_v1
             arrowTexture2 = GameStateManager.Instance.Content.Load<Texture2D>("Textures/green");
 
             // right und left jeweils aus der Sicht des Pinguins
-            if (direction == 1)
+            //eigentliche modelle die sich aber momentan nicht angezigen lassen 
+             if (direction == 1)
             {
                 leftWing = GameStateManager.Instance.Content.Load<Model>("Models/PingWingLeft"); //PingWingLeft
                 rightWing = GameStateManager.Instance.Content.Load<Model>("Models/PingWingRight");
@@ -322,6 +323,16 @@ namespace Volamus_v1
                 leftWing = GameStateManager.Instance.Content.Load<Model>("Models/PingWingRight"); //PingWingLeft
                 rightWing = GameStateManager.Instance.Content.Load<Model>("Models/PingWingLeft");
             }
+            /*if (direction == 1)
+            {
+                leftWing = GameStateManager.Instance.Content.Load<Model>("Models/leftneu2"); //PingWingLeft
+                rightWing = GameStateManager.Instance.Content.Load<Model>("Models/rightneu2");
+            }
+            else
+            {
+                leftWing = GameStateManager.Instance.Content.Load<Model>("Models/rightneu2"); //PingWingLeft
+                rightWing = GameStateManager.Instance.Content.Load<Model>("Models/leftneu2");
+            }*/
 
             wingTexture = GameStateManager.Instance.Content.Load<Texture2D>("Models/PingWingUV");
 
@@ -1683,18 +1694,17 @@ namespace Volamus_v1
             {
                 foreach (ModelMeshPart part in mesh.MeshParts)
                 {
-                    part.Effect = effect2;
-                    effect2.Parameters["World"].SetValue(transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90 - (-direction) * hitAngleHigh + betta)) * Matrix.CreateRotationZ(MathHelper.ToRadians(direction * hitAngleLeft + direction * (-gamma))) *
-                          Matrix.CreateScale(scale * 3) //scale *4
+                    part.Effect = effect;
+                    effect.Parameters["World"].SetValue(transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90 - (-direction) * hitAngleHigh + betta)) * Matrix.CreateRotationZ(MathHelper.ToRadians(direction * hitAngleLeft + direction * (-gamma))) *
+                          Matrix.CreateScale(scale * 0.01f) //scale *4
                           * Matrix.CreateTranslation(position));
-                    effect2.Parameters["View"].SetValue(camera.ViewMatrix);
-                    effect2.Parameters["Projection"].SetValue(camera.ProjectionMatrix);
+                    effect.Parameters["View"].SetValue(camera.ViewMatrix);
+                    effect.Parameters["Projection"].SetValue(camera.ProjectionMatrix);
                     Matrix WorldInverseTransposeMatrix = Matrix.Transpose(Matrix.Invert(transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) * Matrix.CreateRotationZ(MathHelper.ToRadians(direction * 90 + direction * (-gamma))) *
                           Matrix.CreateScale(scale)
                           * Matrix.CreateTranslation(position)));
-                    effect2.Parameters["WorldInverseTranspose"].SetValue(WorldInverseTransposeMatrix);
-
-                    effect2.Parameters["ModelTexture"].SetValue(wingTexture);
+                    effect.Parameters["WorldInverseTranspose"].SetValue(WorldInverseTransposeMatrix);
+                    //effect.Parameters["ModelTexture"].SetValue(wingTexture);
 
                     viewVector = Vector3.Transform(camera.View - camera.Position, Matrix.CreateRotationY(0));
                     viewVector.Normalize();
@@ -1783,8 +1793,8 @@ namespace Volamus_v1
 
             // Create and return bounding box
 
-            min = new Vector3(-3, -3, 0);
-            max = new Vector3(3, 3, 12);
+            min = new Vector3(-2.9f, -2.9f, 0);
+            max = new Vector3(2.9f, 2.9f, 12);
 
             Vector3 mid = new Vector3((max.X + min.X) / 2, (direction) * (max.Y + min.Y) / 2, min.Z);
             Vector3 translate = mid - position;
