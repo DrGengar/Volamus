@@ -313,7 +313,7 @@ namespace Volamus_v1
 
             // right und left jeweils aus der Sicht des Pinguins
             //eigentliche modelle die sich aber momentan nicht angezigen lassen 
-             if (direction == 1)
+            /* if (direction == 1)
             {
                 leftWing = GameStateManager.Instance.Content.Load<Model>("Models/PingWingLeft"); //PingWingLeft
                 rightWing = GameStateManager.Instance.Content.Load<Model>("Models/PingWingRight");
@@ -322,8 +322,8 @@ namespace Volamus_v1
             {
                 leftWing = GameStateManager.Instance.Content.Load<Model>("Models/PingWingRight"); //PingWingLeft
                 rightWing = GameStateManager.Instance.Content.Load<Model>("Models/PingWingLeft");
-            }
-            /*if (direction == 1)
+            }*/
+            if (direction == 1)
             {
                 leftWing = GameStateManager.Instance.Content.Load<Model>("Models/leftneu2"); //PingWingLeft
                 rightWing = GameStateManager.Instance.Content.Load<Model>("Models/rightneu2");
@@ -332,7 +332,7 @@ namespace Volamus_v1
             {
                 leftWing = GameStateManager.Instance.Content.Load<Model>("Models/rightneu2"); //PingWingLeft
                 rightWing = GameStateManager.Instance.Content.Load<Model>("Models/leftneu2");
-            }*/
+            }
 
             wingTexture = GameStateManager.Instance.Content.Load<Texture2D>("Models/PingWingUV");
 
@@ -873,13 +873,13 @@ namespace Volamus_v1
                 
                 if (direction == 1)
                 {
-                    leftWingPosition = new Vector3(position.X, position.Y, position.Z - 1);
-                    rightWingPosition = new Vector3(position.X, position.Y, position.Z - 1);
+                    leftWingPosition = new Vector3(position.X, position.Y, position.Z -3);
+                    rightWingPosition = new Vector3(position.X, position.Y, position.Z -3);
                 }
                 else
                 {
-                    leftWingPosition = new Vector3(position.X, position.Y, position.Z - 1);
-                    rightWingPosition = new Vector3(position.X, position.Y, position.Z - 1);
+                    leftWingPosition = new Vector3(position.X, position.Y, position.Z -3);
+                    rightWingPosition = new Vector3(position.X, position.Y, position.Z -3);
                 }
             }
 
@@ -1496,13 +1496,13 @@ namespace Volamus_v1
 
                 if (direction == 1)
                 {
-                    leftWingPosition = new Vector3(position.X, position.Y, position.Z - 1);
-                    rightWingPosition = new Vector3(position.X, position.Y, position.Z - 1);
+                    leftWingPosition = new Vector3(position.X, position.Y, position.Z -3);
+                    rightWingPosition = new Vector3(position.X, position.Y, position.Z -3);
                 }
                 else
                 {
-                    leftWingPosition = new Vector3(position.X, position.Y, position.Z - 1);
-                    rightWingPosition = new Vector3(position.X, position.Y, position.Z - 1);
+                    leftWingPosition = new Vector3(position.X, position.Y, position.Z -3);
+                    rightWingPosition = new Vector3(position.X, position.Y, position.Z -3);
                 }
             }
             else
@@ -1663,22 +1663,21 @@ namespace Volamus_v1
             {
                 foreach (ModelMeshPart part in mesh.MeshParts)
                 {
-                    part.Effect = effect2;
-                    effect2.Parameters["World"].SetValue(transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90 + (-direction) * hitAngleHigh + betta)) * Matrix.CreateRotationZ(MathHelper.ToRadians(direction * hitAngleRight + direction * (-gamma))) *
-                          Matrix.CreateScale(scale * 3) //scale *4
+                    part.Effect = effect;
+                    effect.Parameters["World"].SetValue(transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90 + (-direction) * hitAngleHigh + betta)) * Matrix.CreateRotationZ(MathHelper.ToRadians(direction * hitAngleRight + direction * (-gamma))) *
+                          Matrix.CreateScale(scale * 5) //scale *4
                           * Matrix.CreateTranslation(position));
-                    effect2.Parameters["View"].SetValue(camera.ViewMatrix);
-                    effect2.Parameters["Projection"].SetValue(camera.ProjectionMatrix);
+                    effect.Parameters["View"].SetValue(camera.ViewMatrix);
+                    effect.Parameters["Projection"].SetValue(camera.ProjectionMatrix);
                     Matrix WorldInverseTransposeMatrix = Matrix.Transpose(Matrix.Invert(transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) * Matrix.CreateRotationZ(MathHelper.ToRadians(direction * 90 + direction * (-gamma))) *
                           Matrix.CreateScale(scale)
                           * Matrix.CreateTranslation(position)));
-                    effect2.Parameters["WorldInverseTranspose"].SetValue(WorldInverseTransposeMatrix);
-
-                    effect2.Parameters["ModelTexture"].SetValue(wingTexture);
+                    effect.Parameters["WorldInverseTranspose"].SetValue(WorldInverseTransposeMatrix);
+                    //effect.Parameters["ModelTexture"].SetValue(wingTexture);
 
                     viewVector = Vector3.Transform(camera.View - camera.Position, Matrix.CreateRotationY(0));
                     viewVector.Normalize();
-                    effect2.Parameters["ViewVector"].SetValue(viewVector);
+                    effect.Parameters["ViewVector"].SetValue(viewVector);
                 }
                 mesh.Draw();
             }
@@ -1696,7 +1695,7 @@ namespace Volamus_v1
                 {
                     part.Effect = effect;
                     effect.Parameters["World"].SetValue(transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90 - (-direction) * hitAngleHigh + betta)) * Matrix.CreateRotationZ(MathHelper.ToRadians(direction * hitAngleLeft + direction * (-gamma))) *
-                          Matrix.CreateScale(scale * 0.01f) //scale *4
+                          Matrix.CreateScale(scale * 5) //scale *4
                           * Matrix.CreateTranslation(position));
                     effect.Parameters["View"].SetValue(camera.ViewMatrix);
                     effect.Parameters["Projection"].SetValue(camera.ProjectionMatrix);
@@ -1708,7 +1707,7 @@ namespace Volamus_v1
 
                     viewVector = Vector3.Transform(camera.View - camera.Position, Matrix.CreateRotationY(0));
                     viewVector.Normalize();
-                    effect2.Parameters["ViewVector"].SetValue(viewVector);
+                    effect.Parameters["ViewVector"].SetValue(viewVector);
                 }
                 mesh.Draw();
             }
