@@ -5,7 +5,6 @@
   <Config />
   <SourceFiles>
     <File>C:/Users/Iam/Desktop/3dGame/Volamus_v1/Volamus_v1/Content/GameStateManager/FadeScreen.png</File>
-    <File>C:/Users/Iam/Desktop/3dGame/Volamus_v1/Volamus_v1/Content/Images/titlescreen.png</File>
     <File>C:/Users/Iam/Desktop/3dGame/Volamus_v1/Volamus_v1/Content/SpriteFonts/Headline.spritefont</File>
     <File>C:/Users/Iam/Desktop/3dGame/Volamus_v1/Volamus_v1/Content/SpriteFonts/Standard.spritefont</File>
     <File>C:/Users/Iam/Desktop/3dGame/Volamus_v1/Volamus_v1/Content/Sound/soproSound1.ogg</File>
@@ -58,5 +57,7 @@
     <File>C:/Users/Iam/Desktop/3dGame/Volamus_v1/Volamus_v1/Content/Textures/bg3.jpg</File>
     <File>C:/Users/Iam/Desktop/3dGame/Volamus_v1/Volamus_v1/Content/Textures/bg4.jpg</File>
     <File>C:/Users/Iam/Desktop/3dGame/Volamus_v1/Volamus_v1/Content/Textures/skydomeUVtry.png</File>
+    <File>C:/Users/Iam/Desktop/3dGame/Volamus_v1/Volamus_v1/Content/Images/titlescreenOrig.png</File>
+    <File>C:/Users/Iam/Desktop/3dGame/Volamus_v1/Volamus_v1/Content/Images/titlescreen</File>
   </SourceFiles>
 </SourceFileCollection>
