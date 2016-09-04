@@ -16,7 +16,8 @@ namespace Volamus_v1
 
         float diameter;
         Model skydome;
-        Texture2D skyTexture;
+
+        float ro;
 
         public Skydome(float diameter)
         {
@@ -34,10 +35,21 @@ namespace Volamus_v1
             effect2 = GameStateManager.Instance.Content.Load<Effect>("Effects/shaderTestWithTexture");
 
             skydome = GameStateManager.Instance.Content.Load<Model>("Models/skydome");
-            skyTexture = GameStateManager.Instance.Content.Load<Texture2D>("Textures/skydome");
+
+            ro = 0;
         }
 
-        public void Draw(Camera camera)
+        public void Update(float rox)
+        {
+            ro += rox;
+            if (ro == 360)
+            {
+                ro = 0;
+            }
+        }
+
+
+        public void Draw(Camera camera, Texture2D texture)
         {
             Matrix[] transforms = new Matrix[skydome.Bones.Count];
             skydome.CopyAbsoluteBoneTransformsTo(transforms);
@@ -46,15 +58,15 @@ namespace Volamus_v1
             {
                 foreach (ModelMeshPart part in mesh.MeshParts)
                 {
-                    part.Effect = effect2;
-                    effect2.Parameters["World"].SetValue(transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(270)) * Matrix.CreateScale(25, 25, 25)
+                    part.Effect = effect2;   
+                    effect2.Parameters["World"].SetValue(transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(270)) * Matrix.CreateRotationZ(MathHelper.ToRadians(ro)) * Matrix.CreateScale(25, 25, 25)
                             * Matrix.CreateTranslation(new Vector3(0, 0, -500)));
                     effect2.Parameters["View"].SetValue(camera.ViewMatrix);
                     effect2.Parameters["Projection"].SetValue(camera.ProjectionMatrix);
                     Matrix WorldInverseTransposeMatrix = Matrix.Transpose(transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) * Matrix.CreateScale(0.05f, 0.025f, 0.025f)
                             * Matrix.CreateTranslation(new Vector3(0, 0, 0)));
                     effect2.Parameters["WorldInverseTranspose"].SetValue(WorldInverseTransposeMatrix);
-                    effect2.Parameters["ModelTexture"].SetValue(skyTexture);
+                    effect2.Parameters["ModelTexture"].SetValue(texture);
 
                     viewVector = Vector3.Transform(camera.View - camera.Position, Matrix.CreateRotationY(0));
                     viewVector.Normalize();
