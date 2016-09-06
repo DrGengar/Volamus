@@ -338,8 +338,6 @@ C:\Users\Lars\Desktop\Volamus\Volamus_v1\Volamus_v1\Content\Models\pfeil.xnb
 C:\Users\Lars\Desktop\Volamus\Volamus_v1\Volamus_v1\Content\Models\pinguin.xnb
 C:\Users\Lars\Desktop\Volamus\Volamus_v1\Volamus_v1\Content\Models\rightneu2.xnb
 C:\Users\Lars\Desktop\Volamus\Volamus_v1\Volamus_v1\Content\Models\skydome.xnb
-C:\Users\Lars\Desktop\Volamus\Volamus_v1\Volamus_v1\Content\Models\skydomeUVtry.xnb
-C:\Users\Lars\Desktop\Volamus\Volamus_v1\Volamus_v1\Content\Models\skydomeUVtry_0.xnb
 C:\Users\Lars\Desktop\Volamus\Volamus_v1\Volamus_v1\Content\Models\trillerpfeife.xnb
 C:\Users\Lars\Desktop\Volamus\Volamus_v1\Volamus_v1\Content\Textures\BeachBallTexture.xnb
 C:\Users\Lars\Desktop\Volamus\Volamus_v1\Volamus_v1\Content\Textures\iceTexture.xnb
@@ -518,3 +516,9 @@ C:\Users\Iam\Desktop\3dGame\Volamus_v1\Volamus_v1\Content\Textures\bg4.xnb
 C:\Users\Iam\Desktop\3dGame\Volamus_v1\Volamus_v1\Content\Textures\skydomeUVtry.xnb
 C:\Users\Iam\Desktop\3dGame\Volamus_v1\Volamus_v1\Content\Images\titlescreenOrig.xnb
 C:\Users\Iam\Desktop\3dGame\Volamus_v1\Volamus_v1\Content\Textures\skydomeCloud1.xnb
+C:\Users\Lars\Desktop\Volamus\Volamus_v1\Volamus_v1\Content\Images\titlescreenOrig.xnb
+C:\Users\Lars\Desktop\Volamus\Volamus_v1\Volamus_v1\Content\Textures\bg3.xnb
+C:\Users\Lars\Desktop\Volamus\Volamus_v1\Volamus_v1\Content\Textures\bg4.xnb
+C:\Users\Lars\Desktop\Volamus\Volamus_v1\Volamus_v1\Content\Textures\skydome.xnb
+C:\Users\Lars\Desktop\Volamus\Volamus_v1\Volamus_v1\Content\Textures\skydomeCloud1.xnb
+C:\Users\Lars\Desktop\Volamus\Volamus_v1\Volamus_v1\Content\Textures\skydomeUVtry.xnb

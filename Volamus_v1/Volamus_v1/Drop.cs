@@ -10,7 +10,6 @@ namespace Volamus_v1
 {
     public class Drop
     {
-        Effect effect;
         Vector3 viewVector;
 
         Vector3 position;
@@ -58,15 +57,6 @@ namespace Volamus_v1
             timeToLive = ttl;
             drop = dr;
             velocity = velo;
-        }
-
-
-        public void LoadContent()
-        {
-            effect = GameStateManager.Instance.Content.Load<Effect>("Effects/shaderTest");
-            boundingSphere.Radius *= 1.0f;
-
-            boundingSphere.Center = position;
         }
 
         //Update für die Drops, die die Ballgröße verändern

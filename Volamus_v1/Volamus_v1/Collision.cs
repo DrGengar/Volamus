@@ -20,11 +20,6 @@ namespace Volamus_v1
         private int groundContact;   //Bodenberührungen des Balls
         private bool collision_with_net;
 
-        public int match = 200;
-        public bool matchIsFinish = false;
-        public Player winner;
-
-
         public static Collision Instance
         {
             get
@@ -57,40 +52,20 @@ namespace Volamus_v1
 
         public void CollisionMethod(Field field)
         {
-            if (matchIsFinish == true)
+            if (GameScreen.Instance.Match.IsFinished != true)
             {
-
-                EndOfMatch endwin = new EndOfMatch();
-                endwin.EndOfMatchWinner(winner);
-                EndOfMatch endlose = new EndOfMatch();
-                endlose.EndOfMatchLoser(winner.Enemy);
-
-            }
-
-            if (matchIsFinish == false)
-            {
-
                 //Ball mit Ebene z=0
                 if (BallWithPlane())
                 {
-
                     //beim ersten Bodenkontakt werden die Punkte,... angepasst, Sound,..
                     if (groundContact == 0)
                     {
                         //GameStateManager.Instance.Ingame.SoundVolume = 0.3f;
                         GameStateManager.Instance.Ingame.Play2D("Content//Sound//single_blow_from_police_whistle.ogg");
 
-                        //Jubeln weil gewonnen
-                        if (lastTouched.Points == match - 1 || lastTouched.Enemy.Points == match - 1)
-                        {
-                            //GameStateManager.Instance.Ingame.SoundVolume = 0.6f;
-                            GameStateManager.Instance.Ingame.Play2D("Content//Sound//child_crowd_cheering.ogg");
-                        }
-                        else //Jubeln weil Punktgewinn
-                        {
-                            //GameStateManager.Instance.Ingame.SoundVolume = 0.3f;
-                            GameStateManager.Instance.Ingame.Play2D("Content//Sound//child_crowd_cheering.ogg");
-                        }
+
+                        //GameStateManager.Instance.Ingame.SoundVolume = 0.3f;
+                        GameStateManager.Instance.Ingame.Play2D("Content//Sound//child_crowd_cheering.ogg");
 
 
                         //Wenn außerhalb des Feldes: Gegner von LastTouched +1 Punkt und bekommt Aufschlag
@@ -130,7 +105,7 @@ namespace Volamus_v1
                     }
 
                     //Hüpfen des Balls -> Überarbeiten
-                    if (groundContact <= 1 && lastTouched.Points != match && lastTouched.Enemy.Points != match)
+                    if (groundContact <= 1)
                     {
                         Vector3 hitdirection = Ball.Instance.Active.Hit_Direction;
                         float angle_z = MathHelper.ToDegrees((float)Math.Atan((hitdirection.Z / hitdirection.Y)));
@@ -159,20 +134,6 @@ namespace Volamus_v1
                         Ball.Instance.BoundingSphereRadius = Ball.Instance.OriginalRadius;
                         lastTouched.Movespeed = 0.8f;
                         lastTouched.Enemy.Movespeed = 0.8f;
-
-                        if (lastTouched.Points == match || lastTouched.Enemy.Points == match)
-                        {
-                            if (lastTouched.Points == match)
-                            {
-                                winner = lastTouched;
-                            }
-                            else
-                            {
-                                winner = lastTouched.Enemy;
-                            }
-
-                            matchIsFinish = true;
-                        }
 
                         groundContact = 0;
                         Ball.Instance.IsFlying = false;
@@ -210,7 +171,7 @@ namespace Volamus_v1
         //Ball mit Ebene z=0
         public bool BallWithPlane()
         {
-            if (matchIsFinish == false)
+            if (GameScreen.Instance.Match.IsFinished == false)
             {
                 if (Ball.Instance.BoundingSphere.Intersects(new Plane(new Vector3(0, 0, 0), new Vector3(1, 0, 0), new Vector3(0, 1, 0))) != (PlaneIntersectionType)0)
                 {
@@ -230,17 +191,14 @@ namespace Volamus_v1
         }
 
         //Spieler mit Drop
-        public Player PlayerWithDrop(Drop d)
+        public bool PlayerWithDrop(Player p, Drop d)
         {
-            if (d.BoundingSphere.Intersects(lastTouched.InnerBoundingBox))
+            if (d.BoundingSphere.Intersects(p.InnerBoundingBox))
             {
-                return lastTouched;
+                return true;
             }
-            if (d.BoundingSphere.Intersects(lastTouched.Enemy.InnerBoundingBox))
-            {
-                return lastTouched.Enemy;
-            }
-            else return null;
+
+            return false;
         }
 
         private void BallWithInnerBoundingBox(Player player)

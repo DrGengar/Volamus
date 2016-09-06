@@ -11,43 +11,8 @@ namespace Volamus_v1
 {
     class EndOfMatch
     {
+        Effect effect;
         List<Drop> confetti;
-
-        //Jubel des Gewinners
-        public void EndOfMatchWinner(Player winner)
-        {
-            //Flügel gehen nach oben
-            winner.PositionLeftWing = new Vector3(winner.Position.X - 2, winner.Position.Y, winner.Position.Z - 1);
-            winner.PositionRightWing = new Vector3(winner.Position.X + 2, winner.Position.Y, winner.Position.Z - 1);
-            winner.HitAngleHigh = 20;
-
-            //hüpft
-            if (winner.Position.Z < 7 && !winner.IsFalling)
-            {
-                winner.Position += winner.Position + new Vector3(0, 0, winner.JumpVelocity);
-            }
-            else
-            {
-                if (winner.Position.Z > 0)
-                {
-                    winner.Position -= winner.Position + new Vector3(0, 0, winner.JumpVelocity);
-                    winner.IsFalling = true;
-                }
-                else
-                {
-                    winner.IsFalling = false;
-                }
-            }
-        }
-
-        //Trauer des Verlieres
-        public void EndOfMatchLoser(Player Loser)
-        {
-            Loser.PositionLeftWing = new Vector3(Loser.Position.X + 5, Loser.Position.Y, Loser.Position.Z + 2);
-            Loser.PositionRightWing = new Vector3(Loser.Position.X - 5, Loser.Position.Y, Loser.Position.Z + 2);
-            Loser.HitAngleHigh = -40;
-        }
-
 
         //Konfetti an den Ecken des Gewinners
 
@@ -104,7 +69,7 @@ namespace Volamus_v1
             return new Drop(loc, timeToLive, dr, velo);
         }
 
-        public void Draw(Camera camera, Effect effect)
+        public void Draw(Camera camera)
         {
 
             for (int index = 0; index < confetti.Count; index++)

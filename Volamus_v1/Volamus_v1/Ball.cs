@@ -13,11 +13,6 @@ namespace Volamus_v1
 {
     public class Ball
     {
-        Pick pick;
-        PickVelo pickv;
-
-        Random rnd = new Random();
-        EndOfMatch endofmatch;
         float effectDrop = 1f;
         Effect effect2;
         Effect effect;
@@ -141,9 +136,6 @@ namespace Volamus_v1
 
         public void LoadContent(Wind _wind)
         {
-            pick = new Pick();
-            pickv = new PickVelo();
-            endofmatch = new EndOfMatch();
             effect = GameStateManager.Instance.Content.Load<Effect>("Effects/shaderTest");
             effect2 = GameStateManager.Instance.Content.Load<Effect>("Effects/shaderTestWithTexture");
 
@@ -204,18 +196,6 @@ namespace Volamus_v1
 
 
             boundingSphere.Radius = BoundingSphereRadius;
-
-
-            if (Collision.Instance.matchIsFinish)
-            {
-                Ball.Instance.EffectDrop = 1;
-                endofmatch.Update(Collision.Instance.winner);
-            }
-            else
-            {
-                pickv.Update(rnd);
-                pick.Update(rnd);
-            }
         }
 
         public void Draw(Camera camera)
@@ -271,9 +251,6 @@ namespace Volamus_v1
           /*  d.Begin(camera.ViewMatrix, camera.ProjectionMatrix);
             d.DrawWireSphere(boundingSphere, Color.Red);
             d.End();*/
-            pick.Draw(camera, effect);
-            pickv.Draw(camera, effect);
-            endofmatch.Draw(camera, effect);
         }
     }
 }

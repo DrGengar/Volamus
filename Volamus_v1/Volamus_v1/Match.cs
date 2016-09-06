@@ -31,6 +31,21 @@ namespace Volamus_v1
             get { return wind; }
         }
 
+        public bool IsFinished
+        {
+            get { return isFinished; }
+        }
+
+        public Player Winner
+        {
+            get { return winner; }
+        }
+
+        public Player Looser
+        {
+            get { return looser; }
+        }
+
         public Player One, Two;
         Field field;
         Wind wind;
@@ -39,12 +54,16 @@ namespace Volamus_v1
         int maxPoints;
 
         bool isFinished;
-        Player Winner, Looser;
+        Player winner, looser;
 
         RockPaperSciccors rpsOne, rpsTwo;
         private bool preMatch;
         private const float delay = 2;
         private float remainingDelay = delay;
+
+        Pick changeSize;
+        PickVelo changeVelocity;
+        Random rnd = new Random();
 
         public Match(Player one, Player two, Field f,int points, int w, bool c_s, bool c_v)
         {
@@ -61,6 +80,9 @@ namespace Volamus_v1
             rpsTwo = new RockPaperSciccors(Two);
 
             isFinished = false;
+
+            changeSize = new Pick();
+            changeVelocity = new PickVelo();
         }
 
         public void LoadContent()
@@ -74,6 +96,9 @@ namespace Volamus_v1
 
             rpsOne.LoadContent();
             rpsTwo.LoadContent();
+
+            changeSize.LoadContent();
+            changeVelocity.LoadContent();
         }
 
         public void Unloadcontent()
@@ -81,7 +106,9 @@ namespace Volamus_v1
             /*One.UnloadContent();
             Two.UnloadContent();
             field.UnloadContent();
-            Ball.Instance.UnloadContent();*/
+            Ball.Instance.UnloadContent();
+            changeSize.UnloadContent();
+            changeVelocity.UnloadContent();*/
         }
 
         public void Update(GameTime gameTime)
@@ -175,24 +202,30 @@ namespace Volamus_v1
                 {
                     //winner == one -> Ende
                     isFinished = true;
-                    Winner = One;
-                    Looser = Two;
-
-                    //...
+                    winner = One;
+                    looser = Two;
                 }
 
                 if (Two.Points == maxPoints)
                 {
                     //winner == two -> Ende
                     isFinished = true;
-                    Winner = Two;
-                    Looser = One;
-
-                    //...
+                    winner = Two;
+                    looser = One;
                 }
 
                 One.Update(field);
                 Two.Update(field);
+
+                if(change_size)
+                {
+                    changeSize.Update(rnd);
+                }
+
+                if(change_velocity)
+                {
+                    changeVelocity.Update(rnd);
+                }
 
                 Ball.Instance.Update();
 
@@ -233,6 +266,16 @@ namespace Volamus_v1
                 }
 
                 Two.Draw(camera);
+
+                if (change_size)
+                {
+                    changeSize.Draw(camera);
+                }
+
+                if (change_velocity)
+                {
+                    changeVelocity.Draw(camera);
+                }
             }
         }
     }

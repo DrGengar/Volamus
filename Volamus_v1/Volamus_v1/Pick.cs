@@ -10,16 +10,25 @@ namespace Volamus_v1
 {
     public class Pick
     {
+        Effect effect;
         List<Drop> drops;
+        Model dr;
 
         public Pick()
         {
             this.drops = new List<Drop>();
         }
 
+        public void LoadContent()
+        {
+            dr = GameStateManager.Instance.Content.Load<Model>("Models/drop");
+            effect = GameStateManager.Instance.Content.Load<Effect>("Effects/shaderTest");
+        }
+
         public void Update(Random rnd)
         {
-            int total = rnd.Next(3);
+            int total = rnd.Next(4);
+
             if (drops.Count < total)
             {
                 drops.Add(Generate(rnd));
@@ -28,13 +37,22 @@ namespace Volamus_v1
             for (int Drop = 0; Drop < drops.Count; Drop++)
             {
                 drops[Drop].Update();
+
+                if (Collision.Instance.PlayerWithDrop(GameScreen.Instance.Match.PlayerOne, drops[Drop]) || Collision.Instance.PlayerWithDrop(GameScreen.Instance.Match.PlayerTwo, drops[Drop]))
+                {
+                    drops.RemoveAt(Drop);
+                    Drop--;
+
+                    Ball.Instance.EffectDrop += 0.1f;
+                }
+
                 if (drops[Drop].ttl <= 0)
                 {
                     drops.RemoveAt(Drop);
                     Drop--;
                 }
             }
-            if (Collision.Instance.matchIsFinish)
+            if (GameScreen.Instance.Match.IsFinished)
             {
                 drops.RemoveAll(item => item.ttl != 0);  //alle Drops die aktuell noch leben werden entfernt
             }
@@ -42,22 +60,19 @@ namespace Volamus_v1
 
         private Drop Generate(Random rnd)
         {
-
             float x = rnd.Next(-50, 50);
             float y = rnd.Next(-45, 46);
             int zufall = rnd.Next(1, 11);
             int timeToLive = 200 + rnd.Next(80);
 
-            Model dr = GameStateManager.Instance.Content.Load<Model>("Models/drop");
             return new Drop(new Vector3(x, y, 2), timeToLive, dr);
         }
 
-        public void Draw(Camera camera, Effect effect)
+        public void Draw(Camera camera)
         {
 
             for (int index = 0; index < drops.Count; index++)
             {
-
                 drops[index].Draw(camera, effect);
             }
 

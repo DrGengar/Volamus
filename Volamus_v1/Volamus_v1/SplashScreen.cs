@@ -21,19 +21,19 @@ namespace Volamus_v1
         {
             base.LoadContent();
             Screen.LoadContent();
-            Screen.Scale = new Vector2(GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width / Screen.Texture.Width,
-                GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height / Screen.Texture.Height);
+            Screen.Scale = new Vector2((float)GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width / (float)Screen.Texture.Width,
+                (float)GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height / (float)Screen.Texture.Height);
 
             Volamus.LoadContent();
             Volamus.Position = new Vector2((GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width - Volamus.SourceRect.Width) / 2, 0);
 
-            Volamus.Color = Color.Pink;
+            Volamus.Color = Color.Black;
 
             Enter.LoadContent();
             Enter.Position = new Vector2((GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width - Enter.SourceRect.Width) / 2,
                 ((GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height - Enter.SourceRect.Height) / 3) * 2);
 
-            Enter.Color = Color.Pink;
+            Enter.Color = Color.Black;
         }
 
         public override void UnloadContent()

@@ -363,7 +363,7 @@ namespace Volamus_v1
         //Tastatur Anfang
         private void UpdateKeyboard(Field field, Keys Up, Keys Down, Keys Left, Keys Right, Keys Jump, Keys weak, Keys strong, Keys l, Keys r)
         {
-            if (Collision.Instance.matchIsFinish != true)
+            if (GameScreen.Instance.Match.IsFinished != true)
             {
                 // Schlaganimation
                 if (is_serving || enemy.is_serving)
@@ -882,11 +882,42 @@ namespace Volamus_v1
                     rightWingPosition = new Vector3(position.X, position.Y, position.Z -3);
                 }
             }
-
             else
             {
                 betta = 0;
                 gamma = 0;
+
+                if(GameScreen.Instance.Match.Winner == this)
+                {
+                    //Flügel gehen nach oben
+                    leftWingPosition = new Vector3(position.X - 2, position.Y, position.Z - 1);
+                    rightWingPosition = new Vector3(position.X + 2, position.Y, position.Z - 1);
+                    hitAngleHigh = 20;
+
+                    //hüpft
+                    if (position.Z < 7 && !is_falling)
+                    {
+                        position.Z += jump_velocity;
+                    }
+                    else
+                    {
+                        if (Position.Z > 0)
+                        {
+                            position.Z -= jump_velocity;
+                            is_falling = true;
+                        }
+                        else
+                        {
+                            is_falling = false;
+                        }
+                    }
+                }
+                else
+                {
+                    PositionLeftWing = new Vector3(Position.X + 5, Position.Y, Position.Z + 2);
+                    PositionRightWing = new Vector3(Position.X - 5, Position.Y, Position.Z + 2);
+                    HitAngleHigh = -40;
+                }
             }
         }
 
@@ -989,7 +1020,7 @@ namespace Volamus_v1
         //  Controller  Anfang
         private void UpdateController(Field field, Buttons Up, Buttons Down, Buttons Left, Buttons Right, Buttons Jump, Buttons weak, Buttons strong, Buttons l, Buttons r)
         {
-            if (Collision.Instance.matchIsFinish == false)
+            if (GameScreen.Instance.Match.IsFinished == false)
             {
                 gamepad.newstate = GamePad.GetState(PlayerIndex.One);
                 camera.Update();
@@ -1509,6 +1540,38 @@ namespace Volamus_v1
             {
                 betta = 0;
                 gamma = 0;
+
+                if (GameScreen.Instance.Match.Winner == this)
+                {
+                    //Flügel gehen nach oben
+                    PositionLeftWing = new Vector3(Position.X - 2, Position.Y, Position.Z - 1);
+                    PositionRightWing = new Vector3(Position.X + 2, Position.Y, Position.Z - 1);
+                    HitAngleHigh = 20;
+
+                    //hüpft
+                    if (Position.Z < 7 && !IsFalling)
+                    {
+                        Position += Position + new Vector3(0, 0, JumpVelocity);
+                    }
+                    else
+                    {
+                        if (Position.Z > 0)
+                        {
+                            Position -= Position + new Vector3(0, 0, JumpVelocity);
+                            IsFalling = true;
+                        }
+                        else
+                        {
+                            IsFalling = false;
+                        }
+                    }
+                }
+                else
+                {
+                    PositionLeftWing = new Vector3(Position.X + 5, Position.Y, Position.Z + 2);
+                    PositionRightWing = new Vector3(Position.X - 5, Position.Y, Position.Z + 2);
+                    HitAngleHigh = -40;
+                }
             }
 
 
