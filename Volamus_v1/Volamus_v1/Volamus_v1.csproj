@@ -63,7 +63,7 @@
     <Compile Include="Controls.cs" />
     <Compile Include="DebugDraw.cs" />
     <Compile Include="Drop.cs" />
-    <Compile Include="EndOfMatch.cs" />
+    <Compile Include="Confetti.cs" />
     <Compile Include="EndScreen.cs" />
     <Compile Include="FadeEffect.cs" />
     <Compile Include="FrameCounter.cs" />
@@ -84,10 +84,12 @@
     <Compile Include="MenuItem.cs" />
     <Compile Include="MenuManager.cs" />
     <Compile Include="Options.cs" />
+    <Compile Include="PickSizePlus.cs" />
+    <Compile Include="PickVeloMinus.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Parabel.cs" />
-    <Compile Include="Pick.cs" />
-    <Compile Include="PickVelo.cs" />
+    <Compile Include="PickSizeMinus.cs" />
+    <Compile Include="PickVeloPlus.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Player.cs" />

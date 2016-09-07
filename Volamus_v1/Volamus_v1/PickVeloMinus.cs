@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Volamus_v1
 {
-    class PickVelo
+    class PickVeloMinus
     {
         Effect effect;
         List<Drop> dropsVelo;
@@ -16,7 +16,7 @@ namespace Volamus_v1
 
 
         // Einsammeln verringert die Laufgeschwindigkeit des Gegeners, bis der Ball den Boden berührt
-        public PickVelo()
+        public PickVeloMinus()
         {
             this.dropsVelo = new List<Drop>();
         }
@@ -30,9 +30,9 @@ namespace Volamus_v1
         public void Update(Random rnd)
         {   //hinzufügen neuer Drops
 
-            int total = rnd.Next(4);
+            int total = rnd.Next(3);
 
-            if (dropsVelo.Count < total)
+            while(dropsVelo.Count < total)
             {
                 dropsVelo.Add(Generate(rnd));
             }
@@ -40,7 +40,15 @@ namespace Volamus_v1
             //aktualisieren der Drops
             for (int Drop = 0; Drop < dropsVelo.Count; Drop++)
             {
-                if (Collision.Instance.PlayerWithDrop(GameScreen.Instance.Match.PlayerOne, dropsVelo[Drop]))
+
+                dropsVelo[Drop].UpdateVelo();
+
+                if (dropsVelo[Drop].ttl <= 0)
+                {
+                    dropsVelo.RemoveAt(Drop);
+                }
+
+                if (Drop < dropsVelo.Count && Collision.Instance.PlayerWithDrop(GameScreen.Instance.Match.PlayerOne, dropsVelo[Drop]))
                 {
                     dropsVelo.RemoveAt(Drop);
                     Drop--;
@@ -48,21 +56,14 @@ namespace Volamus_v1
                     GameScreen.Instance.Match.PlayerOne.Enemy.Movespeed -= 0.1f;
                 }
 
-                if (Collision.Instance.PlayerWithDrop(GameScreen.Instance.Match.PlayerTwo, dropsVelo[Drop]))
+                if (Drop < dropsVelo.Count && Collision.Instance.PlayerWithDrop(GameScreen.Instance.Match.PlayerTwo, dropsVelo[Drop]))
                 {
                     dropsVelo.RemoveAt(Drop);
-                    Drop--;
 
                     GameScreen.Instance.Match.PlayerTwo.Enemy.Movespeed -= 0.1f;
                 }
-
-                dropsVelo[Drop].UpdateVelo();
-                if (dropsVelo[Drop].ttl <= 0)
-                {
-                    dropsVelo.RemoveAt(Drop);
-                    Drop--;
-                }
             }
+
             if (GameScreen.Instance.Match.IsFinished)
             {
                 dropsVelo.RemoveAll(item => item.ttl != 0);  //alle Drops die aktuell noch leben werden entfernt

@@ -63,39 +63,14 @@ namespace Volamus_v1
         public void Update()
         {
             boundingSphere.Center = position;
-            if (Collision.Instance.PlayerWithDrop(this) != null)
-            {
-                Random rand = new Random();
-                float komma = rand.Next(6, 20); //Ballskalierung zwischen 0,6 und 2
-                komma = komma / 10;
-                Ball.Instance.EffectDrop = komma;
-
-                Ball.Instance.BoundingSphereRadius = Ball.Instance.OriginalRadius * Ball.Instance.EffectDrop;
-                timeToLive = 0;
-
-            }
-            else timeToLive--;
+            timeToLive--;
         }
 
         //Update für die Drops, die die Bewegungsgeschwindigkeit des Gegners verringern
         public void UpdateVelo()
         {
             boundingSphere.Center = position;
-
-            if (Collision.Instance.PlayerWithDrop(this) == Collision.Instance.LastTouched)
-            {
-                Collision.Instance.LastTouched.Enemy.Movespeed = 0.4f;
-                timeToLive = 0;
-            }
-
-            if (Collision.Instance.PlayerWithDrop(this) == Collision.Instance.LastTouched.Enemy)
-            {
-
-                Collision.Instance.LastTouched.Movespeed = 0.4f;
-                timeToLive = 0;
-            }
-
-            else timeToLive--;
+            timeToLive--;
         }
 
         //Update für die Konfetties

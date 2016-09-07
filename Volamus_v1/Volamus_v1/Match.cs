@@ -61,8 +61,13 @@ namespace Volamus_v1
         private const float delay = 2;
         private float remainingDelay = delay;
 
-        Pick changeSize;
-        PickVelo changeVelocity;
+        PickSizePlus changeSizePlus;
+        PickSizeMinus changeSizeMinus;
+
+        PickVeloPlus changeVelocityPlus;
+        PickVeloMinus changeVelocityMinus;
+
+        Confetti confetti;
         Random rnd = new Random();
 
         public Match(Player one, Player two, Field f,int points, int w, bool c_s, bool c_v)
@@ -81,8 +86,11 @@ namespace Volamus_v1
 
             isFinished = false;
 
-            changeSize = new Pick();
-            changeVelocity = new PickVelo();
+            changeSizePlus = new PickSizePlus();
+            changeVelocityPlus = new PickVeloPlus();
+
+            changeSizeMinus = new PickSizeMinus();
+            changeVelocityMinus = new PickVeloMinus();
         }
 
         public void LoadContent()
@@ -97,8 +105,11 @@ namespace Volamus_v1
             rpsOne.LoadContent();
             rpsTwo.LoadContent();
 
-            changeSize.LoadContent();
-            changeVelocity.LoadContent();
+            changeSizePlus.LoadContent();
+            changeSizeMinus.LoadContent();
+
+            changeVelocityPlus.LoadContent();
+            changeVelocityMinus.LoadContent();
         }
 
         public void Unloadcontent()
@@ -198,20 +209,22 @@ namespace Volamus_v1
             }
             else
             {
-                if (One.Points == maxPoints)
+                if (One.Points == maxPoints && !isFinished)
                 {
                     //winner == one -> Ende
                     isFinished = true;
                     winner = One;
                     looser = Two;
+                    confetti = new Confetti(One.Direction);
                 }
 
-                if (Two.Points == maxPoints)
+                if (Two.Points == maxPoints && !isFinished)
                 {
                     //winner == two -> Ende
                     isFinished = true;
                     winner = Two;
                     looser = One;
+                    confetti = new Confetti(One.Direction);
                 }
 
                 One.Update(field);
@@ -219,12 +232,19 @@ namespace Volamus_v1
 
                 if(change_size)
                 {
-                    changeSize.Update(rnd);
+                    changeSizePlus.Update(rnd);
+                    changeSizeMinus.Update(rnd);
                 }
 
                 if(change_velocity)
                 {
-                    changeVelocity.Update(rnd);
+                    changeVelocityPlus.Update(rnd);
+                    changeVelocityMinus.Update(rnd);
+                }
+
+                if(isFinished)
+                {
+                    confetti.Update(rnd);
                 }
 
                 Ball.Instance.Update();
@@ -269,12 +289,19 @@ namespace Volamus_v1
 
                 if (change_size)
                 {
-                    changeSize.Draw(camera);
+                    changeSizePlus.Draw(camera);
+                    changeSizeMinus.Draw(camera);
                 }
 
                 if (change_velocity)
                 {
-                    changeVelocity.Draw(camera);
+                    changeVelocityPlus.Draw(camera);
+                    changeVelocityMinus.Draw(camera);
+                }
+
+                if(isFinished)
+                {
+                    confetti.Draw(camera);
                 }
             }
         }

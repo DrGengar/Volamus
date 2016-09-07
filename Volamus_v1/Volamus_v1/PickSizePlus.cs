@@ -8,13 +8,13 @@ using System.Threading.Tasks;
 
 namespace Volamus_v1
 {
-    public class Pick
+    public class PickSizePlus
     {
         Effect effect;
         List<Drop> drops;
         Model dr;
 
-        public Pick()
+        public PickSizePlus()
         {
             this.drops = new List<Drop>();
         }
@@ -27,9 +27,9 @@ namespace Volamus_v1
 
         public void Update(Random rnd)
         {
-            int total = rnd.Next(4);
+            int total = rnd.Next(3);
 
-            if (drops.Count < total)
+            while(drops.Count < total)
             {
                 drops.Add(Generate(rnd));
             }
@@ -38,20 +38,19 @@ namespace Volamus_v1
             {
                 drops[Drop].Update();
 
-                if (Collision.Instance.PlayerWithDrop(GameScreen.Instance.Match.PlayerOne, drops[Drop]) || Collision.Instance.PlayerWithDrop(GameScreen.Instance.Match.PlayerTwo, drops[Drop]))
-                {
-                    drops.RemoveAt(Drop);
-                    Drop--;
-
-                    Ball.Instance.EffectDrop += 0.1f;
-                }
-
                 if (drops[Drop].ttl <= 0)
                 {
                     drops.RemoveAt(Drop);
-                    Drop--;
+                }
+
+                if (Drop < drops.Count && (Collision.Instance.PlayerWithDrop(GameScreen.Instance.Match.PlayerOne, drops[Drop]) || Collision.Instance.PlayerWithDrop(GameScreen.Instance.Match.PlayerTwo, drops[Drop])))
+                {
+                    drops.RemoveAt(Drop);
+
+                    Ball.Instance.EffectDrop += 0.2f;
                 }
             }
+
             if (GameScreen.Instance.Match.IsFinished)
             {
                 drops.RemoveAll(item => item.ttl != 0);  //alle Drops die aktuell noch leben werden entfernt
