@@ -14,6 +14,7 @@ namespace Volamus_v1
     public class Ball
     {
         float effectDrop = 1f;
+        float rotate = 0f;
         Effect effect2;
         Effect effect;
         Vector3 viewVector;
@@ -179,6 +180,8 @@ namespace Volamus_v1
 
             if (isflying && active != null)
             {
+                
+                rotate += 0.05f;
                 //Position Updaten nach Flugbahn
                 position = active.Flug(wind);
             }
@@ -222,7 +225,7 @@ namespace Volamus_v1
                 foreach (ModelMeshPart part in mesh.MeshParts)
                 {
                     part.Effect = effect2;
-                    effect2.Parameters["World"].SetValue(transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) *
+                    effect2.Parameters["World"].SetValue(transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90*rotate*Collision.Instance.LastTouched.Direction)) * 
                             Matrix.CreateScale(1.0f * effectDrop, 1.0f * effectDrop, 1.0f * effectDrop)
                             * Matrix.CreateTranslation(position));
                     effect2.Parameters["View"].SetValue(camera.ViewMatrix);
