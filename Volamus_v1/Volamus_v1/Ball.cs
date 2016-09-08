@@ -166,7 +166,8 @@ namespace Volamus_v1
 
         public void Update()
         {
-
+   
+            
             if (!isflying)
             {
                 //Setze t auf 0 zurück

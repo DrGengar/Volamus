@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <GameStateManager xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <MusicVolume>100</MusicVolume>
+  <MusicVolume>0</MusicVolume>
   <IngameVolume>0</IngameVolume>
   <Image>
     <Alpha>0</Alpha>

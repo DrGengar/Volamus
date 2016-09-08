@@ -11,6 +11,11 @@ namespace Volamus_v1
 {
     public class Match
     {
+        public int MaxPoints
+        {
+            get { return maxPoints; }
+        }
+
         public Player PlayerOne
         {
             get { return One; }
