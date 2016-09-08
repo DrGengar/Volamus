@@ -53,7 +53,7 @@ namespace Volamus_v1
                 if (Drop < dropsVelo.Count && Collision.Instance.PlayerWithDrop(GameScreen.Instance.Match.PlayerOne, dropsVelo[Drop]))
                 {
                     dropsVelo.RemoveAt(Drop);
-                    Drop--;
+                    
 
                     GameScreen.Instance.Match.PlayerOne.Enemy.Movespeed -= 0.1f;
                 }

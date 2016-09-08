@@ -25,7 +25,7 @@ namespace Volamus_v1
             direction = dir;
 
             dr = GameStateManager.Instance.Content.Load<Model>("Models/confetti2");
-            effect = GameStateManager.Instance.Content.Load<Effect>("Effects/shaderTest");
+            effect = GameStateManager.Instance.Content.Load<Effect>("Effects/shaderTestWithTexture");
             texture = GameStateManager.Instance.Content.Load<Texture2D>("Textures/blau");
         }
 
