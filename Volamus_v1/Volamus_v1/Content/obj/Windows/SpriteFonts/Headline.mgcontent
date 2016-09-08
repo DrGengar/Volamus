@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <SourceFile>C:/Users/Lars/Desktop/Volamus/Volamus_v1/Volamus_v1/Content/SpriteFonts/Headline.spritefont</SourceFile>
-  <SourceTime>2016-09-05T09:49:01.9639066+02:00</SourceTime>
+  <SourceTime>2016-09-08T13:07:30.549472+02:00</SourceTime>
   <DestFile>C:/Users/Lars/Desktop/Volamus/Volamus_v1/Volamus_v1/Content/bin/Windows/SpriteFonts/Headline.xnb</DestFile>
-  <DestTime>2016-09-06T12:53:51.6202979+02:00</DestTime>
+  <DestTime>2016-09-08T13:12:05.8574869+02:00</DestTime>
   <Importer>FontDescriptionImporter</Importer>
   <ImporterTime>2016-03-30T08:36:08+02:00</ImporterTime>
   <Processor>FontDescriptionProcessor</Processor>

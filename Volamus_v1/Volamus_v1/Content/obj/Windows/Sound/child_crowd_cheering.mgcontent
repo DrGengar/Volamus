@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <SourceFile>C:/Users/Lars/Desktop/Volamus/Volamus_v1/Volamus_v1/Content/Sound/child_crowd_cheering.ogg</SourceFile>
-  <SourceTime>2016-09-05T09:49:01.7628951+02:00</SourceTime>
+  <SourceTime>2016-09-08T13:07:26.4852396+02:00</SourceTime>
   <DestFile>C:/Users/Lars/Desktop/Volamus/Volamus_v1/Volamus_v1/Content/bin/Windows/Sound/child_crowd_cheering.xnb</DestFile>
-  <DestTime>2016-09-06T12:53:56.1975597+02:00</DestTime>
+  <DestTime>2016-09-08T13:12:10.8657734+02:00</DestTime>
   <Importer>OggImporter</Importer>
   <ImporterTime>2016-03-30T08:36:08+02:00</ImporterTime>
   <Processor>SongProcessor</Processor>

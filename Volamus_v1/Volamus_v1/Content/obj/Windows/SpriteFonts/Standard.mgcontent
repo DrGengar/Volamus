@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <SourceFile>C:/Users/Lars/Desktop/Volamus/Volamus_v1/Volamus_v1/Content/SpriteFonts/Standard.spritefont</SourceFile>
-  <SourceTime>2016-09-05T09:49:01.9679068+02:00</SourceTime>
+  <SourceTime>2016-09-08T13:07:30.5544723+02:00</SourceTime>
   <DestFile>C:/Users/Lars/Desktop/Volamus/Volamus_v1/Volamus_v1/Content/bin/Windows/SpriteFonts/Standard.xnb</DestFile>
-  <DestTime>2016-09-06T12:53:51.6773011+02:00</DestTime>
+  <DestTime>2016-09-08T13:12:05.9034895+02:00</DestTime>
   <Importer>FontDescriptionImporter</Importer>
   <ImporterTime>2016-03-30T08:36:08+02:00</ImporterTime>
   <Processor>FontDescriptionProcessor</Processor>

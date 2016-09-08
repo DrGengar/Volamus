@@ -224,7 +224,7 @@ namespace Volamus_v1
                     isFinished = true;
                     winner = Two;
                     looser = One;
-                    confetti = new Confetti(One.Direction);
+                    confetti = new Confetti(Two.Direction);
                 }
 
                 One.Update(field);

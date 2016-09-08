@@ -47,7 +47,10 @@ namespace Volamus_v1
                 {
                     drops.RemoveAt(Drop);
 
-                    Ball.Instance.EffectDrop += 0.2f;
+                    if (Ball.Instance.BoundingSphereRadius < 2.5)
+                    {
+                        Ball.Instance.BoundingSphereRadius += 0.1f;
+                    }
                 }
             }
 

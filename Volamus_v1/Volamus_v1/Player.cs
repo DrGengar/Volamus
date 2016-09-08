@@ -1544,25 +1544,25 @@ namespace Volamus_v1
                 if (GameScreen.Instance.Match.Winner == this)
                 {
                     //Flügel gehen nach oben
-                    PositionLeftWing = new Vector3(Position.X - 2, Position.Y, Position.Z - 1);
-                    PositionRightWing = new Vector3(Position.X + 2, Position.Y, Position.Z - 1);
-                    HitAngleHigh = 20;
+                    leftWingPosition = new Vector3(position.X - 2, position.Y, position.Z - 1);
+                    rightWingPosition = new Vector3(position.X + 2, position.Y, position.Z - 1);
+                    hitAngleHigh = 20;
 
                     //hüpft
-                    if (Position.Z < 7 && !IsFalling)
+                    if (position.Z < 7 && !is_falling)
                     {
-                        Position += Position + new Vector3(0, 0, JumpVelocity);
+                        position.Z += jump_velocity;
                     }
                     else
                     {
                         if (Position.Z > 0)
                         {
-                            Position -= Position + new Vector3(0, 0, JumpVelocity);
-                            IsFalling = true;
+                            position.Z -= jump_velocity;
+                            is_falling = true;
                         }
                         else
                         {
-                            IsFalling = false;
+                            is_falling = false;
                         }
                     }
                 }
@@ -1573,9 +1573,6 @@ namespace Volamus_v1
                     HitAngleHigh = -40;
                 }
             }
-
-
-
         }
 
         //Schwacher Schlag
