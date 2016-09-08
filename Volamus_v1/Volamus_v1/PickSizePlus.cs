@@ -49,7 +49,9 @@ namespace Volamus_v1
 
                     if (Ball.Instance.BoundingSphereRadius < 2.5)
                     {
+                        float temp = Ball.Instance.BoundingSphereRadius;
                         Ball.Instance.BoundingSphereRadius += 0.1f;
+                        Ball.Instance.EffectDrop = Ball.Instance.BoundingSphereRadius / temp;
                     }
                 }
             }

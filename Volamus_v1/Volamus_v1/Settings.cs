@@ -141,8 +141,8 @@ namespace Volamus_v1
                 XmlManager<GameStateManager> xml = new XmlManager<GameStateManager>();
                 xml.Save("Content/Load/GameStateManager.xml", GameStateManager.Instance);
 
-                GameStateManager.Instance.Music.SoundVolume = GameStateManager.Instance.MusicVolume;
-                GameStateManager.Instance.Ingame.SoundVolume = GameStateManager.Instance.IngameVolume;
+                GameStateManager.Instance.Music.SoundVolume = ((float)GameStateManager.Instance.MusicVolume)/100;
+                GameStateManager.Instance.Ingame.SoundVolume = ((float)GameStateManager.Instance.IngameVolume)/100;
 
                 GameStateManager.Instance.ChangeScreens("Options");
             }

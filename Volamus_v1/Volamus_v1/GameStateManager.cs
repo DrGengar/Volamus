@@ -121,8 +121,8 @@ namespace Volamus_v1
         public void LoadContent(ContentManager Content)
         {
             this.Content = new ContentManager(Content.ServiceProvider, "Content");
-            Music.SoundVolume = MusicVolume;
-            Ingame.SoundVolume = IngameVolume;
+            Music.SoundVolume = ((float)MusicVolume)/100;
+            Ingame.SoundVolume = ((float)IngameVolume)/100;
             Menu.SoundVolume = 1.0f;
             Music.Play2D("Content//Sound//going_coastal.ogg", true);
             currentState.LoadContent();
