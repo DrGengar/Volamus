@@ -111,10 +111,10 @@ namespace Volamus_v1
 
             d = new DebugDraw(GameStateManager.Instance.GraphicsDevice);
 
-            skydome = new Skydome(5.0f);
+            skydome = new Skydome(10f, false);
             skydome.Initialize();
 
-            skydome2 = new Skydome(1.0f);
+            skydome2 = new Skydome(5f, true);
             skydome2.Initialize();
         }
 
@@ -155,14 +155,14 @@ namespace Volamus_v1
             skydome.Update(0.0025f);
             skydome.Draw(camera, skyTexture);
             skydome2.Update(0.01f);
-           // skydome2.Draw(camera, skyTexture2);
+            //skydome2.Draw(camera, skyTexture2);
 
             e.View = camera.ViewMatrix;
             e.Projection = camera.ProjectionMatrix;
 
             e.TextureEnabled = true;
             e.Texture = texture;
-            
+
             foreach (var pass in e.CurrentTechnique.Passes)
             {
                 pass.Apply();
@@ -282,7 +282,7 @@ namespace Volamus_v1
 
         private void CreateNetBoundingBox()
         {
-            netBoundingBox = new BoundingBox(new Vector3(-54,-0.2f, 10), new Vector3(54, 0.2f, 20));
+            netBoundingBox = new BoundingBox(new Vector3(-54, -0.2f, 10), new Vector3(54, 0.2f, 20));
         }
     }
 }

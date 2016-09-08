@@ -16,6 +16,7 @@ namespace Volamus_v1
         Vector3 velocity;
 
         Model drop;
+        Texture2D texture;
         int timeToLive;
 
         BoundingSphere boundingSphere;
@@ -31,11 +32,12 @@ namespace Volamus_v1
         }
 
         //Drop während dem Spiel
-        public Drop(Vector3 pos, int ttl, Model dr)
+        public Drop(Vector3 pos, int ttl, Model dr, Texture2D tex)
         {
             position = pos;
             timeToLive = ttl;
             drop = dr;
+            texture = tex;
 
             boundingSphere = new BoundingSphere();
 
@@ -51,12 +53,13 @@ namespace Volamus_v1
         }
 
         //Drop ende mit Bewegung
-        public Drop(Vector3 pos, int ttl, Model dr, Vector3 velo)
+        public Drop(Vector3 pos, int ttl, Model dr, Vector3 velo, Texture2D tex)
         {
             position = pos;
             timeToLive = ttl;
             drop = dr;
             velocity = velo;
+            texture = tex;
         }
 
         //Update für die Drops, die die Ballgröße verändern
@@ -97,9 +100,10 @@ namespace Volamus_v1
                     effect.Parameters["View"].SetValue(camera.ViewMatrix);
                     effect.Parameters["Projection"].SetValue(camera.ProjectionMatrix);
                     Matrix WorldInverseTransposeMatrix = Matrix.Transpose(Matrix.Invert(transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) *
-                            Matrix.CreateScale(1.0f, 1.0f, 1.0f)
+                            Matrix.CreateScale(0.5f, 0.5f, 0.5f)
                             * Matrix.CreateTranslation(position)));
                     effect.Parameters["WorldInverseTranspose"].SetValue(WorldInverseTransposeMatrix);
+                    effect.Parameters["ModelTexture"].SetValue(texture);
 
                     viewVector = Vector3.Transform(camera.View - camera.Position, Matrix.CreateRotationY(0));
                     viewVector.Normalize();

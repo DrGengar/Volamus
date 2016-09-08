@@ -14,6 +14,7 @@ namespace Volamus_v1
         Effect effect;
         List<Drop> confetti;
         Model dr;
+        Texture2D texture;
         int direction;
 
         //Konfetti an den Ecken des Gewinners
@@ -25,14 +26,15 @@ namespace Volamus_v1
 
             dr = GameStateManager.Instance.Content.Load<Model>("Models/confetti2");
             effect = GameStateManager.Instance.Content.Load<Effect>("Effects/shaderTest");
+            texture = GameStateManager.Instance.Content.Load<Texture2D>("Textures/blau");
         }
 
         public void Update(Random rnd)
         {
             int total = rnd.Next(100);
 
-            while(confetti.Count < total)
-            {             
+            while (confetti.Count < total)
+            {
                 if (direction == 1)
                 {
                     Vector3 location = new Vector3(-50, -45, 0);
@@ -65,10 +67,10 @@ namespace Volamus_v1
         private Drop Generate(Vector3 loc, Random rnd)
         {
             int timeToLive = 100 + rnd.Next(40);
-            Vector3 velo = new Vector3(rnd.Next(-5, 5), rnd.Next(-5, 5),  rnd.Next(5, 10));
+            Vector3 velo = new Vector3(rnd.Next(-5, 5), rnd.Next(-5, 5), rnd.Next(5, 10));
             velo = velo / 100;
 
-            return new Drop(loc, timeToLive, dr, velo);
+            return new Drop(loc, timeToLive, dr, velo, texture);
         }
 
         public void Draw(Camera camera)

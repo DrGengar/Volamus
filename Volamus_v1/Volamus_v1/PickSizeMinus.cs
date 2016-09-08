@@ -13,6 +13,7 @@ namespace Volamus_v1
         Effect effect;
         List<Drop> drops;
         Model dr;
+        Texture2D texture;
 
         public PickSizeMinus()
         {
@@ -21,15 +22,16 @@ namespace Volamus_v1
 
         public void LoadContent()
         {
-            dr = GameStateManager.Instance.Content.Load<Model>("Models/drop");
-            effect = GameStateManager.Instance.Content.Load<Effect>("Effects/shaderTest");
+            dr = GameStateManager.Instance.Content.Load<Model>("Models/PUsizeM");
+            effect = GameStateManager.Instance.Content.Load<Effect>("Effects/shaderTestWithTexture");
+            texture = GameStateManager.Instance.Content.Load<Texture2D>("Textures/blau");
         }
 
         public void Update(Random rnd)
         {
             int total = rnd.Next(3);
 
-            while(drops.Count < total)
+            while (drops.Count < total)
             {
                 drops.Add(Generate(rnd));
             }
@@ -49,9 +51,7 @@ namespace Volamus_v1
 
                     if (Ball.Instance.BoundingSphereRadius > 1.5)
                     {
-                        float temp = Ball.Instance.BoundingSphereRadius;
                         Ball.Instance.BoundingSphereRadius -= 0.1f;
-                        Ball.Instance.EffectDrop = Ball.Instance.BoundingSphereRadius / temp;
                     }
                 }
             }
@@ -69,7 +69,7 @@ namespace Volamus_v1
             int zufall = rnd.Next(1, 11);
             int timeToLive = 200 + rnd.Next(80);
 
-            return new Drop(new Vector3(x, y, 2), timeToLive, dr);
+            return new Drop(new Vector3(x, y, 0.5f), timeToLive, dr, texture);
         }
 
         public void Draw(Camera camera)

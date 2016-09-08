@@ -15,13 +15,15 @@ namespace Volamus_v1
         Vector3 viewVector;
 
         float diameter;
+        bool transparent;
         Model skydome;
 
         float ro;
 
-        public Skydome(float diameter)
+        public Skydome(float diameter, bool transp)
         {
             this.diameter = diameter;
+            transparent = transp;
         }
 
 
@@ -34,7 +36,14 @@ namespace Volamus_v1
         {
             effect2 = GameStateManager.Instance.Content.Load<Effect>("Effects/shaderTestWithTexture");
 
-            skydome = GameStateManager.Instance.Content.Load<Model>("Models/skydome");
+            if (transparent == false)
+            {
+                skydome = GameStateManager.Instance.Content.Load<Model>("Models/skydome");
+            }
+            else
+            {
+                skydome = GameStateManager.Instance.Content.Load<Model>("Models/skydomeTransp");
+            }
 
             ro = 0;
         }
@@ -58,8 +67,8 @@ namespace Volamus_v1
             {
                 foreach (ModelMeshPart part in mesh.MeshParts)
                 {
-                    part.Effect = effect2;   
-                    effect2.Parameters["World"].SetValue(transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(270)) * Matrix.CreateRotationZ(MathHelper.ToRadians(ro)) * Matrix.CreateScale(25, 25, 25)
+                    part.Effect = effect2;
+                    effect2.Parameters["World"].SetValue(transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(270)) * Matrix.CreateRotationZ(MathHelper.ToRadians(ro)) * Matrix.CreateScale(diameter, diameter, diameter)
                             * Matrix.CreateTranslation(new Vector3(0, 0, -500)));
                     effect2.Parameters["View"].SetValue(camera.ViewMatrix);
                     effect2.Parameters["Projection"].SetValue(camera.ProjectionMatrix);
