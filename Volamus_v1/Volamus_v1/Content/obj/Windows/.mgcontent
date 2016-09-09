@@ -74,5 +74,9 @@
     <File>C:/Users/Lars/Desktop/3dGame/Volamus_v1/Volamus_v1/Content/Textures/pink.png</File>
     <File>C:/Users/Lars/Desktop/3dGame/Volamus_v1/Volamus_v1/Content/Images/buttonTexture.png</File>
     <File>C:/Users/Lars/Desktop/3dGame/Volamus_v1/Volamus_v1/Content/Images/buttonTextureLong.png</File>
+    <File>C:/Users/Lars/Desktop/3dGame/Volamus_v1/Volamus_v1/Content/Models/fahne.fbx</File>
+    <File>C:/Users/Lars/Desktop/3dGame/Volamus_v1/Volamus_v1/Content/Textures/fahne_textur.png</File>
+    <File>C:/Users/Lars/Desktop/3dGame/Volamus_v1/Volamus_v1/Content/Textures/fahne_textur2.png</File>
+    <File>C:/Users/Lars/Desktop/3dGame/Volamus_v1/Volamus_v1/Content/Effects/shaderSkybox.fx</File>
   </SourceFiles>
 </SourceFileCollection>

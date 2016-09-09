@@ -1,4 +1,4 @@
-﻿#if OPENGL
+#if OPENGL
 #define SV_POSITION POSITION
 #define VS_SHADERMODEL vs_3_0
 #define PS_SHADERMODEL ps_3_0
@@ -14,7 +14,7 @@ float4x4 WorldInverseTranspose;
 float4 AmbientColor = float4(1, 1, 1, 1);
 float AmbientIntensity = 0.1;
 
-float3 DiffuseLightDirection = float3(-60, -50, 20);
+float3 DiffuseLightDirection = float3(0, 0, -200);
 float4 DiffuseColor = float4(1, 1, 1, 1);
 float DiffuseIntensity = 1.0;
 

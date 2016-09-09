@@ -303,20 +303,20 @@ namespace Volamus_v1
                     if (!isFinished)
                     {
                         One.DrawArrow(camera);
-                    }
 
-                    GameStateManager.Instance.SpriteBatch.DrawString(One.Font, One.Points.ToString() + " / " + maxPoints,
-                        new Vector2(view.Width / 2, 0), Color.White);
+                        GameStateManager.Instance.SpriteBatch.DrawString(One.Font, One.Points.ToString() + " / " + maxPoints,
+                             new Vector2(view.Width / 2, 0), Color.White);
+                    }
                 }
                 else
                 {
                     if (!isFinished)
                     {
                         Two.DrawArrow(camera);
-                    }
 
-                    GameStateManager.Instance.SpriteBatch.DrawString(Two.Font, Two.Points.ToString() + " / " + maxPoints,
-                        new Vector2(view.X + view.Width / 2, 0), Color.White);
+                        GameStateManager.Instance.SpriteBatch.DrawString(Two.Font, Two.Points.ToString() + " / " + maxPoints,
+                            new Vector2(view.X + view.Width / 2, 0), Color.White);
+                    }
                 }
 
                 Two.Draw(camera);

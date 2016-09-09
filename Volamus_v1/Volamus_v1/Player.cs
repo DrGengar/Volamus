@@ -90,8 +90,6 @@ namespace Volamus_v1
 
         Vector2[] box = new Vector2[2];
 
-        DebugDraw d;
-
         Model pfeil;
         Texture2D arrowTexture, arrowTexture2;
 
@@ -270,8 +268,6 @@ namespace Volamus_v1
 
 
             scale = new Vector3(2.9f, 2.9f, 2.9f); //0.025
-
-            d = new DebugDraw(GameStateManager.Instance.GraphicsDevice);
         }
 
         public Player(Vector3 pos, int m_j_height, float j_velo, float mvp, Field field)
@@ -887,11 +883,12 @@ namespace Volamus_v1
                 betta = 0;
                 gamma = 0;
 
-                if(GameScreen.Instance.Match.Winner == this)
+                hitAngleLeft = 90;
+                hitAngleRight = 90;
+
+                if (GameScreen.Instance.Match.Winner == this)
                 {
                     //Flügel gehen nach oben
-                    leftWingPosition = new Vector3(position.X - 2, position.Y, position.Z - 1);
-                    rightWingPosition = new Vector3(position.X + 2, position.Y, position.Z - 1);
                     hitAngleHigh = 20;
 
                     //hüpft
@@ -911,6 +908,9 @@ namespace Volamus_v1
                             is_falling = false;
                         }
                     }
+
+                    leftWingPosition = new Vector3(position.X - 2, position.Y, position.Z - 1);
+                    rightWingPosition = new Vector3(position.X + 2, position.Y, position.Z - 1);
                 }
                 else
                 {
@@ -1541,6 +1541,9 @@ namespace Volamus_v1
                 betta = 0;
                 gamma = 0;
 
+                hitAngleLeft = 90;
+                hitAngleRight = 90;
+
                 if (GameScreen.Instance.Match.Winner == this)
                 {
                     //Flügel gehen nach oben
@@ -1706,11 +1709,6 @@ namespace Volamus_v1
                 DrawWingLeft(camera, leftWing, leftWingPosition);
                 DrawWingRight(camera, rightWing, rightWingPosition);
             }
-
-            d.Begin(camera.ViewMatrix, camera.ProjectionMatrix);
-            d.DrawWireBox(innerBoundingBox, Color.White);
-            d.DrawWireBox(outerBoundingBox, Color.Black);
-            d.End();
         }
 
         // für rechten Flügel

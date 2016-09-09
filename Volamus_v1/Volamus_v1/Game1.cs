@@ -33,6 +33,7 @@ namespace Volamus_v1
 
             graphics.PreferredBackBufferWidth = (int)GameStateManager.Instance.dimensions.X;
             graphics.PreferredBackBufferHeight = (int)GameStateManager.Instance.dimensions.Y;
+            graphics.PreferMultiSampling = true;
             this.Window.Position = new Point(0, 0);
             graphics.ApplyChanges();
 

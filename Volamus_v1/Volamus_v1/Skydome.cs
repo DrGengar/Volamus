@@ -34,7 +34,7 @@ namespace Volamus_v1
 
         public void Load()
         {
-            effect2 = GameStateManager.Instance.Content.Load<Effect>("Effects/shaderTestWithTexture");
+            effect2 = GameStateManager.Instance.Content.Load<Effect>("Effects/shaderSkybox");
 
             if (transparent == false)
             {
@@ -75,6 +75,7 @@ namespace Volamus_v1
                     Matrix WorldInverseTransposeMatrix = Matrix.Transpose(transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(270)) * Matrix.CreateRotationZ(MathHelper.ToRadians(ro)) * Matrix.CreateScale(diameter, diameter, diameter)
                             * Matrix.CreateTranslation(new Vector3(0, 0, -500)));
                     effect2.Parameters["WorldInverseTranspose"].SetValue(WorldInverseTransposeMatrix);
+
                     effect2.Parameters["ModelTexture"].SetValue(texture);
 
                     viewVector = Vector3.Transform(camera.View - camera.Position, Matrix.CreateRotationY(0));

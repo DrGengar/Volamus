@@ -41,12 +41,15 @@ namespace Volamus_v1
         BasicEffect e;
         Texture2D texture;
 
-        DebugDraw d;
-
         Skydome skydome;
         Texture2D skyTexture;
         Skydome skydome2;
         Texture2D skyTexture2;
+
+        Model banner;
+        Texture2D bannerTexture;
+        float rotation;
+
 
         public VertexPositionTexture[] FieldVertices
         {
@@ -109,8 +112,6 @@ namespace Volamus_v1
 
             e = new BasicEffect(GameStateManager.Instance.GraphicsDevice);
 
-            d = new DebugDraw(GameStateManager.Instance.GraphicsDevice);
-
             skydome = new Skydome(25f, false);
             skydome.Initialize();
 
@@ -120,7 +121,6 @@ namespace Volamus_v1
 
         public void LoadContent()
         {
-            effect = GameStateManager.Instance.Content.Load<Effect>("Effects/shaderTest");
             effect2 = GameStateManager.Instance.Content.Load<Effect>("Effects/shaderTestWithTexture");
 
             net = GameStateManager.Instance.Content.Load<Model>("Models/netzv4");
@@ -142,11 +142,27 @@ namespace Volamus_v1
             skydome2.Load();
             skyTexture2 = GameStateManager.Instance.Content.Load<Texture2D>("Textures/skydomeCloud1");
 
+            banner = GameStateManager.Instance.Content.Load<Model>("Models/fahne");
+            bannerTexture = GameStateManager.Instance.Content.Load<Texture2D>("Textures/fahne_textur");
+
             CreateNetBoundingBox();
         }
 
         public void Draw(Camera camera)
         {
+            float temp = Ball.Instance.Wind.Direction();
+
+            if(temp == 0)
+            {
+                rotation = 0;
+            }
+            else
+            {
+                rotation = temp * 1000;
+            }
+
+
+            DrawBanner(camera);
             DrawIce(camera);
             DrawNet(camera);
             DrawReferee(camera);
@@ -188,6 +204,52 @@ namespace Volamus_v1
                            * Matrix.CreateTranslation(new Vector3(0, 0, -0.75f))));
                     effect2.Parameters["WorldInverseTranspose"].SetValue(WorldInverseTransposeMatrix);
                     effect2.Parameters["ModelTexture"].SetValue(iceTexture);
+
+                    viewVector = Vector3.Transform(camera.View - camera.Position, Matrix.CreateRotationY(0));
+                    viewVector.Normalize();
+                    effect2.Parameters["ViewVector"].SetValue(viewVector);
+                }
+                mesh.Draw();
+            }
+        }
+
+        private void DrawBanner(Camera camera)
+        {
+            Matrix[] transforms = new Matrix[banner.Bones.Count];
+            banner.CopyAbsoluteBoneTransformsTo(transforms);
+            foreach (ModelMesh mesh in banner.Meshes)
+            {
+                foreach (ModelMeshPart part in mesh.MeshParts)
+                {
+                    part.Effect = effect2;
+                    effect2.Parameters["World"].SetValue(transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) * Matrix.CreateRotationZ(MathHelper.ToRadians(rotation)) * Matrix.CreateScale(0.04f, 0.04f, 0.04f)
+                           * Matrix.CreateTranslation(new Vector3(-50, 0, 0)));
+                    effect2.Parameters["View"].SetValue(camera.ViewMatrix);
+                    effect2.Parameters["Projection"].SetValue(camera.ProjectionMatrix);
+                    Matrix WorldInverseTransposeMatrix = Matrix.Transpose(Matrix.Invert(transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) * Matrix.CreateRotationZ(MathHelper.ToRadians(rotation)) * Matrix.CreateScale(0.04f, 0.04f, 0.04f)
+                           * Matrix.CreateTranslation(new Vector3(-50, 0, 0))));
+                    effect2.Parameters["WorldInverseTranspose"].SetValue(WorldInverseTransposeMatrix);
+
+                    effect2.Parameters["ModelTexture"].SetValue(bannerTexture);
+
+                    viewVector = Vector3.Transform(camera.View - camera.Position, Matrix.CreateRotationY(0));
+                    viewVector.Normalize();
+                    effect2.Parameters["ViewVector"].SetValue(viewVector);
+                }
+                mesh.Draw();
+
+                foreach (ModelMeshPart part in mesh.MeshParts)
+                {
+                    part.Effect = effect2;
+                    effect2.Parameters["World"].SetValue(transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) * Matrix.CreateRotationZ(MathHelper.ToRadians(rotation)) * Matrix.CreateScale(0.04f, 0.04f, 0.04f)
+                           * Matrix.CreateTranslation(new Vector3(50, 0, 0)));
+                    effect2.Parameters["View"].SetValue(camera.ViewMatrix);
+                    effect2.Parameters["Projection"].SetValue(camera.ProjectionMatrix);
+                    Matrix WorldInverseTransposeMatrix = Matrix.Transpose(Matrix.Invert(transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) * Matrix.CreateRotationZ(MathHelper.ToRadians(rotation)) * Matrix.CreateScale(0.04f, 0.04f, 0.04f)
+                           * Matrix.CreateTranslation(new Vector3(50, 0, 0))));
+                    effect2.Parameters["WorldInverseTranspose"].SetValue(WorldInverseTransposeMatrix);
+
+                    effect2.Parameters["ModelTexture"].SetValue(bannerTexture);
 
                     viewVector = Vector3.Transform(camera.View - camera.Position, Matrix.CreateRotationY(0));
                     viewVector.Normalize();

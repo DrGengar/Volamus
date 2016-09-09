@@ -248,18 +248,6 @@ namespace Volamus_v1
                 }
                 mesh.Draw();
             }
-
-
-
-            SpriteFont font = GameStateManager.Instance.Content.Load<SpriteFont>("SpriteFonts/Standard");
-            String text = Wind.Direction().ToString();
-
-            GameStateManager.Instance.SpriteBatch.DrawString(font, text,
-                new Vector2((GameStateManager.Instance.dimensions.X - font.MeasureString(text).X) / 2, 0), Color.Black);
-
-          /*  d.Begin(camera.ViewMatrix, camera.ProjectionMatrix);
-            d.DrawWireSphere(boundingSphere, Color.Red);
-            d.End();*/
         }
     }
 }

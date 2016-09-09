@@ -127,7 +127,6 @@ namespace Volamus_v1
                 match.Draw(match.Two.Camera, rightView);
             }
 
- 
             //Ganzes Bild
             GameStateManager.Instance.GraphicsDevice.Viewport = defaultView;
 
@@ -154,9 +153,6 @@ namespace Volamus_v1
 
                 GameScreen.Instance.Match.Draw(new Camera(new Vector3(x, y, 40), new Vector3(0, 0, 0), new Vector3(0, 0, 1)), defaultView);
 
-
-
-
                 //Rotation
                 x = 100 * (float)Math.Cos(rotate);
                 y = 100 * (float)Math.Sin(rotate);
@@ -176,13 +172,6 @@ namespace Volamus_v1
                 x = 0;
                 y = 70;
             }
-            //  GameStateManager.Instance.GraphicsDevice.Viewport = defaultView;
-
-
-
-            //FPS Anzeige
-            var fps = string.Format("FPS: {0}", frameCounter.AverageFramesPerSecond);
-            spriteBatch.DrawString(GameStateManager.Instance.Content.Load<SpriteFont>("SpriteFonts/Standard"), fps, new Vector2(1, 1), Color.White);
 
             base.Draw(spriteBatch);
         }
