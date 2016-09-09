@@ -153,7 +153,7 @@ namespace Volamus_v1
 
             for (int index = 0; index < confetti.Count; index++)
             {
-                confetti[index].Draw(camera, effect);
+                confetti[index].Draw(camera, effect, 90);
             }
 
         }

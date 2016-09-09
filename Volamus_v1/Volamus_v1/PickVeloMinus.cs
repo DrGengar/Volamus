@@ -91,7 +91,7 @@ namespace Volamus_v1
         {
             for (int index = 0; index < dropsVelo.Count; index++)
             {
-                dropsVelo[index].Draw(camera, effect);
+                dropsVelo[index].Draw(camera, effect, 90);
             }
 
         }

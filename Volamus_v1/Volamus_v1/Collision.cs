@@ -59,6 +59,12 @@ namespace Volamus_v1
         {
             if (GameScreen.Instance.Match.IsFinished != true)
             {
+                BallWithOuterBoundingBox(lastTouched);
+                BallWithOuterBoundingBox(lastTouched.Enemy);
+
+                BallWithInnerBoundingBox(lastTouched);
+                BallWithInnerBoundingBox(lastTouched.Enemy);
+
                 //Ball mit Ebene z=0
                 if (BallWithPlane())
                 {
@@ -79,6 +85,8 @@ namespace Volamus_v1
 
                             lastTouched.Enemy.Points += 1;
                             lastTouched.Enemy.IsServing = true;
+                            lastTouched.CanHit = false;
+                            
 
                             lastTouched.Touch_Count = 0;
                             lastTouched.Enemy.Touch_Count = 0;
@@ -93,6 +101,7 @@ namespace Volamus_v1
 
                                 lastTouched.Enemy.Points += 1;
                                 lastTouched.Enemy.IsServing = true;
+                                lastTouched.CanHit = false;
 
                                 lastTouched.Touch_Count = 0;
                                 lastTouched.Enemy.Touch_Count = 0;
@@ -101,6 +110,7 @@ namespace Volamus_v1
                             {
                                 lastTouched.Points += 1;
                                 lastTouched.IsServing = true;
+                                lastTouched.Enemy.CanHit = false;
 
                                 lastTouched.Touch_Count = 0;
                                 lastTouched.Enemy.Touch_Count = 0;
@@ -149,12 +159,6 @@ namespace Volamus_v1
                 {
                     colliding = 0;
                 }
-
-                BallWithOuterBoundingBox(lastTouched);
-                BallWithOuterBoundingBox(lastTouched.Enemy);
-
-                BallWithInnerBoundingBox(lastTouched);
-                BallWithInnerBoundingBox(lastTouched.Enemy);
 
                 //Ball mit Netz
                 if (Ball.Instance.BoundingSphere.Intersects(field.NetBoundingBox) && colliding == 0)

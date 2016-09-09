@@ -110,6 +110,7 @@
     <Compile Include="SelectableInt.cs" />
     <Compile Include="SelectableOptions.cs" />
     <Compile Include="Skydome.cs" />
+    <Compile Include="Spectator.cs" />
     <Compile Include="SplashScreen.cs" />
     <Compile Include="TitleScreen.cs" />
     <Compile Include="Wind.cs" />
