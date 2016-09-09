@@ -43,7 +43,7 @@ namespace Volamus_v1
             stages = new SelectableImage(new[] { mapOne, mapTwo, mapThree }, "Maps");
 
             wind = new SelectableBool("Wind");
-            enemyVelo = new SelectableBool("Enemy Velocity Drops");
+            enemyVelo = new SelectableBool("Velocity Drops");
             ballRadius = new SelectableBool("Ball Radius Drops");
 
             options = new SelectableOptions[5];

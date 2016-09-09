@@ -99,6 +99,13 @@ namespace Volamus_v1
                     Drop--;
                 }
             }
+        }
+
+        private Drop Generate(Vector3 loc, Random rnd)
+        {
+            int timeToLive = 100 + rnd.Next(40);
+            Vector3 velo = new Vector3(rnd.Next(-5, 5), rnd.Next(-5, 5), rnd.Next(5, 10));
+            velo = velo / 100;
 
             int temp = new Random().Next(1, 11);
             switch (temp)
@@ -137,13 +144,6 @@ namespace Volamus_v1
                     texture = GameStateManager.Instance.Content.Load<Texture2D>("Textures/BeachBallTexture");
                     break;
             }
-        }
-
-        private Drop Generate(Vector3 loc, Random rnd)
-        {
-            int timeToLive = 100 + rnd.Next(40);
-            Vector3 velo = new Vector3(rnd.Next(-5, 5), rnd.Next(-5, 5), rnd.Next(5, 10));
-            velo = velo / 100;
 
             return new Drop(loc, timeToLive, dr, velo, texture);
         }
@@ -153,7 +153,32 @@ namespace Volamus_v1
 
             for (int index = 0; index < confetti.Count; index++)
             {
-                confetti[index].Draw(camera, effect, 90);
+                Matrix[] transforms = new Matrix[dr.Bones.Count];
+                dr.CopyAbsoluteBoneTransformsTo(transforms);
+
+                foreach (ModelMesh mesh in dr.Meshes)
+                {
+                    foreach (ModelMeshPart part in mesh.MeshParts)
+                    {
+                        part.Effect = effect;
+                        effect.Parameters["World"].SetValue(transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) *
+                                Matrix.CreateScale(1.50f, 1.50f, 2.0f)
+                                * Matrix.CreateTranslation(confetti[index].Position));
+                        effect.Parameters["View"].SetValue(camera.ViewMatrix);
+                        effect.Parameters["Projection"].SetValue(camera.ProjectionMatrix);
+                        Matrix WorldInverseTransposeMatrix = Matrix.Transpose(Matrix.Invert(transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) *
+                                Matrix.CreateScale(1.5f, 1.5f, 1.5f)
+                                * Matrix.CreateTranslation(confetti[index].Position)));
+                        effect.Parameters["WorldInverseTranspose"].SetValue(WorldInverseTransposeMatrix);
+
+                        effect.Parameters["ModelTexture"].SetValue(confetti[index].Texture);
+
+                        Vector3 viewVector = Vector3.Transform(camera.View - camera.Position, Matrix.CreateRotationY(0));
+                        viewVector.Normalize();
+                        effect.Parameters["ViewVector"].SetValue(viewVector);
+                    }
+                    mesh.Draw();
+                }
             }
 
         }

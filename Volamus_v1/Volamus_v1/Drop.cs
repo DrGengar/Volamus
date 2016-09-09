@@ -21,6 +21,16 @@ namespace Volamus_v1
 
         BoundingSphere boundingSphere;
 
+        public Texture2D Texture
+        {
+            get { return texture; }
+        }
+
+        public Vector3 Position
+        {
+            get { return position; }
+        }
+
         public int ttl
         {
             get { return timeToLive; }
@@ -84,10 +94,10 @@ namespace Volamus_v1
         }
 
 
-        public void Draw(Camera camera, Effect effect, int Rotation)
+        public void Draw(Camera camera, Effect effect, int Rotation, Model model)
         {
-            Matrix[] transforms = new Matrix[drop.Bones.Count];
-            drop.CopyAbsoluteBoneTransformsTo(transforms);
+            Matrix[] transforms = new Matrix[model.Bones.Count];
+            model.CopyAbsoluteBoneTransformsTo(transforms);
 
             foreach (ModelMesh mesh in drop.Meshes)
             {
@@ -112,7 +122,6 @@ namespace Volamus_v1
                 }
                 mesh.Draw();
             }
-
         }
     }
 }

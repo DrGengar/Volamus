@@ -26,14 +26,6 @@ namespace Volamus_v1
 
         private static GameScreen instance;
 
-        private bool pause = false;
-
-        public bool Pause
-        {
-            get { return pause; }
-            set { pause = value; }
-        }
-
         public Match Match
         {
             get { return match; }
@@ -100,10 +92,9 @@ namespace Volamus_v1
 
             match.Update(gameTime);
 
-            if (InputManager.Instance.KeyPressed(Keys.Escape) || InputManager.Instance.ButtonPressed(Buttons.Back))
+            if ((InputManager.Instance.KeyPressed(Keys.Escape) || InputManager.Instance.ButtonPressed(Buttons.Back)) && !Match.IsFinished)
             {
                 GameStateManager.Instance.ChangeScreens("InGameMenu");
-                pause = true;
             }
 
             base.Update(gameTime);
@@ -152,18 +143,18 @@ namespace Volamus_v1
                         rotate = MathHelper.Pi / 2;  //90
                         test = rotate + 8 * MathHelper.Pi;
                     }
-                    y = 70 * match.Winner.Direction;
+                    y = 100 * match.Winner.Direction;
 
                 }
 
-                GameScreen.Instance.Match.Draw(new Camera(new Vector3(x, y, 80), new Vector3(0, 0, 0), new Vector3(0, 0, 1)), defaultView);
+                GameScreen.Instance.Match.Draw(new Camera(new Vector3(x, y, 40), new Vector3(0, 0, 0), new Vector3(0, 0, 1)), defaultView);
 
 
 
 
                 //Rotation
-                x = 70 * (float)Math.Cos(rotate);
-                y = 70 * (float)Math.Sin(rotate);
+                x = 100 * (float)Math.Cos(rotate);
+                y = 100 * (float)Math.Sin(rotate);
                 rotate += 0.002f;//0.002f;
 
                 //nach 4 Runden wird rotate zurückgesetzt, dass die Zahl nicht zu groß wird
