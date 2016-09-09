@@ -62,8 +62,6 @@ namespace Volamus_v1
 
 
             frameCounter = new FrameCounter();
-
-            //GameStateManager.Instance.Music.SoundVolume = 0.2f;
         }
 
         public override void LoadContent()
@@ -83,6 +81,11 @@ namespace Volamus_v1
 
             GameStateManager.Instance.Music.Play2D("Content//Sound//going_coastal.ogg", true);
 
+        }
+
+        public void UnloadContent2()
+        {
+            instance = null;
         }
 
         public override void Update(GameTime gameTime)

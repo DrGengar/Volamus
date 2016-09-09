@@ -252,7 +252,10 @@ namespace Volamus_v1
                     confetti.Update(rnd);
                 }
 
-                Ball.Instance.Update();
+                if (!isFinished)
+                {
+                    Ball.Instance.Update();
+                }
 
                 Collision.Instance.CollisionMethod(field);
             }
@@ -274,18 +277,31 @@ namespace Volamus_v1
             else
             {
                 field.Draw(camera);
-                Ball.Instance.Draw(camera);
+
+                if (!isFinished)
+                {
+                    Ball.Instance.Draw(camera);
+                }
+
                 One.Draw(camera);
 
                 if (camera == One.Camera)
                 {
-                    One.DrawArrow(camera);
+                    if (!isFinished)
+                    {
+                        One.DrawArrow(camera);
+                    }
+
                     GameStateManager.Instance.SpriteBatch.DrawString(One.Font, One.Points.ToString() + " / " + maxPoints,
                         new Vector2(view.Width / 2, 0), Color.White);
                 }
                 else
                 {
-                    Two.DrawArrow(camera);
+                    if (!isFinished)
+                    {
+                        Two.DrawArrow(camera);
+                    }
+
                     GameStateManager.Instance.SpriteBatch.DrawString(Two.Font, Two.Points.ToString() + " / " + maxPoints,
                         new Vector2(view.X + view.Width / 2, 0), Color.White);
                 }

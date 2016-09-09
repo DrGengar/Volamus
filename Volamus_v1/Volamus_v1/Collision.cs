@@ -50,6 +50,11 @@ namespace Volamus_v1
         {
         }
 
+        public void UnloadContent()
+        {
+            instance = null;
+        }
+
         public void CollisionMethod(Field field)
         {
             if (GameScreen.Instance.Match.IsFinished != true)
@@ -105,7 +110,7 @@ namespace Volamus_v1
                     }
 
                     //Hüpfen des Balls -> Überarbeiten
-                    if (groundContact <= 1 && lastTouched.Points != GameScreen.Instance.Match.MaxPoints && lastTouched.Enemy.Points != GameScreen.Instance.Match.MaxPoints)
+                    if (groundContact <= 1 && !GameScreen.Instance.Match.IsFinished)
                     {
                         Vector3 hitdirection = Ball.Instance.Active.Hit_Direction;
                         float angle_z = MathHelper.ToDegrees((float)Math.Atan((hitdirection.Z / hitdirection.Y)));

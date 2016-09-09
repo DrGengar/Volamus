@@ -21,8 +21,9 @@ namespace Volamus_v1
         {
             base.LoadContent();
             Screen.LoadContent();
-            Screen.Scale = new Vector2((float)GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width / (float)Screen.Texture.Width,
-                (float)GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height / (float)Screen.Texture.Height);
+
+            Screen.Scale = new Vector2((float)GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width / ((float)Screen.Texture.Width / 1.5f),
+                    (float)GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height / ((float)Screen.Texture.Height / 1.5f));
 
             Volamus.LoadContent();
             Volamus.Position = new Vector2((GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width - Volamus.SourceRect.Width) / 2, 0);
@@ -50,6 +51,14 @@ namespace Volamus_v1
             Screen.Update(gameTime);
             Volamus.Update(gameTime);
             Enter.Update(gameTime);
+
+            Screen.Scale = new Vector2((float)GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width / ((float)Screen.Texture.Width / ((float)GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width / (float)Screen.Texture.Width)),
+                (float)GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height / ((float)Screen.Texture.Height / ((float)GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height / (float)Screen.Texture.Height)));
+
+            Volamus.Position = new Vector2((GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width - Volamus.SourceRect.Width) / 2, 0);
+
+            Enter.Position = new Vector2((GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width - Enter.SourceRect.Width) / 2,
+                ((GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height - Enter.SourceRect.Height) / 3) * 2);
 
             if (InputManager.Instance.KeyPressed(Keys.Enter) || InputManager.Instance.ButtonPressed(Buttons.A))
             {

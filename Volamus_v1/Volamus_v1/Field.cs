@@ -111,7 +111,7 @@ namespace Volamus_v1
 
             d = new DebugDraw(GameStateManager.Instance.GraphicsDevice);
 
-            skydome = new Skydome(10f, false);
+            skydome = new Skydome(25f, false);
             skydome.Initialize();
 
             skydome2 = new Skydome(5f, true);
@@ -154,7 +154,7 @@ namespace Volamus_v1
 
             skydome.Update(0.0025f);
             skydome.Draw(camera, skyTexture);
-            skydome2.Update(0.01f);
+            //skydome2.Update(0.01f);
             //skydome2.Draw(camera, skyTexture2);
 
             e.View = camera.ViewMatrix;

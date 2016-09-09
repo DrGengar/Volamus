@@ -37,6 +37,8 @@ namespace Volamus_v1
         public ISoundEngine Ingame;
         public int IngameVolume;
 
+        public bool Fullscreen;
+
         [XmlIgnore]
         public ISoundEngine Menu;
 
@@ -121,8 +123,8 @@ namespace Volamus_v1
         public void LoadContent(ContentManager Content)
         {
             this.Content = new ContentManager(Content.ServiceProvider, "Content");
-            Music.SoundVolume = ((float)MusicVolume)/100;
-            Ingame.SoundVolume = ((float)IngameVolume)/100;
+            Music.SoundVolume = ((float)MusicVolume) / 100;
+            Ingame.SoundVolume = ((float)IngameVolume) / 100;
             Menu.SoundVolume = 1.0f;
             Music.Play2D("Content//Sound//going_coastal.ogg", true);
             currentState.LoadContent();
@@ -137,6 +139,23 @@ namespace Volamus_v1
 
         public void Update(GameTime gameTime)
         {
+            if (Fullscreen && !GraphicsDeviceManager.IsFullScreen)
+            {
+                GraphicsDeviceManager.ToggleFullScreen();
+            }
+
+            if (!Fullscreen && GraphicsDeviceManager.IsFullScreen)
+            {
+                GraphicsDeviceManager.ToggleFullScreen();
+            }
+
+            dimensions = new Vector2(GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height); //Laden von XML Datei einfügen
+            GraphicsDeviceManager.PreferredBackBufferWidth = (int)GameStateManager.Instance.dimensions.X;
+            GraphicsDeviceManager.PreferredBackBufferHeight = (int)GameStateManager.Instance.dimensions.Y;
+
+            Image.Scale = new Vector2((float)GraphicsDeviceManager.PreferredBackBufferWidth / (float)Image.Texture.Width,
+                            (float)GraphicsDeviceManager.PreferredBackBufferHeight / (float)Image.Texture.Height);
+
             currentState.Update(gameTime);
             Transition(gameTime);
         }

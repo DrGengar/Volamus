@@ -53,14 +53,20 @@ namespace Volamus_v1
                 {
                     dropsVelo.RemoveAt(Drop);
 
-                    GameScreen.Instance.Match.PlayerOne.Movespeed += 0.1f;
+                    if (GameScreen.Instance.Match.PlayerOne.Movespeed < 1.5f)
+                    {
+                        GameScreen.Instance.Match.PlayerOne.Movespeed += 0.1f;
+                    }
                 }
 
                 if (Drop < dropsVelo.Count && Collision.Instance.PlayerWithDrop(GameScreen.Instance.Match.PlayerTwo, dropsVelo[Drop]))
                 {
                     dropsVelo.RemoveAt(Drop);
 
-                    GameScreen.Instance.Match.PlayerTwo.Movespeed += 0.1f;
+                    if (GameScreen.Instance.Match.PlayerTwo.Movespeed < 2.0f)
+                    {
+                        GameScreen.Instance.Match.PlayerTwo.Movespeed += 0.1f;
+                    }
                 }
             }
 

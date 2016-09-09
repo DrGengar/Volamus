@@ -165,6 +165,11 @@ namespace Volamus_v1
             Initialize();
         }
 
+        public void UnloadContent()
+        {
+            instance = null;
+        }
+
         public void Update()
         {
    
@@ -230,7 +235,7 @@ namespace Volamus_v1
                             * Matrix.CreateTranslation(position));
                     effect2.Parameters["View"].SetValue(camera.ViewMatrix);
                     effect2.Parameters["Projection"].SetValue(camera.ProjectionMatrix);
-                    Matrix WorldInverseTransposeMatrix = Matrix.Transpose(Matrix.Invert(transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) *
+                    Matrix WorldInverseTransposeMatrix = Matrix.Transpose(Matrix.Invert(transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90 * rotate * Collision.Instance.LastTouched.Direction)) *
                             Matrix.CreateScale(1.0f, 1.0f, 1.0f)
                             * Matrix.CreateTranslation(position)));
                     effect2.Parameters["WorldInverseTranspose"].SetValue(WorldInverseTransposeMatrix);

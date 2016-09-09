@@ -16,7 +16,6 @@ namespace Volamus_v1
         Model dr;
         Texture2D texture;
         int direction;
-        int rnd;
 
         //Konfetti an den Ecken des Gewinners
 
@@ -28,8 +27,8 @@ namespace Volamus_v1
             dr = GameStateManager.Instance.Content.Load<Model>("Models/confetti2");
             effect = GameStateManager.Instance.Content.Load<Effect>("Effects/shaderTestWithTexture");
 
-            rnd = new Random().Next(1, 11);
-            switch (rnd)
+            int temp = new Random().Next(1, 11);
+            switch (temp)
             {
                 case 1:
                     texture = GameStateManager.Instance.Content.Load<Texture2D>("Textures/AcaTexture");
@@ -99,6 +98,44 @@ namespace Volamus_v1
                     confetti.RemoveAt(Drop);
                     Drop--;
                 }
+            }
+
+            int temp = new Random().Next(1, 11);
+            switch (temp)
+            {
+                case 1:
+                    texture = GameStateManager.Instance.Content.Load<Texture2D>("Textures/AcaTexture");
+                    break;
+                case 2:
+                    texture = GameStateManager.Instance.Content.Load<Texture2D>("Textures/blau");
+                    break;
+                case 3:
+                    texture = GameStateManager.Instance.Content.Load<Texture2D>("Textures/blau2");
+                    break;
+                case 4:
+                    texture = GameStateManager.Instance.Content.Load<Texture2D>("Textures/green");
+                    break;
+                case 5:
+                    texture = GameStateManager.Instance.Content.Load<Texture2D>("Textures/green2");
+                    break;
+                case 6:
+                    texture = GameStateManager.Instance.Content.Load<Texture2D>("Textures/green3");
+                    break;
+                case 7:
+                    texture = GameStateManager.Instance.Content.Load<Texture2D>("Textures/red");
+                    break;
+                case 8:
+                    texture = GameStateManager.Instance.Content.Load<Texture2D>("Textures/pink");
+                    break;
+                case 9:
+                    texture = GameStateManager.Instance.Content.Load<Texture2D>("Textures/lila");
+                    break;
+                case 10:
+                    texture = GameStateManager.Instance.Content.Load<Texture2D>("Textures/gelb");
+                    break;
+                default:
+                    texture = GameStateManager.Instance.Content.Load<Texture2D>("Textures/BeachBallTexture");
+                    break;
             }
         }
 

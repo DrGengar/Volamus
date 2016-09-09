@@ -1870,10 +1870,10 @@ namespace Volamus_v1
             innerBoundingBox = new BoundingBox(min, max);
 
             //äußere BoundingBox
-            Vector3 offset = new Vector3(Ball.Instance.BoundingSphere.Radius, Ball.Instance.BoundingSphere.Radius, 0);
+            Vector3 offset = new Vector3(1.5f * Ball.Instance.BoundingSphere.Radius, 1.5f * Ball.Instance.BoundingSphere.Radius, 0);
             outerBoundingBox = new BoundingBox((innerBoundingBox.Min - offset),
                 innerBoundingBox.Max + offset);
-            outerBoundingBox.Max.Z += Ball.Instance.BoundingSphere.Radius;
+            outerBoundingBox.Max.Z += 1.5f * Ball.Instance.BoundingSphere.Radius;
         }
 
         private void MovingBoundingBoxes(Vector3 offset)

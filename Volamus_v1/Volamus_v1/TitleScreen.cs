@@ -20,6 +20,10 @@ namespace Volamus_v1
 
         public override void LoadContent()
         {
+            Ball.Instance.UnloadContent();
+            Collision.Instance.UnloadContent();
+            GameScreen.Instance.UnloadContent2();
+
             base.LoadContent();
             menuManager.LoadContent("Content/Load/Menu/TitleScreen.xml");
 

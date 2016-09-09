@@ -13,6 +13,7 @@ namespace Volamus_v1
     {
         SelectableInt ingame;
         SelectableInt music;
+        SelectableBool fullscreen;
 
         SelectableOptions[] options;
         int active;
@@ -22,30 +23,41 @@ namespace Volamus_v1
         public Settings()
         {
             int[] sound = new int[21];
-            for(int i = 0; i < 21; i++)
+            for (int i = 0; i < 21; i++)
             {
-                sound[i] = 5*i;
+                sound[i] = 5 * i;
             }
 
             ingame = new SelectableInt(sound, "Ingame Volume");
             music = new SelectableInt(sound, "Music Volume");
-            
-            for(int i = 0; i < 21; i++)
+            fullscreen = new SelectableBool("Fullscreen");
+
+            for (int i = 0; i < 21; i++)
             {
-                if(sound[i] == GameStateManager.Instance.MusicVolume)
+                if (sound[i] == GameStateManager.Instance.MusicVolume)
                 {
                     music.active = i;
                 }
 
-                if(sound[i] == GameStateManager.Instance.IngameVolume)
+                if (sound[i] == GameStateManager.Instance.IngameVolume)
                 {
                     ingame.active = i;
                 }
             }
 
-            options = new SelectableOptions[2];
+            if (GameStateManager.Instance.Fullscreen)
+            {
+                fullscreen.active = 1;
+            }
+            else
+            {
+                fullscreen.active = 0;
+            }
+
+            options = new SelectableOptions[3];
             options[0] = ingame;
             options[1] = music;
+            options[2] = fullscreen;
 
             active = 0;
             options[active].Active = true;
@@ -53,7 +65,7 @@ namespace Volamus_v1
             save = new Image();
             save.Text = "Save & Back";
             save.LoadContent();
-            save.Position = new Vector2(100, GameStateManager.Instance.dimensions.Y/2 + 100);
+            save.Position = new Vector2(100, GameStateManager.Instance.dimensions.Y / 2 + 200);
         }
 
         public override void LoadContent()
@@ -61,6 +73,7 @@ namespace Volamus_v1
             base.LoadContent();
             ingame.LoadContent();
             music.LoadContent();
+            fullscreen.LoadContent();
         }
 
         public override void UnloadContent()
@@ -69,6 +82,7 @@ namespace Volamus_v1
             ingame.UnloadContent();
             music.UnloadContent();
             save.UnloadContent();
+            fullscreen.UnloadContent();
         }
 
         public override void Update(GameTime gameTime)
@@ -77,14 +91,15 @@ namespace Volamus_v1
             ingame.Update(gameTime);
             music.Update(gameTime);
             save.Update(gameTime);
+            fullscreen.Update(gameTime);
 
-            if (active < 2)
+            if (active < 3)
             {
                 options[active].Active = false;
             }
             else
             {
-                for (int i = 0; i < 2; i++)
+                for (int i = 0; i < 3; i++)
                 {
                     options[i].Active = false;
                 }
@@ -94,7 +109,7 @@ namespace Volamus_v1
             {
                 GameStateManager.Instance.Menu.Play2D("Content//Sound//button.ogg", false);
 
-                if (active == 2)
+                if (active == 3)
                 {
                     active = 0;
                 }
@@ -110,7 +125,7 @@ namespace Volamus_v1
 
                 if (active == 0)
                 {
-                    active = 2;
+                    active = 3;
                 }
                 else
                 {
@@ -118,7 +133,7 @@ namespace Volamus_v1
                 }
             }
 
-            if (active < 2)
+            if (active < 3)
             {
                 options[active].Active = true;
                 save.isActive = false;
@@ -127,8 +142,8 @@ namespace Volamus_v1
             }
             else
             {
-                    save.isActive = true;
-                    save.ActivateEffect("FadeEffect");
+                save.isActive = true;
+                save.ActivateEffect("FadeEffect");
             }
 
             if (save.isActive && (InputManager.Instance.ButtonPressed(Buttons.A) || InputManager.Instance.KeyPressed(Keys.Enter)))
@@ -137,12 +152,13 @@ namespace Volamus_v1
 
                 GameStateManager.Instance.IngameVolume = ingame.Array[ingame.active];
                 GameStateManager.Instance.MusicVolume = music.Array[music.active];
+                GameStateManager.Instance.Fullscreen = fullscreen.Array[fullscreen.active];
 
                 XmlManager<GameStateManager> xml = new XmlManager<GameStateManager>();
                 xml.Save("Content/Load/GameStateManager.xml", GameStateManager.Instance);
 
-                GameStateManager.Instance.Music.SoundVolume = ((float)GameStateManager.Instance.MusicVolume)/100;
-                GameStateManager.Instance.Ingame.SoundVolume = ((float)GameStateManager.Instance.IngameVolume)/100;
+                GameStateManager.Instance.Music.SoundVolume = ((float)GameStateManager.Instance.MusicVolume) / 100;
+                GameStateManager.Instance.Ingame.SoundVolume = ((float)GameStateManager.Instance.IngameVolume) / 100;
 
                 GameStateManager.Instance.ChangeScreens("Options");
             }
@@ -156,8 +172,9 @@ namespace Volamus_v1
         public override void Draw(SpriteBatch spriteBatch)
         {
             base.Draw(spriteBatch);
-            ingame.Draw((int) GameStateManager.Instance.dimensions.Y/2 - 100);
-            music.Draw((int) GameStateManager.Instance.dimensions.Y/2);
+            ingame.Draw((int)GameStateManager.Instance.dimensions.Y / 2 - 100);
+            music.Draw((int)GameStateManager.Instance.dimensions.Y / 2);
+            fullscreen.Draw((int)GameStateManager.Instance.dimensions.Y / 2 + 100);
 
             save.Draw(spriteBatch);
         }
