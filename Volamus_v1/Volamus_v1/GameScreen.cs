@@ -97,6 +97,11 @@ namespace Volamus_v1
                 GameStateManager.Instance.ChangeScreens("InGameMenu");
             }
 
+            if ((InputManager.Instance.KeyPressed(Keys.Escape) || InputManager.Instance.ButtonPressed(Buttons.Back)) && Match.IsFinished)
+            {
+                GameStateManager.Instance.ChangeScreens("EndGameMenu");
+            }
+
             base.Update(gameTime);
         }
 

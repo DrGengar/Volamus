@@ -111,6 +111,7 @@
     <Compile Include="SelectableOptions.cs" />
     <Compile Include="Skydome.cs" />
     <Compile Include="Spectator.cs" />
+    <Compile Include="SpectatorGroup.cs" />
     <Compile Include="SplashScreen.cs" />
     <Compile Include="TitleScreen.cs" />
     <Compile Include="Wind.cs" />
@@ -133,6 +134,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\Load\GameStateManager.xml" />
+    <Content Include="Content\Load\Menu\EndGameMenu.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Content\Load\Menu\Options.xml">
       <SubType>Designer</SubType>
     </Content>

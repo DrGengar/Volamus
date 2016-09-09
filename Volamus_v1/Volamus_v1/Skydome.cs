@@ -72,8 +72,8 @@ namespace Volamus_v1
                             * Matrix.CreateTranslation(new Vector3(0, 0, -500)));
                     effect2.Parameters["View"].SetValue(camera.ViewMatrix);
                     effect2.Parameters["Projection"].SetValue(camera.ProjectionMatrix);
-                    Matrix WorldInverseTransposeMatrix = Matrix.Transpose(transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) * Matrix.CreateScale(0.05f, 0.025f, 0.025f)
-                            * Matrix.CreateTranslation(new Vector3(0, 0, 0)));
+                    Matrix WorldInverseTransposeMatrix = Matrix.Transpose(transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(270)) * Matrix.CreateRotationZ(MathHelper.ToRadians(ro)) * Matrix.CreateScale(diameter, diameter, diameter)
+                            * Matrix.CreateTranslation(new Vector3(0, 0, -500)));
                     effect2.Parameters["WorldInverseTranspose"].SetValue(WorldInverseTransposeMatrix);
                     effect2.Parameters["ModelTexture"].SetValue(texture);
 

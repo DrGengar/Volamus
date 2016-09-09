@@ -75,6 +75,8 @@ namespace Volamus_v1
         Confetti confetti;
         Random rnd = new Random();
 
+        SpectatorGroup GroupOne, GroupTwo;
+
         public Match(Player one, Player two, Field f,int points, int w, bool c_s, bool c_v)
         {
             One = one;
@@ -96,6 +98,9 @@ namespace Volamus_v1
 
             changeSizeMinus = new PickSizeMinus();
             changeVelocityMinus = new PickVeloMinus();
+
+            GroupOne = new SpectatorGroup(new Vector3(-60, -50, 0), 5, rnd);
+            GroupTwo = new SpectatorGroup(new Vector3(60, 50, 0), 5, rnd);
         }
 
         public void LoadContent()
@@ -115,6 +120,9 @@ namespace Volamus_v1
 
             changeVelocityPlus.LoadContent();
             changeVelocityMinus.LoadContent();
+
+            GroupOne.LoadContent();
+            GroupTwo.LoadContent();
         }
 
         public void Unloadcontent()
@@ -221,6 +229,7 @@ namespace Volamus_v1
                     winner = One;
                     looser = Two;
                     confetti = new Confetti(One.Direction);
+                    GroupOne.SetCheering();
                 }
 
                 if (Two.Points == maxPoints && !isFinished)
@@ -230,6 +239,7 @@ namespace Volamus_v1
                     winner = Two;
                     looser = One;
                     confetti = new Confetti(Two.Direction);
+                    GroupTwo.SetCheering();
                 }
 
                 One.Update(field);
@@ -258,6 +268,9 @@ namespace Volamus_v1
                 }
 
                 Collision.Instance.CollisionMethod(field);
+
+                GroupOne.Update();
+                GroupTwo.Update();
             }
         }
 
@@ -324,6 +337,9 @@ namespace Volamus_v1
                 {
                     confetti.Draw(camera);
                 }
+
+                GroupOne.Draw(camera);
+                GroupTwo.Draw(camera);
             }
         }
     }
