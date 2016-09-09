@@ -7,14 +7,16 @@
     <LinkType>Screen</LinkType>
     <LinkID>MatchOptions</LinkID>
     <Image>
+      <Path>Images/buttonTexture</Path>
       <Text>Play</Text>
     </Image>
   </Item>
-  
+
   <Item>
     <LinkType>Screen</LinkType>
     <LinkID>Options</LinkID>
     <Image>
+      <Path>Images/buttonTexture</Path>
       <Text>Options</Text>
     </Image>
   </Item>
@@ -23,8 +25,9 @@
     <LinkType>Screen</LinkType>
     <LinkID>EndScreen</LinkID>
     <Image>
+      <Path>Images/buttonTexture</Path>
       <Text>Quit</Text>
     </Image>
   </Item>
-  
+
 </Menu>

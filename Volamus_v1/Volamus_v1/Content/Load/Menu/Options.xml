@@ -5,6 +5,7 @@
     <LinkType>Screen</LinkType>
     <LinkID>Settings</LinkID>
     <Image>
+      <Path>Images/buttonTexture</Path>
       <Text>Settings</Text>
     </Image>
   </Item>
@@ -13,12 +14,14 @@
     <LinkType>Screen</LinkType>
     <LinkID>Controls</LinkID>
     <Image>
+      <Path>Images/buttonTexture</Path>
       <Text>Controls</Text>
     </Image>
   </Item>
 
   <Item>
     <Image>
+      <Path>Images/buttonTexture</Path>
       <Text>Credits</Text>
     </Image>
   </Item>
@@ -27,6 +30,7 @@
     <LinkType>Screen</LinkType>
     <LinkID>TitleScreen</LinkID>
     <Image>
+      <Path>Images/buttonTextureLong</Path>
       <Text>Back to Main Menu</Text>
     </Image>
   </Item>

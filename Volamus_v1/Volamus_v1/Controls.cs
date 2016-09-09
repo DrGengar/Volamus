@@ -34,6 +34,7 @@ namespace Volamus_v1
             font = GameStateManager.Instance.Content.Load<SpriteFont>("SpriteFonts/Standard");
 
             back = new Image();
+            back.Path = "Images/buttonTexture";
             back.Text = "Back";
             back.isActive = true;
             back.LoadContent();

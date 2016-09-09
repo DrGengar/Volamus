@@ -5,6 +5,7 @@
     <LinkType>Screen</LinkType>
     <LinkID>GameScreen</LinkID>
     <Image>
+      <Path>Images/buttonTexture</Path>
       <Text>Back to Game</Text>
     </Image>
   </Item>
@@ -13,6 +14,7 @@
     <LinkType>Screen</LinkType>
     <LinkID>MatchOptions</LinkID>
     <Image>
+      <Path>Images/buttonTexture</Path>
       <Text>Restart Game</Text>
     </Image>
   </Item>
@@ -21,6 +23,7 @@
     <LinkType>Screen</LinkType>
     <LinkID>TitleScreen</LinkID>
     <Image>
+      <Path>Images/buttonTextureLong</Path>
       <Text>Return to Main Menu</Text>
     </Image>
   </Item>

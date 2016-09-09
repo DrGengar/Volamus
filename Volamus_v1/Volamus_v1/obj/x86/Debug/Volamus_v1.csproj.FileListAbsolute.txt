@@ -578,3 +578,8 @@ C:\Users\Lars\Desktop\Volamus\Volamus_v1\Volamus_v1\Content\Textures\green2.xnb
 C:\Users\Lars\Desktop\Volamus\Volamus_v1\Volamus_v1\Content\Textures\green3.xnb
 C:\Users\Lars\Desktop\Volamus\Volamus_v1\Volamus_v1\Content\Textures\lila.xnb
 C:\Users\Lars\Desktop\Volamus\Volamus_v1\Volamus_v1\Content\Textures\pink.xnb
+C:\Users\Iam\Desktop\3dGame\Volamus_v1\Volamus_v1\Content\Textures\gelb.xnb
+C:\Users\Iam\Desktop\3dGame\Volamus_v1\Volamus_v1\Content\Textures\lila.xnb
+C:\Users\Iam\Desktop\3dGame\Volamus_v1\Volamus_v1\Content\Textures\pink.xnb
+C:\Users\Iam\Desktop\3dGame\Volamus_v1\Volamus_v1\Content\Images\buttonTexture.xnb
+C:\Users\Iam\Desktop\3dGame\Volamus_v1\Volamus_v1\Content\Images\buttonTextureLong.xnb

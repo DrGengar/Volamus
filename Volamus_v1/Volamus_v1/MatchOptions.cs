@@ -28,7 +28,7 @@ namespace Volamus_v1
         {
             int[] p = new int[10];
 
-            for(int i = 0; i < p.Length; i++)
+            for (int i = 0; i < p.Length; i++)
             {
                 p[i] = i * 5 + 5;
             }
@@ -43,7 +43,7 @@ namespace Volamus_v1
             stages = new SelectableImage(new[] { mapOne, mapTwo, mapThree }, "Maps");
 
             wind = new SelectableBool("Wind");
-            enemyVelo = new SelectableBool("Velocity Drops");
+            enemyVelo = new SelectableBool("Enemy Velocity Drops");
             ballRadius = new SelectableBool("Ball Radius Drops");
 
             options = new SelectableOptions[5];
@@ -57,11 +57,13 @@ namespace Volamus_v1
             options[active].Active = true;
 
             back = new Image();
+            back.Path = "Images/buttonTexture";
             back.Text = "Back";
             back.LoadContent();
             back.Position = new Vector2(20, GameStateManager.Instance.dimensions.Y - back.SourceRect.Height - 20);
 
             play = new Image();
+            play.Path = "Images/buttonTexture";
             play.Text = "Play";
             play.LoadContent();
             play.Position = new Vector2(GameStateManager.Instance.dimensions.X - back.SourceRect.Width - 20, GameStateManager.Instance.dimensions.Y - back.SourceRect.Height - 20);
@@ -69,10 +71,6 @@ namespace Volamus_v1
 
         public override void LoadContent()
         {
-            Ball.Instance.UnloadContent();
-            Collision.Instance.UnloadContent();
-            GameScreen.Instance.UnloadContent2();
-
             base.LoadContent();
             stages.LoadContent();
             points.LoadContent();
@@ -104,19 +102,19 @@ namespace Volamus_v1
             back.Update(gameTime);
             play.Update(gameTime);
 
-            if(active < 5)
+            if (active < 5)
             {
                 options[active].Active = false;
             }
             else
             {
-                for(int i = 0; i < 5; i++)
+                for (int i = 0; i < 5; i++)
                 {
                     options[i].Active = false;
                 }
             }
 
-            if(InputManager.Instance.ButtonPressed(Buttons.DPadDown, Buttons.LeftThumbstickDown, Buttons.RightThumbstickDown) || InputManager.Instance.KeyPressed(Keys.Down))
+            if (InputManager.Instance.ButtonPressed(Buttons.DPadDown, Buttons.LeftThumbstickDown, Buttons.RightThumbstickDown) || InputManager.Instance.KeyPressed(Keys.Down))
             {
                 GameStateManager.Instance.Menu.Play2D("Content//Sound//button.ogg", false);
 
@@ -144,7 +142,7 @@ namespace Volamus_v1
                 }
             }
 
-            if(active < 5)
+            if (active < 5)
             {
                 options[active].Active = true;
                 back.isActive = false;
@@ -156,7 +154,7 @@ namespace Volamus_v1
             }
             else
             {
-                if(active == 5)
+                if (active == 5)
                 {
                     back.isActive = true;
                     back.ActivateEffect("FadeEffect");
@@ -174,7 +172,7 @@ namespace Volamus_v1
                 }
             }
 
-            if((back.isActive && (InputManager.Instance.ButtonPressed(Buttons.A) ||InputManager.Instance.KeyPressed(Keys.Enter))) || InputManager.Instance.ButtonPressed(Buttons.B) || InputManager.Instance.KeyPressed(Keys.Escape))
+            if ((back.isActive && (InputManager.Instance.ButtonPressed(Buttons.A) || InputManager.Instance.KeyPressed(Keys.Enter))) || InputManager.Instance.ButtonPressed(Buttons.B) || InputManager.Instance.KeyPressed(Keys.Escape))
             {
                 GameStateManager.Instance.ChangeScreens("TitleScreen");
             }
@@ -186,7 +184,7 @@ namespace Volamus_v1
 
                 Player one, two;
 
-                if(GamePad.GetState(PlayerIndex.Two).IsConnected)
+                if (GamePad.GetState(PlayerIndex.Two).IsConnected)
                 {
                     one = new Player(new Vector3(0, -25, 0), 5, 0.5f, 0.8f, field, PlayerIndex.One);
                     two = new Player(new Vector3(0, 25, 0), 5, 0.5f, 0.8f, field, PlayerIndex.Two);

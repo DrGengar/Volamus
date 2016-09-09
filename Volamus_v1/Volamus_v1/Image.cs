@@ -115,7 +115,7 @@ namespace Volamus_v1
 
             if (Path != String.Empty)
             {
-                Texture = content.Load<Texture2D>(Path);
+                Texture = GameStateManager.Instance.Content.Load<Texture2D>(Path);
             }
 
             font = content.Load<SpriteFont>(FontName);
