@@ -39,7 +39,7 @@ namespace Volamus_v1
             back.isActive = true;
             back.LoadContent();
             back.ActivateEffect("FadeEffect");
-            back.Position = new Vector2((defaultView.Width + back.SourceRect.Width)/2, defaultView.Height - back.SourceRect.Height - 40);
+            back.Position = new Vector2((defaultView.Width - back.SourceRect.Width)/2, defaultView.Height - back.SourceRect.Height - 40);
         }
 
         public override void LoadContent()
@@ -61,6 +61,8 @@ namespace Volamus_v1
         {
             base.Update(gameTime);
             back.Update(gameTime);
+
+            back.Position.X = (GameStateManager.Instance.GraphicsDeviceManager.PreferredBackBufferWidth - back.Texture.Width) / 2;
 
             if(InputManager.Instance.ButtonPressed(Buttons.A, Buttons.Back) || InputManager.Instance.KeyPressed(Keys.Enter, Keys.Escape))
             {

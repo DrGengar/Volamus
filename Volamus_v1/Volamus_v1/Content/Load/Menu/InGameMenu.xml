@@ -23,8 +23,8 @@
     <LinkType>Screen</LinkType>
     <LinkID>TitleScreen</LinkID>
     <Image>
-      <Path>Images/buttonTextureLong</Path>
-      <Text>Return to Main Menu</Text>
+      <Path>Images/buttonTexture</Path>
+      <Text>Main Menu</Text>
     </Image>
   </Item>
 </Menu>

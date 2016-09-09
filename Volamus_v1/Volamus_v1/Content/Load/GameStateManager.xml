@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <GameStateManager xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <MusicVolume>0</MusicVolume>
-  <IngameVolume>0</IngameVolume>
-  <Fullscreen>true</Fullscreen>
+  <MusicVolume>10</MusicVolume>
+  <IngameVolume>10</IngameVolume>
+  <Fullscreen>false</Fullscreen>
   <Image>
     <Alpha>0</Alpha>
     <Text />
@@ -13,8 +13,8 @@
       <Y>0</Y>
     </Position>
     <Scale>
-      <X>1920</X>
-      <Y>1080</Y>
+      <X>1366</X>
+      <Y>768</Y>
     </Scale>
     <SourceRect>
       <X>0</X>
