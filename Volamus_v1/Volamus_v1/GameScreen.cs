@@ -14,6 +14,10 @@ namespace Volamus_v1
     public class GameScreen : GameState
     {
         private Match match;
+        private float rotate = 90f;
+        float x = 0;
+        float y = 0;
+        float test;
 
         //SplitScreen
         private Viewport defaultView, leftView, rightView;
@@ -112,17 +116,73 @@ namespace Volamus_v1
             GameStateManager.Instance.GraphicsDevice.Clear(Color.Black);
 
             //Linker SplitScreen: Linker Spieler (player_one)
-            GameStateManager.Instance.GraphicsDevice.Viewport = leftView;
+            if (!GameScreen.Instance.Match.IsFinished)
+            {
+                GameStateManager.Instance.GraphicsDevice.Viewport = leftView;
 
-            match.Draw(match.One.Camera, leftView);
+                match.Draw(match.One.Camera, leftView);
+            }
 
             //Rechter SplitScreen: Rechter Spieler (player_two)
-            GameStateManager.Instance.GraphicsDevice.Viewport = rightView;
+            if (!GameScreen.Instance.Match.IsFinished)
+            {
+                GameStateManager.Instance.GraphicsDevice.Viewport = rightView;
 
-            match.Draw(match.Two.Camera, rightView);
+                match.Draw(match.Two.Camera, rightView);
+            }
 
+ 
             //Ganzes Bild
             GameStateManager.Instance.GraphicsDevice.Viewport = defaultView;
+
+            // Ganze Bild nach Matchende
+            if (GameScreen.Instance.Match.IsFinished == true)
+            {
+
+                //Startposition der Rotation bestimmen
+                if (rotate == 90)
+                {
+                    if (match.Looser.Direction == 1)
+                    {
+                        rotate = 3 * MathHelper.Pi / 2; //180
+                        test = rotate + 8 * MathHelper.Pi;
+                    }
+                    else
+                    {
+                        rotate = MathHelper.Pi / 2;  //90
+                        test = rotate + 8 * MathHelper.Pi;
+                    }
+                    y = 70 * match.Winner.Direction;
+
+                }
+
+                GameScreen.Instance.Match.Draw(new Camera(new Vector3(x, y, 80), new Vector3(0, 0, 0), new Vector3(0, 0, 1)), defaultView);
+
+
+
+
+                //Rotation
+                x = 70 * (float)Math.Cos(rotate);
+                y = 70 * (float)Math.Sin(rotate);
+                rotate += 0.002f;//0.002f;
+
+                //nach 4 Runden wird rotate zurückgesetzt, dass die Zahl nicht zu groß wird
+                if (rotate >= test)
+                {
+                    rotate = 90;
+                }
+            }
+
+            //zurücksetzen wenn ein Match zu Ende und noch eins begonnen wird
+            else
+            {
+                rotate = 90f;
+                x = 0;
+                y = 70;
+            }
+            //  GameStateManager.Instance.GraphicsDevice.Viewport = defaultView;
+
+
 
             //FPS Anzeige
             var fps = string.Format("FPS: {0}", frameCounter.AverageFramesPerSecond);
