@@ -133,7 +133,7 @@ namespace Volamus_v1
             text.Update(gameTime);
             text.Position = text.Position + new Vector2(0, -counter);
 
-            if (text.Position.Y <= -100)
+            if (text.Position.Y >= 50)
             {
                 GameStateManager.Instance.ChangeScreens("Options");
             }
