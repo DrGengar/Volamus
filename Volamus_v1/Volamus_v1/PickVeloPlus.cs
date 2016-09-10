@@ -32,7 +32,7 @@ namespace Volamus_v1
         public void Update(Random rnd)
         {   //hinzufügen neuer Drops
 
-            int total = rnd.Next(3);
+            int total = rnd.Next(2);
 
             while (dropsVelo.Count < total)
             {
