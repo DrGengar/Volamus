@@ -320,13 +320,20 @@ namespace Volamus_v1
                         One.DrawArrow(camera);
 
                         //pointsImage.Position = new Vector2(view.X + (view.Width - pointsImage.SourceRect.Width)/ 2, -50);
-
                         Vector2 temp = new Vector2(view.X + pointsImage.Width / 4 + ((view.Width - pointsImage.Width) / 2), 0);
 
-                        GameStateManager.Instance.SpriteBatch.Draw(pointsImage, temp, null , Color.White, 0.0f , Vector2.Zero, 0.5f, SpriteEffects.None, 0);
+                        GameStateManager.Instance.SpriteBatch.Draw(pointsImage, temp, null, Color.White, 0.0f, Vector2.Zero, 0.5f, SpriteEffects.None, 0);
 
-                        Vector2 text = One.Font.MeasureString(One.Points.ToString());
-                        GameStateManager.Instance.SpriteBatch.DrawString(One.Font, One.Points.ToString(), temp + new Vector2((pointsImage.Width/2 - text.X)/2, (pointsImage.Height/2 - text.Y)/2), Color.White);
+                        Vector2 text = One.Font2.MeasureString(One.Points.ToString());
+
+                        if (One.Points == maxPoints - 1)
+                        {
+                            GameStateManager.Instance.SpriteBatch.DrawString(One.Font2, One.Points.ToString(), temp + new Vector2((pointsImage.Width / 2 - text.X) / 2, (pointsImage.Height / 2 - text.Y) / 2), Color.Yellow);
+                        }
+                        else
+                        {
+                            GameStateManager.Instance.SpriteBatch.DrawString(One.Font2, One.Points.ToString(), temp + new Vector2((pointsImage.Width / 2 - text.X) / 2, (pointsImage.Height / 2 - text.Y) / 2), Color.White);
+                        }
                     }
                     else
                     {
@@ -354,8 +361,16 @@ namespace Volamus_v1
 
                             GameStateManager.Instance.SpriteBatch.Draw(pointsImage, temp, null, Color.White, 0.0f, Vector2.Zero, 0.5f, SpriteEffects.None, 0);
 
-                            Vector2 text = Two.Font.MeasureString(Two.Points.ToString());
-                            GameStateManager.Instance.SpriteBatch.DrawString(Two.Font, Two.Points.ToString(), temp + new Vector2((pointsImage.Width / 2 - text.X) / 2, (pointsImage.Height / 2 - text.Y) / 2), Color.White);
+                            Vector2 text = Two.Font2.MeasureString(Two.Points.ToString());
+
+                            if (Two.Points == maxPoints - 1)
+                            {
+                                GameStateManager.Instance.SpriteBatch.DrawString(Two.Font2, Two.Points.ToString(), temp + new Vector2((pointsImage.Width / 2 - text.X) / 2, (pointsImage.Height / 2 - text.Y) / 2), Color.Tomato);
+                            }
+                            else
+                            {
+                                GameStateManager.Instance.SpriteBatch.DrawString(Two.Font2, Two.Points.ToString(), temp + new Vector2((pointsImage.Width / 2 - text.X) / 2, (pointsImage.Height / 2 - text.Y) / 2), Color.White);
+                            }
                         }
                         else
                         {

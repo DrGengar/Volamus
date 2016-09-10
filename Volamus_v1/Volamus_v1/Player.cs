@@ -56,6 +56,7 @@ namespace Volamus_v1
         int touch_count;
 
         SpriteFont points_font;
+        SpriteFont points_font2;
 
         BoundingBox innerBoundingBox, outerBoundingBox;
 
@@ -153,6 +154,10 @@ namespace Volamus_v1
         public SpriteFont Font
         {
             get { return points_font; }
+        }
+        public SpriteFont Font2
+        {
+            get { return points_font2; }
         }
 
         public Vector2[] Box
@@ -333,6 +338,7 @@ namespace Volamus_v1
             wingTexture = GameStateManager.Instance.Content.Load<Texture2D>("Models/PingWingUV");
 
             points_font = GameStateManager.Instance.Content.Load<SpriteFont>("SpriteFonts/Standard");
+            points_font = GameStateManager.Instance.Content.Load<SpriteFont>("SpriteFonts/Headline");
 
             pfeil = GameStateManager.Instance.Content.Load<Model>("Models/pfeil");
 
