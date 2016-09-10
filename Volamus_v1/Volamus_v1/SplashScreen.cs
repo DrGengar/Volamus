@@ -26,13 +26,13 @@ namespace Volamus_v1
                     (float)GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height / ((float)Screen.Texture.Height / 1.5f));
 
             Volamus.LoadContent();
+            Volamus.Scale = new Vector2((float)Volamus.SourceRect.Width / ((float)GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width / 1.5f), (float)Volamus.SourceRect.Height / ((float)GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height / 1.5f));
             Volamus.Position = new Vector2((GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width - Volamus.SourceRect.Width) / 2, 0);
 
-            Volamus.Color = Color.Black;
 
             Enter.LoadContent();
             Enter.Position = new Vector2((GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width - Enter.SourceRect.Width) / 2,
-                ((GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height - Enter.SourceRect.Height) / 3) * 2);
+                (GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height - 100));
 
             Enter.Color = Color.Black;
         }
@@ -51,14 +51,6 @@ namespace Volamus_v1
             Screen.Update(gameTime);
             Volamus.Update(gameTime);
             Enter.Update(gameTime);
-
-            Screen.Scale = new Vector2((float)GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width / ((float)Screen.Texture.Width / ((float)GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width / (float)Screen.Texture.Width)),
-                (float)GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height / ((float)Screen.Texture.Height / ((float)GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height / (float)Screen.Texture.Height)));
-
-            Volamus.Position = new Vector2((GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width - Volamus.SourceRect.Width) / 2, 0);
-
-            Enter.Position = new Vector2((GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width - Enter.SourceRect.Width) / 2,
-                ((GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height - Enter.SourceRect.Height) / 3) * 2);
 
             if (InputManager.Instance.KeyPressed(Keys.Enter) || InputManager.Instance.ButtonPressed(Buttons.A))
             {

@@ -77,6 +77,9 @@ namespace Volamus_v1
 
         SpectatorGroup GroupOne, GroupTwo;
 
+        Image winnerImage, looserImage;
+        Texture2D pointsImage;
+
         public Match(Player one, Player two, Field f,int points, int w, bool c_s, bool c_v)
         {
             One = one;
@@ -123,6 +126,18 @@ namespace Volamus_v1
 
             GroupOne.LoadContent();
             GroupTwo.LoadContent();
+
+            winnerImage = new Image();
+            winnerImage.Path = "Images/winnerPNG";
+            winnerImage.Position = new Vector2(GameStateManager.Instance.GraphicsDeviceManager.PreferredBackBufferWidth / 2, 100);
+            winnerImage.LoadContent();
+
+            looserImage = new Image();
+            looserImage.Path = "Images/looserPNG";
+            looserImage.Position = new Vector2(GameStateManager.Instance.GraphicsDeviceManager.PreferredBackBufferWidth / 2, 100);
+            looserImage.LoadContent();
+
+            pointsImage = GameStateManager.Instance.Content.Load<Texture2D>("Images/AnzeigetafelPNG");
         }
 
         public void Unloadcontent()
@@ -304,18 +319,57 @@ namespace Volamus_v1
                     {
                         One.DrawArrow(camera);
 
-                        GameStateManager.Instance.SpriteBatch.DrawString(One.Font, One.Points.ToString() + " / " + maxPoints,
-                             new Vector2(view.Width / 2, 0), Color.White);
+                        //pointsImage.Position = new Vector2(view.X + (view.Width - pointsImage.SourceRect.Width)/ 2, -50);
+
+                        Vector2 temp = new Vector2(view.X + pointsImage.Width / 4 + ((view.Width - pointsImage.Width) / 2), 0);
+
+                        GameStateManager.Instance.SpriteBatch.Draw(pointsImage, temp, null , Color.White, 0.0f , Vector2.Zero, 0.5f, SpriteEffects.None, 0);
+
+                        Vector2 text = One.Font.MeasureString(One.Points.ToString());
+                        GameStateManager.Instance.SpriteBatch.DrawString(One.Font, One.Points.ToString(), temp + new Vector2((pointsImage.Width/2 - text.X)/2, (pointsImage.Height/2 - text.Y)/2), Color.White);
+                    }
+                    else
+                    {
+                        if(winner == One)
+                        {
+                            winnerImage.Position = new Vector2(view.X + (view.Width - winnerImage.SourceRect.Width)/2, 100);
+                            winnerImage.Draw(GameStateManager.Instance.SpriteBatch);
+                        }
+                        else
+                        {
+                            looserImage.Position = new Vector2(view.X + (view.Width - looserImage.SourceRect.Width)/2, 100);
+                            looserImage.Draw(GameStateManager.Instance.SpriteBatch);
+                        }
                     }
                 }
                 else
                 {
-                    if (!isFinished)
+                    if(camera == Two.Camera)
                     {
-                        Two.DrawArrow(camera);
+                        if (!isFinished)
+                        {
+                            Two.DrawArrow(camera);
 
-                        GameStateManager.Instance.SpriteBatch.DrawString(Two.Font, Two.Points.ToString() + " / " + maxPoints,
-                            new Vector2(view.X + view.Width / 2, 0), Color.White);
+                            Vector2 temp = new Vector2(view.X + pointsImage.Width / 4 + ((view.Width - pointsImage.Width) / 2), 0);
+
+                            GameStateManager.Instance.SpriteBatch.Draw(pointsImage, temp, null, Color.White, 0.0f, Vector2.Zero, 0.5f, SpriteEffects.None, 0);
+
+                            Vector2 text = Two.Font.MeasureString(Two.Points.ToString());
+                            GameStateManager.Instance.SpriteBatch.DrawString(Two.Font, Two.Points.ToString(), temp + new Vector2((pointsImage.Width / 2 - text.X) / 2, (pointsImage.Height / 2 - text.Y) / 2), Color.White);
+                        }
+                        else
+                        {
+                            if (winner == Two)
+                            {
+                                winnerImage.Position = new Vector2(view.X + (view.Width - winnerImage.SourceRect.Width) / 2, 100);
+                                winnerImage.Draw(GameStateManager.Instance.SpriteBatch);
+                            }
+                            else
+                            {
+                                looserImage.Position = new Vector2(view.X + (view.Width - looserImage.SourceRect.Width) / 2, 100);
+                                looserImage.Draw(GameStateManager.Instance.SpriteBatch);
+                            }
+                        }
                     }
                 }
 

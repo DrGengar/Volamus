@@ -66,7 +66,7 @@ namespace Volamus_v1
             play.Path = "Images/buttonTexture";
             play.Text = "Play";
             play.LoadContent();
-            play.Position = new Vector2(GameStateManager.Instance.dimensions.X - back.SourceRect.Width - 20, GameStateManager.Instance.dimensions.Y - back.SourceRect.Height - 20);
+            play.Position = new Vector2(GameStateManager.Instance.dimensions.X - play.SourceRect.Width - 20, GameStateManager.Instance.dimensions.Y - play.SourceRect.Height - 20);
         }
 
         public override void LoadContent()

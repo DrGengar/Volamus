@@ -131,6 +131,7 @@ namespace Volamus_v1
             GameStateManager.Instance.GraphicsDevice.Viewport = defaultView;
 
             // Ganze Bild nach Matchende
+            
             if (GameScreen.Instance.Match.IsFinished == true)
             {
 

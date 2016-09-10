@@ -14,8 +14,8 @@
     </Scale>
   </Screen>
   <Volamus>
-    <Text>VOLAMUS</Text>
-    <FontName>SpriteFonts/Headline</FontName>
+    <Path>Images/gesamtesLogoPNG</Path>
+    <isActive>true</isActive>
     <Position>
       <X>0</X>
       <Y>0</Y>

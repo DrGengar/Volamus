@@ -1705,10 +1705,10 @@ namespace Volamus_v1
 
                 }
                 mesh.Draw();
-
-                DrawWingLeft(camera, leftWing, leftWingPosition);
-                DrawWingRight(camera, rightWing, rightWingPosition);
             }
+
+            DrawWingLeft(camera, leftWing, leftWingPosition);
+            DrawWingRight(camera, rightWing, rightWingPosition);
         }
 
         // für rechten Flügel

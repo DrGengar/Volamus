@@ -616,3 +616,8 @@ C:\Users\Ich\Desktop\3dGame\Volamus_v1\Volamus_v1\Content\Effects\shaderSkybox.x
 C:\Users\Ich\Desktop\3dGame\Volamus_v1\Volamus_v1\Content\Models\fahne.xnb
 C:\Users\Ich\Desktop\3dGame\Volamus_v1\Volamus_v1\Content\Textures\fahne_textur.xnb
 C:\Users\Ich\Desktop\3dGame\Volamus_v1\Volamus_v1\Content\Textures\fahne_textur2.xnb
+C:\Users\Lars\Desktop\3dGame\Volamus_v1\Volamus_v1\Content\Images\AnzeigetafelPNG.xnb
+C:\Users\Lars\Desktop\3dGame\Volamus_v1\Volamus_v1\Content\Images\gesamtesLogoPNG.xnb
+C:\Users\Lars\Desktop\3dGame\Volamus_v1\Volamus_v1\Content\Images\looserPNG.xnb
+C:\Users\Lars\Desktop\3dGame\Volamus_v1\Volamus_v1\Content\Images\VLogoPNG.xnb
+C:\Users\Lars\Desktop\3dGame\Volamus_v1\Volamus_v1\Content\Images\winnerPNG.xnb
