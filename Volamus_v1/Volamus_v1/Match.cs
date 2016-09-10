@@ -79,8 +79,9 @@ namespace Volamus_v1
 
         Image winnerImage, looserImage;
         Texture2D pointsImage;
+        Texture2D matchball;
 
-        public Match(Player one, Player two, Field f,int points, int w, bool c_s, bool c_v)
+        public Match(Player one, Player two, Field f, int points, int w, bool c_s, bool c_v)
         {
             One = one;
             Two = two;
@@ -138,6 +139,7 @@ namespace Volamus_v1
             looserImage.LoadContent();
 
             pointsImage = GameStateManager.Instance.Content.Load<Texture2D>("Images/AnzeigetafelPNG");
+            matchball = GameStateManager.Instance.Content.Load<Texture2D>("Images/matchballPNG");
         }
 
         public void Unloadcontent()
@@ -154,7 +156,7 @@ namespace Volamus_v1
         {
             var timer = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-            if(InputManager.Instance.KeyPressed(Keys.F1))
+            if (InputManager.Instance.KeyPressed(Keys.F1))
             {
                 preMatch = false;
                 One.IsServing = true;
@@ -260,19 +262,19 @@ namespace Volamus_v1
                 One.Update(field);
                 Two.Update(field);
 
-                if(change_size)
+                if (change_size)
                 {
                     changeSizePlus.Update(rnd);
                     changeSizeMinus.Update(rnd);
                 }
 
-                if(change_velocity)
+                if (change_velocity)
                 {
                     changeVelocityPlus.Update(rnd);
                     changeVelocityMinus.Update(rnd);
                 }
 
-                if(isFinished)
+                if (isFinished)
                 {
                     confetti.Update(rnd);
                 }
@@ -291,7 +293,7 @@ namespace Volamus_v1
 
         public void Draw(Camera camera, Viewport view)
         {
-            if(preMatch)
+            if (preMatch)
             {
                 if (camera == One.Camera)
                 {
@@ -320,38 +322,44 @@ namespace Volamus_v1
                         One.DrawArrow(camera);
 
                         //pointsImage.Position = new Vector2(view.X + (view.Width - pointsImage.SourceRect.Width)/ 2, -50);
+
                         Vector2 temp = new Vector2(view.X + pointsImage.Width / 4 + ((view.Width - pointsImage.Width) / 2), 0);
 
                         GameStateManager.Instance.SpriteBatch.Draw(pointsImage, temp, null, Color.White, 0.0f, Vector2.Zero, 0.5f, SpriteEffects.None, 0);
 
                         Vector2 text = One.Font2.MeasureString(One.Points.ToString());
+                        GameStateManager.Instance.SpriteBatch.DrawString(One.Font2, One.Points.ToString(), temp + new Vector2((pointsImage.Width / 2 - text.X) / 2, (pointsImage.Height / 2 - text.Y) / 2), Color.White);
+
+                        if (Two.Points == maxPoints - 1 || One.Points == maxPoints - 1 && ((Two.Points != maxPoints - 1) || (One.Points != maxPoints)))
+                        {
+                            Vector2 temp2 = new Vector2(temp.X + (pointsImage.Width / 2) + 12, 0);
+                            GameStateManager.Instance.SpriteBatch.Draw(matchball, temp2, null, Color.White, 0.0f, Vector2.Zero, 0.45f, SpriteEffects.None, 0);
+                        }
 
                         if (One.Points == maxPoints - 1)
                         {
+                            //GameStateManager.Instance.SpriteBatch.Draw(matchball, temp, null, Color.White, 0.0f, Vector2.Zero, 0.5f, SpriteEffects.None, 0);
                             GameStateManager.Instance.SpriteBatch.DrawString(One.Font2, One.Points.ToString(), temp + new Vector2((pointsImage.Width / 2 - text.X) / 2, (pointsImage.Height / 2 - text.Y) / 2), Color.Yellow);
                         }
-                        else
-                        {
-                            GameStateManager.Instance.SpriteBatch.DrawString(One.Font2, One.Points.ToString(), temp + new Vector2((pointsImage.Width / 2 - text.X) / 2, (pointsImage.Height / 2 - text.Y) / 2), Color.White);
-                        }
+
                     }
                     else
                     {
-                        if(winner == One)
+                        if (winner == One)
                         {
-                            winnerImage.Position = new Vector2(view.X + (view.Width - winnerImage.SourceRect.Width)/2, 100);
+                            winnerImage.Position = new Vector2(view.X + (view.Width - winnerImage.SourceRect.Width) / 2, 100);
                             winnerImage.Draw(GameStateManager.Instance.SpriteBatch);
                         }
                         else
                         {
-                            looserImage.Position = new Vector2(view.X + (view.Width - looserImage.SourceRect.Width)/2, 100);
+                            looserImage.Position = new Vector2(view.X + (view.Width - looserImage.SourceRect.Width) / 2, 100);
                             looserImage.Draw(GameStateManager.Instance.SpriteBatch);
                         }
                     }
                 }
                 else
                 {
-                    if(camera == Two.Camera)
+                    if (camera == Two.Camera)
                     {
                         if (!isFinished)
                         {
@@ -362,15 +370,16 @@ namespace Volamus_v1
                             GameStateManager.Instance.SpriteBatch.Draw(pointsImage, temp, null, Color.White, 0.0f, Vector2.Zero, 0.5f, SpriteEffects.None, 0);
 
                             Vector2 text = Two.Font2.MeasureString(Two.Points.ToString());
+                            GameStateManager.Instance.SpriteBatch.DrawString(Two.Font2, Two.Points.ToString(), temp + new Vector2((pointsImage.Width / 2 - text.X) / 2, (pointsImage.Height / 2 - text.Y) / 2), Color.White);
+
 
                             if (Two.Points == maxPoints - 1)
                             {
-                                GameStateManager.Instance.SpriteBatch.DrawString(Two.Font2, Two.Points.ToString(), temp + new Vector2((pointsImage.Width / 2 - text.X) / 2, (pointsImage.Height / 2 - text.Y) / 2), Color.Tomato);
+                                //
+                                //GameStateManager.Instance.SpriteBatch.Draw(matchball, temp, null, Color.White, 0.0f, Vector2.Zero, 0.5f, SpriteEffects.None, 0);
+                                GameStateManager.Instance.SpriteBatch.DrawString(Two.Font2, Two.Points.ToString(), temp + new Vector2((pointsImage.Width / 2 - text.X) / 2, (pointsImage.Height / 2 - text.Y) / 2), Color.Yellow);
                             }
-                            else
-                            {
-                                GameStateManager.Instance.SpriteBatch.DrawString(Two.Font2, Two.Points.ToString(), temp + new Vector2((pointsImage.Width / 2 - text.X) / 2, (pointsImage.Height / 2 - text.Y) / 2), Color.White);
-                            }
+
                         }
                         else
                         {
@@ -402,7 +411,7 @@ namespace Volamus_v1
                     changeVelocityMinus.Draw(camera);
                 }
 
-                if(isFinished)
+                if (isFinished)
                 {
                     confetti.Draw(camera);
                 }

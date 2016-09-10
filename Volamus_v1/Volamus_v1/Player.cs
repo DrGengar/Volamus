@@ -338,7 +338,7 @@ namespace Volamus_v1
             wingTexture = GameStateManager.Instance.Content.Load<Texture2D>("Models/PingWingUV");
 
             points_font = GameStateManager.Instance.Content.Load<SpriteFont>("SpriteFonts/Standard");
-            points_font = GameStateManager.Instance.Content.Load<SpriteFont>("SpriteFonts/Headline");
+            points_font2 = GameStateManager.Instance.Content.Load<SpriteFont>("SpriteFonts/Headline");
 
             pfeil = GameStateManager.Instance.Content.Load<Model>("Models/pfeil");
 
