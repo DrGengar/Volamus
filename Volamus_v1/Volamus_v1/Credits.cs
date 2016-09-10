@@ -133,9 +133,10 @@ namespace Volamus_v1
             text.Update(gameTime);
             text.Position = text.Position + new Vector2(0, -counter);
 
-            if (text.Position.Y >= 50)
+            if (text.Position.Y <= -1000)
             {
-                GameStateManager.Instance.ChangeScreens("Options");
+                text.Position.Y = 1200;
+               // GameStateManager.Instance.ChangeScreens("Options");
             }
 
             //for (int i = 0; i < credits.Length; i++)
@@ -148,7 +149,7 @@ namespace Volamus_v1
             //    }
             //}
 
-
+            
             back.isActive = true;
             back.ActivateEffect("FadeEffect");
 
