@@ -114,6 +114,7 @@
     <Compile Include="Spectator.cs" />
     <Compile Include="SpectatorGroup.cs" />
     <Compile Include="SplashScreen.cs" />
+    <Compile Include="Story.cs" />
     <Compile Include="TitleScreen.cs" />
     <Compile Include="Wind.cs" />
     <Compile Include="XmlIntermediateManager.cs" />

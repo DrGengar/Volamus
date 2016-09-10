@@ -20,6 +20,8 @@
   </Item>
 
   <Item>
+    <LinkType>Screen</LinkType>
+    <LinkID>Credits</LinkID>
     <Image>
       <Path>Images/buttonTexture</Path>
       <Text>Credits</Text>

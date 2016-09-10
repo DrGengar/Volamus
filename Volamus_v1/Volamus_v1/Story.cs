@@ -3,33 +3,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 
 namespace Volamus_v1
 {
-    public class TitleScreen : GameState
+    public class Story : GameState
     {
-        MenuManager menuManager;
-
-        private Image Volamus;
+        private Image story;
         private Image background;
 
-        public TitleScreen()
+        private int i; //counter for scrolling
+
+        public Story()
         {
-            menuManager = new MenuManager();
-        }
-
-        public override void LoadContent()
-        {
-            Ball.Instance.UnloadContent();
-            Collision.Instance.UnloadContent();
-            GameScreen.Instance.UnloadContent2();
-
-            base.LoadContent();
-            menuManager.LoadContent("Content/Load/Menu/TitleScreen.xml");
-
             background = new Image();
             background.Path = "Images/TitleScreen";
             background.LoadContent();
@@ -37,35 +25,41 @@ namespace Volamus_v1
                     (float)GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height / ((float)background.Texture.Height / 1.5f));
             background.Position = new Vector2(0, 0);
 
-            Volamus = new Image();
-            Volamus.Path = "Images/gesamtesLogoPNG";
-            Volamus.Scale = new Vector2(0.5f, 0.5f);
-            Volamus.LoadContent();
-            Volamus.Position = new Vector2((GameStateManager.Instance.dimensions.X - Volamus.SourceRect.Width) / 2, -90);
+            story = new Image();
+            story.Text = "story";  //story
+            story.LoadContent();
+            story.Position = new Vector2(10, GameStateManager.Instance.dimensions.Y / 2);
+
+            i = 1;
+        }
+
+        public override void LoadContent()
+        {
+            base.LoadContent();
         }
 
         public override void UnloadContent()
         {
             base.UnloadContent();
-            menuManager.UnloadContent();
             background.UnloadContent();
-            Volamus.UnloadContent();
+            story.UnloadContent();
+            i = 0;
         }
 
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-            menuManager.Update(gameTime);
             background.Update(gameTime);
-            Volamus.Update(gameTime);
+            story.Update(gameTime);
+
+            story.Position = story.Position + new Vector2(10 + i, GameStateManager.Instance.dimensions.Y / 2);
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
             base.Draw(spriteBatch);
             background.Draw(spriteBatch);
-            Volamus.Draw(spriteBatch);
-            menuManager.Draw(spriteBatch);
+            story.Draw(spriteBatch);
         }
     }
 }
