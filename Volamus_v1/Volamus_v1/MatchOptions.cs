@@ -24,6 +24,8 @@ namespace Volamus_v1
 
         Image back, play;
 
+        Texture2D veloMinus, veloPlus, sizeMinus, sizePlus;
+
         public MatchOptions()
         {
             int[] p = new int[10];
@@ -81,6 +83,11 @@ namespace Volamus_v1
             wind.LoadContent();
             enemyVelo.LoadContent();
             ballRadius.LoadContent();
+
+            veloMinus = GameStateManager.Instance.Content.Load<Texture2D>("Images/pfeil_green2");
+            veloPlus = GameStateManager.Instance.Content.Load<Texture2D>("Images/pfeil_green3");
+            sizeMinus = GameStateManager.Instance.Content.Load<Texture2D>("Images/pfeil_blau");
+            sizePlus = GameStateManager.Instance.Content.Load<Texture2D>("Images/pfeil_blau2");
         }
 
         public override void UnloadContent()
@@ -219,12 +226,17 @@ namespace Volamus_v1
 
         public override void Draw(SpriteBatch spriteBatch)
         {
+            SpriteFont spriteFont = GameStateManager.Instance.Content.Load<SpriteFont>("SpriteFonts/Standard");
             base.Draw(spriteBatch);
             stages.Draw(100);
             points.Draw(350);
             wind.Draw(400);
             enemyVelo.Draw(450);
+            GameStateManager.Instance.SpriteBatch.Draw(veloMinus ,new Vector2(120 + spriteFont.MeasureString("Velocity Drops").X, 450));
+            GameStateManager.Instance.SpriteBatch.Draw(veloPlus, new Vector2(140 + spriteFont.MeasureString("Velocity Drops").X, 450));
             ballRadius.Draw(500);
+            GameStateManager.Instance.SpriteBatch.Draw(sizeMinus, new Vector2(120 + spriteFont.MeasureString("Ball Radius Drops").X, 500));
+            GameStateManager.Instance.SpriteBatch.Draw(sizePlus, new Vector2(140 + spriteFont.MeasureString("Ball Radius Drops").X, 500));
 
             play.Draw(spriteBatch);
             back.Draw(spriteBatch);
