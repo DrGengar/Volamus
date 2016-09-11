@@ -39,7 +39,7 @@ namespace Volamus_v1
             bg.Position = new Vector2(GameStateManager.Instance.dimensions.X / 2, 0);
 
             text = new Image();
-            text.Scale = new Vector2(1.4f, 1.4f);
+            text.Scale = new Vector2(1.2f, 1.2f);
             text.Text = "For or long, long time there has been a legend about a golden cloud. \n Nobody knows exactly how or where this cloud was created \n and which secrets it harbours. \n But one thing is for certain: \n The cloud is etxremely mighty and promises unlimited power. \n \n Amongst the Acagamics-manikins there is a group of \n old and wise scholars who believe in the core of truth in this legend. \n Therefore they made it their business to find the cloud and study it. \n For this daring task they are now looking to gather \n a fellowship of the most able. \n To be prepared for all possible dangers and to ascertain a save return, \n the companions have to possess both dexterity and strength, \n adaptability and courage. \n \n A tournament ensures that only the best of the best are \n selected for this adventure. \n Here the candidates have to compete in the most prestigious discipline, \n since only this way they can demonstrate their skills ideally...";
             text.LoadContent();
             text.Position = new Vector2(GameStateManager.Instance.dimensions.X / 2 - 300, GameStateManager.Instance.dimensions.Y);
