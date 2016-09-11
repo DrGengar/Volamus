@@ -1103,3 +1103,9 @@
 /processorParam:TextureFormat=Color
 /build:Images/map3.2.png
 
+#begin SpriteFonts/standardbigger.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:TextureFormat=Compressed
+/build:SpriteFonts/standardbigger.spritefont
+

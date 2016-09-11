@@ -16,6 +16,11 @@ namespace Volamus_v1
 
         float angle; //Radians oder Degree?
 
+        public float Angle
+        {
+            get { return angle; }
+        }
+
         public Wind(int index) //index is {0,1,2}
         {
             //Stärke des Winds: 0 kein Wind, 1 leichter Wind, 2 starker Wind

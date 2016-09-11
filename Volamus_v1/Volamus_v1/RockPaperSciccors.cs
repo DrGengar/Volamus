@@ -20,7 +20,7 @@ namespace Volamus_v1
 
         int height;
         Vector2 rockVec, paperVec, scissorsVec;
-        SpriteFont headline;
+        SpriteFont headline, standard;
 
         public int Decision
         {
@@ -57,6 +57,7 @@ namespace Volamus_v1
             paper = GameStateManager.Instance.Content.Load<Texture2D>("Images/paper");
             scissors = GameStateManager.Instance.Content.Load<Texture2D>("Images/scissor");
             headline = GameStateManager.Instance.Content.Load<SpriteFont>("SpriteFonts/Headline");
+            standard = GameStateManager.Instance.Content.Load<SpriteFont>("SpriteFonts/standardbigger");
         }
 
         public void Update(GameTime gameTime)
@@ -112,7 +113,7 @@ namespace Volamus_v1
                 {
                     if(win == 2) //You Lose!
                     {
-                        GameStateManager.Instance.SpriteBatch.DrawString(headline, "Looser!", new Vector2((view.Width + view.X + view.X - headline.MeasureString("Looser").X) /2, 0), Color.White);
+                        GameStateManager.Instance.SpriteBatch.DrawString(headline, "Loser!", new Vector2((view.Width + view.X + view.X - headline.MeasureString("Looser").X) /2, 0), Color.White);
                     }
                     else
                     {
@@ -170,6 +171,8 @@ namespace Volamus_v1
             }
             else
             {
+                GameStateManager.Instance.SpriteBatch.DrawString(standard, "Rock Paper Scissors - Make Your Choice!", new Vector2(20,50), Color.White);
+
                 height = rock.Height + paper.Height + scissors.Height + 40;
                 rockVec = new Vector2(view.X + 20, (view.Height - height) / 2);
                 paperVec = rockVec + new Vector2(0, rock.Height + 20);

@@ -57,21 +57,6 @@ namespace Volamus_v1
             {
                 GameStateManager.Instance.ChangeScreens("Story");
             }
-
-            if (InputManager.Instance.KeyPressed(Keys.F1))
-            {
-                Field field = new Field(100, 90, 15);
-                field.Initialize();
-
-                Player one = new Player(new Vector3(0, -25, 0), 5, 0.5f, 0.8f, field);
-                Player two = new Player(new Vector3(0, 25, 0), 5, 0.5f, 0.8f, field, PlayerIndex.One);
-
-                one.Enemy = two;
-                two.Enemy = one;
-
-                GameScreen.Instance.Match = new Match(one, two, field, 50, 0, false, false);
-                GameStateManager.Instance.ChangeScreens("GameScreen");
-            }
         }
 
         public override void Draw(SpriteBatch spriteBatch)

@@ -150,16 +150,7 @@ namespace Volamus_v1
 
         public void Draw(Camera camera)
         {
-            float temp = Ball.Instance.Wind.Direction();
-
-            if(temp == 0)
-            {
-                rotation = 0;
-            }
-            else
-            {
-                rotation = temp * 1000;
-            }
+            rotation = Ball.Instance.Wind.Angle;
 
 
             DrawBanner(camera);
@@ -222,11 +213,11 @@ namespace Volamus_v1
                 foreach (ModelMeshPart part in mesh.MeshParts)
                 {
                     part.Effect = effect2;
-                    effect2.Parameters["World"].SetValue(transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) * Matrix.CreateRotationZ(MathHelper.ToRadians(rotation)) * Matrix.CreateScale(0.04f, 0.04f, 0.04f)
+                    effect2.Parameters["World"].SetValue(transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) * Matrix.CreateRotationZ(rotation) * Matrix.CreateScale(0.04f, 0.04f, 0.04f)
                            * Matrix.CreateTranslation(new Vector3(-50, 0, 0)));
                     effect2.Parameters["View"].SetValue(camera.ViewMatrix);
                     effect2.Parameters["Projection"].SetValue(camera.ProjectionMatrix);
-                    Matrix WorldInverseTransposeMatrix = Matrix.Transpose(Matrix.Invert(transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) * Matrix.CreateRotationZ(MathHelper.ToRadians(rotation)) * Matrix.CreateScale(0.04f, 0.04f, 0.04f)
+                    Matrix WorldInverseTransposeMatrix = Matrix.Transpose(Matrix.Invert(transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) * Matrix.CreateRotationZ(rotation) * Matrix.CreateScale(0.04f, 0.04f, 0.04f)
                            * Matrix.CreateTranslation(new Vector3(-50, 0, 0))));
                     effect2.Parameters["WorldInverseTranspose"].SetValue(WorldInverseTransposeMatrix);
 
@@ -241,11 +232,11 @@ namespace Volamus_v1
                 foreach (ModelMeshPart part in mesh.MeshParts)
                 {
                     part.Effect = effect2;
-                    effect2.Parameters["World"].SetValue(transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) * Matrix.CreateRotationZ(MathHelper.ToRadians(rotation)) * Matrix.CreateScale(0.04f, 0.04f, 0.04f)
+                    effect2.Parameters["World"].SetValue(transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) * Matrix.CreateRotationZ(rotation) * Matrix.CreateScale(0.04f, 0.04f, 0.04f)
                            * Matrix.CreateTranslation(new Vector3(50, 0, 0)));
                     effect2.Parameters["View"].SetValue(camera.ViewMatrix);
                     effect2.Parameters["Projection"].SetValue(camera.ProjectionMatrix);
-                    Matrix WorldInverseTransposeMatrix = Matrix.Transpose(Matrix.Invert(transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) * Matrix.CreateRotationZ(MathHelper.ToRadians(rotation)) * Matrix.CreateScale(0.04f, 0.04f, 0.04f)
+                    Matrix WorldInverseTransposeMatrix = Matrix.Transpose(Matrix.Invert(transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) * Matrix.CreateRotationZ(rotation) * Matrix.CreateScale(0.04f, 0.04f, 0.04f)
                            * Matrix.CreateTranslation(new Vector3(50, 0, 0))));
                     effect2.Parameters["WorldInverseTranspose"].SetValue(WorldInverseTransposeMatrix);
 

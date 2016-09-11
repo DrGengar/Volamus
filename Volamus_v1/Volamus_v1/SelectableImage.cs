@@ -34,13 +34,13 @@ namespace Volamus_v1
 
                     if (active > 0)
                     {
-                        active -= 1;
+                        //active -= 1;
                     }
                     else
                     {
                         if (active == 0)
                         {
-                            active = options.Length - 1;
+                            //active = options.Length - 1;
                         }
                     }
                 }
@@ -51,13 +51,13 @@ namespace Volamus_v1
 
                     if (active < options.Length - 1)
                     {
-                        active += 1;
+                        //active += 1;
                     }
                     else
                     {
                         if (active == options.Length - 1)
                         {
-                            active = 0;
+                            //active = 0;
                         }
                     }
                 }
