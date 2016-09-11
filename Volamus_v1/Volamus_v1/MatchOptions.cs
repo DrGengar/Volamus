@@ -36,9 +36,9 @@ namespace Volamus_v1
             points = new SelectableInt(p, "Maximum Points");
 
             Texture2D mapOne, mapTwo, mapThree;
-            mapOne = GameStateManager.Instance.Content.Load<Texture2D>("Images/map1");
-            mapTwo = GameStateManager.Instance.Content.Load<Texture2D>("Images/map2");
-            mapThree = GameStateManager.Instance.Content.Load<Texture2D>("Images/map3");
+            mapOne = GameStateManager.Instance.Content.Load<Texture2D>("Images/m1.3");
+            mapTwo = GameStateManager.Instance.Content.Load<Texture2D>("Images/map2.3");
+            mapThree = GameStateManager.Instance.Content.Load<Texture2D>("Images/map3.2");
 
             stages = new SelectableImage(new[] { mapOne, mapTwo, mapThree }, "Maps");
 

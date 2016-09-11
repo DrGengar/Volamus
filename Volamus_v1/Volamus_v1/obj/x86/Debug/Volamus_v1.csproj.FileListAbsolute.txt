@@ -766,3 +766,7 @@ C:\Users\Iam\Desktop\WIP\Volamus_v1\Volamus_v1\SharpDX.Direct2D1.xml
 C:\Users\Iam\Desktop\WIP\Volamus_v1\Volamus_v1\SharpDX.XInput.xml
 C:\Users\Iam\Desktop\WIP\Volamus_v1\Volamus_v1\SharpDX.RawInput.xml
 C:\Users\Iam\Desktop\WIP\Volamus_v1\Volamus_v1\SharpDX.Direct3D9.xml
+C:\Users\Ich\Desktop\3dGame\Volamus_v1\Volamus_v1\Content\Textures\black.xnb
+C:\Users\Ich\Desktop\3dGame\Volamus_v1\Volamus_v1\Content\Images\m1.3.xnb
+C:\Users\Ich\Desktop\3dGame\Volamus_v1\Volamus_v1\Content\Images\map2.3.xnb
+C:\Users\Ich\Desktop\3dGame\Volamus_v1\Volamus_v1\Content\Images\map3.2.xnb
