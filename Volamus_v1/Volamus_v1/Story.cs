@@ -11,13 +11,17 @@ namespace Volamus_v1
 {
     public class Story : GameState
     {
-        private Image story;
         private Image background;
+        private Image skip;
 
-        private int i; //counter for scrolling
+        private Image text;
+
+        private float counter; // counter for scrolling
 
         public Story()
         {
+            base.LoadContent();
+
             background = new Image();
             background.Path = "Images/TitleScreen";
             background.LoadContent();
@@ -25,12 +29,19 @@ namespace Volamus_v1
                     (float)GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height / ((float)background.Texture.Height / 1.5f));
             background.Position = new Vector2(0, 0);
 
-            story = new Image();
-            story.Text = "story";  //story
-            story.LoadContent();
-            story.Position = new Vector2(10, GameStateManager.Instance.dimensions.Y / 2);
+            text = new Image();
+            text.Scale = new Vector2(1.4f, 1.4f);
+            text.Text = "For or long, long time there has been a legend about a golden cloud. \n Nobody knows exactly how or where this cloud was created \n and which secrets it harbours. \n But one thing is for certain: \n The cloud is etxremely mighty and promises unlimited power. \n \n Amongst the Acagamics-manikins there is a group of \n old and wise scholars who believe in the core of truth of this legend. \n Therefore they made it their business to find the cloud and study it. \n For this daring task they are now looking to gather \n a fellowship of the most able. \n To be prepared for all possible dangers and to ascertain a save return, \n the companions have to possess both dexterity and strength, \n adaptability and courage. \n \n A tournament ensures that only the best of the best are \n selected for this adventure. \n Here the candidates have to compete in the most prestigious discipline, \n since only this way they can demonstrate their skills ideally...";
+            text.LoadContent();
+            text.Position = new Vector2(GameStateManager.Instance.dimensions.X / 2 - 300, GameStateManager.Instance.dimensions.Y);
 
-            i = 1;
+            skip = new Image();
+            skip.Path = "Images/buttonTexture";
+            skip.Text = "Skip";
+            skip.LoadContent();
+            skip.Position = new Vector2(50, GameStateManager.Instance.dimensions.Y / 2 - 50);
+
+            counter = 0.5f;
         }
 
         public override void LoadContent()
@@ -41,25 +52,48 @@ namespace Volamus_v1
         public override void UnloadContent()
         {
             base.UnloadContent();
+            skip.UnloadContent();
             background.UnloadContent();
-            story.UnloadContent();
-            i = 0;
+
+
         }
 
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
             background.Update(gameTime);
-            story.Update(gameTime);
+            skip.Update(gameTime);
+            text.Update(gameTime);
+            text.Position = text.Position + new Vector2(0, -counter);
 
-            story.Position = story.Position + new Vector2(10 + i, GameStateManager.Instance.dimensions.Y / 2);
+            if (text.Position.Y <= -970)
+            {
+                text.Position.Y = 1200;
+            }
+
+
+
+            skip.isActive = true;
+            skip.ActivateEffect("FadeEffect");
+
+            if (skip.isActive && (InputManager.Instance.ButtonPressed(Buttons.A) || InputManager.Instance.KeyPressed(Keys.Enter)))
+            {
+                GameStateManager.Instance.ChangeScreens("TitleScreen");
+            }
+            if (InputManager.Instance.ButtonPressed(Buttons.B) || InputManager.Instance.KeyPressed(Keys.Escape))
+            {
+                GameStateManager.Instance.ChangeScreens("TitleScreen");
+            }
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
             base.Draw(spriteBatch);
             background.Draw(spriteBatch);
-            story.Draw(spriteBatch);
+            skip.Draw(spriteBatch);
+            text.Draw(spriteBatch);
+
+
         }
     }
 }

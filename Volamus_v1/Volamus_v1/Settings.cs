@@ -18,10 +18,18 @@ namespace Volamus_v1
         SelectableOptions[] options;
         int active;
 
+        Image background;
         Image save;
 
         public Settings()
         {
+            background = new Image();
+            background.Path = "Images/TitleScreen";
+            background.LoadContent();
+            background.Scale = new Vector2((float)GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width / ((float)background.Texture.Width / 1.5f),
+                    (float)GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height / ((float)background.Texture.Height / 1.5f));
+            background.Position = new Vector2(0, 0);
+
             int[] sound = new int[21];
             for (int i = 0; i < 21; i++)
             {
@@ -84,6 +92,7 @@ namespace Volamus_v1
             music.UnloadContent();
             fullscreen.UnloadContent();
             save.UnloadContent();
+            background.UnloadContent();
         }
 
         public override void Update(GameTime gameTime)
@@ -93,6 +102,7 @@ namespace Volamus_v1
             music.Update(gameTime);
             save.Update(gameTime);
             fullscreen.Update(gameTime);
+            background.Update(gameTime);
 
             if (active < 3)
             {
@@ -173,10 +183,12 @@ namespace Volamus_v1
         public override void Draw(SpriteBatch spriteBatch)
         {
             base.Draw(spriteBatch);
+            background.Draw(spriteBatch);
             ingame.Draw((int)GameStateManager.Instance.dimensions.Y / 2 - 100);
             music.Draw((int)GameStateManager.Instance.dimensions.Y / 2);
             fullscreen.Draw((int)GameStateManager.Instance.dimensions.Y / 2 + 100);
             save.Draw(spriteBatch);
+
         }
     }
 }

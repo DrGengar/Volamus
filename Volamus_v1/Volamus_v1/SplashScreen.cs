@@ -26,13 +26,14 @@ namespace Volamus_v1
                     (float)GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height / ((float)Screen.Texture.Height / 1.5f));
 
             Volamus.LoadContent();
-            Volamus.Scale = new Vector2((float)Volamus.SourceRect.Width / ((float)GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width / 1.5f), (float)Volamus.SourceRect.Height / ((float)GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height / 1.5f));
+            Volamus.Scale = new Vector2((float)Volamus.SourceRect.Width / ((float)GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width / 2f), (float)Volamus.SourceRect.Height / ((float)GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height / 2f));
             Volamus.Position = new Vector2((GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width - Volamus.SourceRect.Width) / 2, 0);
 
 
             Enter.LoadContent();
+            Enter.Scale = new Vector2(2f, 2f);
             Enter.Position = new Vector2((GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width - Enter.SourceRect.Width) / 2,
-                (GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height - 100));
+                (GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height - 300));
 
             Enter.Color = Color.Black;
         }
@@ -54,7 +55,7 @@ namespace Volamus_v1
 
             if (InputManager.Instance.KeyPressed(Keys.Enter) || InputManager.Instance.ButtonPressed(Buttons.A))
             {
-                GameStateManager.Instance.ChangeScreens("TitleScreen");
+                GameStateManager.Instance.ChangeScreens("Story");
             }
 
             if (InputManager.Instance.KeyPressed(Keys.F1))

@@ -21,6 +21,15 @@
 
   <Item>
     <LinkType>Screen</LinkType>
+    <LinkID>Story</LinkID>
+    <Image>
+      <Path>Images/buttonTexture</Path>
+      <Text>Story</Text>
+    </Image>
+  </Item>
+
+  <Item>
+    <LinkType>Screen</LinkType>
     <LinkID>Credits</LinkID>
     <Image>
       <Path>Images/buttonTexture</Path>
