@@ -84,17 +84,6 @@ namespace Volamus_v1
             GameStateManager.Instance.SpriteBatch.DrawString(font, "Spin Left", new Vector2(20, 450), Color.White);
             GameStateManager.Instance.SpriteBatch.DrawString(font, "Spin Right", new Vector2(20, 500), Color.White);
 
-            //Power-Ups
-            GameStateManager.Instance.SpriteBatch.DrawString(font, "POWER UPS:", new Vector2(30, 600), Color.White);
-            GameStateManager.Instance.SpriteBatch.DrawString(font, "Ball Bigger", new Vector2(30, 650), Color.White);
-            GameStateManager.Instance.SpriteBatch.DrawString(font, "Light Blue", new Vector2(400, 650), Color.White);
-            GameStateManager.Instance.SpriteBatch.DrawString(font, "Balls Smaller", new Vector2(30, 700), Color.White);
-            GameStateManager.Instance.SpriteBatch.DrawString(font, "Dark Blue", new Vector2(400, 700), Color.White);
-            GameStateManager.Instance.SpriteBatch.DrawString(font, "Enemy Velocity Down", new Vector2(30, 750), Color.White);
-            GameStateManager.Instance.SpriteBatch.DrawString(font, "Light Green", new Vector2(400, 750), Color.White);
-            GameStateManager.Instance.SpriteBatch.DrawString(font, "Own Velocity Up", new Vector2(30, 800), Color.White);
-            GameStateManager.Instance.SpriteBatch.DrawString(font, "Dark green", new Vector2(400, 800), Color.White);
-
             //Keyboard
             GameStateManager.Instance.GraphicsDevice.Viewport = leftView;
 
