@@ -153,6 +153,22 @@ namespace Volamus_v1
                 }
             }
 
+            if(active == 5)
+            {
+                if (InputManager.Instance.ButtonPressed(Buttons.DPadRight, Buttons.LeftThumbstickRight, Buttons.RightThumbstickRight) || InputManager.Instance.KeyPressed(Keys.Right))
+                {
+                    active = 6;
+                }
+            }
+
+            if (active == 6)
+            {
+                if (InputManager.Instance.ButtonPressed(Buttons.DPadLeft, Buttons.LeftThumbstickLeft, Buttons.RightThumbstickLeft) || InputManager.Instance.KeyPressed(Keys.Left))
+                {
+                    active = 5;
+                }
+            }
+
             if (active < 5)
             {
                 options[active].Active = true;
