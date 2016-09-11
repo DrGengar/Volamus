@@ -18,6 +18,7 @@ namespace Volamus_v1
         float x = 0;
         float y = 0;
         float test;
+        int timer;
 
         //SplitScreen
         private Viewport defaultView, leftView, rightView;
@@ -112,7 +113,7 @@ namespace Volamus_v1
             GameStateManager.Instance.GraphicsDevice.Clear(Color.Black);
 
             //Linker SplitScreen: Linker Spieler (player_one)
-            if (!GameScreen.Instance.Match.IsFinished)
+            if (!GameScreen.Instance.Match.IsFinished || timer<200)
             {
                 GameStateManager.Instance.GraphicsDevice.Viewport = leftView;
 
@@ -120,7 +121,7 @@ namespace Volamus_v1
             }
 
             //Rechter SplitScreen: Rechter Spieler (player_two)
-            if (!GameScreen.Instance.Match.IsFinished)
+            if (!GameScreen.Instance.Match.IsFinished || timer<200)
             {
                 GameStateManager.Instance.GraphicsDevice.Viewport = rightView;
 
@@ -131,44 +132,52 @@ namespace Volamus_v1
             GameStateManager.Instance.GraphicsDevice.Viewport = defaultView;
 
             // Ganze Bild nach Matchende
-            
+
             if (GameScreen.Instance.Match.IsFinished == true)
             {
-
-                //Startposition der Rotation bestimmen
-                if (rotate == 90)
+                if (timer <= 200)
                 {
-                    if (match.Looser.Direction == 1)
+                    timer++;
+                }
+                else
+                {
+                    //Startposition der Rotation bestimmen
+                    if (rotate == 90)
                     {
-                        rotate = 3 * MathHelper.Pi / 2; //180
-                        test = rotate + 8 * MathHelper.Pi;
-                    }
-                    else
-                    {
-                        rotate = MathHelper.Pi / 2;  //90
-                        test = rotate + 8 * MathHelper.Pi;
-                    }
-                    y = 100 * match.Winner.Direction;
+                        if (match.Looser.Direction == 1)
+                        {
+                            rotate = 3 * MathHelper.Pi / 2; //180
+                            test = rotate + 8 * MathHelper.Pi;
+                        }
+                        else
+                        {
+                            rotate = MathHelper.Pi / 2;  //90
+                            test = rotate + 8 * MathHelper.Pi;
+                        }
+                        y = 100 * match.Winner.Direction;
 
+                    }
+
+                    GameScreen.Instance.Match.Draw(new Camera(new Vector3(x, y, 40), new Vector3(0, 0, 0), new Vector3(0, 0, 1)), defaultView);
+
+                    //Rotation
+                    x = 100 * (float)Math.Cos(rotate);
+                    y = 100 * (float)Math.Sin(rotate);
+                    rotate += 0.002f;//0.002f;
+
+                    //nach 4 Runden wird rotate zurückgesetzt, dass die Zahl nicht zu groß wird
+                    if (rotate >= test)
+                    {
+                        rotate = 90;
+                    }
                 }
 
-                GameScreen.Instance.Match.Draw(new Camera(new Vector3(x, y, 40), new Vector3(0, 0, 0), new Vector3(0, 0, 1)), defaultView);
-
-                //Rotation
-                x = 100 * (float)Math.Cos(rotate);
-                y = 100 * (float)Math.Sin(rotate);
-                rotate += 0.002f;//0.002f;
-
-                //nach 4 Runden wird rotate zurückgesetzt, dass die Zahl nicht zu groß wird
-                if (rotate >= test)
-                {
-                    rotate = 90;
-                }
             }
 
             //zurücksetzen wenn ein Match zu Ende und noch eins begonnen wird
             else
             {
+                timer = 0;
                 rotate = 90f;
                 x = 0;
                 y = 70;
