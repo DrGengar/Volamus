@@ -770,3 +770,6 @@ C:\Users\Ich\Desktop\3dGame\Volamus_v1\Volamus_v1\Content\Textures\black.xnb
 C:\Users\Ich\Desktop\3dGame\Volamus_v1\Volamus_v1\Content\Images\m1.3.xnb
 C:\Users\Ich\Desktop\3dGame\Volamus_v1\Volamus_v1\Content\Images\map2.3.xnb
 C:\Users\Ich\Desktop\3dGame\Volamus_v1\Volamus_v1\Content\Images\map3.2.xnb
+C:\Users\Iam\Desktop\WIp\Volamus_v1\Volamus_v1\Content\Images\m1.3.xnb
+C:\Users\Iam\Desktop\WIp\Volamus_v1\Volamus_v1\Content\Images\map2.3.xnb
+C:\Users\Iam\Desktop\WIp\Volamus_v1\Volamus_v1\Content\Images\map3.2.xnb
