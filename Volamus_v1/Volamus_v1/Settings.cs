@@ -19,6 +19,7 @@ namespace Volamus_v1
         int active;
 
         Image background;
+        Image bg;
         Image save;
 
         public Settings()
@@ -29,6 +30,14 @@ namespace Volamus_v1
             background.Scale = new Vector2((float)GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width / ((float)background.Texture.Width / 1.5f),
                     (float)GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height / ((float)background.Texture.Height / 1.5f));
             background.Position = new Vector2(0, 0);
+
+            bg = new Image();
+            bg.Path = "Textures/Black";
+            bg.Alpha = 0.3f;
+            bg.LoadContent();
+            bg.Scale = new Vector2((float)GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width / ((float)background.Texture.Width / 1.5f),
+                    (float)GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height / ((float)background.Texture.Height / 1.5f));
+            bg.Position = new Vector2(GameStateManager.Instance.dimensions.X / 2, 0);
 
             int[] sound = new int[21];
             for (int i = 0; i < 21; i++)
@@ -92,6 +101,7 @@ namespace Volamus_v1
             music.UnloadContent();
             fullscreen.UnloadContent();
             save.UnloadContent();
+            bg.UnloadContent();
             background.UnloadContent();
         }
 
@@ -102,6 +112,7 @@ namespace Volamus_v1
             music.Update(gameTime);
             save.Update(gameTime);
             fullscreen.Update(gameTime);
+            bg.Update(gameTime);
             background.Update(gameTime);
 
             if (active < 3)
@@ -184,6 +195,7 @@ namespace Volamus_v1
         {
             base.Draw(spriteBatch);
             background.Draw(spriteBatch);
+            bg.Draw(spriteBatch);
             ingame.Draw((int)GameStateManager.Instance.dimensions.Y / 2 - 100);
             music.Draw((int)GameStateManager.Instance.dimensions.Y / 2);
             fullscreen.Draw((int)GameStateManager.Instance.dimensions.Y / 2 + 100);

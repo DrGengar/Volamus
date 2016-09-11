@@ -84,10 +84,21 @@ namespace Volamus_v1
             GameStateManager.Instance.SpriteBatch.DrawString(font, "Spin Left", new Vector2(20, 450), Color.White);
             GameStateManager.Instance.SpriteBatch.DrawString(font, "Spin Right", new Vector2(20, 500), Color.White);
 
+            //Power-Ups
+            GameStateManager.Instance.SpriteBatch.DrawString(font, "POWER UPS:", new Vector2(30, 700), Color.White);
+            GameStateManager.Instance.SpriteBatch.DrawString(font, "Ball Bigger", new Vector2(30, 750), Color.White);
+            GameStateManager.Instance.SpriteBatch.DrawString(font, "Light Blue", new Vector2(400, 750), Color.White);
+            GameStateManager.Instance.SpriteBatch.DrawString(font, "Balls Smaller", new Vector2(30, 800), Color.White);
+            GameStateManager.Instance.SpriteBatch.DrawString(font, "Dark Blue", new Vector2(400, 800), Color.White);
+            GameStateManager.Instance.SpriteBatch.DrawString(font, "Enemy Velocity Down", new Vector2(30, 850), Color.White);
+            GameStateManager.Instance.SpriteBatch.DrawString(font, "Light Green", new Vector2(400, 850), Color.White);
+            GameStateManager.Instance.SpriteBatch.DrawString(font, "Own Velocity Up", new Vector2(30, 900), Color.White);
+            GameStateManager.Instance.SpriteBatch.DrawString(font, "Dark green", new Vector2(400, 900), Color.White);
+
             //Keyboard
             GameStateManager.Instance.GraphicsDevice.Viewport = leftView;
 
-            GameStateManager.Instance.SpriteBatch.DrawString(font, "Keyboard", new Vector2((leftView.X + (leftView.Width + leftView.X))/ 2, 0), Color.White);
+            GameStateManager.Instance.SpriteBatch.DrawString(font, "Keyboard", new Vector2((leftView.X + (leftView.Width + leftView.X))/ 2 - 75, 0), Color.White);
             GameStateManager.Instance.SpriteBatch.DrawString(font, keyboard.Up.ToString(), new Vector2((leftView.X + (leftView.Width + leftView.X)) / 2 - 50, 100), Color.White);
             GameStateManager.Instance.SpriteBatch.DrawString(font, keyboard.Left.ToString(), new Vector2((leftView.X + (leftView.Width + leftView.X)) / 2 - 50, 150), Color.White);
             GameStateManager.Instance.SpriteBatch.DrawString(font, keyboard.Right.ToString(), new Vector2((leftView.X + (leftView.Width + leftView.X)) / 2 - 50, 200), Color.White);

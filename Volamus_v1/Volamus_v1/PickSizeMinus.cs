@@ -89,7 +89,7 @@ namespace Volamus_v1
                     foreach (ModelMeshPart part in mesh.MeshParts)
                     {
                         part.Effect = effect;
-                        effect.Parameters["World"].SetValue(transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) *
+                        effect.Parameters["World"].SetValue(transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) * 
                                 Matrix.CreateScale(1.50f, 1.50f, 2.0f)
                                 * Matrix.CreateTranslation(drops[index].Position));
                         effect.Parameters["View"].SetValue(camera.ViewMatrix);

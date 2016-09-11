@@ -12,6 +12,7 @@ namespace Volamus_v1
     public class Story : GameState
     {
         private Image background;
+        private Image bg;
         private Image skip;
 
         private Image text;
@@ -29,9 +30,17 @@ namespace Volamus_v1
                     (float)GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height / ((float)background.Texture.Height / 1.5f));
             background.Position = new Vector2(0, 0);
 
+            bg = new Image();
+            bg.Path = "Textures/Black";
+            bg.Alpha = 0.3f;
+            bg.LoadContent();
+            bg.Scale = new Vector2((float)GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width / ((float)background.Texture.Width / 1.5f),
+                    (float)GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height / ((float)background.Texture.Height / 1.5f));
+            bg.Position = new Vector2(GameStateManager.Instance.dimensions.X / 2, 0);
+
             text = new Image();
             text.Scale = new Vector2(1.4f, 1.4f);
-            text.Text = "For or long, long time there has been a legend about a golden cloud. \n Nobody knows exactly how or where this cloud was created \n and which secrets it harbours. \n But one thing is for certain: \n The cloud is etxremely mighty and promises unlimited power. \n \n Amongst the Acagamics-manikins there is a group of \n old and wise scholars who believe in the core of truth of this legend. \n Therefore they made it their business to find the cloud and study it. \n For this daring task they are now looking to gather \n a fellowship of the most able. \n To be prepared for all possible dangers and to ascertain a save return, \n the companions have to possess both dexterity and strength, \n adaptability and courage. \n \n A tournament ensures that only the best of the best are \n selected for this adventure. \n Here the candidates have to compete in the most prestigious discipline, \n since only this way they can demonstrate their skills ideally...";
+            text.Text = "For or long, long time there has been a legend about a golden cloud. \n Nobody knows exactly how or where this cloud was created \n and which secrets it harbours. \n But one thing is for certain: \n The cloud is etxremely mighty and promises unlimited power. \n \n Amongst the Acagamics-manikins there is a group of \n old and wise scholars who believe in the core of truth in this legend. \n Therefore they made it their business to find the cloud and study it. \n For this daring task they are now looking to gather \n a fellowship of the most able. \n To be prepared for all possible dangers and to ascertain a save return, \n the companions have to possess both dexterity and strength, \n adaptability and courage. \n \n A tournament ensures that only the best of the best are \n selected for this adventure. \n Here the candidates have to compete in the most prestigious discipline, \n since only this way they can demonstrate their skills ideally...";
             text.LoadContent();
             text.Position = new Vector2(GameStateManager.Instance.dimensions.X / 2 - 300, GameStateManager.Instance.dimensions.Y);
 
@@ -41,7 +50,7 @@ namespace Volamus_v1
             skip.LoadContent();
             skip.Position = new Vector2(50, GameStateManager.Instance.dimensions.Y / 2 - 50);
 
-            counter = 0.5f;
+            counter = 0.4f;
         }
 
         public override void LoadContent()
@@ -53,6 +62,7 @@ namespace Volamus_v1
         {
             base.UnloadContent();
             skip.UnloadContent();
+            bg.UnloadContent();
             background.UnloadContent();
 
 
@@ -62,11 +72,12 @@ namespace Volamus_v1
         {
             base.Update(gameTime);
             background.Update(gameTime);
+            bg.Update(gameTime);
             skip.Update(gameTime);
             text.Update(gameTime);
             text.Position = text.Position + new Vector2(0, -counter);
 
-            if (text.Position.Y <= -970)
+            if (text.Position.Y <= -750)
             {
                 text.Position.Y = 1200;
             }
@@ -90,6 +101,7 @@ namespace Volamus_v1
         {
             base.Draw(spriteBatch);
             background.Draw(spriteBatch);
+            bg.Draw(spriteBatch);
             skip.Draw(spriteBatch);
             text.Draw(spriteBatch);
 

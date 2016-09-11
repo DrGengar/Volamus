@@ -12,6 +12,7 @@ namespace Volamus_v1
     public class Credits : GameState
     {
         private Image background;
+        private Image bg;
         private Image back;
 
         private Image text;
@@ -28,6 +29,14 @@ namespace Volamus_v1
             background.Scale = new Vector2((float)GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width / ((float)background.Texture.Width / 1.5f),
                     (float)GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height / ((float)background.Texture.Height / 1.5f));
             background.Position = new Vector2(0, 0);
+
+            bg = new Image();
+            bg.Path = "Textures/Black";
+            bg.Alpha = 0.3f;
+            bg.LoadContent();
+            bg.Scale = new Vector2((float)GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width / ((float)background.Texture.Width / 1.5f),
+                    (float)GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height / ((float)background.Texture.Height / 1.5f));
+            bg.Position = new Vector2(GameStateManager.Instance.dimensions.X / 2, 0);
 
             text = new Image();
             text.Scale = new Vector2(1.4f, 1.4f);
@@ -53,6 +62,7 @@ namespace Volamus_v1
         {
             base.UnloadContent();
             back.UnloadContent();
+            bg.UnloadContent();
             background.UnloadContent();
 
         }
@@ -61,11 +71,12 @@ namespace Volamus_v1
         {
             base.Update(gameTime);
             background.Update(gameTime);
+            bg.Update(gameTime);
             back.Update(gameTime);
             text.Update(gameTime);
             text.Position = text.Position + new Vector2(0, -counter);
 
-            if (text.Position.Y <= -1000)
+            if (text.Position.Y <= -1100)
             {
                 text.Position.Y = 1200;
             }
@@ -88,6 +99,7 @@ namespace Volamus_v1
         {
             base.Draw(spriteBatch);
             background.Draw(spriteBatch);
+            bg.Draw(spriteBatch);
             back.Draw(spriteBatch);
             text.Draw(spriteBatch);
         }
