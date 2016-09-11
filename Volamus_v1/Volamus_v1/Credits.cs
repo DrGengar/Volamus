@@ -40,7 +40,7 @@ namespace Volamus_v1
 
             text = new Image();
             text.Scale = new Vector2(1.2f, 1.2f);
-            text.Text = "VOLAMUS \n \n \n a Game by Lena Spitz, Mareen Allgaier and Lars Haider \n \n \n Programmed for 3D Game Projects at OVGU \n \n \n Models created with Blender 2.77a \n \n \n TEXTURES: \n ice texture: \n https://freestocktextures.com/texture/ice-frozen-ground,200.html \n weitere texturen: https://pixabay.com/de \n \n \n SOUNDS \n http://www.freesfx.co.uk \n child_crowd_cheering \n single_blow_from_police_whistle \n Going_Coastal \n Toggle_Switch\n \n \n SPECIAL THANKS TO: \n Gerd Schmidt";
+            text.Text = "VOLAMUS \n \n \n a Game by Lena Spitz, Mareen Allgaier and Lars Haider \n \n \n Programmed for 3D Game Projects at OVGU \n \n \n Models created with Blender 2.77a \n \n \n TEXTURES: \n ice texture: \n https://freestocktextures.com/texture/ice-frozen-ground,200.html \n weitere texturen: https://pixabay.com/de \n \n \n SOUNDS \n http://www.ambiera.com/irrklang/features.html \n http://www.freesfx.co.uk \n child_crowd_cheering \n single_blow_from_police_whistle \n Going_Coastal \n Toggle_Switch\n \n \n SPECIAL THANKS TO: \n Gerd Schmidt";
             text.LoadContent();
             text.Position = new Vector2(GameStateManager.Instance.dimensions.X / 2 - 300, GameStateManager.Instance.dimensions.Y);
 

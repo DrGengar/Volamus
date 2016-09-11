@@ -157,6 +157,7 @@ namespace Volamus_v1
             {
                 if (InputManager.Instance.ButtonPressed(Buttons.DPadRight, Buttons.LeftThumbstickRight, Buttons.RightThumbstickRight) || InputManager.Instance.KeyPressed(Keys.Right))
                 {
+                    GameStateManager.Instance.Menu.Play2D("Content//Sound//button.ogg", false);
                     active = 6;
                 }
             }
@@ -165,6 +166,7 @@ namespace Volamus_v1
             {
                 if (InputManager.Instance.ButtonPressed(Buttons.DPadLeft, Buttons.LeftThumbstickLeft, Buttons.RightThumbstickLeft) || InputManager.Instance.KeyPressed(Keys.Left))
                 {
+                    GameStateManager.Instance.Menu.Play2D("Content//Sound//button.ogg", false);
                     active = 5;
                 }
             }
