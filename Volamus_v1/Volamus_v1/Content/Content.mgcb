@@ -1157,3 +1157,9 @@
 /processorParam:TextureFormat=Color
 /build:Images/pfeil_green3.png
 
+#begin Sound/einsammelSound.ogg
+/importer:OggImporter
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Sound/einsammelSound.ogg
+

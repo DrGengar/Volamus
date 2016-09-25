@@ -796,3 +796,5 @@ C:\Users\Ich\Desktop\3dGame\Volamus_v1\Volamus_v1\Content\Images\pfeil_blau2.xnb
 C:\Users\Ich\Desktop\3dGame\Volamus_v1\Volamus_v1\Content\Images\pfeil_green2.xnb
 C:\Users\Ich\Desktop\3dGame\Volamus_v1\Volamus_v1\Content\Images\pfeil_green3.xnb
 C:\Users\Ich\Desktop\3dGame\Volamus_v1\Volamus_v1\Content\SpriteFonts\standardbigger.xnb
+C:\Users\Ich\Desktop\3dGame\Volamus_v1\Volamus_v1\Content\Sound\einsammelSound.wma
+C:\Users\Ich\Desktop\3dGame\Volamus_v1\Volamus_v1\Content\Sound\einsammelSound.xnb

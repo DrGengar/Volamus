@@ -204,6 +204,7 @@ namespace Volamus_v1
         {
             if (d.BoundingSphere.Intersects(p.InnerBoundingBox))
             {
+                GameStateManager.Instance.Ingame.Play2D("Content//Sound//einsammelSound.ogg");
                 return true;
             }
 
