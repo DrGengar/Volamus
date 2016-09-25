@@ -25,11 +25,15 @@ namespace Volamus_v1
         Model ice;
         private Texture2D iceTexture;
 
-        //Schiedsrichter
+        //Schiedsrichter + Acamännchen
         Model referee;
         private Texture2D refTexture;
         Model trillerpf;
         private Texture2D trillerTexture;
+        Model aca1;
+        Model aca2;
+        private Texture2D aca1Texture;
+        private Texture2D aca2Texture;
 
 
         //Netz
@@ -131,6 +135,10 @@ namespace Volamus_v1
 
             referee = GameStateManager.Instance.Content.Load<Model>("Models/3DAcaLogo");
             refTexture = GameStateManager.Instance.Content.Load<Texture2D>("Textures/AcaTexture");
+            aca1 = GameStateManager.Instance.Content.Load<Model>("Models/3DAcaLogo");
+            aca1Texture = GameStateManager.Instance.Content.Load<Texture2D>("Textures/AcaTexture");
+            aca2 = GameStateManager.Instance.Content.Load<Model>("Models/3DAcaLogo");
+            aca2Texture = GameStateManager.Instance.Content.Load<Texture2D>("Textures/AcaTexture");
 
             trillerpf = GameStateManager.Instance.Content.Load<Model>("Models/trillerpfeife");
             trillerTexture = GameStateManager.Instance.Content.Load<Texture2D>("Textures/AcaTexture");
@@ -158,6 +166,8 @@ namespace Volamus_v1
             DrawNet(camera);
             DrawReferee(camera);
             DrawTrillerpf(camera);
+            DrawAca1(camera);
+            DrawAca2(camera);
 
             skydome.Update(0.0025f);
             skydome.Draw(camera, skyTexture);
@@ -293,6 +303,61 @@ namespace Volamus_v1
                     effect2.Parameters["Projection"].SetValue(camera.ProjectionMatrix);
                     Matrix WorldInverseTransposeMatrix = Matrix.Transpose(Matrix.Invert(transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) * Matrix.CreateScale(0.075f, 0.075f, 0.075f)
                           * Matrix.CreateTranslation(new Vector3(70, 0, 0))));
+                    effect2.Parameters["WorldInverseTranspose"].SetValue(WorldInverseTransposeMatrix);
+
+                    effect2.Parameters["ModelTexture"].SetValue(refTexture);
+
+                    viewVector = Vector3.Transform(camera.View - camera.Position, Matrix.CreateRotationY(0));
+                    viewVector.Normalize();
+                    effect2.Parameters["ViewVector"].SetValue(viewVector);
+                }
+                mesh.Draw();
+            }
+        }
+
+        private void DrawAca1(Camera camera)
+        {
+            Matrix[] transforms = new Matrix[aca1.Bones.Count];
+            aca1.CopyAbsoluteBoneTransformsTo(transforms);
+
+            foreach (ModelMesh mesh in aca1.Meshes)
+            {
+                foreach (ModelMeshPart part in mesh.MeshParts)
+                {
+                    part.Effect = effect2;
+                    effect2.Parameters["World"].SetValue(transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) * Matrix.CreateScale(0.075f, 0.075f, 0.075f)
+                          * Matrix.CreateTranslation(new Vector3(80, -8, 0)));
+                    effect2.Parameters["View"].SetValue(camera.ViewMatrix);
+                    effect2.Parameters["Projection"].SetValue(camera.ProjectionMatrix);
+                    Matrix WorldInverseTransposeMatrix = Matrix.Transpose(Matrix.Invert(transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) * Matrix.CreateScale(0.075f, 0.075f, 0.075f)
+                          * Matrix.CreateTranslation(new Vector3(80, -8, 0))));
+                    effect2.Parameters["WorldInverseTranspose"].SetValue(WorldInverseTransposeMatrix);
+
+                    effect2.Parameters["ModelTexture"].SetValue(refTexture);
+
+                    viewVector = Vector3.Transform(camera.View - camera.Position, Matrix.CreateRotationY(0));
+                    viewVector.Normalize();
+                    effect2.Parameters["ViewVector"].SetValue(viewVector);
+                }
+                mesh.Draw();
+            }
+        }
+        private void DrawAca2(Camera camera)
+        {
+            Matrix[] transforms = new Matrix[aca2.Bones.Count];
+            aca2.CopyAbsoluteBoneTransformsTo(transforms);
+
+            foreach (ModelMesh mesh in aca2.Meshes)
+            {
+                foreach (ModelMeshPart part in mesh.MeshParts)
+                {
+                    part.Effect = effect2;
+                    effect2.Parameters["World"].SetValue(transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) * Matrix.CreateScale(0.075f, 0.075f, 0.075f)
+                          * Matrix.CreateTranslation(new Vector3(80, 8, 0)));
+                    effect2.Parameters["View"].SetValue(camera.ViewMatrix);
+                    effect2.Parameters["Projection"].SetValue(camera.ProjectionMatrix);
+                    Matrix WorldInverseTransposeMatrix = Matrix.Transpose(Matrix.Invert(transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) * Matrix.CreateScale(0.075f, 0.075f, 0.075f)
+                          * Matrix.CreateTranslation(new Vector3(80, 8, 0))));
                     effect2.Parameters["WorldInverseTranspose"].SetValue(WorldInverseTransposeMatrix);
 
                     effect2.Parameters["ModelTexture"].SetValue(refTexture);
