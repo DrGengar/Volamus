@@ -208,7 +208,7 @@ namespace Volamus_v1
 
             if (play.isActive && (InputManager.Instance.ButtonPressed(Buttons.A) || InputManager.Instance.KeyPressed(Keys.Enter)))
             {
-                Field field = new Field(100, 90, 15);
+                IceField field = new IceField(100, 90, 15);
                 field.Initialize();
 
                 Player one, two;

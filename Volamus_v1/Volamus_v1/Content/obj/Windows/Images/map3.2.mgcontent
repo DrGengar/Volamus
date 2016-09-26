@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <SourceFile>C:/Users/Ich/Desktop/3dGame/Volamus_v1/Volamus_v1/Content/Images/map3.2.png</SourceFile>
-  <SourceTime>2016-09-11T19:32:41.3291142+02:00</SourceTime>
-  <DestFile>C:/Users/Ich/Desktop/3dGame/Volamus_v1/Volamus_v1/Content/bin/Windows/Images/map3.2.xnb</DestFile>
-  <DestTime>2016-09-11T19:33:21.8614687+02:00</DestTime>
+  <SourceFile>C:/Users/Lars/Desktop/3dGame2/Volamus_v1/Volamus_v1/Content/Images/map3.2.png</SourceFile>
+  <SourceTime>2016-09-15T21:02:36.8905471+02:00</SourceTime>
+  <DestFile>C:/Users/Lars/Desktop/3dGame2/Volamus_v1/Volamus_v1/Content/bin/Windows/Images/map3.2.xnb</DestFile>
+  <DestTime>2016-09-25T16:54:37.4907821+02:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2016-03-30T08:36:08+02:00</ImporterTime>
   <Processor>TextureProcessor</Processor>

@@ -70,6 +70,7 @@
     <Compile Include="Game1.cs" />
     <Compile Include="Camera.cs" />
     <Compile Include="EndGameMenu.cs" />
+    <Compile Include="IceField.cs" />
     <Compile Include="MatchOptions.cs" />
     <Compile Include="GamePadControl.cs" />
     <Compile Include="GameScreen.cs" />
@@ -81,6 +82,7 @@
     <Compile Include="InputManager.cs" />
     <Compile Include="KeyboardControl.cs" />
     <Compile Include="Match.cs" />
+    <Compile Include="MeadowField.cs" />
     <Compile Include="Menu.cs" />
     <Compile Include="MenuItem.cs" />
     <Compile Include="MenuManager.cs" />
@@ -116,6 +118,7 @@
     <Compile Include="SplashScreen.cs" />
     <Compile Include="Story.cs" />
     <Compile Include="TitleScreen.cs" />
+    <Compile Include="WaterField.cs" />
     <Compile Include="Wind.cs" />
     <Compile Include="XmlIntermediateManager.cs" />
     <Compile Include="XmlManager.cs" />

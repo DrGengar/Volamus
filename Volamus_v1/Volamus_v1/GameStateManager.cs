@@ -68,13 +68,55 @@ namespace Volamus_v1
 
         public void ChangeScreens(string screenName)
         {
-            if (screenName == "GameScreen")
+            switch(screenName)
             {
-                newState = (GameState)GameScreen.Instance;
-            }
-            else
-            {
-                newState = (GameState)Activator.CreateInstance(Type.GetType("Volamus_v1." + screenName));
+                case "GameScreen":
+                    newState = (GameState)GameScreen.Instance;
+                    break;
+
+                case "SplashScreen":
+                    newState = (GameState)(new SplashScreen());
+                    break;
+
+                case "TitleScreen":
+                    newState = (GameState)(new TitleScreen());
+                    break;
+
+                case "InGameMenu":
+                    newState = (GameState)(new InGameMenu());
+                    break;
+
+                case "EndGameMenu":
+                    newState = (GameState)(new EndGameMenu());
+                    break;
+
+                case "Settings":
+                    newState = (GameState)(new Settings());
+                    break;
+
+                case "Options":
+                    newState = (GameState)(new Options());
+                    break;
+
+                case "EndScreen":
+                    newState = (GameState)(new EndScreen());
+                    break;
+
+                case "MatchOptions":
+                    newState = (GameState)(new MatchOptions());
+                    break;
+
+                case "Controls":
+                    newState = (GameState)(new Controls());
+                    break;
+
+                case "Credits":
+                    newState = (GameState)(new Credits());
+                    break;
+
+                case "Story":
+                    newState = (GameState)(new Story());
+                    break;
             }
 
             Image.isActive = true;

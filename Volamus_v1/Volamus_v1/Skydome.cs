@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework.Content;
 
 namespace Volamus_v1
 {
-    class Skydome
+    public class Skydome
     {
         Effect effect2;
         Vector3 viewVector;
@@ -18,17 +18,15 @@ namespace Volamus_v1
         bool transparent;
         Model skydome;
 
+        Texture2D texture;
+
         float ro;
 
-        public Skydome(float diameter, bool transp)
+        public Skydome(float diameter, bool transp, Texture2D tex)
         {
             this.diameter = diameter;
             transparent = transp;
-        }
-
-
-        public void Initialize()
-        {
+            texture = tex;
         }
 
 
@@ -58,7 +56,7 @@ namespace Volamus_v1
         }
 
 
-        public void Draw(Camera camera, Texture2D texture)
+        public void Draw(Camera camera)
         {
             Matrix[] transforms = new Matrix[skydome.Bones.Count];
             skydome.CopyAbsoluteBoneTransformsTo(transforms);

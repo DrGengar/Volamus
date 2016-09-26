@@ -26,11 +26,6 @@ namespace Volamus_v1
             get { return Two; }
         }
 
-        public Field Field
-        {
-            get { return field; }
-        }
-
         public Wind Wind
         {
             get { return wind; }
@@ -52,7 +47,9 @@ namespace Volamus_v1
         }
 
         public Player One, Two;
-        Field field;
+        IceField iceField;
+        MeadowField meadowField;
+        WaterField waterField;
         Wind wind;
         bool change_size;
         bool change_velocity;
@@ -81,11 +78,33 @@ namespace Volamus_v1
         Texture2D pointsImage;
         Texture2D matchball;
 
-        public Match(Player one, Player two, Field f, int points, int w, bool c_s, bool c_v)
+        Vector2 dimensionsField;
+
+        public Match(Player one, Player two, IceField f, int points, int w, bool c_s, bool c_v)
+        {
+            iceField = f;
+
+            Initialize(one, two, new Vector2(f.Length, f.Width), points, w, c_s, c_v);
+        }
+
+        public Match(Player one, Player two, MeadowField f, int points, int w, bool c_s, bool c_v)
+        {
+            meadowField = f;
+
+            Initialize(one, two, new Vector2(f.Length, f.Width), points, w, c_s, c_v);
+        }
+
+        public Match(Player one, Player two, WaterField f, int points, int w, bool c_s, bool c_v)
+        {
+            waterField = f;
+
+            Initialize(one, two, new Vector2(f.Length, f.Width), points, w, c_s, c_v);
+        }
+
+        private void Initialize(Player one, Player two, Vector2 dimensions , int points, int w, bool c_s, bool c_v)
         {
             One = one;
             Two = two;
-            field = f;
             maxPoints = points;
             wind = new Wind(w);
             change_size = c_s;
@@ -103,13 +122,28 @@ namespace Volamus_v1
             changeSizeMinus = new PickSizeMinus();
             changeVelocityMinus = new PickVeloMinus();
 
-            GroupOne = new SpectatorGroup(new Vector3(-60, -50, 0), 5, rnd);
-            GroupTwo = new SpectatorGroup(new Vector3(60, 50, 0), 5, rnd);
+            GroupOne = new SpectatorGroup(new Vector3(-dimensions.X/2 - 15, -dimensions.Y/2, 0), 5, rnd);
+            GroupTwo = new SpectatorGroup(new Vector3(dimensions.X/2 + 15, dimensions.Y/2, 0), 5, rnd);
+
+            dimensionsField = dimensions;
         }
 
         public void LoadContent()
         {
-            field.LoadContent();
+            if(iceField != null)
+            {
+                iceField.LoadContent();
+            }
+
+            if (waterField != null)
+            {
+                waterField.LoadContent();
+            }
+
+            if (meadowField != null)
+            {
+                meadowField.LoadContent();
+            }
 
             Ball.Instance.LoadContent(wind);
 
@@ -182,8 +216,8 @@ namespace Volamus_v1
 
                             One.IsServing = true;
                             Collision.Instance.LastTouched = One;
-                            One.Update(field);
-                            Two.Update(field);
+                            One.Update(new Field((int)dimensionsField.X, (int)dimensionsField.Y, 20));
+                            Two.Update(new Field((int)dimensionsField.X, (int)dimensionsField.Y, 20));
 
                             Ball.Instance.Update();
 
@@ -204,8 +238,8 @@ namespace Volamus_v1
 
                                 Two.IsServing = true;
                                 Collision.Instance.LastTouched = Two;
-                                One.Update(field);
-                                Two.Update(field);
+                                One.Update(new Field((int)dimensionsField.X, (int)dimensionsField.Y, 20));
+                                Two.Update(new Field((int)dimensionsField.X, (int)dimensionsField.Y, 20));
 
                                 Ball.Instance.Update();
 
@@ -259,8 +293,8 @@ namespace Volamus_v1
                     GroupTwo.SetCheering();
                 }
 
-                One.Update(field);
-                Two.Update(field);
+                One.Update(new Field((int)dimensionsField.X, (int)dimensionsField.Y, 20));
+                Two.Update(new Field((int)dimensionsField.X, (int)dimensionsField.Y, 20));
 
                 if (change_size)
                 {
@@ -284,7 +318,7 @@ namespace Volamus_v1
                     Ball.Instance.Update();
                 }
 
-                Collision.Instance.CollisionMethod(field);
+                Collision.Instance.CollisionMethod(new Field((int)dimensionsField.X, (int)dimensionsField.Y, 20));
 
                 GroupOne.Update();
                 GroupTwo.Update();
@@ -306,7 +340,20 @@ namespace Volamus_v1
             }
             else
             {
-                field.Draw(camera);
+                if (iceField != null)
+                {
+                    iceField.Draw(camera);
+                }
+
+                if (waterField != null)
+                {
+                    waterField.Draw(camera);
+                }
+
+                if (meadowField != null)
+                {
+                    meadowField.Draw(camera);
+                }
 
                 if (!isFinished)
                 {
