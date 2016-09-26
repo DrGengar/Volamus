@@ -46,10 +46,42 @@ namespace Volamus_v1
             get { return looser; }
         }
 
-        public Player One, Two;
+        public Player One
+        {
+            get
+            {
+                if(pinguinOne != null) return pinguinOne;
+
+                if(bumblebeeOne != null) return bumblebeeOne;
+
+                if(dolphinOne != null) return dolphinOne;
+
+                return null;
+            }
+        }
+
+        public Player Two
+        {
+            get
+            {
+                if (pinguinTwo != null) return pinguinTwo;
+
+                if (bumblebeeTwo != null) return bumblebeeTwo;
+
+                if (dolphinTwo != null) return dolphinTwo;
+
+                return null;
+            }
+        }
+
+        Pinguin pinguinOne, pinguinTwo;
+        BumbleBee bumblebeeOne, bumblebeeTwo;
+        Dolphin dolphinOne, dolphinTwo;
+
         IceField iceField;
         MeadowField meadowField;
         WaterField waterField;
+
         Wind wind;
         bool change_size;
         bool change_velocity;
@@ -80,31 +112,38 @@ namespace Volamus_v1
 
         Vector2 dimensionsField;
 
-        public Match(Player one, Player two, IceField f, int points, int w, bool c_s, bool c_v)
+        public Match(Pinguin one, Pinguin two, IceField f, int points, int w, bool c_s, bool c_v)
         {
             iceField = f;
 
-            Initialize(one, two, new Vector2(f.Length, f.Width), points, w, c_s, c_v);
+            pinguinOne = one;
+            pinguinTwo = two;
+
+            Initialize(new Vector2(f.Length, f.Width), points, w, c_s, c_v);
         }
 
-        public Match(Player one, Player two, MeadowField f, int points, int w, bool c_s, bool c_v)
+        public Match(BumbleBee one, BumbleBee two, MeadowField f, int points, int w, bool c_s, bool c_v)
         {
             meadowField = f;
 
-            Initialize(one, two, new Vector2(f.Length, f.Width), points, w, c_s, c_v);
+            bumblebeeOne = one;
+            bumblebeeTwo = two;
+
+            Initialize(new Vector2(f.Length, f.Width), points, w, c_s, c_v);
         }
 
-        public Match(Player one, Player two, WaterField f, int points, int w, bool c_s, bool c_v)
+        public Match(Dolphin one, Dolphin two, WaterField f, int points, int w, bool c_s, bool c_v)
         {
             waterField = f;
 
-            Initialize(one, two, new Vector2(f.Length, f.Width), points, w, c_s, c_v);
+            dolphinOne = one;
+            dolphinTwo = two;
+
+            Initialize(new Vector2(f.Length, f.Width), points, w, c_s, c_v);
         }
 
-        private void Initialize(Player one, Player two, Vector2 dimensions , int points, int w, bool c_s, bool c_v)
+        private void Initialize(Vector2 dimensions , int points, int w, bool c_s, bool c_v)
         {
-            One = one;
-            Two = two;
             maxPoints = points;
             wind = new Wind(w);
             change_size = c_s;
@@ -147,8 +186,23 @@ namespace Volamus_v1
 
             Ball.Instance.LoadContent(wind);
 
-            One.LoadContent();
-            Two.LoadContent();
+            if(pinguinOne != null && pinguinTwo != null)
+            {
+                pinguinOne.LoadContent();
+                pinguinTwo.LoadContent();
+            }
+
+            if (bumblebeeOne != null && bumblebeeTwo != null)
+            {
+                bumblebeeOne.LoadContent();
+                bumblebeeTwo.LoadContent();
+            }
+
+            if (dolphinOne != null && dolphinTwo != null)
+            {
+                dolphinOne.LoadContent();
+                dolphinTwo.LoadContent();
+            }
 
             rpsOne.LoadContent();
             rpsTwo.LoadContent();

@@ -58,10 +58,12 @@
   <PropertyGroup />
   <ItemGroup>
     <Compile Include="Ball.cs" />
+    <Compile Include="BumbleBee.cs" />
     <Compile Include="Collision.cs" />
     <Compile Include="Credits.cs" />
     <Compile Include="Controls.cs" />
     <Compile Include="DebugDraw.cs" />
+    <Compile Include="Dolphin.cs" />
     <Compile Include="Drop.cs" />
     <Compile Include="Confetti.cs" />
     <Compile Include="EndScreen.cs" />
@@ -89,6 +91,7 @@
     <Compile Include="Options.cs" />
     <Compile Include="PickSizePlus.cs" />
     <Compile Include="PickVeloMinus.cs" />
+    <Compile Include="Pinguin.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Parabel.cs" />
     <Compile Include="PickSizeMinus.cs" />

@@ -64,8 +64,8 @@ namespace Volamus_v1
 
         Camera camera;
 
-        Model model;
-        Texture2D penguinTexture;
+        public Model model;
+        public Texture2D Texture;
 
         Texture2D wingTexture;
         Model leftWing;
@@ -306,9 +306,6 @@ namespace Volamus_v1
             effect = GameStateManager.Instance.Content.Load<Effect>("Effects/shaderTest");
             effect2 = GameStateManager.Instance.Content.Load<Effect>("Effects/shaderTestWithTexture");
 
-            penguinTexture = GameStateManager.Instance.Content.Load<Texture2D>("Textures/pinguinUV");
-
-            model = GameStateManager.Instance.Content.Load<Model>("Models/pinguin");
             arrowTexture = GameStateManager.Instance.Content.Load<Texture2D>("Textures/red");
             arrowTexture2 = GameStateManager.Instance.Content.Load<Texture2D>("Textures/green");
 
@@ -1702,7 +1699,7 @@ namespace Volamus_v1
                           * Matrix.CreateTranslation(position)));
                     effect2.Parameters["WorldInverseTranspose"].SetValue(WorldInverseTransposeMatrix);
 
-                    effect2.Parameters["ModelTexture"].SetValue(penguinTexture);
+                    effect2.Parameters["ModelTexture"].SetValue(Texture);
 
                     viewVector = Vector3.Transform(camera.View - camera.Position, Matrix.CreateRotationY(0));
                     viewVector.Normalize();

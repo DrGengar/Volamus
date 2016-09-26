@@ -214,17 +214,17 @@ namespace Volamus_v1
                     IceField field = new IceField(100, 90, 15);
                     field.Initialize();
 
-                    Player one, two;
+                    Pinguin one, two;
 
                     if (GamePad.GetState(PlayerIndex.Two).IsConnected)
                     {
-                        one = new Player(new Vector3(0, -25, 0), 5, 0.5f, 0.8f, field, PlayerIndex.One);
-                        two = new Player(new Vector3(0, 25, 0), 5, 0.5f, 0.8f, field, PlayerIndex.Two);
+                        one = new Pinguin(new Vector3(0, -25, 0), 5, 0.5f, 0.8f, field, PlayerIndex.One);
+                        two = new Pinguin(new Vector3(0, 25, 0), 5, 0.5f, 0.8f, field, PlayerIndex.Two);
                     }
                     else
                     {
-                        one = new Player(new Vector3(0, -25, 0), 5, 0.5f, 0.8f, field);
-                        two = new Player(new Vector3(0, 25, 0), 5, 0.5f, 0.8f, field, PlayerIndex.One);
+                        one = new Pinguin(new Vector3(0, -25, 0), 5, 0.5f, 0.8f, field);
+                        two = new Pinguin(new Vector3(0, 25, 0), 5, 0.5f, 0.8f, field, PlayerIndex.One);
                     }
 
                     one.Enemy = two;
@@ -247,17 +247,17 @@ namespace Volamus_v1
                     MeadowField field = new MeadowField(100, 90, 15);
                     field.Initialize();
 
-                    Player one, two;
+                    BumbleBee one, two;
 
                     if (GamePad.GetState(PlayerIndex.Two).IsConnected)
                     {
-                        one = new Player(new Vector3(0, -25, 0), 5, 0.5f, 0.8f, field, PlayerIndex.One);
-                        two = new Player(new Vector3(0, 25, 0), 5, 0.5f, 0.8f, field, PlayerIndex.Two);
+                        one = new BumbleBee(new Vector3(0, -25, 0), 5, 0.5f, 0.8f, field, PlayerIndex.One);
+                        two = new BumbleBee(new Vector3(0, 25, 0), 5, 0.5f, 0.8f, field, PlayerIndex.Two);
                     }
                     else
                     {
-                        one = new Player(new Vector3(0, -25, 0), 5, 0.5f, 0.8f, field);
-                        two = new Player(new Vector3(0, 25, 0), 5, 0.5f, 0.8f, field, PlayerIndex.One);
+                        one = new BumbleBee(new Vector3(0, -25, 0), 5, 0.5f, 0.8f, field);
+                        two = new BumbleBee(new Vector3(0, 25, 0), 5, 0.5f, 0.8f, field, PlayerIndex.One);
                     }
 
                     one.Enemy = two;
@@ -280,17 +280,17 @@ namespace Volamus_v1
                     WaterField field = new WaterField(100, 90, 15);
                     field.Initialize();
 
-                    Player one, two;
+                    Dolphin one, two;
 
                     if (GamePad.GetState(PlayerIndex.Two).IsConnected)
                     {
-                        one = new Player(new Vector3(0, -25, 0), 5, 0.5f, 0.8f, field, PlayerIndex.One);
-                        two = new Player(new Vector3(0, 25, 0), 5, 0.5f, 0.8f, field, PlayerIndex.Two);
+                        one = new Dolphin(new Vector3(0, -25, 0), 5, 0.5f, 0.8f, field, PlayerIndex.One);
+                        two = new Dolphin(new Vector3(0, 25, 0), 5, 0.5f, 0.8f, field, PlayerIndex.Two);
                     }
                     else
                     {
-                        one = new Player(new Vector3(0, -25, 0), 5, 0.5f, 0.8f, field);
-                        two = new Player(new Vector3(0, 25, 0), 5, 0.5f, 0.8f, field, PlayerIndex.One);
+                        one = new Dolphin(new Vector3(0, -25, 0), 5, 0.5f, 0.8f, field);
+                        two = new Dolphin(new Vector3(0, 25, 0), 5, 0.5f, 0.8f, field, PlayerIndex.One);
                     }
 
                     one.Enemy = two;
