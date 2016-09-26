@@ -34,13 +34,13 @@ namespace Volamus_v1
 
                     if (active > 0)
                     {
-                        //active -= 1;
+                        active -= 1;
                     }
                     else
                     {
                         if (active == 0)
                         {
-                            //active = options.Length - 1;
+                            active = options.Length - 1;
                         }
                     }
                 }
@@ -51,13 +51,13 @@ namespace Volamus_v1
 
                     if (active < options.Length - 1)
                     {
-                        //active += 1;
+                        active += 1;
                     }
                     else
                     {
                         if (active == options.Length - 1)
                         {
-                            //active = 0;
+                            active = 0;
                         }
                     }
                 }
@@ -77,19 +77,17 @@ namespace Volamus_v1
             int mid = (x - width) / 2;
             width = 0;
 
-            //GameStateManager.Instance.SpriteBatch.DrawString(spriteFont, name, new Vector2(100, y + options[0].Height/2), Color.White);
-
             for (int i = 0; i < options.Length; i++)
             {
                 if(i == active)
                 {
                     if(is_active)
                     {
-                        GameStateManager.Instance.SpriteBatch.Draw(GameStateManager.Instance.Content.Load<Texture2D>("Images/mark2"), new Vector2(mid + width - 10, y - 10));
+                        GameStateManager.Instance.SpriteBatch.Draw(GameStateManager.Instance.Content.Load<Texture2D>("Images/mark2"), new Vector2(mid + width - 7.5f, y - 7.5f));
                     }
                     else
                     {
-                        GameStateManager.Instance.SpriteBatch.Draw(GameStateManager.Instance.Content.Load<Texture2D>("Images/mark"), new Vector2(mid + width - 10, y - 10));
+                        GameStateManager.Instance.SpriteBatch.Draw(GameStateManager.Instance.Content.Load<Texture2D>("Images/mark"), new Vector2(mid + width - 7.5f, y - 7.5f));
                     }
                 }
 

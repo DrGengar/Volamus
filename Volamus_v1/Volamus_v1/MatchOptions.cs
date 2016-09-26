@@ -208,37 +208,105 @@ namespace Volamus_v1
 
             if (play.isActive && (InputManager.Instance.ButtonPressed(Buttons.A) || InputManager.Instance.KeyPressed(Keys.Enter)))
             {
-                IceField field = new IceField(100, 90, 15);
-                field.Initialize();
 
-                Player one, two;
-
-                if (GamePad.GetState(PlayerIndex.Two).IsConnected)
+                if(stages.active == 0)
                 {
-                    one = new Player(new Vector3(0, -25, 0), 5, 0.5f, 0.8f, field, PlayerIndex.One);
-                    two = new Player(new Vector3(0, 25, 0), 5, 0.5f, 0.8f, field, PlayerIndex.Two);
+                    IceField field = new IceField(100, 90, 15);
+                    field.Initialize();
+
+                    Player one, two;
+
+                    if (GamePad.GetState(PlayerIndex.Two).IsConnected)
+                    {
+                        one = new Player(new Vector3(0, -25, 0), 5, 0.5f, 0.8f, field, PlayerIndex.One);
+                        two = new Player(new Vector3(0, 25, 0), 5, 0.5f, 0.8f, field, PlayerIndex.Two);
+                    }
+                    else
+                    {
+                        one = new Player(new Vector3(0, -25, 0), 5, 0.5f, 0.8f, field);
+                        two = new Player(new Vector3(0, 25, 0), 5, 0.5f, 0.8f, field, PlayerIndex.One);
+                    }
+
+                    one.Enemy = two;
+                    two.Enemy = one;
+
+                    int w = 0;
+
+                    if (wind.Array[wind.active])
+                    {
+                        w = 1;
+                    }
+
+                    GameScreen.Instance.Match = new Match(one, two, field, points.Array[points.active], w, ballRadius.Array[ballRadius.active], enemyVelo.Array[enemyVelo.active]);
+
+                    GameStateManager.Instance.ChangeScreens("GameScreen");
                 }
-                else
+
+                if (stages.active == 1)
                 {
-                    one = new Player(new Vector3(0, -25, 0), 5, 0.5f, 0.8f, field);
-                    two = new Player(new Vector3(0, 25, 0), 5, 0.5f, 0.8f, field, PlayerIndex.One);
+                    MeadowField field = new MeadowField(100, 90, 15);
+                    field.Initialize();
+
+                    Player one, two;
+
+                    if (GamePad.GetState(PlayerIndex.Two).IsConnected)
+                    {
+                        one = new Player(new Vector3(0, -25, 0), 5, 0.5f, 0.8f, field, PlayerIndex.One);
+                        two = new Player(new Vector3(0, 25, 0), 5, 0.5f, 0.8f, field, PlayerIndex.Two);
+                    }
+                    else
+                    {
+                        one = new Player(new Vector3(0, -25, 0), 5, 0.5f, 0.8f, field);
+                        two = new Player(new Vector3(0, 25, 0), 5, 0.5f, 0.8f, field, PlayerIndex.One);
+                    }
+
+                    one.Enemy = two;
+                    two.Enemy = one;
+
+                    int w = 0;
+
+                    if (wind.Array[wind.active])
+                    {
+                        w = 1;
+                    }
+
+                    GameScreen.Instance.Match = new Match(one, two, field, points.Array[points.active], w, ballRadius.Array[ballRadius.active], enemyVelo.Array[enemyVelo.active]);
+
+                    GameStateManager.Instance.ChangeScreens("GameScreen");
                 }
 
-                one.Enemy = two;
-                two.Enemy = one;
-
-
-
-                int w = 0;
-
-                if (wind.Array[wind.active])
+                if (stages.active == 2)
                 {
-                    w = 1;
+                    WaterField field = new WaterField(100, 90, 15);
+                    field.Initialize();
+
+                    Player one, two;
+
+                    if (GamePad.GetState(PlayerIndex.Two).IsConnected)
+                    {
+                        one = new Player(new Vector3(0, -25, 0), 5, 0.5f, 0.8f, field, PlayerIndex.One);
+                        two = new Player(new Vector3(0, 25, 0), 5, 0.5f, 0.8f, field, PlayerIndex.Two);
+                    }
+                    else
+                    {
+                        one = new Player(new Vector3(0, -25, 0), 5, 0.5f, 0.8f, field);
+                        two = new Player(new Vector3(0, 25, 0), 5, 0.5f, 0.8f, field, PlayerIndex.One);
+                    }
+
+                    one.Enemy = two;
+                    two.Enemy = one;
+
+                    int w = 0;
+
+                    if (wind.Array[wind.active])
+                    {
+                        w = 1;
+                    }
+
+                    GameScreen.Instance.Match = new Match(one, two, field, points.Array[points.active], w, ballRadius.Array[ballRadius.active], enemyVelo.Array[enemyVelo.active]);
+
+                    GameStateManager.Instance.ChangeScreens("GameScreen");
                 }
-
-                GameScreen.Instance.Match = new Match(one, two, field, points.Array[points.active], w, ballRadius.Array[ballRadius.active], enemyVelo.Array[enemyVelo.active]);
-
-                GameStateManager.Instance.ChangeScreens("GameScreen");
             }
         }
 
