@@ -18,7 +18,7 @@ namespace Volamus_v1
 
         Model model, leftWing, rightWing;
         Texture texture, wingTexture;
-        Effect effect, effect2;
+        Effect effect;
         Vector3 position, leftWingPosition, rightWingPosition, scale;
         int hitAngleHigh;
         bool is_falling, cheering;
@@ -41,8 +41,7 @@ namespace Volamus_v1
             leftWing = GameStateManager.Instance.Content.Load<Model>("Models/wingLeft");
             rightWing = GameStateManager.Instance.Content.Load<Model>("Models/wingRight");
 
-            effect2 = GameStateManager.Instance.Content.Load<Effect>("Effects/shaderTest");
-            effect = GameStateManager.Instance.Content.Load<Effect>("Effects/shaderTestWithTexture");
+            effect = GameStateManager.Instance.Content.Load<Effect>("Effects/shader");
 
             texture = GameStateManager.Instance.Content.Load<Texture2D>("Textures/pinguinUV");
             wingTexture = GameStateManager.Instance.Content.Load<Texture2D>("Models/PingWingUV");
@@ -93,23 +92,33 @@ namespace Volamus_v1
                 foreach (ModelMeshPart part in mesh.MeshParts)
                 {
                     part.Effect = effect;
-                    effect.Parameters["World"].SetValue(transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) * Matrix.CreateRotationZ(MathHelper.ToRadians(rotation)) *
-                          Matrix.CreateScale(scale)
-                          * Matrix.CreateTranslation(position));
-                    effect.Parameters["View"].SetValue(camera.ViewMatrix);
-                    effect.Parameters["Projection"].SetValue(camera.ProjectionMatrix);
-                    Matrix WorldInverseTransposeMatrix = Matrix.Transpose(Matrix.Invert(transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) * Matrix.CreateRotationZ(MathHelper.ToRadians(rotation)) *
-                          Matrix.CreateScale(scale)
-                          * Matrix.CreateTranslation(position)));
-                    effect.Parameters["WorldInverseTranspose"].SetValue(WorldInverseTransposeMatrix);
 
-                    effect.Parameters["ModelTexture"].SetValue(texture);
+                    Matrix World = transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) * Matrix.CreateRotationZ(MathHelper.ToRadians(rotation)) *
+                                   Matrix.CreateScale(scale) * Matrix.CreateTranslation(position);
+                    Matrix Projection = camera.ProjectionMatrix;
+                    Matrix View = camera.ViewMatrix;
+                    Matrix WorldInverseTransposeMatrix = Matrix.Transpose(Matrix.Invert(World));
 
-                    Vector3 viewVector = Vector3.Transform(camera.View - camera.Position, Matrix.CreateRotationY(0));
-                    viewVector.Normalize();
-                    effect.Parameters["ViewVector"].SetValue(viewVector);
+                    effect.Parameters["worldMatrix"].SetValue(World);
+                    effect.Parameters["worldInverseTransposeMatrix"].SetValue(WorldInverseTransposeMatrix);
+                    effect.Parameters["worldViewProjectionMatrix"].SetValue(World * View * Projection);
 
+                    effect.Parameters["cameraPos"].SetValue(camera.Position);
+                    effect.Parameters["globalAmbient"].SetValue(new Vector4(0.2f, 0.2f, 0.2f, 1.0f));
+                    effect.Parameters["numLights"].SetValue(4);
 
+                    effect.Parameters["PointLightpos"].SetValue(GameScreen.Instance.Match.LightsPosition);
+                    effect.Parameters["PointLightambient"].SetValue(GameScreen.Instance.Match.LightsAmbient);
+                    effect.Parameters["PointLightdiffuse"].SetValue(GameScreen.Instance.Match.LightsDiffuse);
+                    effect.Parameters["PointLightspecular"].SetValue(GameScreen.Instance.Match.LightsSpecular);
+                    effect.Parameters["PointLightradius"].SetValue(GameScreen.Instance.Match.LightsRadius);
+
+                    effect.Parameters["Materialambient"].SetValue(new Vector4(0.2f, 0.2f, 0.2f, 1.0f));
+                    effect.Parameters["Materialdiffuse"].SetValue(new Vector4(0.8f, 0.8f, 0.8f, 1.0f));
+                    effect.Parameters["Materialspecular"].SetValue(new Vector4(1.0f, 1.0f, 1.0f, 1.0f));
+                    effect.Parameters["Materialshininess"].SetValue(32.0f);
+
+                    effect.Parameters["colorMapTexture"].SetValue(texture);
                 }
                 mesh.Draw();
             }
@@ -128,20 +137,33 @@ namespace Volamus_v1
                 foreach (ModelMeshPart part in mesh.MeshParts)
                 {
                     part.Effect = effect;
-                    effect.Parameters["World"].SetValue(transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90 - hitAngleHigh)) * Matrix.CreateRotationZ(MathHelper.ToRadians(0)) *
-                          Matrix.CreateScale(scale * 5) //scale *4
-                          * Matrix.CreateTranslation(position));
-                    effect.Parameters["View"].SetValue(camera.ViewMatrix);
-                    effect.Parameters["Projection"].SetValue(camera.ProjectionMatrix);
-                    Matrix WorldInverseTransposeMatrix = Matrix.Transpose(Matrix.Invert(transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90 - hitAngleHigh)) * Matrix.CreateRotationZ(MathHelper.ToRadians(0)) *
-                          Matrix.CreateScale(scale * 5)
-                          * Matrix.CreateTranslation(position)));
-                    effect.Parameters["WorldInverseTranspose"].SetValue(WorldInverseTransposeMatrix);
-                    effect.Parameters["ModelTexture"].SetValue(wingTexture);
 
-                    Vector3 viewVector = Vector3.Transform(camera.View - camera.Position, Matrix.CreateRotationY(0));
-                    viewVector.Normalize();
-                    effect.Parameters["ViewVector"].SetValue(viewVector);
+                    Matrix World = transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90 - hitAngleHigh)) * Matrix.CreateRotationZ(MathHelper.ToRadians(0)) *
+                                   Matrix.CreateScale(scale * 5) * Matrix.CreateTranslation(position);
+                    Matrix Projection = camera.ProjectionMatrix;
+                    Matrix View = camera.ViewMatrix;
+                    Matrix WorldInverseTransposeMatrix = Matrix.Transpose(Matrix.Invert(World));
+
+                    effect.Parameters["worldMatrix"].SetValue(World);
+                    effect.Parameters["worldInverseTransposeMatrix"].SetValue(WorldInverseTransposeMatrix);
+                    effect.Parameters["worldViewProjectionMatrix"].SetValue(World * View * Projection);
+
+                    effect.Parameters["cameraPos"].SetValue(camera.Position);
+                    effect.Parameters["globalAmbient"].SetValue(new Vector4(0.2f, 0.2f, 0.2f, 1.0f));
+                    effect.Parameters["numLights"].SetValue(4);
+
+                    effect.Parameters["PointLightpos"].SetValue(GameScreen.Instance.Match.LightsPosition);
+                    effect.Parameters["PointLightambient"].SetValue(GameScreen.Instance.Match.LightsAmbient);
+                    effect.Parameters["PointLightdiffuse"].SetValue(GameScreen.Instance.Match.LightsDiffuse);
+                    effect.Parameters["PointLightspecular"].SetValue(GameScreen.Instance.Match.LightsSpecular);
+                    effect.Parameters["PointLightradius"].SetValue(GameScreen.Instance.Match.LightsRadius);
+
+                    effect.Parameters["Materialambient"].SetValue(new Vector4(0.2f, 0.2f, 0.2f, 1.0f));
+                    effect.Parameters["Materialdiffuse"].SetValue(new Vector4(0.8f, 0.8f, 0.8f, 1.0f));
+                    effect.Parameters["Materialspecular"].SetValue(new Vector4(1.0f, 1.0f, 1.0f, 1.0f));
+                    effect.Parameters["Materialshininess"].SetValue(32.0f);
+
+                    effect.Parameters["colorMapTexture"].SetValue(wingTexture);
                 }
                 mesh.Draw();
             }
@@ -158,20 +180,33 @@ namespace Volamus_v1
                 foreach (ModelMeshPart part in mesh.MeshParts)
                 {
                     part.Effect = effect;
-                    effect.Parameters["World"].SetValue(transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90 + hitAngleHigh)) * Matrix.CreateRotationZ(MathHelper.ToRadians(0)) *
-                          Matrix.CreateScale(scale * 5) //scale *4
-                          * Matrix.CreateTranslation(position));
-                    effect.Parameters["View"].SetValue(camera.ViewMatrix);
-                    effect.Parameters["Projection"].SetValue(camera.ProjectionMatrix);
-                    Matrix WorldInverseTransposeMatrix = Matrix.Transpose(Matrix.Invert(transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90 + hitAngleHigh)) * Matrix.CreateRotationZ(MathHelper.ToRadians(0)) *
-                          Matrix.CreateScale(scale * 5)
-                          * Matrix.CreateTranslation(position)));
-                    effect.Parameters["WorldInverseTranspose"].SetValue(WorldInverseTransposeMatrix);
-                    effect.Parameters["ModelTexture"].SetValue(wingTexture);
 
-                    Vector3 viewVector = Vector3.Transform(camera.View - camera.Position, Matrix.CreateRotationY(0));
-                    viewVector.Normalize();
-                    effect.Parameters["ViewVector"].SetValue(viewVector);
+                    Matrix World = transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90 + hitAngleHigh)) * Matrix.CreateRotationZ(MathHelper.ToRadians(0)) *
+                          Matrix.CreateScale(scale * 5) * Matrix.CreateTranslation(position);
+                    Matrix Projection = camera.ProjectionMatrix;
+                    Matrix View = camera.ViewMatrix;
+                    Matrix WorldInverseTransposeMatrix = Matrix.Transpose(Matrix.Invert(World));
+
+                    effect.Parameters["worldMatrix"].SetValue(World);
+                    effect.Parameters["worldInverseTransposeMatrix"].SetValue(WorldInverseTransposeMatrix);
+                    effect.Parameters["worldViewProjectionMatrix"].SetValue(World * View * Projection);
+
+                    effect.Parameters["cameraPos"].SetValue(camera.Position);
+                    effect.Parameters["globalAmbient"].SetValue(new Vector4(0.2f, 0.2f, 0.2f, 1.0f));
+                    effect.Parameters["numLights"].SetValue(4);
+
+                    effect.Parameters["PointLightpos"].SetValue(GameScreen.Instance.Match.LightsPosition);
+                    effect.Parameters["PointLightambient"].SetValue(GameScreen.Instance.Match.LightsAmbient);
+                    effect.Parameters["PointLightdiffuse"].SetValue(GameScreen.Instance.Match.LightsDiffuse);
+                    effect.Parameters["PointLightspecular"].SetValue(GameScreen.Instance.Match.LightsSpecular);
+                    effect.Parameters["PointLightradius"].SetValue(GameScreen.Instance.Match.LightsRadius);
+
+                    effect.Parameters["Materialambient"].SetValue(new Vector4(0.2f, 0.2f, 0.2f, 1.0f));
+                    effect.Parameters["Materialdiffuse"].SetValue(new Vector4(0.8f, 0.8f, 0.8f, 1.0f));
+                    effect.Parameters["Materialspecular"].SetValue(new Vector4(1.0f, 1.0f, 1.0f, 1.0f));
+                    effect.Parameters["Materialshininess"].SetValue(32.0f);
+
+                    effect.Parameters["colorMapTexture"].SetValue(wingTexture);
                 }
                 mesh.Draw();
             }

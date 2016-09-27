@@ -85,12 +85,6 @@
 /processorParam:TextureFormat=Color
 /build:Textures/BeachBallTexture.png
 
-#begin Effects/shader.fx
-/importer:EffectImporter
-/processor:EffectProcessor
-/processorParam:DebugMode=Auto
-/build:Effects/shader.fx
-
 #begin Effects/shaderTest.fx
 /importer:EffectImporter
 /processor:EffectProcessor
@@ -1200,4 +1194,10 @@
 /processorParam:SwapWindingOrder=False
 /processorParam:TextureFormat=DxtCompressed
 /build:Models/wingRight.fbx
+
+#begin Effects\shader.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:Effects\shader.fx
 

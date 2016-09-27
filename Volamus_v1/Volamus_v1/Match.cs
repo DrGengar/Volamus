@@ -11,6 +11,31 @@ namespace Volamus_v1
 {
     public class Match
     {
+        public Vector3[] LightsPosition
+        {
+            get { return lightsPosition; }
+        }
+
+        public Vector4[] LightsAmbient
+        {
+            get { return lightsAmbient; }
+        }
+
+        public Vector4[] LightsDiffuse
+        {
+            get { return lightsDiffuse; }
+        }
+
+        public Vector4[] LightsSpecular
+        {
+            get { return lightsSpecular; }
+        }
+
+        public float[] LightsRadius
+        {
+            get { return lightsRadius; }
+        }
+
         public int MaxPoints
         {
             get { return maxPoints; }
@@ -74,6 +99,20 @@ namespace Volamus_v1
             }
         }
 
+        public Field Field
+        {
+            get
+            {
+                if (iceField != null) return iceField;
+
+                if (meadowField != null) return meadowField;
+
+                if (waterField != null) return waterField;
+
+                return null;
+            }
+        }
+
         private Image text;
         private float counter; // counter for scrolling
 
@@ -113,7 +152,12 @@ namespace Volamus_v1
         Texture2D pointsImage;
         Texture2D matchball;
 
-        Vector2 dimensionsField;
+        PointLight[] lights;
+        Vector3[] lightsPosition;
+        Vector4[] lightsAmbient;
+        Vector4[] lightsDiffuse;
+        Vector4[] lightsSpecular;
+        float[] lightsRadius;
 
         public Match(Pinguin one, Pinguin two, IceField f, int points, int w, bool c_s, bool c_v)
         {
@@ -121,6 +165,12 @@ namespace Volamus_v1
 
             pinguinOne = one;
             pinguinTwo = two;
+
+            lights = new PointLight[4];
+            lights[0] = new PointLight(new Vector3(-f.Length/2 - 10, -f.Width/2 - 10, 20), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), 100.0f);
+            lights[1] = new PointLight(new Vector3(f.Length / 2 - 10, -f.Width / 2 - 10, 20), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), 100.0f);
+            lights[2] = new PointLight(new Vector3(-f.Length / 2 - 10, f.Width / 2 - 10, 20), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), 100.0f);
+            lights[3] = new PointLight(new Vector3(f.Length / 2 - 10, f.Width / 2 - 10, 20), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), 100.0f);
 
             Initialize(new Vector2(f.Length, f.Width), points, w, c_s, c_v);
         }
@@ -132,6 +182,12 @@ namespace Volamus_v1
             bumblebeeOne = one;
             bumblebeeTwo = two;
 
+            lights = new PointLight[4];
+            lights[0] = new PointLight(new Vector3(-f.Length / 2 - 10, -f.Width / 2 - 10, 20), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), 100.0f);
+            lights[1] = new PointLight(new Vector3(f.Length / 2 - 10, -f.Width / 2 - 10, 20), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), 100.0f);
+            lights[2] = new PointLight(new Vector3(-f.Length / 2 - 10, f.Width / 2 - 10, 20), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), 100.0f);
+            lights[3] = new PointLight(new Vector3(f.Length / 2 - 10, f.Width / 2 - 10, 20), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), 100.0f);
+
             Initialize(new Vector2(f.Length, f.Width), points, w, c_s, c_v);
         }
 
@@ -141,6 +197,12 @@ namespace Volamus_v1
 
             dolphinOne = one;
             dolphinTwo = two;
+
+            lights = new PointLight[4];
+            lights[0] = new PointLight(new Vector3(-f.Length / 2 - 10, -f.Width / 2 - 10, 20), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), 100.0f);
+            lights[1] = new PointLight(new Vector3(f.Length / 2 - 10, -f.Width / 2 - 10, 20), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), 100.0f);
+            lights[2] = new PointLight(new Vector3(-f.Length / 2 - 10, f.Width / 2 - 10, 20), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), 100.0f);
+            lights[3] = new PointLight(new Vector3(f.Length / 2 - 10, f.Width / 2 - 10, 20), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), 100.0f);
 
             Initialize(new Vector2(f.Length, f.Width), points, w, c_s, c_v);
         }
@@ -167,7 +229,20 @@ namespace Volamus_v1
             GroupOne = new SpectatorGroup(new Vector3(-dimensions.X/2 - 15, -dimensions.Y/2, 0), 5, rnd);
             GroupTwo = new SpectatorGroup(new Vector3(dimensions.X/2 + 15, dimensions.Y/2, 0), 5, rnd);
 
-            dimensionsField = dimensions;
+            lightsPosition = new Vector3[lights.Length];
+            lightsAmbient = new Vector4[lights.Length];
+            lightsDiffuse = new Vector4[lights.Length];
+            lightsSpecular = new Vector4[lights.Length];
+            lightsRadius = new float[lights.Length];
+
+            for (int i = 0; i < lights.Length; i++)
+            {
+                lightsPosition[i] = lights[i].Position;
+                lightsAmbient[i] = lights[i].Ambient;
+                lightsDiffuse[i] = lights[i].Diffuse;
+                lightsSpecular[i] = lights[i].Specular;
+                lightsRadius[i] = lights[i].Radius;
+            }
         }
 
         public void LoadContent()
@@ -281,8 +356,8 @@ namespace Volamus_v1
 
                             One.IsServing = true;
                             Collision.Instance.LastTouched = One;
-                            One.Update(new Field((int)dimensionsField.X, (int)dimensionsField.Y, 20));
-                            Two.Update(new Field((int)dimensionsField.X, (int)dimensionsField.Y, 20));
+                            One.Update(Field);
+                            Two.Update(Field);
 
                             Ball.Instance.Update();
 
@@ -303,8 +378,8 @@ namespace Volamus_v1
 
                                 Two.IsServing = true;
                                 Collision.Instance.LastTouched = Two;
-                                One.Update(new Field((int)dimensionsField.X, (int)dimensionsField.Y, 20));
-                                Two.Update(new Field((int)dimensionsField.X, (int)dimensionsField.Y, 20));
+                                One.Update(Field);
+                                Two.Update(Field);
 
                                 Ball.Instance.Update();
 
@@ -358,8 +433,8 @@ namespace Volamus_v1
                     GroupTwo.SetCheering();
                 }
 
-                One.Update(new Field((int)dimensionsField.X, (int)dimensionsField.Y, 20));
-                Two.Update(new Field((int)dimensionsField.X, (int)dimensionsField.Y, 20));
+                One.Update(Field);
+                Two.Update(Field);
 
                 if (change_size)
                 {
@@ -390,7 +465,7 @@ namespace Volamus_v1
                     Ball.Instance.Update();
                 }
 
-                Collision.Instance.CollisionMethod(new Field((int)dimensionsField.X, (int)dimensionsField.Y, 20));
+                Collision.Instance.CollisionMethod(Field);
 
                 GroupOne.Update();
                 GroupTwo.Update();

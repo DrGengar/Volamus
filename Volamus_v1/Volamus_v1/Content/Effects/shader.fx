@@ -3,93 +3,131 @@
 #define VS_SHADERMODEL vs_3_0
 #define PS_SHADERMODEL ps_3_0
 #else
-#define VS_SHADERMODEL vs_4_0_level_9_1
-#define PS_SHADERMODEL ps_4_0_level_9_1
+#define VS_SHADERMODEL vs_4_0
+#define PS_SHADERMODEL ps_4_0
 #endif
-float4x4 World;
-float4x4 View;
-float4x4 Projection;
-float4x4 WorldInverseTranspose;
 
-float4 AmbientColor = float4(1, 1, 1, 1);
-float AmbientIntensity = 0.1;
+#define MAX_POINT_LIGHTS 4
 
-float3 DiffuseLightDirection = float3(-60, -50, 20);
-float4 DiffuseColor = float4(1, 1, 1, 1);
-float DiffuseIntensity = 1.0;
+//-----------------------------------------------------------------------------
+// Globals.
+//-----------------------------------------------------------------------------
 
-float Shininess = 200;
-float4 SpecularColor = float4(1, 1, 1, 1);
-float SpecularIntensity = 1;
+float4x4 worldMatrix;
+float4x4 worldInverseTransposeMatrix;
+float4x4 worldViewProjectionMatrix;
 
-float3 ViewVector = float3(1, 0, 0);
+float3 cameraPos;
+float4 globalAmbient;
+int numLights;
 
-texture ModelTexture;
-sampler2D textureSampler = sampler_state {
-	Texture = (ModelTexture);
-	MinFilter = Linear;
+float3 PointLightpos[MAX_POINT_LIGHTS];
+float4 PointLightambient[MAX_POINT_LIGHTS];
+float4 PointLightdiffuse[MAX_POINT_LIGHTS];
+float4 PointLightspecular[MAX_POINT_LIGHTS];
+float PointLightradius[MAX_POINT_LIGHTS];
+
+float4 Materialambient;
+float4 Materialdiffuse;
+float4 Materialemissive;
+float4 Materialspecular;
+float Materialshininess;
+
+//-----------------------------------------------------------------------------
+// Textures.
+//-----------------------------------------------------------------------------
+
+texture colorMapTexture;
+
+sampler2D colorMap = sampler_state
+{
+	Texture = <colorMapTexture>;
 	MagFilter = Linear;
-	AddressU = Clamp;
-	AddressV = Clamp;
+	MinFilter = Anisotropic;
+	MipFilter = Linear;
+	MaxAnisotropy = 16;
 };
 
-struct VertexShaderInput
+//-----------------------------------------------------------------------------
+// Vertex Shaders.
+//-----------------------------------------------------------------------------
+
+struct VS_INPUT
 {
-	float4 Position : POSITION0;
-	float4 Normal : NORMAL0;
-	float2 TextureCoordinate : TEXCOORD0;
+	float3 position : POSITION;
+	float2 texCoord : TEXCOORD0;
+	float3 normal : NORMAL;
 };
 
-struct VertexShaderOutput
+struct VS_OUTPUT
 {
-	float4 Position : POSITION0;
-	float4 Color : COLOR0;
-	float3 Normal : TEXCOORD0;
-	float2 TextureCoordinate : TEXCOORD1;
+	float4 position : POSITION;
+	float3 worldPos : TEXCOORD0;
+	float2 texCoord : TEXCOORD1;
+	float3 viewDir : TEXCOORD2;
+	float3 normal : TEXCOORD3;
 };
 
-VertexShaderOutput VertexShaderFunction(VertexShaderInput input)
+VS_OUTPUT VS_PointLighting(VS_INPUT IN)
 {
-	VertexShaderOutput output;
+	VS_OUTPUT OUT;
 
-	float4 worldPosition = mul(input.Position, World);
-		float4 viewPosition = mul(worldPosition, View);
-		output.Position = mul(viewPosition, Projection);
+	OUT.position = mul(float4(IN.position, 1.0f), worldViewProjectionMatrix);
+	OUT.worldPos = mul(float4(IN.position, 1.0f), worldMatrix).xyz;
+	OUT.texCoord = IN.texCoord;
+	OUT.viewDir = cameraPos - OUT.worldPos;
+	OUT.normal = mul(IN.normal, (float3x3)worldInverseTransposeMatrix);
 
-	float4 normal = normalize(mul(input.Normal, WorldInverseTranspose));
-		float lightIntensity = dot(normal, DiffuseLightDirection);
-	output.Color = saturate(DiffuseColor * DiffuseIntensity * lightIntensity);
-
-	output.Normal = normal;
-
-	output.TextureCoordinate = input.TextureCoordinate;
-	return output;
+	return OUT;
 }
 
-float4 PixelShaderFunction(VertexShaderOutput input) : COLOR
+//-----------------------------------------------------------------------------
+// Pixel Shaders.
+//-----------------------------------------------------------------------------
+
+float4 PS_PointLighting(VS_OUTPUT IN) : COLOR
 {
-	float3 light = normalize(DiffuseLightDirection);
-	float3 normal = normalize(input.Normal);
-	float3 r = normalize(2 * dot(light, normal) * normal - light);
-	float3 v = normalize(mul(normalize(ViewVector), World));
-	float dotProduct = dot(r, v);
+	float4 color = float4(0.0f, 0.0f, 0.0f, 0.0f);
 
-	float4 specular = SpecularIntensity * SpecularColor * max(pow(dotProduct, Shininess), 0) * length(input.Color);
-		specular.a = 1;
+	float3 n = normalize(IN.normal);
+	float3 v = normalize(IN.viewDir);
+	float3 l = float3(0.0f, 0.0f, 0.0f);
+	float3 h = float3(0.0f, 0.0f, 0.0f);
 
-	float4 textureColor = tex2D(textureSampler, input.TextureCoordinate);
-		textureColor.a = 1;
+	float atten = 0.0f;
+	float nDotL = 0.0f;
+	float nDotH = 0.0f;
+	float power = 0.0f;
 
-	float4 color = saturate(textureColor * (input.Color) + AmbientColor * AmbientIntensity + specular);
-		color.a = 1;
-	return color;
-}
-
-technique Textured
-{
-	pass Pass1
+	for (int i = 0; i < numLights; ++i)
 	{
-		VertexShader = compile VS_SHADERMODEL VertexShaderFunction();
-		PixelShader = compile PS_SHADERMODEL PixelShaderFunction();
+		l = (PointLightpos[i] - IN.worldPos) / PointLightradius[i];
+		atten = saturate(1.0f - dot(l, l));
+
+		l = normalize(l);
+		h = normalize(l + v);
+
+		nDotL = saturate(dot(n, l));
+		nDotH = saturate(dot(n, h));
+		power = (nDotL == 0.0f) ? 0.0f : pow(nDotH, Materialshininess);
+
+		color += (Materialambient * (globalAmbient + (atten * PointLightambient[i]))) +
+			(Materialdiffuse * PointLightdiffuse[i] * nDotL * atten) +
+			(Materialspecular * PointLightspecular[i] * power * atten);
+	}
+
+	return color * tex2D(colorMap, IN.texCoord);
+}
+
+//-----------------------------------------------------------------------------
+// Techniques.
+//-----------------------------------------------------------------------------
+
+technique PerPixelPointLighting
+{
+	pass
+	{
+		VertexShader = compile VS_SHADERMODEL VS_PointLighting();
+		PixelShader = compile PS_SHADERMODEL PS_PointLighting();
 	}
 }

@@ -23,7 +23,7 @@ namespace Volamus_v1
         public void LoadContent()
         {
             dr = GameStateManager.Instance.Content.Load<Model>("Models/PUsizeM");
-            effect = GameStateManager.Instance.Content.Load<Effect>("Effects/shaderTestWithTexture");
+            effect = GameStateManager.Instance.Content.Load<Effect>("Effects/shader");
             texture = GameStateManager.Instance.Content.Load<Texture2D>("Textures/blau");
         }
 
@@ -89,6 +89,35 @@ namespace Volamus_v1
                     foreach (ModelMeshPart part in mesh.MeshParts)
                     {
                         part.Effect = effect;
+
+                        Matrix World = transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) *
+                                       Matrix.CreateScale(1.50f, 1.50f, 2.0f) * Matrix.CreateTranslation(drops[index].Position);
+                        Matrix Projection = camera.ProjectionMatrix;
+                        Matrix View = camera.ViewMatrix;
+                        Matrix WorldInverseTransposeMatrix = Matrix.Transpose(Matrix.Invert(World));
+
+                        effect.Parameters["worldMatrix"].SetValue(World);
+                        effect.Parameters["worldInverseTransposeMatrix"].SetValue(WorldInverseTransposeMatrix);
+                        effect.Parameters["worldViewProjectionMatrix"].SetValue(World * View * Projection);
+
+                        effect.Parameters["cameraPos"].SetValue(camera.Position);
+                        effect.Parameters["globalAmbient"].SetValue(new Vector4(0.2f, 0.2f, 0.2f, 1.0f));
+                        effect.Parameters["numLights"].SetValue(4);
+
+                        effect.Parameters["PointLightpos"].SetValue(GameScreen.Instance.Match.LightsPosition);
+                        effect.Parameters["PointLightambient"].SetValue(GameScreen.Instance.Match.LightsAmbient);
+                        effect.Parameters["PointLightdiffuse"].SetValue(GameScreen.Instance.Match.LightsDiffuse);
+                        effect.Parameters["PointLightspecular"].SetValue(GameScreen.Instance.Match.LightsSpecular);
+                        effect.Parameters["PointLightradius"].SetValue(GameScreen.Instance.Match.LightsRadius);
+
+                        effect.Parameters["Materialambient"].SetValue(new Vector4(0.2f, 0.2f, 0.2f, 1.0f));
+                        effect.Parameters["Materialdiffuse"].SetValue(new Vector4(0.8f, 0.8f, 0.8f, 1.0f));
+                        effect.Parameters["Materialspecular"].SetValue(new Vector4(1.0f, 1.0f, 1.0f, 1.0f));
+                        effect.Parameters["Materialshininess"].SetValue(32.0f);
+
+                        effect.Parameters["colorMapTexture"].SetValue(texture);
+                        /*
+                        part.Effect = effect;
                         effect.Parameters["World"].SetValue(transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) * 
                                 Matrix.CreateScale(1.50f, 1.50f, 2.0f)
                                 * Matrix.CreateTranslation(drops[index].Position));
@@ -104,6 +133,7 @@ namespace Volamus_v1
                         Vector3 viewVector = Vector3.Transform(camera.View - camera.Position, Matrix.CreateRotationY(0));
                         viewVector.Normalize();
                         effect.Parameters["ViewVector"].SetValue(viewVector);
+                        */
                     }
                     mesh.Draw();
                 }
