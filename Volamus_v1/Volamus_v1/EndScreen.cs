@@ -5,11 +5,54 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 
 namespace Volamus_v1
 {
     public class EndScreen : GameState
     {
+        private Image background;
+        private Image bg;
+        private Image skip;
+
+        private Image text;
+
+        private float counter; // counter for scrolling
+
+        public EndScreen()
+        {
+            base.LoadContent();
+
+            background = new Image();
+            background.Path = "Images/TitleScreen";
+            background.LoadContent();
+            background.Scale = new Vector2((float)GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width / ((float)background.Texture.Width / 1.5f),
+                    (float)GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height / ((float)background.Texture.Height / 1.5f));
+            background.Position = new Vector2(0, 0);
+
+            bg = new Image();
+            bg.Path = "Textures/Black";
+            bg.Alpha = 0.3f;
+            bg.LoadContent();
+            bg.Scale = new Vector2((float)GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width / ((float)background.Texture.Width / 1.5f),
+                    (float)GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height / ((float)background.Texture.Height / 1.5f));
+            bg.Position = new Vector2(GameStateManager.Instance.dimensions.X / 2, 0);
+
+            text = new Image();
+            text.Scale = new Vector2(1.2f, 1.2f);
+            text.Text = "Endstory";
+            text.LoadContent();
+            text.Position = new Vector2(GameStateManager.Instance.dimensions.X / 2 - 300, GameStateManager.Instance.dimensions.Y);
+
+            skip = new Image();
+            skip.Path = "Images/buttonTexture";
+            skip.Text = "Skip";
+            skip.LoadContent();
+            skip.Position = new Vector2(50, GameStateManager.Instance.dimensions.Y / 2 - 50);
+
+            counter = 0.4f;
+        }
+
         public override void LoadContent()
         {
             base.LoadContent();
@@ -18,17 +61,46 @@ namespace Volamus_v1
         public override void UnloadContent()
         {
             base.UnloadContent();
+            skip.UnloadContent();
+            bg.UnloadContent();
+            background.UnloadContent();
         }
 
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-            GameStateManager.Instance.Exit = true;
+            //  GameStateManager.Instance.Exit = true;
+
+            background.Update(gameTime);
+            bg.Update(gameTime);
+            skip.Update(gameTime);
+            text.Update(gameTime);
+            text.Position = text.Position + new Vector2(0, -counter);
+
+            if (text.Position.Y <= -750)
+            {
+                text.Position.Y = 1200;
+            }
+            skip.isActive = true;
+            skip.ActivateEffect("FadeEffect");
+
+            if (skip.isActive && (InputManager.Instance.ButtonPressed(Buttons.A) || InputManager.Instance.KeyPressed(Keys.Enter)))
+            {
+                GameStateManager.Instance.Exit = true;
+            }
+            if (InputManager.Instance.ButtonPressed(Buttons.B) || InputManager.Instance.KeyPressed(Keys.Escape))
+            {
+                GameStateManager.Instance.Exit = true;
+            }
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
             base.Draw(spriteBatch);
+            background.Draw(spriteBatch);
+            bg.Draw(spriteBatch);
+            skip.Draw(spriteBatch);
+            text.Draw(spriteBatch);
         }
     }
 }

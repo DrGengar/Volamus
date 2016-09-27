@@ -32,7 +32,10 @@ namespace Volamus_v1
             get { return match; }
             set { match = value; }
         }
-
+        public int Timer
+        {
+            get { return timer; }
+        }
         public static GameScreen Instance
         {
             get
@@ -117,7 +120,7 @@ namespace Volamus_v1
             {
                 GameStateManager.Instance.GraphicsDevice.Viewport = leftView;
 
-                match.Draw(match.One.Camera, leftView);
+                match.Draw(match.One.Camera, leftView, spriteBatch);
             }
 
             //Rechter SplitScreen: Rechter Spieler (player_two)
@@ -125,7 +128,7 @@ namespace Volamus_v1
             {
                 GameStateManager.Instance.GraphicsDevice.Viewport = rightView;
 
-                match.Draw(match.Two.Camera, rightView);
+                match.Draw(match.Two.Camera, rightView, spriteBatch);
             }
 
             //Ganzes Bild
@@ -158,7 +161,7 @@ namespace Volamus_v1
 
                     }
 
-                    GameScreen.Instance.Match.Draw(new Camera(new Vector3(x, y, 40), new Vector3(0, 0, 0), new Vector3(0, 0, 1)), defaultView);
+                    GameScreen.Instance.Match.Draw(new Camera(new Vector3(x, y, 40), new Vector3(0, 0, 0), new Vector3(0, 0, 1)), defaultView, spriteBatch);
 
                     //Rotation
                     x = 100 * (float)Math.Cos(rotate);

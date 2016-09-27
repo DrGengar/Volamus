@@ -74,6 +74,9 @@ namespace Volamus_v1
             }
         }
 
+        private Image text;
+        private float counter; // counter for scrolling
+
         Pinguin pinguinOne, pinguinTwo;
         BumbleBee bumblebeeOne, bumblebeeTwo;
         Dolphin dolphinOne, dolphinTwo;
@@ -169,7 +172,15 @@ namespace Volamus_v1
 
         public void LoadContent()
         {
-            if(iceField != null)
+            text = new Image();
+            text.Color = Color.Black;
+            text.Scale = new Vector2(1.2f, 1.2f);
+            text.Text = "Endstory";
+            text.LoadContent();
+            text.Position = new Vector2(GameStateManager.Instance.dimensions.X / 2 - 300, GameStateManager.Instance.dimensions.Y);
+            counter = 0.4f;
+
+            if (iceField != null)
             {
                 iceField.LoadContent();
             }
@@ -365,6 +376,13 @@ namespace Volamus_v1
                 if (isFinished)
                 {
                     confetti.Update(rnd);
+                    text.Update(gameTime);
+                    text.Position = text.Position + new Vector2(0, -counter);
+
+                    if (text.Position.Y <= -750)
+                    {
+                        text.Position.Y = 1200;
+                    }
                 }
 
                 if (!isFinished)
@@ -379,7 +397,7 @@ namespace Volamus_v1
             }
         }
 
-        public void Draw(Camera camera, Viewport view)
+        public void Draw(Camera camera, Viewport view, SpriteBatch spriteBatch)
         {
             if (preMatch)
             {
@@ -515,6 +533,10 @@ namespace Volamus_v1
                 if (isFinished)
                 {
                     confetti.Draw(camera);
+                    if (GameScreen.Instance.Timer > 200)
+                    {
+                        text.Draw(spriteBatch);
+                    }
                 }
 
                 GroupOne.Draw(camera);
