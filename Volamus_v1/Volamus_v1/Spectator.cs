@@ -157,7 +157,7 @@ namespace Volamus_v1
             {
                 foreach (ModelMeshPart part in mesh.MeshParts)
                 {
-                    part.Effect = effect2;
+                    part.Effect = effect;
                     effect.Parameters["World"].SetValue(transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90 + hitAngleHigh)) * Matrix.CreateRotationZ(MathHelper.ToRadians(0)) *
                           Matrix.CreateScale(scale * 5) //scale *4
                           * Matrix.CreateTranslation(position));
