@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <SourceFile>C:/Users/Lars/Desktop/3dGame2/Volamus_v1/Volamus_v1/Content/Sound/child_crowd_cheering.ogg</SourceFile>
-  <SourceTime>2016-09-15T21:02:37.0735576+02:00</SourceTime>
-  <DestFile>C:/Users/Lars/Desktop/3dGame2/Volamus_v1/Volamus_v1/Content/bin/Windows/Sound/child_crowd_cheering.xnb</DestFile>
-  <DestTime>2016-09-25T16:54:15.8015415+02:00</DestTime>
+  <SourceFile>C:/Users/Ich/Desktop/3dGame/Volamus_v1/Volamus_v1/Content/Sound/child_crowd_cheering.ogg</SourceFile>
+  <SourceTime>2016-09-11T19:32:41.4847861+02:00</SourceTime>
+  <DestFile>C:/Users/Ich/Desktop/3dGame/Volamus_v1/Volamus_v1/Content/bin/Windows/Sound/child_crowd_cheering.xnb</DestFile>
+  <DestTime>2016-09-27T14:17:44.119306+02:00</DestTime>
   <Importer>OggImporter</Importer>
   <ImporterTime>2016-03-30T08:36:08+02:00</ImporterTime>
   <Processor>SongProcessor</Processor>
@@ -15,6 +15,6 @@
   <Dependencies />
   <BuildAsset />
   <BuildOutput>
-    <string>C:/Users/Lars/Desktop/3dGame2/Volamus_v1/Volamus_v1/Content/bin/Windows/Sound/child_crowd_cheering.wma</string>
+    <string>C:/Users/Ich/Desktop/3dGame/Volamus_v1/Volamus_v1/Content/bin/Windows/Sound/child_crowd_cheering.wma</string>
   </BuildOutput>
 </PipelineBuildEvent>

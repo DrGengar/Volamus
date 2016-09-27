@@ -323,13 +323,13 @@ namespace Volamus_v1
             }*/
             if (direction == 1)
             {
-                leftWing = GameStateManager.Instance.Content.Load<Model>("Models/leftneu2"); //PingWingLeft
-                rightWing = GameStateManager.Instance.Content.Load<Model>("Models/rightneu2");
+                leftWing = GameStateManager.Instance.Content.Load<Model>("Models/wingLeft"); //PingWingLeft
+                rightWing = GameStateManager.Instance.Content.Load<Model>("Models/wingRight");
             }
             else
             {
-                leftWing = GameStateManager.Instance.Content.Load<Model>("Models/rightneu2"); //PingWingLeft
-                rightWing = GameStateManager.Instance.Content.Load<Model>("Models/leftneu2");
+                leftWing = GameStateManager.Instance.Content.Load<Model>("Models/wingLeft"); //PingWingLeft
+                rightWing = GameStateManager.Instance.Content.Load<Model>("Models/wingRight");
             }
 
             wingTexture = GameStateManager.Instance.Content.Load<Texture2D>("Models/PingWingUV");
@@ -1724,21 +1724,21 @@ namespace Volamus_v1
             {
                 foreach (ModelMeshPart part in mesh.MeshParts)
                 {
-                    part.Effect = effect;
-                    effect.Parameters["World"].SetValue(transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90 + (-direction) * hitAngleHigh + betta)) * Matrix.CreateRotationZ(MathHelper.ToRadians(direction * hitAngleRight + direction * (-gamma))) *
+                    part.Effect = effect2;
+                    effect2.Parameters["World"].SetValue(transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90 + (-direction) * hitAngleHigh + betta)) * Matrix.CreateRotationZ(MathHelper.ToRadians(direction * hitAngleRight + direction * (-gamma))) *
                           Matrix.CreateScale(scale * 5) //scale *4
                           * Matrix.CreateTranslation(position));
-                    effect.Parameters["View"].SetValue(camera.ViewMatrix);
-                    effect.Parameters["Projection"].SetValue(camera.ProjectionMatrix);
+                    effect2.Parameters["View"].SetValue(camera.ViewMatrix);
+                    effect2.Parameters["Projection"].SetValue(camera.ProjectionMatrix);
                     Matrix WorldInverseTransposeMatrix = Matrix.Transpose(Matrix.Invert(transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) * Matrix.CreateRotationZ(MathHelper.ToRadians(direction * 90 + direction * (-gamma))) *
                           Matrix.CreateScale(scale)
                           * Matrix.CreateTranslation(position)));
-                    effect.Parameters["WorldInverseTranspose"].SetValue(WorldInverseTransposeMatrix);
-                    //effect.Parameters["ModelTexture"].SetValue(wingTexture);
+                    effect2.Parameters["WorldInverseTranspose"].SetValue(WorldInverseTransposeMatrix);
+                    effect2.Parameters["ModelTexture"].SetValue(wingTexture);
 
                     viewVector = Vector3.Transform(camera.View - camera.Position, Matrix.CreateRotationY(0));
                     viewVector.Normalize();
-                    effect.Parameters["ViewVector"].SetValue(viewVector);
+                    effect2.Parameters["ViewVector"].SetValue(viewVector);
                 }
                 mesh.Draw();
             }
@@ -1754,21 +1754,21 @@ namespace Volamus_v1
             {
                 foreach (ModelMeshPart part in mesh.MeshParts)
                 {
-                    part.Effect = effect;
-                    effect.Parameters["World"].SetValue(transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90 - (-direction) * hitAngleHigh + betta)) * Matrix.CreateRotationZ(MathHelper.ToRadians(direction * hitAngleLeft + direction * (-gamma))) *
-                          Matrix.CreateScale(scale * 5) //scale *4
+                    part.Effect = effect2;
+                    effect2.Parameters["World"].SetValue(transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90 - (-direction) * hitAngleHigh + betta)) * Matrix.CreateRotationZ(MathHelper.ToRadians(direction * hitAngleLeft + direction * (-gamma))) *
+                          Matrix.CreateScale(scale * 5) //scale *5
                           * Matrix.CreateTranslation(position));
-                    effect.Parameters["View"].SetValue(camera.ViewMatrix);
-                    effect.Parameters["Projection"].SetValue(camera.ProjectionMatrix);
+                    effect2.Parameters["View"].SetValue(camera.ViewMatrix);
+                    effect2.Parameters["Projection"].SetValue(camera.ProjectionMatrix);
                     Matrix WorldInverseTransposeMatrix = Matrix.Transpose(Matrix.Invert(transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) * Matrix.CreateRotationZ(MathHelper.ToRadians(direction * 90 + direction * (-gamma))) *
                           Matrix.CreateScale(scale)
                           * Matrix.CreateTranslation(position)));
-                    effect.Parameters["WorldInverseTranspose"].SetValue(WorldInverseTransposeMatrix);
-                    //effect.Parameters["ModelTexture"].SetValue(wingTexture);
+                    effect2.Parameters["WorldInverseTranspose"].SetValue(WorldInverseTransposeMatrix);
+                    effect2.Parameters["ModelTexture"].SetValue(wingTexture);
 
                     viewVector = Vector3.Transform(camera.View - camera.Position, Matrix.CreateRotationY(0));
                     viewVector.Normalize();
-                    effect.Parameters["ViewVector"].SetValue(viewVector);
+                    effect2.Parameters["ViewVector"].SetValue(viewVector);
                 }
                 mesh.Draw();
             }
