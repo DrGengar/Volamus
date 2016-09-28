@@ -326,8 +326,8 @@ namespace Volamus_v1
             }
             else
             {
-                leftWing = GameStateManager.Instance.Content.Load<Model>("Models/wingLeft"); //PingWingLeft
-                rightWing = GameStateManager.Instance.Content.Load<Model>("Models/wingRight");
+                rightWing = GameStateManager.Instance.Content.Load<Model>("Models/wingLeft"); //PingWingLeft
+                leftWing = GameStateManager.Instance.Content.Load<Model>("Models/wingRight");
             }
 
             wingTexture = GameStateManager.Instance.Content.Load<Texture2D>("Models/PingWingUV");
