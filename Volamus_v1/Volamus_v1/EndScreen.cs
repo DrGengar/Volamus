@@ -40,13 +40,13 @@ namespace Volamus_v1
 
             text = new Image();
             text.Scale = new Vector2(1.2f, 1.2f);
-            text.Text = "Endstory";
+            text.Text = "The winners of the tournament are certain and they immediately depart \n on an adventure with unknown and mysterious dangers. \n Yet these companions have the best chances to succeed, \n to find the golden cloud and return it to the scholars for study.  \n\n Thenceforth every year the Acagamics-Manikins and animals \n gather to honour the companions and their bravery with a celebration, \n the main event, without doubt, being the big tournament called 'Volamus'.";
             text.LoadContent();
             text.Position = new Vector2(GameStateManager.Instance.dimensions.X / 2 - 300, GameStateManager.Instance.dimensions.Y);
 
             skip = new Image();
             skip.Path = "Images/buttonTexture";
-            skip.Text = "Skip";
+            skip.Text = "Close";
             skip.LoadContent();
             skip.Position = new Vector2(50, GameStateManager.Instance.dimensions.Y / 2 - 50);
 

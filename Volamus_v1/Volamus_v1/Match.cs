@@ -250,7 +250,7 @@ namespace Volamus_v1
             text = new Image();
             text.Color = Color.Black;
             text.Scale = new Vector2(1.2f, 1.2f);
-            text.Text = "Endstory";
+            text.Text = "The winner of this match will join the group of companions \n which will set out to find the golden cloud.";
             text.LoadContent();
             text.Position = new Vector2(GameStateManager.Instance.dimensions.X / 2 - 300, GameStateManager.Instance.dimensions.Y);
             counter = 0.4f;
