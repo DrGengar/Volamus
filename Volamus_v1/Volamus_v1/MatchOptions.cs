@@ -214,17 +214,19 @@ namespace Volamus_v1
                     IceField field = new IceField(100, 90, 15);
                     field.Initialize();
 
+                    GameScreen.Instance.SoundFileName = "Content//Sound//soproSound1.ogg";
+
                     Pinguin one, two;
 
                     if (GamePad.GetState(PlayerIndex.Two).IsConnected)
                     {
-                        one = new Pinguin(new Vector3(0, -25, 0), 5, 0.5f, 0.8f, field, PlayerIndex.One);
-                        two = new Pinguin(new Vector3(0, 25, 0), 5, 0.5f, 0.8f, field, PlayerIndex.Two);
+                        one = new Pinguin(new Vector3(0, -25, 0), 5, 0, 0.5f, 0.8f, field, PlayerIndex.One);
+                        two = new Pinguin(new Vector3(0, 25, 0), 5, 0, 0.5f, 0.8f, field, PlayerIndex.Two);
                     }
                     else
                     {
-                        one = new Pinguin(new Vector3(0, -25, 0), 5, 0.5f, 0.8f, field);
-                        two = new Pinguin(new Vector3(0, 25, 0), 5, 0.5f, 0.8f, field, PlayerIndex.One);
+                        one = new Pinguin(new Vector3(0, -25, 0), 5, 0, 0.5f, 0.8f, field);
+                        two = new Pinguin(new Vector3(0, 25, 0), 5, 0, 0.5f, 0.8f, field, PlayerIndex.One);
                     }
 
                     one.Enemy = two;
@@ -247,17 +249,19 @@ namespace Volamus_v1
                     MeadowField field = new MeadowField(100, 90, 15);
                     field.Initialize();
 
+                    GameScreen.Instance.SoundFileName = "Content//Sound//hummel.ogg";
+
                     BumbleBee one, two;
 
                     if (GamePad.GetState(PlayerIndex.Two).IsConnected)
                     {
-                        one = new BumbleBee(new Vector3(0, -25, 0), 5, 0.5f, 0.8f, field, PlayerIndex.One);
-                        two = new BumbleBee(new Vector3(0, 25, 0), 5, 0.5f, 0.8f, field, PlayerIndex.Two);
+                        one = new BumbleBee(new Vector3(0, -25, 5), 10, 5 , 0.5f, 0.8f, field, PlayerIndex.One);
+                        two = new BumbleBee(new Vector3(0, 25, 5), 10, 5, 0.5f, 0.8f, field, PlayerIndex.Two);
                     }
                     else
                     {
-                        one = new BumbleBee(new Vector3(0, -25, 0), 5, 0.5f, 0.8f, field);
-                        two = new BumbleBee(new Vector3(0, 25, 0), 5, 0.5f, 0.8f, field, PlayerIndex.One);
+                        one = new BumbleBee(new Vector3(0, -25, 5), 10, 5, 0.5f, 0.8f, field);
+                        two = new BumbleBee(new Vector3(0, 25, 5), 10, 5, 0.5f, 0.8f, field, PlayerIndex.One);
                     }
 
                     one.Enemy = two;
@@ -282,15 +286,17 @@ namespace Volamus_v1
 
                     Dolphin one, two;
 
+                    GameScreen.Instance.SoundFileName = "Content//Sound//Delphin.ogg";
+
                     if (GamePad.GetState(PlayerIndex.Two).IsConnected)
                     {
-                        one = new Dolphin(new Vector3(0, -25, 0), 5, 0.5f, 0.8f, field, PlayerIndex.One);
-                        two = new Dolphin(new Vector3(0, 25, 0), 5, 0.5f, 0.8f, field, PlayerIndex.Two);
+                        one = new Dolphin(new Vector3(0, -25, 0), 5, 0, 0.5f, 0.8f, field, PlayerIndex.One);
+                        two = new Dolphin(new Vector3(0, 25, 0), 5, 0, 0.5f, 0.8f, field, PlayerIndex.Two);
                     }
                     else
                     {
-                        one = new Dolphin(new Vector3(0, -25, 0), 5, 0.5f, 0.8f, field);
-                        two = new Dolphin(new Vector3(0, 25, 0), 5, 0.5f, 0.8f, field, PlayerIndex.One);
+                        one = new Dolphin(new Vector3(0, -25, 0), 5, 0, 0.5f, 0.8f, field);
+                        two = new Dolphin(new Vector3(0, 25, 0), 5, 0, 0.5f, 0.8f, field, PlayerIndex.One);
                     }
 
                     one.Enemy = two;

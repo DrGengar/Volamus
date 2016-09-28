@@ -20,6 +20,8 @@ namespace Volamus_v1
         float test;
         int timer;
 
+        string soundFileName;
+
         //SplitScreen
         private Viewport defaultView, leftView, rightView;
 
@@ -36,6 +38,13 @@ namespace Volamus_v1
         {
             get { return timer; }
         }
+
+        public string SoundFileName
+        {
+            get { return soundFileName;}
+            set { soundFileName = value; }
+        }
+
         public static GameScreen Instance
         {
             get
@@ -70,14 +79,14 @@ namespace Volamus_v1
 
             GameStateManager.Instance.Music.RemoveSoundSource("Content//Sound//going_coastal.ogg");
 
-            GameStateManager.Instance.Music.Play2D("Content//Sound//soproSound1.ogg", true);
+            GameStateManager.Instance.Music.Play2D(soundFileName, true);
         }
 
         public override void UnloadContent()
         {
             base.UnloadContent();
 
-            GameStateManager.Instance.Music.RemoveSoundSource("Content//Sound//soproSound1.ogg");
+            GameStateManager.Instance.Music.RemoveSoundSource(soundFileName);
 
             GameStateManager.Instance.Music.Play2D("Content//Sound//going_coastal.ogg", true);
 

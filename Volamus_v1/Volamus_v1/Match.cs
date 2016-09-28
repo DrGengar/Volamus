@@ -433,8 +433,23 @@ namespace Volamus_v1
                     GroupTwo.SetCheering();
                 }
 
-                One.Update(Field);
-                Two.Update(Field);
+                if (pinguinOne != null && pinguinTwo != null)
+                {
+                    pinguinOne.Update(Field);
+                    pinguinTwo.Update(Field);
+                }
+
+                if (bumblebeeOne != null && bumblebeeTwo != null)
+                {
+                    bumblebeeOne.Update(Field);
+                    bumblebeeTwo.Update(Field);
+                }
+
+                if (dolphinOne != null && dolphinTwo != null)
+                {
+                    dolphinOne.Update(Field);
+                    dolphinTwo.Update(Field);
+                }
 
                 if (change_size)
                 {
@@ -507,7 +522,23 @@ namespace Volamus_v1
                     Ball.Instance.Draw(camera);
                 }
 
-                One.Draw(camera);
+                if (pinguinOne != null && pinguinTwo != null)
+                {
+                    pinguinOne.Draw(camera);
+                    pinguinTwo.Draw(camera);
+                }
+
+                if (bumblebeeOne != null && bumblebeeTwo != null)
+                {
+                    bumblebeeOne.Draw(camera);
+                    bumblebeeTwo.Draw(camera);
+                }
+
+                if (dolphinOne != null && dolphinTwo != null)
+                {
+                    dolphinOne.Draw(camera);
+                    dolphinTwo.Draw(camera);
+                }
 
                 if (camera == One.Camera)
                 {
@@ -590,8 +621,6 @@ namespace Volamus_v1
                         }
                     }
                 }
-
-                Two.Draw(camera);
 
                 if (change_size)
                 {

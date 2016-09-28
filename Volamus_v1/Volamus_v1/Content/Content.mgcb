@@ -1239,3 +1239,15 @@
 /processorParam:TextureFormat=DxtCompressed
 /build:Models/hummel.fbx
 
+#begin Sound/Delphin.ogg
+/importer:OggImporter
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Sound/Delphin.ogg
+
+#begin Sound/hummel.ogg
+/importer:OggImporter
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Sound/hummel.ogg
+

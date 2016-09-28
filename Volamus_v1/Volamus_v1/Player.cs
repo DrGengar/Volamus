@@ -42,12 +42,10 @@ namespace Volamus_v1
 
     public class Player
     {
-        Effect effect;
-
-        Vector3 viewVector;
+        public Effect effect;
 
         Vector3 position;
-        int max_jump_height;
+        int max_jump_height, min_jump_height;
         float jump_velocity;
         float movespeed;
         float gamma;
@@ -57,7 +55,7 @@ namespace Volamus_v1
         SpriteFont points_font;
         SpriteFont points_font2;
 
-        BoundingBox innerBoundingBox, outerBoundingBox;
+        public BoundingBox innerBoundingBox, outerBoundingBox;
 
         Vector3 scale;
 
@@ -181,7 +179,7 @@ namespace Volamus_v1
 
         public float Gamma
         {
-            get { return MathHelper.ToRadians(gamma); }
+            get { return gamma; }
         }
 
         public bool CanHit
@@ -234,7 +232,7 @@ namespace Volamus_v1
             get { return gamepad; }
         }
 
-        private void Construct(Vector3 pos, int m_j_height, float j_velo, float mvp, Field field)
+        private void Construct(Vector3 pos, int ma_j_height, int mi_j_height, float j_velo, float mvp, Field field)
         {
             position = pos;
 
@@ -255,7 +253,8 @@ namespace Volamus_v1
 
             camera = new Camera(new Vector3(0, direction * (-80), 20), new Vector3(0, 0, 0), new Vector3(0, direction * 1, 1)); //0,-60,20  0,0,0   0,1,1
 
-            max_jump_height = m_j_height;
+            max_jump_height = ma_j_height;
+            min_jump_height = mi_j_height;
             jump_velocity = j_velo;
             movespeed = mvp;
 
@@ -274,9 +273,9 @@ namespace Volamus_v1
             scale = new Vector3(2.9f, 2.9f, 2.9f); //0.025
         }
 
-        public Player(Vector3 pos, int m_j_height, float j_velo, float mvp, Field field)
+        public Player(Vector3 pos, int ma_j_height, int mi_j_height, float j_velo, float mvp, Field field)
         {
-            Construct(pos, m_j_height, j_velo, mvp, field);
+            Construct(pos, ma_j_height, mi_j_height, j_velo, mvp, field);
 
             controller = false;
 
@@ -286,9 +285,9 @@ namespace Volamus_v1
             keyboard.oldstate = Keyboard.GetState();
         }
 
-        public Player(Vector3 pos, int m_j_height, float j_velo, float mvp, Field field, PlayerIndex i)
+        public Player(Vector3 pos, int ma_j_height, int mi_j_height, float j_velo, float mvp, Field field, PlayerIndex i)
         {
-            Construct(pos, m_j_height, j_velo, mvp, field);
+            Construct(pos, ma_j_height, mi_j_height, j_velo, mvp, field);
 
             index = i;
             controller = true;
@@ -307,18 +306,6 @@ namespace Volamus_v1
             arrowTexture = GameStateManager.Instance.Content.Load<Texture2D>("Textures/red");
             arrowTexture2 = GameStateManager.Instance.Content.Load<Texture2D>("Textures/green");
 
-            // right und left jeweils aus der Sicht des Pinguins
-            //eigentliche modelle die sich aber momentan nicht angezigen lassen 
-            /* if (direction == 1)
-            {
-                leftWing = GameStateManager.Instance.Content.Load<Model>("Models/PingWingLeft"); //PingWingLeft
-                rightWing = GameStateManager.Instance.Content.Load<Model>("Models/PingWingRight");
-            }
-            else
-            {
-                leftWing = GameStateManager.Instance.Content.Load<Model>("Models/PingWingRight"); //PingWingLeft
-                rightWing = GameStateManager.Instance.Content.Load<Model>("Models/PingWingLeft");
-            }*/
             if (direction == 1)
             {
                 leftWing = GameStateManager.Instance.Content.Load<Model>("Models/wingLeft"); //PingWingLeft
@@ -336,8 +323,6 @@ namespace Volamus_v1
             points_font2 = GameStateManager.Instance.Content.Load<SpriteFont>("SpriteFonts/Headline");
 
             pfeil = GameStateManager.Instance.Content.Load<Model>("Models/pfeil");
-
-            CreateBoundingBoxes();
         }
 
         public void UnloadContent(){}
@@ -571,7 +556,7 @@ namespace Volamus_v1
                         }
                         else
                         {
-                            if (position.Z > 0)
+                            if (position.Z > min_jump_height)
                             {
                                 position.Z -= jump_velocity;
                                 MovingBoundingBoxes(new Vector3(0, 0, -jump_velocity));
@@ -841,7 +826,7 @@ namespace Volamus_v1
                         }
                         else
                         {
-                            if (position.Z > 0)
+                             if (position.Z > min_jump_height)
                             {
                                 position.Z -= jump_velocity;
                                 MovingBoundingBoxes(new Vector3(0, 0, -jump_velocity));
@@ -899,7 +884,7 @@ namespace Volamus_v1
                     }
                     else
                     {
-                        if (Position.Z > 0)
+                        if (Position.Z > min_jump_height)
                         {
                             position.Z -= jump_velocity;
                             is_falling = true;
@@ -1229,7 +1214,7 @@ namespace Volamus_v1
                         }
                         else
                         {
-                            if (position.Z > 0)
+                            if (position.Z > min_jump_height)
                             {
                                 position.Z -= jump_velocity;
                                 MovingBoundingBoxes(new Vector3(0, 0, -jump_velocity));
@@ -1499,7 +1484,7 @@ namespace Volamus_v1
                         }
                         else
                         {
-                            if (position.Z > 0)
+                            if (position.Z > min_jump_height)
                             {
                                 position.Z -= jump_velocity;
                                 MovingBoundingBoxes(new Vector3(0, 0, -jump_velocity));
@@ -1559,7 +1544,7 @@ namespace Volamus_v1
                     }
                     else
                     {
-                        if (Position.Z > 0)
+                        if (Position.Z > min_jump_height)
                         {
                             position.Z -= jump_velocity;
                             is_falling = true;
@@ -1720,6 +1705,12 @@ namespace Volamus_v1
 
             DrawWingLeft(camera, leftWing, leftWingPosition);
             DrawWingRight(camera, rightWing, rightWingPosition);
+
+            DebugDraw d = new DebugDraw(GameStateManager.Instance.GraphicsDevice);
+            d.Begin(camera.ViewMatrix, camera.ProjectionMatrix);
+            d.DrawWireBox(innerBoundingBox, Color.Black);
+            d.DrawWireBox(outerBoundingBox, Color.Black);
+            d.End();
         }
 
         // für rechten Flügel
@@ -1862,65 +1853,6 @@ namespace Volamus_v1
                 }
                 mesh.Draw();
             }
-        }
-
-        private void CreateBoundingBoxes()
-        {
-            //Innere BoundingBox
-
-            // Initialize minimum and maximum corners of the bounding box to max and min values
-            Vector3 min = new Vector3(float.MaxValue, float.MaxValue, float.MaxValue);
-            Vector3 max = new Vector3(float.MinValue, float.MinValue, float.MinValue);
-
-            // For each mesh of the model
-            foreach (ModelMesh mesh in model.Meshes)
-            {
-                foreach (ModelMeshPart meshPart in mesh.MeshParts)
-                {
-                    // Vertex buffer parameters
-                    int vertexStride = meshPart.VertexBuffer.VertexDeclaration.VertexStride;
-                    int vertexBufferSize = meshPart.NumVertices * vertexStride;
-
-                    // Get vertex data as float
-                    float[] vertexData = new float[vertexBufferSize / sizeof(float)];
-                    meshPart.VertexBuffer.GetData<float>(vertexData);
-
-                    // Iterate through vertices (possibly) growing bounding box, all calculations are done in world space
-                    for (int i = 0; i < vertexBufferSize / sizeof(float); i += vertexStride / sizeof(float))
-                    {
-                        Vector3 transformedPosition = Vector3.Transform(new Vector3(vertexData[i], vertexData[i + 1], vertexData[i + 2]),
-                            Matrix.CreateScale(scale) * Matrix.CreateRotationZ(MathHelper.ToRadians(90)));
-
-                        min = Vector3.Min(min, transformedPosition);
-                        max = Vector3.Max(max, transformedPosition);
-                    }
-                }
-            }
-
-            // Create and return bounding box
-
-            min = new Vector3(-2.9f, -2.9f, 0);
-            max = new Vector3(2.9f, 2.9f, 12);
-
-            Vector3 mid = new Vector3((max.X + min.X) / 2, (direction) * (max.Y + min.Y) / 2, min.Z);
-            Vector3 translate = mid - position;
-
-            min.X -= translate.X;
-            max.X -= translate.X;
-
-            min.Y += position.Y;
-            max.Y += position.Y;
-
-            min.Z -= translate.Z;
-            max.Z -= translate.Z;
-
-            innerBoundingBox = new BoundingBox(min, max);
-
-            //äußere BoundingBox
-            Vector3 offset = new Vector3(1.5f * Ball.Instance.BoundingSphere.Radius, 1.5f * Ball.Instance.BoundingSphere.Radius, 0);
-            outerBoundingBox = new BoundingBox((innerBoundingBox.Min - offset),
-                innerBoundingBox.Max + offset);
-            outerBoundingBox.Max.Z += 1.5f * Ball.Instance.BoundingSphere.Radius;
         }
 
         private void MovingBoundingBoxes(Vector3 offset)

@@ -10,7 +10,6 @@ namespace Volamus_v1
 {
     public class Drop
     {
-        Vector3 viewVector;
 
         Vector3 position;
         Vector3 velocity;
@@ -19,7 +18,7 @@ namespace Volamus_v1
         Texture2D texture;
         int timeToLive;
 
-        BoundingSphere boundingSphere;
+        BoundingBox boundingBox;
 
         public Texture2D Texture
         {
@@ -36,9 +35,10 @@ namespace Volamus_v1
             get { return timeToLive; }
             set { timeToLive = value; }
         }
-        public BoundingSphere BoundingSphere
+        public BoundingBox BoundingBox
         {
-            get { return boundingSphere; }
+            get { return boundingBox; }
+            set { boundingBox = value; }
         }
 
         //Drop während dem Spiel
@@ -49,17 +49,7 @@ namespace Volamus_v1
             drop = dr;
             texture = tex;
 
-            boundingSphere = new BoundingSphere();
-
-            foreach (ModelMesh mesh in drop.Meshes)
-            {
-                if (boundingSphere.Radius == 0)
-                    boundingSphere = mesh.BoundingSphere;
-                else
-                    boundingSphere = BoundingSphere.CreateMerged(boundingSphere, mesh.BoundingSphere);
-            }
-
-            boundingSphere.Radius *= 1.0f;
+            boundingBox = new BoundingBox(new Vector3(pos.X - 1, pos.Y - 1, 0), new Vector3(pos.X + 1, pos.Y + 1, 5));
         }
 
         //Drop ende mit Bewegung
@@ -75,14 +65,12 @@ namespace Volamus_v1
         //Update für die Drops, die die Ballgröße verändern
         public void Update()
         {
-            boundingSphere.Center = position;
             timeToLive--;
         }
 
         //Update für die Drops, die die Bewegungsgeschwindigkeit des Gegners verringern
         public void UpdateVelo()
         {
-            boundingSphere.Center = position;
             timeToLive--;
         }
 
