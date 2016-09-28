@@ -17,7 +17,7 @@ namespace Volamus_v1
         public new void LoadContent()
         {
             Texture = GameStateManager.Instance.Content.Load<Texture2D>("Textures/pinguinUV");
-            model = GameStateManager.Instance.Content.Load<Model>("Models/pinguin");
+            model = GameStateManager.Instance.Content.Load<Model>("Models/delfin");
             base.LoadContent();
         }
     }
