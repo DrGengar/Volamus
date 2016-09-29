@@ -188,24 +188,6 @@ namespace Volamus_v1
                         effect.Parameters["Materialshininess"].SetValue(32.0f);
 
                         effect.Parameters["colorMapTexture"].SetValue(confetti[index].Texture);
-                        /*
-                        part.Effect = effect;
-                        effect.Parameters["World"].SetValue(transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) *
-                                Matrix.CreateScale(1.50f, 1.50f, 2.0f)
-                                * Matrix.CreateTranslation(confetti[index].Position));
-                        effect.Parameters["View"].SetValue(camera.ViewMatrix);
-                        effect.Parameters["Projection"].SetValue(camera.ProjectionMatrix);
-                        Matrix WorldInverseTransposeMatrix = Matrix.Transpose(Matrix.Invert(transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) *
-                                Matrix.CreateScale(1.5f, 1.5f, 1.5f)
-                                * Matrix.CreateTranslation(confetti[index].Position)));
-                        effect.Parameters["WorldInverseTranspose"].SetValue(WorldInverseTransposeMatrix);
-
-                        effect.Parameters["ModelTexture"].SetValue(confetti[index].Texture);
-
-                        Vector3 viewVector = Vector3.Transform(camera.View - camera.Position, Matrix.CreateRotationY(0));
-                        viewVector.Normalize();
-                        effect.Parameters["ViewVector"].SetValue(viewVector);
-                        */
                     }
                     mesh.Draw();
                 }

@@ -31,7 +31,7 @@ namespace Volamus_v1
 
         public new void Draw(Camera camera)
         {
-            ocean.Draw(GameStateManager.Instance.GameTime, camera, skyTexture, new Vector3(0, 0, 0));
+            ocean.Draw(GameStateManager.Instance.GameTime, camera, skyTexture, new Vector3(0, 0, -0.05f));
             base.Draw(camera);
         }
     }

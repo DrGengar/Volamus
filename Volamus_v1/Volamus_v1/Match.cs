@@ -144,7 +144,9 @@ namespace Volamus_v1
         PickVeloMinus changeVelocityMinus;
 
         Confetti confetti;
+        ConfettiFlower confetti2;
         Random rnd = new Random();
+        int whichConf;
 
         SpectatorGroup GroupOne, GroupTwo;
 
@@ -172,6 +174,8 @@ namespace Volamus_v1
             lights[2] = new PointLight(new Vector3(-f.Length / 2 - 10, f.Width / 2 - 10, 20), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), 100.0f);
             lights[3] = new PointLight(new Vector3(f.Length / 2 - 10, f.Width / 2 - 10, 20), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), 100.0f);
 
+            whichConf = 1;
+
             Initialize(new Vector2(f.Length, f.Width), points, w, c_s, c_v);
         }
 
@@ -188,6 +192,8 @@ namespace Volamus_v1
             lights[2] = new PointLight(new Vector3(-f.Length / 2 - 10, f.Width / 2 - 10, 20), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), 100.0f);
             lights[3] = new PointLight(new Vector3(f.Length / 2 - 10, f.Width / 2 - 10, 20), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), 100.0f);
 
+            whichConf = 2;
+
             Initialize(new Vector2(f.Length, f.Width), points, w, c_s, c_v);
         }
 
@@ -203,6 +209,8 @@ namespace Volamus_v1
             lights[1] = new PointLight(new Vector3(f.Length / 2 - 10, -f.Width / 2 - 10, 20), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), 100.0f);
             lights[2] = new PointLight(new Vector3(-f.Length / 2 - 10, f.Width / 2 - 10, 20), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), 100.0f);
             lights[3] = new PointLight(new Vector3(f.Length / 2 - 10, f.Width / 2 - 10, 20), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), 100.0f);
+
+            whichConf = 3;
 
             Initialize(new Vector2(f.Length, f.Width), points, w, c_s, c_v);
         }
@@ -435,7 +443,18 @@ namespace Volamus_v1
                     isFinished = true;
                     winner = One;
                     looser = Two;
-                    confetti = new Confetti(One.Direction);
+                    if (whichConf == 1)
+                    {
+                        confetti = new Confetti(One.Direction);
+                    }
+                    if (whichConf == 2)
+                    {
+                        confetti2 = new ConfettiFlower(One.Direction);
+                    }
+                    if (whichConf == 3)
+                    {
+                        confetti = new Confetti(One.Direction);
+                    }
                     GroupOne.SetCheering();
                 }
 
@@ -445,7 +464,18 @@ namespace Volamus_v1
                     isFinished = true;
                     winner = Two;
                     looser = One;
-                    confetti = new Confetti(Two.Direction);
+                    if (whichConf == 1)
+                    {
+                        confetti = new Confetti(Two.Direction);
+                    }
+                    if (whichConf == 2)
+                    {
+                        confetti2 = new ConfettiFlower(Two.Direction);
+                    }
+                    if (whichConf == 3)
+                    {
+                        confetti = new Confetti(Two.Direction);
+                    }
                     GroupTwo.SetCheering();
                 }
 
@@ -481,7 +511,18 @@ namespace Volamus_v1
 
                 if (isFinished)
                 {
-                    confetti.Update(rnd);
+                    if (whichConf == 1)
+                    {
+                        confetti.Update(rnd);
+                    }
+                    if (whichConf == 2)
+                    {
+                        confetti2.Update(rnd);
+                    }
+                    if (whichConf == 3)
+                    {
+                        confetti.Update(rnd);
+                    }
                     text.Update(gameTime);
                     text.Position = text.Position + new Vector2(0, -counter);
 
@@ -652,7 +693,19 @@ namespace Volamus_v1
 
                 if (isFinished)
                 {
-                    confetti.Draw(camera);
+
+                    if (whichConf == 1)
+                    {
+                        confetti.Draw(camera);
+                    }
+                    if (whichConf == 2)
+                    {
+                        confetti2.Draw(camera);
+                    }
+                    if (whichConf == 3)
+                    {
+                        confetti.Draw(camera);
+                    }
                     if (GameScreen.Instance.Timer > 200)
                     {
                         text.Draw(spriteBatch);
