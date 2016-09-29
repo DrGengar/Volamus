@@ -19,7 +19,7 @@ namespace Volamus_v1
 
         public new void LoadContent()
         {
-            skydome = new Skydome(25f, false, GameStateManager.Instance.Content.Load<Texture2D>("Textures/skydome"));
+            skydome = new Skydome(25f, false, GameStateManager.Instance.Content.Load<Texture2D>("Textures/wolken"));
             skydome.Load();
 
             ice = GameStateManager.Instance.Content.Load<Model>("Models/eisscholle");

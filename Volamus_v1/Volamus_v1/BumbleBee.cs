@@ -18,7 +18,7 @@ namespace Volamus_v1
 
         public new void LoadContent()
         {
-            Texture = GameStateManager.Instance.Content.Load<Texture2D>("Textures/pinguinUV");
+            Texture = GameStateManager.Instance.Content.Load<Texture2D>("Textures/hummelUV");
             model = GameStateManager.Instance.Content.Load<Model>("Models/hummel");
             CreateBoundingBoxes();
             base.LoadContent();
