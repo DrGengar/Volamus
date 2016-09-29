@@ -413,6 +413,22 @@ namespace Volamus_v1
             }
             else
             {
+                if (One == bumblebeeOne)
+                {
+                    bumblebeeOne.UpdateAnim();
+                }
+                if (Two == bumblebeeTwo)
+                {
+                    bumblebeeTwo.UpdateAnim();
+                }
+                if (One == dolphinOne)
+                {
+                    dolphinOne.UpdateAnim();
+                }
+                if (Two == dolphinTwo)
+                {
+                    dolphinTwo.UpdateAnim();
+                }
                 if (One.Points == maxPoints && !isFinished)
                 {
                     //winner == one -> Ende

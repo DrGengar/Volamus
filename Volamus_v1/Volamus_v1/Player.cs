@@ -73,6 +73,9 @@ namespace Volamus_v1
         float betta;
         float bettaAlt;
 
+        float alphaDolphin;
+        float bettaDolphin;
+
         float hitAngleLeft;
         float hitAngleRight;
         float hitAngleHigh;
@@ -181,7 +184,14 @@ namespace Volamus_v1
         {
             get { return gamma; }
         }
-
+        public float Alpha
+        {
+            get { return alphaDolphin; }
+        }
+        public float Betta
+        {
+            get { return bettaDolphin; }
+        }
         public bool CanHit
         {
             get { return can_hit; }
@@ -389,6 +399,8 @@ namespace Volamus_v1
                 {
                     betta = 0.0f;
                     bettaAlt = 1.0f;
+                    alphaDolphin = 0;
+                    bettaDolphin = 0;
                 }
 
                 //jeder Spieler braucht einen Winkel Gamma, den er verändern kann mit Eingaben
@@ -432,6 +444,9 @@ namespace Volamus_v1
                     {
                         if (keyboard.IsKeyDown(Left))
                         {
+                            //Delfin
+                            bettaDolphin = 10;
+
                             //watscheln
                             if (betta <= 0 && betta >= -5 && betta <= bettaAlt)
                             {
@@ -490,6 +505,9 @@ namespace Volamus_v1
 
                         if (keyboard.IsKeyDown(Right))
                         {
+                            //Delfin 
+                            bettaDolphin = -10;
+
                             //watscheln
                             if (betta <= 0 && betta >= -5 && betta <= bettaAlt)
                             {
@@ -596,6 +614,9 @@ namespace Volamus_v1
                     {
                         if (keyboard.IsKeyDown(Up))
                         {
+                            //Delfin
+                            alphaDolphin = 20;
+
                             //watscheln
                             if (betta <= 0 && betta >= -5 && betta <= bettaAlt)
                             {
@@ -649,6 +670,9 @@ namespace Volamus_v1
 
                         if (keyboard.IsKeyDown(Left))
                         {
+                            //Delfin
+                            bettaDolphin = 10;
+
                             //watscheln
                             if (betta <= 0 && betta >= -5 && betta <= bettaAlt)
                             {
@@ -708,6 +732,9 @@ namespace Volamus_v1
 
                         if (keyboard.IsKeyDown(Down))
                         {
+                            //Delfin
+                            alphaDolphin = -20;
+
                             //watscheln
                             if (betta <= 0 && betta >= -5 && betta <= bettaAlt)
                             {
@@ -760,6 +787,9 @@ namespace Volamus_v1
 
                         if (keyboard.IsKeyDown(Right))
                         {
+                            //Delfin 
+                            bettaDolphin = -10;
+
                             //watscheln
                             if (betta <= 0 && betta >= -5 && betta <= bettaAlt)
                             {
@@ -1051,6 +1081,8 @@ namespace Volamus_v1
                 {
                     betta = 0.0f;
                     bettaAlt = 1.0f;
+                    alphaDolphin = 0;
+                    bettaDolphin = 0;
                 }
 
                 //jeder Spieler braucht einen Winkel Gamma, den er verändern kann mit Eingaben
@@ -1094,6 +1126,9 @@ namespace Volamus_v1
                     {
                         if (gamepad.IsButtonDown(Left))
                         {
+                            //Delfin
+                            bettaDolphin = 10;
+
                             //watscheln
                             if (betta <= 0 && betta >= -5 && betta <= bettaAlt)
                             {
@@ -1150,6 +1185,9 @@ namespace Volamus_v1
 
                         if (gamepad.IsButtonDown(Right))
                         {
+                            //Delfin 
+                            bettaDolphin = -10;
+
                             //watscheln
                             if (betta <= 0 && betta >= -5 && betta <= bettaAlt)
                             {
@@ -1255,6 +1293,9 @@ namespace Volamus_v1
 
                         if (gamepad.IsButtonDown(Up))
                         {
+                            //Delfin
+                            alphaDolphin = 20;
+
                             //watscheln
                             if (betta <= 0 && betta >= -5 && betta <= bettaAlt)
                             {
@@ -1310,6 +1351,9 @@ namespace Volamus_v1
 
                         if (gamepad.IsButtonDown(Left))
                         {
+                            //Delfin
+                            bettaDolphin = 10;
+
                             //watscheln
                             if (betta <= 0 && betta >= -5 && betta <= bettaAlt)
                             {
@@ -1367,6 +1411,9 @@ namespace Volamus_v1
 
                         if (gamepad.IsButtonDown(Down))
                         {
+                            //Delfin
+                            alphaDolphin = -20;
+
                             //watscheln
                             if (betta <= 0 && betta >= -5 && betta <= bettaAlt)
                             {
@@ -1420,6 +1467,9 @@ namespace Volamus_v1
 
                         if (gamepad.IsButtonDown(Right))
                         {
+                            //Delfin 
+                            bettaDolphin = -10;
+
                             //watscheln
                             if (betta <= 0 && betta >= -5 && betta <= bettaAlt)
                             {
