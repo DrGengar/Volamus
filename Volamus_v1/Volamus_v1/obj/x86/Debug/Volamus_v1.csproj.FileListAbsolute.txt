@@ -948,3 +948,7 @@ C:\Users\Ich\Desktop\3dGame\Volamus_v1\Volamus_v1\Content\Textures\Ocean2_N.xnb
 C:\Users\Ich\Desktop\3dGame\Volamus_v1\Volamus_v1\Content\Textures\Ocean3_N.xnb
 C:\Users\Ich\Desktop\3dGame\Volamus_v1\Volamus_v1\Content\Textures\Ocean4_N.xnb
 C:\Users\Ich\Desktop\3dGame\Volamus_v1\Volamus_v1\Content\Textures\wolken.xnb
+C:\Users\Iam\Desktop\3dGame\Volamus_v1\Volamus_v1\Content\Models\delfin2.xnb
+C:\Users\Iam\Desktop\3dGame\Volamus_v1\Volamus_v1\Content\Models\delfinFlosse2.xnb
+C:\Users\Iam\Desktop\3dGame\Volamus_v1\Volamus_v1\Content\Models\hummelWing3.xnb
+C:\Users\Iam\Desktop\3dGame\Volamus_v1\Volamus_v1\Content\Textures\HummelWingUV.xnb

@@ -43,9 +43,9 @@ namespace Volamus_v1
                 rotateWing1 = 0;
             }
             wingLeft = GameStateManager.Instance.Content.Load<Model>("Models/hummelWing3");
-            wingTextureL = GameStateManager.Instance.Content.Load<Texture2D>("Models/PingWingUV");
+            wingTextureL = GameStateManager.Instance.Content.Load<Texture2D>("Textures/HummelWingUV");
             wingRight = GameStateManager.Instance.Content.Load<Model>("Models/hummelWing3");
-            wingTextureR = GameStateManager.Instance.Content.Load<Texture2D>("Models/PingWingUV");
+            wingTextureR = GameStateManager.Instance.Content.Load<Texture2D>("Textures/HummelWingUV");
             CreateBoundingBoxes();
             base.LoadContent();
 
@@ -202,7 +202,7 @@ namespace Volamus_v1
                     effect.Parameters["Materialspecular"].SetValue(new Vector4(1.0f, 1.0f, 1.0f, 1.0f));
                     effect.Parameters["Materialshininess"].SetValue(32.0f);
 
-                    effect.Parameters["colorMapTexture"].SetValue(Texture);
+                    effect.Parameters["colorMapTexture"].SetValue(wingTextureL);
                 }
                 mesh.Draw();
             }
@@ -249,7 +249,7 @@ namespace Volamus_v1
                     effect.Parameters["Materialspecular"].SetValue(new Vector4(1.0f, 1.0f, 1.0f, 1.0f));
                     effect.Parameters["Materialshininess"].SetValue(32.0f);
 
-                    effect.Parameters["colorMapTexture"].SetValue(Texture);
+                    effect.Parameters["colorMapTexture"].SetValue(wingTextureR);
                 }
                 mesh.Draw();
             }

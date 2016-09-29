@@ -173,7 +173,7 @@ namespace Volamus_v1
                     effect.Parameters["Materialspecular"].SetValue(new Vector4(1.0f, 1.0f, 1.0f, 1.0f));
                     effect.Parameters["Materialshininess"].SetValue(32.0f);
 
-                    effect.Parameters["colorMapTexture"].SetValue(Texture);
+                    effect.Parameters["colorMapTexture"].SetValue(finTexture);
                 }
                 mesh.Draw();
             }
