@@ -164,7 +164,7 @@ namespace Volamus_v1
                 {
                     part.Effect = effect;
                     Matrix World = transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) * Matrix.CreateRotationZ(MathHelper.ToRadians(270) - rotation) * Matrix.CreateScale(0.04f, 0.04f, 0.04f)
-                           * Matrix.CreateTranslation(new Vector3(-length/2, 0, 0));
+                           * Matrix.CreateTranslation(new Vector3(-width/2, 0, 0));
                     Matrix Projection = camera.ProjectionMatrix;
                     Matrix View = camera.ViewMatrix;
                     Matrix WorldInverseTransposeMatrix = Matrix.Transpose(Matrix.Invert(World));
@@ -196,7 +196,7 @@ namespace Volamus_v1
                 {
                     part.Effect = effect;
                     Matrix World = transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) * Matrix.CreateRotationZ(MathHelper.ToRadians(270) - rotation) * Matrix.CreateScale(0.04f, 0.04f, 0.04f)
-                           * Matrix.CreateTranslation(new Vector3(length/2, 0, 0));
+                           * Matrix.CreateTranslation(new Vector3(width/2, 0, 0));
                     Matrix Projection = camera.ProjectionMatrix;
                     Matrix View = camera.ViewMatrix;
                     Matrix WorldInverseTransposeMatrix = Matrix.Transpose(Matrix.Invert(World));

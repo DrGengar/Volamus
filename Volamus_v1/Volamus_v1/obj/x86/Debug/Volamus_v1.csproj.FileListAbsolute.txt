@@ -952,3 +952,4 @@ C:\Users\Iam\Desktop\3dGame\Volamus_v1\Volamus_v1\Content\Models\delfin2.xnb
 C:\Users\Iam\Desktop\3dGame\Volamus_v1\Volamus_v1\Content\Models\delfinFlosse2.xnb
 C:\Users\Iam\Desktop\3dGame\Volamus_v1\Volamus_v1\Content\Models\hummelWing3.xnb
 C:\Users\Iam\Desktop\3dGame\Volamus_v1\Volamus_v1\Content\Textures\HummelWingUV.xnb
+C:\Users\Ich\Desktop\3dGame\Volamus_v1\Volamus_v1\Content\Textures\HummelWingUV.xnb
