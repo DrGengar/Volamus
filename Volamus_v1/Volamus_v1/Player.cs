@@ -110,6 +110,7 @@ namespace Volamus_v1
         public Camera Camera
         {
             get { return camera; }
+            set { camera = value; }
         }
 
         public Vector3 Position

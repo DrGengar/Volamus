@@ -58,6 +58,10 @@ namespace Volamus_v1
                 {
                     enemy = GameScreen.Instance.Match.Two.Enemy;
                 }
+                else
+                {
+                    enemy.Camera = cam;
+                }
             }
             // start the shader
             oceanEffect.CurrentTechnique.Passes[0].Apply();

@@ -17,7 +17,7 @@ namespace Volamus_v1
 
         public new void LoadContent()
         {
-            skyTexture = GameStateManager.Instance.Content.Load<Texture2D>("Textures/skydome");
+            skyTexture = GameStateManager.Instance.Content.Load<Texture2D>("Textures/himmelrot");
             skydome = new Skydome(25f, false, skyTexture);
             skydome.Load();
 
