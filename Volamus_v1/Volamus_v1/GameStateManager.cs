@@ -30,6 +30,8 @@ namespace Volamus_v1
         [XmlIgnore]
         public GraphicsDeviceManager GraphicsDeviceManager;
         [XmlIgnore]
+        public GameTime GameTime;
+        [XmlIgnore]
         public ISoundEngine Music;
         public int MusicVolume;
 
@@ -181,6 +183,8 @@ namespace Volamus_v1
 
         public void Update(GameTime gameTime)
         {
+            GameTime = gameTime;
+
             if (Fullscreen && !GraphicsDeviceManager.IsFullScreen)
             {
                 GraphicsDeviceManager.ToggleFullScreen();

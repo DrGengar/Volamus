@@ -11,14 +11,19 @@ namespace Volamus_v1
     public class IceField : Field
     {
         Model ice;
-        Texture2D iceTexture;
+        Texture2D iceTexture, skyTexture;
+        Ocean ocean;
 
         public IceField(int w, int l, int n_h) : base(w, l, n_h){}
 
         public new void LoadContent()
         {
-            skydome = new Skydome(25f, false, GameStateManager.Instance.Content.Load<Texture2D>("Textures/skydome"));
+            skyTexture = GameStateManager.Instance.Content.Load<Texture2D>("Textures/skydome");
+            skydome = new Skydome(25f, false, skyTexture);
             skydome.Load();
+
+            ocean = new Ocean();
+            ocean.LoadContent();
 
             ice = GameStateManager.Instance.Content.Load<Model>("Models/eisscholle");
             netTexture = iceTexture = GameStateManager.Instance.Content.Load<Texture2D>("Textures/iceTexture");
@@ -64,26 +69,12 @@ namespace Volamus_v1
                     effect.Parameters["Materialshininess"].SetValue(32.0f);
 
                     effect.Parameters["colorMapTexture"].SetValue(iceTexture);
-                    /*
-                    part.Effect = effect;
-                    effect.Parameters["World"].SetValue(transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) * Matrix.CreateScale(0.2f, 0.3f, 0.01f)
-                           * Matrix.CreateTranslation(new Vector3(0, 0, -0.75f)));
-                    effect.Parameters["View"].SetValue(camera.ViewMatrix);
-                    effect.Parameters["Projection"].SetValue(camera.ProjectionMatrix);
-                    Matrix WorldInverseTransposeMatrix = Matrix.Transpose(Matrix.Invert(transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) * Matrix.CreateScale(0.2f, 0.3f, 0.01f)
-                           * Matrix.CreateTranslation(new Vector3(0, 0, -0.75f))));
-                    effect.Parameters["WorldInverseTranspose"].SetValue(WorldInverseTransposeMatrix);
-                    effect.Parameters["ModelTexture"].SetValue(iceTexture);
-
-                    viewVector = Vector3.Transform(camera.View - camera.Position, Matrix.CreateRotationY(0));
-                    viewVector.Normalize();
-                    effect.Parameters["ViewVector"].SetValue(viewVector);
-                    */
                 }
                 mesh.Draw();         
             }
 
             base.Draw(camera);
+            ocean.Draw(GameStateManager.Instance.GameTime, camera, skyTexture, new Vector3(0,0,-2));
         }
     }
 }

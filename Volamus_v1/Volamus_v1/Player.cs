@@ -273,6 +273,11 @@ namespace Volamus_v1
             scale = new Vector3(2.9f, 2.9f, 2.9f); //0.025
         }
 
+        public Player()
+        {
+
+        }
+
         public Player(Vector3 pos, int ma_j_height, int mi_j_height, float j_velo, float mvp, Field field)
         {
             Construct(pos, ma_j_height, mi_j_height, j_velo, mvp, field);

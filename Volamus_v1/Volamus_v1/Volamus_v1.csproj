@@ -89,6 +89,7 @@
     <Compile Include="Menu.cs" />
     <Compile Include="MenuItem.cs" />
     <Compile Include="MenuManager.cs" />
+    <Compile Include="Ocean.cs" />
     <Compile Include="Options.cs" />
     <Compile Include="PickSizePlus.cs" />
     <Compile Include="PickVeloMinus.cs" />
