@@ -14,10 +14,30 @@ namespace Volamus_v1
         Texture2D iceTexture, skyTexture;
         Ocean ocean;
 
-        public IceField(int w, int l, int n_h) : base(w, l, n_h){}
+        SpectatorGroupPenguin groupOne, groupTwo;
+        Confetti confetti;
+
+        public SpectatorGroupPenguin GroupOne
+        {
+            get { return groupOne; }
+        }
+
+        public SpectatorGroupPenguin GroupTwo
+        {
+            get { return groupTwo; }
+        }
+
+        public IceField(int w, int l, int n_h, Random rnd) : base(w, l, n_h)
+        {
+            groupOne = new SpectatorGroupPenguin(new Vector3(-w/2 - 10, - l/2 - 5,0),5,rnd);
+            groupTwo = new SpectatorGroupPenguin(new Vector3(w/2 + 10, l/2 + 5, 0), 5, rnd);
+        }
 
         public new void LoadContent()
         {
+            groupOne.LoadContent();
+            groupTwo.LoadContent();
+
             skyTexture = GameStateManager.Instance.Content.Load<Texture2D>("Textures/skydome");
             skydome = new Skydome(25f, false, skyTexture);
             skydome.Load();
@@ -33,9 +53,20 @@ namespace Volamus_v1
             base.LoadContent();
         }
 
+        public void UnloadContent()
+        {
+            groupOne.UnloadContent();
+            groupTwo.UnloadContent();
+        }
+
+        public new void Update()
+        {
+            groupOne.Update();
+            groupTwo.Update();
+        }
+
         public new void Draw(Camera camera)
         {
-            
             Matrix[] transforms = new Matrix[ice.Bones.Count];
             ice.CopyAbsoluteBoneTransformsTo(transforms);
             foreach (ModelMesh mesh in ice.Meshes)
@@ -75,6 +106,9 @@ namespace Volamus_v1
 
             base.Draw(camera);
             ocean.Draw(GameStateManager.Instance.GameTime, camera, skyTexture, new Vector3(0,0,-2));
+
+            groupOne.Draw(camera);
+            groupTwo.Draw(camera);
         }
     }
 }

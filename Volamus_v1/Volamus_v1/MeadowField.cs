@@ -13,12 +13,29 @@ namespace Volamus_v1
         Model ice;
         Texture2D iceTexture;
 
-        Vector3 viewVector;
+        SpectatorGroupBumbleBee groupOne, groupTwo;
 
-        public MeadowField(int w, int l, int n_h) : base(w, l, n_h){ }
+        public SpectatorGroupBumbleBee GroupOne
+        {
+            get { return groupOne; }
+        }
+
+        public SpectatorGroupBumbleBee GroupTwo
+        {
+            get { return groupTwo; }
+        }
+
+        public MeadowField(int w, int l, int n_h, Random rnd) : base(w, l, n_h)
+        {
+            groupOne = new SpectatorGroupBumbleBee(new Vector3(-w / 2 - 10, -l / 2 - 5, 5), 5, rnd);
+            groupTwo = new SpectatorGroupBumbleBee(new Vector3(w / 2 + 10, l / 2 + 5, 5), 5, rnd);
+        }
 
         public new void LoadContent()
         {
+            groupOne.LoadContent();
+            groupTwo.LoadContent();
+
             skydome = new Skydome(25f, false, GameStateManager.Instance.Content.Load<Texture2D>("Textures/wolken"));
             skydome.Load();
 
@@ -26,6 +43,18 @@ namespace Volamus_v1
             netTexture = iceTexture = GameStateManager.Instance.Content.Load<Texture2D>("Textures/iceTexture");
 
             base.LoadContent();
+        }
+
+        public void UnloadContent()
+        {
+            groupOne.UnloadContent();
+            groupTwo.UnloadContent();
+        }
+
+        public new void Update()
+        {
+            groupOne.Update();
+            groupTwo.Update();
         }
 
         public new void Draw(Camera camera)
@@ -68,6 +97,10 @@ namespace Volamus_v1
             }
 
             base.Draw(camera);
+
+            groupOne.Draw(camera);
+            groupTwo.Draw(camera);
+
         }
     }
 }

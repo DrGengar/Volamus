@@ -24,6 +24,8 @@ namespace Volamus_v1
 
         Image back, play;
 
+        Random rnd = new Random();
+
         Texture2D veloMinus, veloPlus, sizeMinus, sizePlus;
 
         public MatchOptions()
@@ -211,7 +213,7 @@ namespace Volamus_v1
 
                 if(stages.active == 0)
                 {
-                    IceField field = new IceField(100, 90, 15);
+                    IceField field = new IceField(100, 90, 15, rnd);
                     field.Initialize();
 
                     GameScreen.Instance.SoundFileName = "Content//Sound//soproSound1.ogg";
@@ -246,7 +248,7 @@ namespace Volamus_v1
 
                 if (stages.active == 1)
                 {
-                    MeadowField field = new MeadowField(100, 90, 15);
+                    MeadowField field = new MeadowField(100, 90, 15, rnd);
                     field.Initialize();
 
                     GameScreen.Instance.SoundFileName = "Content//Sound//hummel.ogg";
@@ -281,7 +283,7 @@ namespace Volamus_v1
 
                 if (stages.active == 2)
                 {
-                    WaterField field = new WaterField(100, 90, 15);
+                    WaterField field = new WaterField(100, 90, 15, rnd);
                     field.Initialize();
 
                     Dolphin one, two;
@@ -290,13 +292,13 @@ namespace Volamus_v1
 
                     if (GamePad.GetState(PlayerIndex.Two).IsConnected)
                     {
-                        one = new Dolphin(new Vector3(0, -25, 0), 5, 0, 0.5f, 0.8f, field, PlayerIndex.One);
-                        two = new Dolphin(new Vector3(0, 25, 0), 5, 0, 0.5f, 0.8f, field, PlayerIndex.Two);
+                        one = new Dolphin(new Vector3(0, -25, 0), 5, 4, 0.5f, 0.8f, field, PlayerIndex.One);
+                        two = new Dolphin(new Vector3(0, 25, 0), 5, 4, 0.5f, 0.8f, field, PlayerIndex.Two);
                     }
                     else
                     {
-                        one = new Dolphin(new Vector3(0, -25, 0), 5, 0, 0.5f, 0.8f, field);
-                        two = new Dolphin(new Vector3(0, 25, 0), 5, 0, 0.5f, 0.8f, field, PlayerIndex.One);
+                        one = new Dolphin(new Vector3(0, -25, 0), 5, 4, 0.5f, 0.8f, field);
+                        two = new Dolphin(new Vector3(0, 25, 0), 5, 4, 0.5f, 0.8f, field, PlayerIndex.One);
                     }
 
                     one.Enemy = two;

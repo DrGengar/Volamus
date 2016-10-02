@@ -121,7 +121,13 @@
     <Compile Include="SelectableOptions.cs" />
     <Compile Include="Skydome.cs" />
     <Compile Include="Spectator.cs" />
+    <Compile Include="SpectatorBumbleBee.cs" />
+    <Compile Include="SpectatorDolphin.cs" />
     <Compile Include="SpectatorGroup.cs" />
+    <Compile Include="SpectatorGroupBumbleBee.cs" />
+    <Compile Include="SpectatorGroupDolphin.cs" />
+    <Compile Include="SpectatorGroupPenguin.cs" />
+    <Compile Include="SpectatorPenguin.cs" />
     <Compile Include="SplashScreen.cs" />
     <Compile Include="Story.cs" />
     <Compile Include="TitleScreen.cs" />

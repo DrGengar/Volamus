@@ -129,12 +129,6 @@ namespace Volamus_v1
                 mesh.Draw();
             }
             FinDraw(camera);
-
-            DebugDraw d = new DebugDraw(GameStateManager.Instance.GraphicsDevice);
-            d.Begin(camera.ViewMatrix, camera.ProjectionMatrix);
-            d.DrawWireBox(innerBoundingBox, Color.Black);
-            d.DrawWireBox(outerBoundingBox, Color.Black);
-            d.End();
         }
 
         public void FinDraw(Camera camera)
@@ -177,11 +171,6 @@ namespace Volamus_v1
                 }
                 mesh.Draw();
             }
-            DebugDraw d = new DebugDraw(GameStateManager.Instance.GraphicsDevice);
-            d.Begin(camera.ViewMatrix, camera.ProjectionMatrix);
-            d.DrawWireBox(innerBoundingBox, Color.Black);
-            d.DrawWireBox(outerBoundingBox, Color.Black);
-            d.End();
         }
     }
 }

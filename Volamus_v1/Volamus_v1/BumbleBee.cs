@@ -36,28 +36,24 @@ namespace Volamus_v1
             {
                 rotateWing1 = 180;
                 rotateWing2 = 0;
+                rotation = 0;
             }
             else
             {
                 rotateWing2 = 180;
                 rotateWing1 = 0;
+                rotation = 180;
             }
+
             wingLeft = GameStateManager.Instance.Content.Load<Model>("Models/hummelWing3");
             wingTextureL = GameStateManager.Instance.Content.Load<Texture2D>("Textures/HummelWingUV");
             wingRight = GameStateManager.Instance.Content.Load<Model>("Models/hummelWing3");
             wingTextureR = GameStateManager.Instance.Content.Load<Texture2D>("Textures/HummelWingUV");
+
             CreateBoundingBoxes();
             base.LoadContent();
-
-            if (Direction == 1)
-            {
-                rotation = 0;
-            }
-            else
-            {
-                rotation = 180;
-            }
         }
+
         public void UpdateAnim()
         {
             if (Position.Z < 7 && !falling)
@@ -159,11 +155,6 @@ namespace Volamus_v1
             }
             WingDrawL(camera);
             WingDrawR(camera);
-            DebugDraw d = new DebugDraw(GameStateManager.Instance.GraphicsDevice);
-            d.Begin(camera.ViewMatrix, camera.ProjectionMatrix);
-            d.DrawWireBox(innerBoundingBox, Color.Black);
-            d.DrawWireBox(outerBoundingBox, Color.Black);
-            d.End();
         }
 
         public void WingDrawL(Camera camera)
@@ -206,11 +197,6 @@ namespace Volamus_v1
                 }
                 mesh.Draw();
             }
-            DebugDraw d = new DebugDraw(GameStateManager.Instance.GraphicsDevice);
-            d.Begin(camera.ViewMatrix, camera.ProjectionMatrix);
-            d.DrawWireBox(innerBoundingBox, Color.Black);
-            d.DrawWireBox(outerBoundingBox, Color.Black);
-            d.End();
         }
 
         public void WingDrawR(Camera camera)
@@ -253,11 +239,6 @@ namespace Volamus_v1
                 }
                 mesh.Draw();
             }
-            DebugDraw d = new DebugDraw(GameStateManager.Instance.GraphicsDevice);
-            d.Begin(camera.ViewMatrix, camera.ProjectionMatrix);
-            d.DrawWireBox(innerBoundingBox, Color.Black);
-            d.DrawWireBox(outerBoundingBox, Color.Black);
-            d.End();
         }
     }
 }

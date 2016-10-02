@@ -124,6 +124,11 @@ namespace Volamus_v1
             net = GameStateManager.Instance.Content.Load<Model>("Models/netzv4");
         }
 
+        public void Update()
+        {
+
+        }
+
         public void Draw(Camera camera)
         {
             rotation = Ball.Instance.Wind.Angle;

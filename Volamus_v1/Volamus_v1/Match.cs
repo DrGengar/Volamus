@@ -148,8 +148,6 @@ namespace Volamus_v1
         Random rnd = new Random();
         int whichConf;
 
-        SpectatorGroup GroupOne, GroupTwo;
-
         Image winnerImage, looserImage;
         Texture2D pointsImage;
         Texture2D matchball;
@@ -170,9 +168,9 @@ namespace Volamus_v1
 
             lights = new PointLight[4];
             lights[0] = new PointLight(new Vector3(-f.Length/2 - 10, -f.Width/2 - 10, 20), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), 100.0f);
-            lights[1] = new PointLight(new Vector3(f.Length / 2 - 10, -f.Width / 2 - 10, 20), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), 100.0f);
+            lights[1] = new PointLight(new Vector3(f.Length / 2 + 10, -f.Width / 2 - 10, 20), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), 100.0f);
             lights[2] = new PointLight(new Vector3(-f.Length / 2 - 10, f.Width / 2 - 10, 20), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), 100.0f);
-            lights[3] = new PointLight(new Vector3(f.Length / 2 - 10, f.Width / 2 - 10, 20), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), 100.0f);
+            lights[3] = new PointLight(new Vector3(f.Length / 2 + 10, f.Width / 2 + 10, 20), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), 100.0f);
 
             whichConf = 1;
 
@@ -233,9 +231,6 @@ namespace Volamus_v1
 
             changeSizeMinus = new PickSizeMinus();
             changeVelocityMinus = new PickVeloMinus();
-
-            GroupOne = new SpectatorGroup(new Vector3(-dimensions.X/2 - 15, -dimensions.Y/2, 0), 5, rnd);
-            GroupTwo = new SpectatorGroup(new Vector3(dimensions.X/2 + 15, dimensions.Y/2, 0), 5, rnd);
 
             lightsPosition = new Vector3[lights.Length];
             lightsAmbient = new Vector4[lights.Length];
@@ -306,9 +301,6 @@ namespace Volamus_v1
 
             changeVelocityPlus.LoadContent();
             changeVelocityMinus.LoadContent();
-
-            GroupOne.LoadContent();
-            GroupTwo.LoadContent();
 
             winnerImage = new Image();
             winnerImage.Path = "Images/winnerPNG";
@@ -437,6 +429,7 @@ namespace Volamus_v1
                 {
                     dolphinTwo.UpdateAnim();
                 }
+
                 if (One.Points == maxPoints && !isFinished)
                 {
                     //winner == one -> Ende
@@ -455,7 +448,21 @@ namespace Volamus_v1
                     {
                         confetti = new Confetti(One.Direction);
                     }
-                    GroupOne.SetCheering();
+
+                    if(iceField != null)
+                    {
+                        iceField.GroupOne.SetCheering();
+                    }
+
+                    if(meadowField != null)
+                    {
+                        meadowField.GroupOne.SetCheering();
+                    }
+
+                    if(waterField != null)
+                    {
+                        waterField.GroupOne.SetCheering();
+                    }
                 }
 
                 if (Two.Points == maxPoints && !isFinished)
@@ -476,7 +483,21 @@ namespace Volamus_v1
                     {
                         confetti = new Confetti(Two.Direction);
                     }
-                    GroupTwo.SetCheering();
+
+                    if (iceField != null)
+                    {
+                        iceField.GroupTwo.SetCheering();
+                    }
+
+                    if (meadowField != null)
+                    {
+                        meadowField.GroupTwo.SetCheering();
+                    }
+
+                    if (waterField != null)
+                    {
+                        waterField.GroupTwo.SetCheering();
+                    }
                 }
 
                 if (pinguinOne != null && pinguinTwo != null)
@@ -509,6 +530,21 @@ namespace Volamus_v1
                     changeVelocityMinus.Update(rnd);
                 }
 
+                if (iceField != null)
+                {
+                    iceField.Update();
+                }
+
+                if (meadowField != null)
+                {
+                    meadowField.Update();
+                }
+
+                if (waterField != null)
+                {
+                    waterField.Update();
+                }
+
                 if (isFinished)
                 {
                     if (whichConf == 1)
@@ -523,6 +559,7 @@ namespace Volamus_v1
                     {
                         confetti.Update(rnd);
                     }
+
                     text.Update(gameTime);
                     text.Position = text.Position + new Vector2(0, -counter);
 
@@ -538,9 +575,6 @@ namespace Volamus_v1
                 }
 
                 Collision.Instance.CollisionMethod(Field);
-
-                GroupOne.Update();
-                GroupTwo.Update();
             }
         }
 
@@ -711,9 +745,6 @@ namespace Volamus_v1
                         text.Draw(spriteBatch);
                     }
                 }
-
-                GroupOne.Draw(camera);
-                GroupTwo.Draw(camera);
             }
         }
     }

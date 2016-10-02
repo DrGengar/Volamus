@@ -987,7 +987,6 @@ namespace Volamus_v1
 
                 //Ball updaten
                 Ball.Instance.Wind.Update();
-                Ball.Instance.Update();
             }
         }
 
@@ -1034,7 +1033,6 @@ namespace Volamus_v1
 
                 //Ball updaten
                 Ball.Instance.Wind.Update();
-                Ball.Instance.Update();
             }
         }
         //Tastatur Ende
@@ -1664,7 +1662,6 @@ namespace Volamus_v1
 
                 //Ball updaten
                 Ball.Instance.Wind.Update();
-                Ball.Instance.Update();
             }
         }
 
@@ -1713,7 +1710,6 @@ namespace Volamus_v1
 
                 //Ball updaten
                 Ball.Instance.Wind.Update();
-                Ball.Instance.Update();
             }
         }
         // Controller Ende
@@ -1761,12 +1757,6 @@ namespace Volamus_v1
 
             DrawWingLeft(camera, leftWing, leftWingPosition);
             DrawWingRight(camera, rightWing, rightWingPosition);
-
-            DebugDraw d = new DebugDraw(GameStateManager.Instance.GraphicsDevice);
-            d.Begin(camera.ViewMatrix, camera.ProjectionMatrix);
-            d.DrawWireBox(innerBoundingBox, Color.Black);
-            d.DrawWireBox(outerBoundingBox, Color.Black);
-            d.End();
         }
 
         // für rechten Flügel
