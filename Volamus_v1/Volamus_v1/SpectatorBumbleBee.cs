@@ -101,6 +101,9 @@ namespace Volamus_v1
                     is_falling = false;
                 }
             }
+
+            rightWingPosition = new Vector3(position.X, position.Y - 1, position.Z + 2);
+            leftWingPosition = new Vector3(position.X, position.Y + 1, position.Z + 2);
         }
 
         public new void Draw(Camera camera, int rotation)

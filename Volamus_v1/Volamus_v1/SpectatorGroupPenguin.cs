@@ -67,11 +67,6 @@ namespace Volamus_v1
             {
                 GroupPenguin[i].Update();
             }
-
-            if (GameScreen.Instance.Match.IsFinished && !cheering)
-            {
-                SetCheering();
-            }
         }
 
         public new void Draw(Camera camera)
@@ -84,7 +79,6 @@ namespace Volamus_v1
 
         public new void SetCheering()
         {
-            cheering = true;
             for (int i = 0; i < Count; i++)
             {
                 GroupPenguin[i].Cheering = true;

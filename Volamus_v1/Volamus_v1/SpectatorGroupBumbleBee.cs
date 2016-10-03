@@ -67,11 +67,6 @@ namespace Volamus_v1
             {
                 GroupBumbleBee[i].Update();
             }
-
-            if (GameScreen.Instance.Match.IsFinished && !cheering)
-            {
-                SetCheering();
-            }
         }
 
         public new void Draw(Camera camera)

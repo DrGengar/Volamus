@@ -54,7 +54,7 @@ namespace Volamus_v1
             groupTwo.UnloadContent();
         }
 
-        public new void Update()
+        public new void Update(Random rnd)
         {
             groupOne.Update();
             groupTwo.Update();
@@ -64,6 +64,8 @@ namespace Volamus_v1
         {
             ocean.Draw(GameStateManager.Instance.GameTime, camera, skyTexture, new Vector3(0, 0, -0.05f));
             base.Draw(camera);
+
+
 
             groupOne.Draw(camera);
             groupTwo.Draw(camera);

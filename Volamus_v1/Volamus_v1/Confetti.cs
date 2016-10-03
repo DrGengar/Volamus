@@ -9,61 +9,22 @@ using System.Threading.Tasks;
 
 namespace Volamus_v1
 {
-    class Confetti
+    public class Confetti
     {
         Effect effect;
         List<Drop> confetti;
         Model dr;
         Texture2D texture;
-        int direction;
+        Vector3 positionOne, positionTwo;
 
-        //Konfetti an den Ecken des Gewinners
-
-        public Confetti(int dir)
+        public Confetti(Vector3 one, Vector3 two)
         {
             confetti = new List<Drop>();
-            direction = dir;
+            positionOne = one;
+            positionTwo = two;
 
             dr = GameStateManager.Instance.Content.Load<Model>("Models/confetti2");
             effect = GameStateManager.Instance.Content.Load<Effect>("Effects/shader");
-
-            int temp = new Random().Next(1, 11);
-            switch (temp)
-            {
-                case 1:
-                    texture = GameStateManager.Instance.Content.Load<Texture2D>("Textures/AcaTexture");
-                    break;
-                case 2:
-                    texture = GameStateManager.Instance.Content.Load<Texture2D>("Textures/blau");
-                    break;
-                case 3:
-                    texture = GameStateManager.Instance.Content.Load<Texture2D>("Textures/blau2");
-                    break;
-                case 4:
-                    texture = GameStateManager.Instance.Content.Load<Texture2D>("Textures/green");
-                    break;
-                case 5:
-                    texture = GameStateManager.Instance.Content.Load<Texture2D>("Textures/green2");
-                    break;
-                case 6:
-                    texture = GameStateManager.Instance.Content.Load<Texture2D>("Textures/green3");
-                    break;
-                case 7:
-                    texture = GameStateManager.Instance.Content.Load<Texture2D>("Textures/red");
-                    break;
-                case 8:
-                    texture = GameStateManager.Instance.Content.Load<Texture2D>("Textures/pink");
-                    break;
-                case 9:
-                    texture = GameStateManager.Instance.Content.Load<Texture2D>("Textures/lila");
-                    break;
-                case 10:
-                    texture = GameStateManager.Instance.Content.Load<Texture2D>("Textures/gelb");
-                    break;
-                default:
-                    texture = GameStateManager.Instance.Content.Load<Texture2D>("Textures/BeachBallTexture");
-                    break;
-            }
         }
 
         public void Update(Random rnd)
@@ -72,20 +33,9 @@ namespace Volamus_v1
 
             while (confetti.Count < total)
             {
-                if (direction == 1)
-                {
-                    Vector3 location = new Vector3(-50, -45, 0);
-                    Vector3 location2 = new Vector3(+50, -45, 0);
-                    confetti.Add(Generate(location, rnd));
-                    confetti.Add(Generate(location2, rnd));
-                }
-                else
-                {
-                    Vector3 location = new Vector3(-50, +45, 0);
-                    Vector3 location2 = new Vector3(+50, +45, 0);
-                    confetti.Add(Generate(location, rnd));
-                    confetti.Add(Generate(location2, rnd));
-                }
+
+                confetti.Add(Generate(positionOne, rnd));
+                confetti.Add(Generate(positionTwo, rnd));
             }
 
 
@@ -150,7 +100,6 @@ namespace Volamus_v1
 
         public void Draw(Camera camera)
         {
-
             for (int index = 0; index < confetti.Count; index++)
             {
                 Matrix[] transforms = new Matrix[dr.Bones.Count];
@@ -192,8 +141,6 @@ namespace Volamus_v1
                     mesh.Draw();
                 }
             }
-
         }
-
     }
 }

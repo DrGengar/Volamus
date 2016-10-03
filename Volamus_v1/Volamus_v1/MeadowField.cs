@@ -15,6 +15,14 @@ namespace Volamus_v1
 
         SpectatorGroupBumbleBee groupOne, groupTwo;
 
+        ConfettiFlower confetti;
+
+        public ConfettiFlower Confetti
+        {
+            get { return confetti; }
+            set { confetti = value; }
+        }
+
         public SpectatorGroupBumbleBee GroupOne
         {
             get { return groupOne; }
@@ -51,10 +59,15 @@ namespace Volamus_v1
             groupTwo.UnloadContent();
         }
 
-        public new void Update()
+        public new void Update(Random rnd)
         {
             groupOne.Update();
             groupTwo.Update();
+
+            if(confetti != null)
+            {
+                confetti.Update(rnd);
+            }
         }
 
         public new void Draw(Camera camera)
@@ -97,6 +110,11 @@ namespace Volamus_v1
             }
 
             base.Draw(camera);
+
+            if(confetti != null)
+            {
+                confetti.Draw(camera);
+            }
 
             groupOne.Draw(camera);
             groupTwo.Draw(camera);

@@ -27,6 +27,12 @@ namespace Volamus_v1
             get { return groupTwo; }
         }
 
+        public Confetti Confetti
+        {
+            get { return confetti; }
+            set { confetti = value; }
+        }
+
         public IceField(int w, int l, int n_h, Random rnd) : base(w, l, n_h)
         {
             groupOne = new SpectatorGroupPenguin(new Vector3(-w/2 - 10, - l/2 - 5,0),5,rnd);
@@ -59,10 +65,15 @@ namespace Volamus_v1
             groupTwo.UnloadContent();
         }
 
-        public new void Update()
+        public new void Update(Random rnd)
         {
             groupOne.Update();
             groupTwo.Update();
+
+            if(confetti != null)
+            {
+                confetti.Update(rnd);
+            }
         }
 
         public new void Draw(Camera camera)
@@ -106,6 +117,11 @@ namespace Volamus_v1
 
             base.Draw(camera);
             ocean.Draw(GameStateManager.Instance.GameTime, camera, skyTexture, new Vector3(0,0,-2));
+
+            if (confetti != null)
+            {
+                confetti.Draw(camera);
+            }
 
             groupOne.Draw(camera);
             groupTwo.Draw(camera);

@@ -36,12 +36,12 @@ namespace Volamus_v1
 
             // generate the geometry
             OceanVerts = new VertexPositionNormalTexture[6];
-            OceanVerts[0] = new VertexPositionNormalTexture(new Vector3(-1000, 0, -1000), new Vector3(0, 1, 0), new Vector2(0, 0));
-            OceanVerts[1] = new VertexPositionNormalTexture(new Vector3(1000, 0, -1000), new Vector3(0, 1, 0), new Vector2(1, 0));
-            OceanVerts[2] = new VertexPositionNormalTexture(new Vector3(-1000, 0, 1000), new Vector3(0, 1, 0), new Vector2(0, 1));
+            OceanVerts[0] = new VertexPositionNormalTexture(new Vector3(-5000, 0, -5000), new Vector3(0, 1, 0), new Vector2(0, 0));
+            OceanVerts[1] = new VertexPositionNormalTexture(new Vector3(5000, 0, -5000), new Vector3(0, 1, 0), new Vector2(1, 0));
+            OceanVerts[2] = new VertexPositionNormalTexture(new Vector3(-5000, 0, 5000), new Vector3(0, 1, 0), new Vector2(0, 1));
             OceanVerts[3] = OceanVerts[2];
             OceanVerts[4] = OceanVerts[1];
-            OceanVerts[5] = new VertexPositionNormalTexture(new Vector3(1000, 0, 1000), new Vector3(0, 1, 0), new Vector2(1, 1));
+            OceanVerts[5] = new VertexPositionNormalTexture(new Vector3(5000, 0, 5000), new Vector3(0, 1, 0), new Vector2(1, 1));
         }
 
         public void Draw(GameTime gameTime, Camera cam, Texture2D skyTexture, Vector3 position)
