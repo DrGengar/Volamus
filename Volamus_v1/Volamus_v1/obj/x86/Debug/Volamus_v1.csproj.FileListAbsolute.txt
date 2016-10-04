@@ -1003,3 +1003,5 @@ C:\Users\Lars\Desktop\3dGame2\Volamus_v1\Volamus_v1\Content\Textures\Flowers\flo
 C:\Users\Lars\Desktop\3dGame2\Volamus_v1\Volamus_v1\Content\Textures\Flowers\flowerUV7.xnb
 C:\Users\Lars\Desktop\3dGame2\Volamus_v1\Volamus_v1\Content\Textures\Flowers\flowerUV8.xnb
 C:\Users\Lars\Desktop\3dGame2\Volamus_v1\Volamus_v1\Content\Textures\Flowers\flowerUV9.xnb
+C:\Users\Lars\Desktop\3dGame2\Volamus_v1\Volamus_v1\Content\Effects\GrassEffect.xnb
+C:\Users\Lars\Desktop\3dGame2\Volamus_v1\Volamus_v1\Content\Textures\grass.xnb

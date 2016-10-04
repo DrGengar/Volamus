@@ -10,10 +10,11 @@ namespace Volamus_v1
 {
     public class MeadowField : Field
     {
-        Model ice;
-        Texture2D iceTexture;
+        Grass grass;
 
         SpectatorGroupBumbleBee groupOne, groupTwo;
+
+        VertexPositionTexture[] vertices;
 
         ConfettiFlower confetti;
 
@@ -37,6 +38,23 @@ namespace Volamus_v1
         {
             groupOne = new SpectatorGroupBumbleBee(new Vector3(-w / 2 - 10, -l / 2 - 5, 5), 5, rnd);
             groupTwo = new SpectatorGroupBumbleBee(new Vector3(w / 2 + 10, l / 2 + 5, 5), 5, rnd);
+            grass = new Grass(new Vector3(-1000, -1000, 0), new Vector3(1000, 1000, 0));
+
+            vertices = new VertexPositionTexture[6];
+            vertices[0].Position = new Vector3(-1000, -1000, 0);
+            vertices[1].Position = new Vector3(-1000, 1000, 0);
+            vertices[2].Position = new Vector3(1000, -1000, 0);
+            vertices[3].Position = vertices[1].Position;
+            vertices[4].Position = new Vector3(1000, 1000, 0);
+            vertices[5].Position = vertices[2].Position;
+
+            vertices[0].TextureCoordinate = new Vector2(0, 0);
+            vertices[1].TextureCoordinate = new Vector2(0, 1);
+            vertices[2].TextureCoordinate = new Vector2(1, 0);
+
+            vertices[3].TextureCoordinate = vertices[1].TextureCoordinate;
+            vertices[4].TextureCoordinate = new Vector2(1, 1);
+            vertices[5].TextureCoordinate = vertices[2].TextureCoordinate;
         }
 
         public new void LoadContent()
@@ -47,8 +65,9 @@ namespace Volamus_v1
             skydome = new Skydome(25f, false, GameStateManager.Instance.Content.Load<Texture2D>("Textures/wolken"));
             skydome.Load();
 
-            ice = GameStateManager.Instance.Content.Load<Model>("Models/eisscholle");
-            netTexture = iceTexture = GameStateManager.Instance.Content.Load<Texture2D>("Textures/iceTexture");
+            netTexture = GameStateManager.Instance.Content.Load<Texture2D>("Textures/iceTexture");
+
+            grass.LoadContent();
 
             base.LoadContent();
         }
@@ -72,53 +91,31 @@ namespace Volamus_v1
 
         public new void Draw(Camera camera)
         {
-            Matrix[] transforms = new Matrix[ice.Bones.Count];
-            ice.CopyAbsoluteBoneTransformsTo(transforms);
-            foreach (ModelMesh mesh in ice.Meshes)
+            BasicEffect e = new BasicEffect(GameStateManager.Instance.GraphicsDevice);
+            e.View = camera.ViewMatrix;
+            e.Projection = camera.ProjectionMatrix;
+
+            e.TextureEnabled = true;
+            e.Texture = GameStateManager.Instance.Content.Load<Texture2D>("Textures/grass");
+
+            foreach (var pass in e.CurrentTechnique.Passes)
             {
-                foreach (ModelMeshPart part in mesh.MeshParts)
-                {
-                    part.Effect = effect;
-                    Matrix World = transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) * Matrix.CreateScale(0.2f, 0.3f, 0.01f)
-                                   * Matrix.CreateTranslation(new Vector3(0, 0, -0.75f));
-                    Matrix Projection = camera.ProjectionMatrix;
-                    Matrix View = camera.ViewMatrix;
-                    Matrix WorldInverseTransposeMatrix = Matrix.Transpose(Matrix.Invert(World));
+                pass.Apply();
 
-                    effect.Parameters["worldMatrix"].SetValue(World);
-                    effect.Parameters["worldInverseTransposeMatrix"].SetValue(WorldInverseTransposeMatrix);
-                    effect.Parameters["worldViewProjectionMatrix"].SetValue(World * View * Projection);
-
-                    effect.Parameters["cameraPos"].SetValue(camera.Position);
-                    effect.Parameters["globalAmbient"].SetValue(new Vector4(0.2f, 0.2f, 0.2f, 1.0f));
-                    effect.Parameters["numLights"].SetValue(4);
-
-                    effect.Parameters["PointLightpos"].SetValue(GameScreen.Instance.Match.LightsPosition);
-                    effect.Parameters["PointLightambient"].SetValue(GameScreen.Instance.Match.LightsAmbient);
-                    effect.Parameters["PointLightdiffuse"].SetValue(GameScreen.Instance.Match.LightsDiffuse);
-                    effect.Parameters["PointLightspecular"].SetValue(GameScreen.Instance.Match.LightsSpecular);
-                    effect.Parameters["PointLightradius"].SetValue(GameScreen.Instance.Match.LightsRadius);
-
-                    effect.Parameters["Materialambient"].SetValue(new Vector4(0.2f, 0.2f, 0.2f, 1.0f));
-                    effect.Parameters["Materialdiffuse"].SetValue(new Vector4(0.8f, 0.8f, 0.8f, 1.0f));
-                    effect.Parameters["Materialspecular"].SetValue(new Vector4(1.0f, 1.0f, 1.0f, 1.0f));
-                    effect.Parameters["Materialshininess"].SetValue(32.0f);
-
-                    effect.Parameters["colorMapTexture"].SetValue(iceTexture);
-                }
-                mesh.Draw();
+                GameStateManager.Instance.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, vertices, 0, 2);
             }
 
             base.Draw(camera);
 
-            if(confetti != null)
+            grass.Draw(camera);
+
+            if (confetti != null)
             {
                 confetti.Draw(camera);
             }
 
             groupOne.Draw(camera);
             groupTwo.Draw(camera);
-
         }
     }
 }

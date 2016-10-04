@@ -73,6 +73,7 @@
     <Compile Include="Game1.cs" />
     <Compile Include="Camera.cs" />
     <Compile Include="EndGameMenu.cs" />
+    <Compile Include="Grass.cs" />
     <Compile Include="IceField.cs" />
     <Compile Include="MatchOptions.cs" />
     <Compile Include="GamePadControl.cs" />

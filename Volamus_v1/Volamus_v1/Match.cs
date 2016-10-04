@@ -347,10 +347,6 @@ namespace Volamus_v1
 
                             One.IsServing = true;
                             Collision.Instance.LastTouched = One;
-                            One.Update(Field);
-                            Two.Update(Field);
-
-                            Ball.Instance.Update();
 
                             remainingDelay -= timer;
 
@@ -369,10 +365,7 @@ namespace Volamus_v1
 
                                 Two.IsServing = true;
                                 Collision.Instance.LastTouched = Two;
-                                One.Update(Field);
-                                Two.Update(Field);
 
-                                Ball.Instance.Update();
 
                                 remainingDelay -= timer;
 

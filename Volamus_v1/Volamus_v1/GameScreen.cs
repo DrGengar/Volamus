@@ -120,6 +120,8 @@ namespace Volamus_v1
 
         public override void Draw(SpriteBatch spriteBatch)
         {
+            //GameStateManager.Instance.SpriteBatch.DrawString(GameStateManager.Instance.Content.Load<SpriteFont>("SpriteFonts/Standard"), frameCounter.CurrentFramesPerSecond.ToString(), new Vector2(0,0), Color.White);
+
             GameStateManager.Instance.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
 
             GameStateManager.Instance.GraphicsDevice.Clear(Color.Black);

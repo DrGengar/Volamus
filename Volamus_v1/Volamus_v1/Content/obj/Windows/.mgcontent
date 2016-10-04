@@ -132,5 +132,7 @@
     <File>C:/Users/Lars/Desktop/3dGame2/Volamus_v1/Volamus_v1/Content/Textures/Flowers/flowerUV8.png</File>
     <File>C:/Users/Lars/Desktop/3dGame2/Volamus_v1/Volamus_v1/Content/Textures/Flowers/flowerUV9.png</File>
     <File>C:/Users/Lars/Desktop/3dGame2/Volamus_v1/Volamus_v1/Content/Models/flower.fbx</File>
+    <File>C:/Users/Lars/Desktop/3dGame2/Volamus_v1/Volamus_v1/Content/Textures/grass.jpg</File>
+    <File>C:/Users/Lars/Desktop/3dGame2/Volamus_v1/Volamus_v1/Content/Effects/GrassEffect.fx</File>
   </SourceFiles>
 </SourceFileCollection>

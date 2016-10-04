@@ -114,12 +114,12 @@ namespace Volamus_v1
         public void Initialize()
         {
             float r = boundingSphere.Radius;
-            shadowVertices[0].Position = new Vector3(position.X - r, position.Y - r, 0.01f);
-            shadowVertices[1].Position = new Vector3(position.X - r, position.Y + r, 0.01f);
-            shadowVertices[2].Position = new Vector3(position.X + r, position.Y - r, 0.01f);
+            shadowVertices[0].Position = new Vector3(position.X - r, position.Y - r, 0.02f);
+            shadowVertices[1].Position = new Vector3(position.X - r, position.Y + r, 0.02f);
+            shadowVertices[2].Position = new Vector3(position.X + r, position.Y - r, 0.02f);
 
             shadowVertices[3].Position = shadowVertices[1].Position;
-            shadowVertices[4].Position = new Vector3(position.X + r, position.Y + r, 0.01f);
+            shadowVertices[4].Position = new Vector3(position.X + r, position.Y + r, 0.02f);
             shadowVertices[5].Position = shadowVertices[2].Position;
 
             shadowVertices[0].TextureCoordinate = new Vector2(0, 0);

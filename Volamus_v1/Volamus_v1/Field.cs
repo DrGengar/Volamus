@@ -71,12 +71,12 @@ namespace Volamus_v1
 
         public void Initialize()
         {
-            fieldVertices[0].Position = new Vector3(width / 2, -length / 2, 0);
-            fieldVertices[1].Position = new Vector3(-width / 2, -length / 2, 0);
-            fieldVertices[2].Position = new Vector3(-width / 2, 0, 0);
+            fieldVertices[0].Position = new Vector3(width / 2, -length / 2, 0.01f);
+            fieldVertices[1].Position = new Vector3(-width / 2, -length / 2, 0.01f);
+            fieldVertices[2].Position = new Vector3(-width / 2, 0, 0.01f);
             fieldVertices[3].Position = fieldVertices[0].Position;
             fieldVertices[4].Position = fieldVertices[2].Position;
-            fieldVertices[5].Position = new Vector3(width / 2, 0, 0);
+            fieldVertices[5].Position = new Vector3(width / 2, 0, 0.01f);
 
             fieldVertices[0].TextureCoordinate = new Vector2(0, 0);
             fieldVertices[1].TextureCoordinate = new Vector2(0, 1);
@@ -88,10 +88,10 @@ namespace Volamus_v1
 
             fieldVertices[6].Position = fieldVertices[5].Position;
             fieldVertices[7].Position = fieldVertices[2].Position;
-            fieldVertices[8].Position = new Vector3(-width / 2, length / 2, 0);
+            fieldVertices[8].Position = new Vector3(-width / 2, length / 2, 0.01f);
             fieldVertices[9].Position = fieldVertices[5].Position;
             fieldVertices[10].Position = fieldVertices[8].Position;
-            fieldVertices[11].Position = new Vector3(width / 2, length / 2, 0);
+            fieldVertices[11].Position = new Vector3(width / 2, length / 2, 0.01f);
 
             fieldVertices[6].TextureCoordinate = new Vector2(0, 0);
             fieldVertices[7].TextureCoordinate = new Vector2(0, 1);
