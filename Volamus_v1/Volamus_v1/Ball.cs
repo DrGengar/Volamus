@@ -34,8 +34,6 @@ namespace Volamus_v1
 
         Parabel active;
 
-        DebugDraw d;
-
         Wind wind;
 
         public float EffectDrop
@@ -108,7 +106,6 @@ namespace Volamus_v1
         private Ball(Vector3 pos)
         {
             position = pos;
-            d = new DebugDraw(GameStateManager.Instance.GraphicsDevice);
         }
 
         public void Initialize()
@@ -193,12 +190,12 @@ namespace Volamus_v1
             boundingSphere.Center = position;
 
             float r = boundingSphere.Radius;
-            shadowVertices[0].Position = new Vector3(position.X - r, position.Y - r, 0.01f);
-            shadowVertices[1].Position = new Vector3(position.X - r, position.Y + r, 0.01f);
-            shadowVertices[2].Position = new Vector3(position.X + r, position.Y - r, 0.01f);
+            shadowVertices[0].Position = new Vector3(position.X - r, position.Y - r, 0.02f);
+            shadowVertices[1].Position = new Vector3(position.X - r, position.Y + r, 0.02f);
+            shadowVertices[2].Position = new Vector3(position.X + r, position.Y - r, 0.02f);
 
             shadowVertices[3].Position = shadowVertices[1].Position;
-            shadowVertices[4].Position = new Vector3(position.X + r, position.Y + r, 0.01f);
+            shadowVertices[4].Position = new Vector3(position.X + r, position.Y + r, 0.02f);
             shadowVertices[5].Position = shadowVertices[2].Position;
 
 
@@ -256,24 +253,6 @@ namespace Volamus_v1
                     effect.Parameters["Materialshininess"].SetValue(32.0f);
 
                     effect.Parameters["colorMapTexture"].SetValue(ballTexture);
-                    /*
-                    part.Effect = effect2;
-                    effect2.Parameters["World"].SetValue(transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90*rotate*Collision.Instance.LastTouched.Direction)) * 
-                            Matrix.CreateScale(1.0f * effectDrop, 1.0f * effectDrop, 1.0f * effectDrop)
-                            * Matrix.CreateTranslation(position));
-                    effect2.Parameters["View"].SetValue(camera.ViewMatrix);
-                    effect2.Parameters["Projection"].SetValue(camera.ProjectionMatrix);
-                    Matrix WorldInverseTransposeMatrix = Matrix.Transpose(Matrix.Invert(transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90 * rotate * Collision.Instance.LastTouched.Direction)) *
-                            Matrix.CreateScale(1.0f, 1.0f, 1.0f)
-                            * Matrix.CreateTranslation(position)));
-                    effect2.Parameters["WorldInverseTranspose"].SetValue(WorldInverseTransposeMatrix);
-
-                    effect2.Parameters["ModelTexture"].SetValue(ballTexture);
-
-                    viewVector = Vector3.Transform(camera.View - camera.Position, Matrix.CreateRotationY(0));
-                    viewVector.Normalize();
-                    effect2.Parameters["ViewVector"].SetValue(viewVector);
-                    */
                 }
                 mesh.Draw();
             }

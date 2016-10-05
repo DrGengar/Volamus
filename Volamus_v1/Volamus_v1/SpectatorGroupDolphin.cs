@@ -39,7 +39,7 @@ namespace Volamus_v1
                 }
 
                 Vector3 p = new Vector3(Position.X + (xTemp / 10), Position.Y - yTemp * i, pos.Z);
-                Vector3 scale = new Vector3(3, 3, 3);
+                Vector3 scale = new Vector3(4, 4, 4);
                 SpectatorDolphin temp = new SpectatorDolphin(p, scale);
                 GroupDolphin.Add(temp);
             }

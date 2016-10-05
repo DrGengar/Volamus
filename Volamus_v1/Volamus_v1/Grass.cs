@@ -13,7 +13,7 @@ namespace Volamus_v1
         VertexPositionNormalTexture[] vertices;
         Texture2D grassTexture;
         Effect grassEffect;
-        int nrOfLayers = 30;
+        int nrOfLayers = 20;
         float maxGrassLength = 2.0f;
         float density = 0.25f;
         Texture2D grassColorTexture;
@@ -38,8 +38,8 @@ namespace Volamus_v1
             //load the effect
             grassEffect = GameStateManager.Instance.Content.Load<Effect>("Effects/GrassEffect");
             //create the texture
-            int temp = 216 * (int)(PositionTwo.X / 50 + 0.5f);
-            int temp2 = 216 * (int)(PositionTwo.Y / 50 + 0.5f);
+            int temp = 192 * (int)(PositionTwo.X / 50 + 0.5f);
+            int temp2 = 192 * (int)(PositionTwo.Y / 50 + 0.5f);
             grassTexture = new Texture2D(GameStateManager.Instance.GraphicsDevice, temp, temp2);
             //fill the texture
             FillGrassTexture(grassTexture, density);
@@ -48,11 +48,20 @@ namespace Volamus_v1
 
         public void Draw(Camera camera)
         {
-            forceDirection.X = (float)Math.Sin(GameStateManager.Instance.GameTime.TotalGameTime.TotalSeconds) * 0.5f;
+            if(Ball.Instance.Wind.Direction() != 0)
+            {
+                forceDirection.X = (float)Math.Sin(Ball.Instance.Wind.Angle) * 0.5f + (float)Math.Sin(GameStateManager.Instance.GameTime.TotalGameTime.TotalSeconds) * 0.5f;
+                forceDirection.Y = (float)Math.Cos(Ball.Instance.Wind.Angle) * 0.5f + (float)Math.Sin(GameStateManager.Instance.GameTime.TotalGameTime.TotalSeconds) * 0.5f;
+            }
+            else
+            {
+                forceDirection.X = (float)Math.Sin(GameStateManager.Instance.GameTime.TotalGameTime.TotalSeconds) * 0.5f;
+            }
+
             displacement = gravity + forceDirection;
             grassEffect.Parameters["Displacement"].SetValue(displacement);
 
-            grassEffect.Parameters["World"].SetValue(Matrix.CreateTranslation(0, 0, -0.05f));
+            grassEffect.Parameters["World"].SetValue(Matrix.CreateTranslation(0, 0, 0));
             grassEffect.Parameters["View"].SetValue(camera.ViewMatrix);
             grassEffect.Parameters["Projection"].SetValue(camera.ProjectionMatrix);
             grassEffect.Parameters["MaxHairLength"].SetValue(maxGrassLength);

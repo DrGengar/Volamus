@@ -21,8 +21,8 @@ namespace Volamus_v1
             position = pos;
             scale = s;
 
-            leftWingPosition = new Vector3(position.X, position.Y, position.Z - 3);
-            rightWingPosition = new Vector3(position.X, position.Y, position.Z - 3);
+            leftWingPosition = new Vector3(position.X, position.Y - 1, position.Z - 3);
+            rightWingPosition = new Vector3(position.X, position.Y + 1, position.Z - 3);
         }
 
         public new void LoadContent()

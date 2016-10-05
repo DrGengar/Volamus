@@ -31,7 +31,7 @@ namespace Volamus_v1
             for (int i = 0; i < Count; i++)
             {
                 int xTemp = rnd.Next(-50, 50);
-                int yTemp = rnd.Next(5, 10);
+                int yTemp = 6;
 
                 if (Position.Y < 0)
                 {

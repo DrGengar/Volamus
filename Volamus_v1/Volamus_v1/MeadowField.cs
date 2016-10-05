@@ -41,11 +41,11 @@ namespace Volamus_v1
             grass = new Grass(new Vector3(-1000, -1000, 0), new Vector3(1000, 1000, 0));
 
             vertices = new VertexPositionTexture[6];
-            vertices[0].Position = new Vector3(-1000, -1000, 0);
-            vertices[1].Position = new Vector3(-1000, 1000, 0);
-            vertices[2].Position = new Vector3(1000, -1000, 0);
+            vertices[0].Position = new Vector3(-1000, -1000, -0.01f);
+            vertices[1].Position = new Vector3(-1000, 1000, -0.01f);
+            vertices[2].Position = new Vector3(1000, -1000, -0.01f);
             vertices[3].Position = vertices[1].Position;
-            vertices[4].Position = new Vector3(1000, 1000, 0);
+            vertices[4].Position = new Vector3(1000, 1000, -0.01f);
             vertices[5].Position = vertices[2].Position;
 
             vertices[0].TextureCoordinate = new Vector2(0, 0);
@@ -91,6 +91,21 @@ namespace Volamus_v1
 
         public new void Draw(Camera camera)
         {
+            base.Draw(camera);
+
+            grass.Draw(camera);
+
+            if (confetti != null)
+            {
+                confetti.Draw(camera);
+            }
+
+            groupOne.Draw(camera);
+            groupTwo.Draw(camera);
+        }
+
+        public void DrawField(Camera camera)
+        {
             BasicEffect e = new BasicEffect(GameStateManager.Instance.GraphicsDevice);
             e.View = camera.ViewMatrix;
             e.Projection = camera.ProjectionMatrix;
@@ -104,18 +119,6 @@ namespace Volamus_v1
 
                 GameStateManager.Instance.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, vertices, 0, 2);
             }
-
-            base.Draw(camera);
-
-            grass.Draw(camera);
-
-            if (confetti != null)
-            {
-                confetti.Draw(camera);
-            }
-
-            groupOne.Draw(camera);
-            groupTwo.Draw(camera);
         }
     }
 }

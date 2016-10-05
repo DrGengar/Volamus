@@ -292,13 +292,13 @@ namespace Volamus_v1
 
                     if (GamePad.GetState(PlayerIndex.Two).IsConnected)
                     {
-                        one = new Dolphin(new Vector3(0, -25, 0), 5, 4, 0.5f, 0.8f, field, PlayerIndex.One);
-                        two = new Dolphin(new Vector3(0, 25, 0), 5, 4, 0.5f, 0.8f, field, PlayerIndex.Two);
+                        one = new Dolphin(new Vector3(0, -25, 0), 5, 0, 0.5f, 0.8f, field, PlayerIndex.One);
+                        two = new Dolphin(new Vector3(0, 25, 0), 5, 0, 0.5f, 0.8f, field, PlayerIndex.Two);
                     }
                     else
                     {
-                        one = new Dolphin(new Vector3(0, -25, 0), 5, 4, 0.5f, 0.8f, field);
-                        two = new Dolphin(new Vector3(0, 25, 0), 5, 4, 0.5f, 0.8f, field, PlayerIndex.One);
+                        one = new Dolphin(new Vector3(0, -25, 0), 5, 0, 0.5f, 0.8f, field);
+                        two = new Dolphin(new Vector3(0, 25, 0), 5, 0, 0.5f, 0.8f, field, PlayerIndex.One);
                     }
 
                     one.Enemy = two;

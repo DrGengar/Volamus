@@ -59,12 +59,14 @@ namespace Volamus_v1
             if (Position.Z < 7 && !falling)
             {
                 Position = Position + new Vector3(0, 0, 0.05f);
+                MovingBoundingBoxes(new Vector3(0, 0, 0.05f));
             }
             else
             {
                 if (Position.Z > 5)
                 {
                     Position = Position - new Vector3(0, 0, 0.05f);
+                    MovingBoundingBoxes(new Vector3(0, 0, -0.05f));
                     falling = true;
                 }
                 else

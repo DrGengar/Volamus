@@ -378,16 +378,16 @@ namespace Volamus_v1
                 }
                 if (keyboard.IsKeyDown(weak))
                 {
-                    hitAngleRight = 135;
-                    hitAngleLeft = 45;
-                    hitAngleHigh = 10;
+                    hitAngleRight = 120;
+                    hitAngleLeft = 60;
+                    hitAngleHigh = 0;
 
                 }
                 if (keyboard.IsKeyDown(strong))
                 {
-                    hitAngleRight = 135;
-                    hitAngleLeft = 45;
-                    hitAngleHigh = 10;
+                    hitAngleRight = 120;
+                    hitAngleLeft = 60;
+                    hitAngleHigh = 0;
                 }
 
 
@@ -891,13 +891,13 @@ namespace Volamus_v1
                 
                 if (direction == 1)
                 {
-                    leftWingPosition = new Vector3(position.X, position.Y, position.Z -3);
-                    rightWingPosition = new Vector3(position.X, position.Y, position.Z -3);
+                    leftWingPosition = new Vector3(position.X + 1, position.Y, position.Z -3);
+                    rightWingPosition = new Vector3(position.X - 1, position.Y, position.Z -3);
                 }
                 else
                 {
-                    leftWingPosition = new Vector3(position.X, position.Y, position.Z -3);
-                    rightWingPosition = new Vector3(position.X, position.Y, position.Z -3);
+                    leftWingPosition = new Vector3(position.X + 1, position.Y, position.Z -3);
+                    rightWingPosition = new Vector3(position.X - 1, position.Y, position.Z -3);
                 }
             }
             else
@@ -931,8 +931,8 @@ namespace Volamus_v1
                         }
                     }
 
-                    leftWingPosition = new Vector3(position.X - 2, position.Y, position.Z - 1);
-                    rightWingPosition = new Vector3(position.X + 2, position.Y, position.Z - 1);
+                    leftWingPosition = new Vector3(position.X - 2, position.Y, position.Z - 3);
+                    rightWingPosition = new Vector3(position.X + 2, position.Y, position.Z - 3);
                 }
                 else
                 {
@@ -1062,17 +1062,16 @@ namespace Volamus_v1
 
                 if (gamepad.IsButtonDown(weak))
                 {
-                    hitAngleRight = 135;
-                    hitAngleLeft = 45;
-                    hitAngleHigh = 10;
-
+                    hitAngleRight = 120;
+                    hitAngleLeft = 60;
+                    hitAngleHigh = 0;
                 }
 
                 if (gamepad.IsButtonDown(strong))
                 {
-                    hitAngleRight = 135;
-                    hitAngleLeft = 45;
-                    hitAngleHigh = 10;
+                    hitAngleRight = 120;
+                    hitAngleLeft = 60;
+                    hitAngleHigh = 0;
                 }
 
                 //wenn der Spieler steht, werden die Bettas zurückgesetzt
@@ -1567,13 +1566,13 @@ namespace Volamus_v1
 
                 if (direction == 1)
                 {
-                    leftWingPosition = new Vector3(position.X, position.Y, position.Z -3);
-                    rightWingPosition = new Vector3(position.X, position.Y, position.Z -3);
+                    leftWingPosition = new Vector3(position.X+1, position.Y, position.Z -3);
+                    rightWingPosition = new Vector3(position.X-1, position.Y, position.Z -3);
                 }
                 else
                 {
-                    leftWingPosition = new Vector3(position.X, position.Y, position.Z -3);
-                    rightWingPosition = new Vector3(position.X, position.Y, position.Z -3);
+                    leftWingPosition = new Vector3(position.X+1, position.Y, position.Z -3);
+                    rightWingPosition = new Vector3(position.X-1, position.Y, position.Z -3);
                 }
             }
             else
@@ -1587,8 +1586,8 @@ namespace Volamus_v1
                 if (GameScreen.Instance.Match.Winner == this)
                 {
                     //Flügel gehen nach oben
-                    leftWingPosition = new Vector3(position.X - 2, position.Y, position.Z - 1);
-                    rightWingPosition = new Vector3(position.X + 2, position.Y, position.Z - 1);
+                    leftWingPosition = new Vector3(position.X - 2, position.Y, position.Z - 3);
+                    rightWingPosition = new Vector3(position.X + 2, position.Y, position.Z -3);
                     hitAngleHigh = 20;
 
                     //hüpft
@@ -1864,7 +1863,7 @@ namespace Volamus_v1
                     part.Effect = effect;
 
                     Matrix World = transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) * Matrix.CreateRotationZ(MathHelper.ToRadians(temp + (direction) * (-gamma))) *
-                                   Matrix.CreateScale(0.03f, 0.04f, 0.01f) * Matrix.CreateTranslation(new Vector3(position.X, position.Y, 0));
+                                   Matrix.CreateScale(0.03f, 0.04f, 0.01f) * Matrix.CreateTranslation(new Vector3(position.X, position.Y, 0.02f));
                     Matrix Projection = camera.ProjectionMatrix;
                     Matrix View = camera.ViewMatrix;
                     Matrix WorldInverseTransposeMatrix = Matrix.Transpose(Matrix.Invert(World));
@@ -1901,11 +1900,11 @@ namespace Volamus_v1
             }
         }
 
-        private void MovingBoundingBoxes(Vector3 offset)
+        public void MovingBoundingBoxes(Vector3 offset)
         {
             innerBoundingBox.Min += offset;
             innerBoundingBox.Max += offset;
-
+            
             outerBoundingBox.Min += offset;
             outerBoundingBox.Max += offset;
         }

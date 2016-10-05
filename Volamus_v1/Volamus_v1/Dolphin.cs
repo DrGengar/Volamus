@@ -67,8 +67,8 @@ namespace Volamus_v1
         private void CreateBoundingBoxes()
         {
 
-            Vector3 min = new Vector3(-2f, -6f, 0);
-            Vector3 max = new Vector3(2f, 6f, 8);
+            Vector3 min = new Vector3(-3f, 0f, 0);
+            Vector3 max = new Vector3(3f, 10f, 9);
 
             Vector3 mid = new Vector3((max.X + min.X) / 2, (Direction) * (max.Y + min.Y) / 2, min.Z);
             Vector3 translate = mid - Position;
@@ -78,6 +78,12 @@ namespace Volamus_v1
 
             min.Y += Position.Y;
             max.Y += Position.Y;
+
+            if(Direction == -1)
+            {
+                min.Y -= 10.0f;
+                max.Y -= 10.0f;
+            }
 
             innerBoundingBox = new BoundingBox(min, max);
 
@@ -100,7 +106,7 @@ namespace Volamus_v1
                     part.Effect = effect;
 
                     Matrix World = transforms[mesh.ParentBone.Index] * Matrix.CreateRotationY(MathHelper.ToRadians(Betta)) * Matrix.CreateRotationX(MathHelper.ToRadians(90 - Alpha)) * Matrix.CreateRotationZ(MathHelper.ToRadians(rotation + Direction * (-Gamma))) *
-                                   Matrix.CreateScale(new Vector3(3, 3, 3)) * Matrix.CreateTranslation(Position);
+                                   Matrix.CreateScale(new Vector3(4, 4, 4)) * Matrix.CreateTranslation(Position);
                     Matrix Projection = camera.ProjectionMatrix;
                     Matrix View = camera.ViewMatrix;
                     Matrix WorldInverseTransposeMatrix = Matrix.Transpose(Matrix.Invert(World));
