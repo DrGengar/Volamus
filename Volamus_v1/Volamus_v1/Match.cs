@@ -511,6 +511,25 @@ namespace Volamus_v1
 
                 if (isFinished)
                 {
+                    //
+                    if (pinguinOne != null && pinguinTwo != null)
+                    {
+                        pinguinOne.CheeringP();
+                        pinguinTwo.CheeringP();
+                    }
+
+                    if (bumblebeeOne != null && bumblebeeTwo != null)
+                    {
+                        bumblebeeOne.CheeringB();
+                        bumblebeeTwo.CheeringB();
+                    }
+
+                    if (dolphinOne != null && dolphinTwo != null)
+                    {
+                        dolphinOne.CheeringD();
+                        dolphinTwo.CheeringD();
+                    }
+                    //
                     text.Update(gameTime);
                     text.Position = text.Position + new Vector2(0, -counter);
 

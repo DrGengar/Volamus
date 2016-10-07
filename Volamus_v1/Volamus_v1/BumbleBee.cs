@@ -20,6 +20,12 @@ namespace Volamus_v1
         Texture wingTextureR;
         bool falling;
         bool wingfalling;
+        //Jubel:
+        float rotate = 90f;
+        float rotateModel;
+        float test;
+        float x;
+        float y;
 
         public BumbleBee(Vector3 pos, int ma_j_height, int mi_j_height, float j_velo, float mvp, Field field) : base(pos, ma_j_height, mi_j_height, j_velo, mvp, field) { }
 
@@ -92,6 +98,37 @@ namespace Volamus_v1
                 }
             }
         }
+
+        public void CheeringB()
+        {
+            Gamma = 0;
+
+            if (this == GameScreen.Instance.Match.Winner)
+            {
+                //Startposition der Rotation bestimmen
+                if (rotate == 90)
+                {
+                    rotate = 90;
+                    if (GameScreen.Instance.Match.Winner.Direction == 1)
+                    {
+                        rotate = 270; // cos 0, sin -1
+                        test = rotate + 2 * MathHelper.Pi; //360° = 2Pi
+                    }
+                    else
+                    {
+                        rotate = 90;  //cos 0, sin 1
+                        test = rotate + 2 * MathHelper.Pi;
+                    }
+                }
+
+                Position = new Vector3(x, y, Position.Z);
+                x = 15 * (float)Math.Cos(rotate);
+                y = -Direction * 25 + 15 * (float)Math.Sin(rotate);
+                rotate += 0.03f;
+                rotateModel += 0.03f;
+            }
+        }
+
         private void CreateBoundingBoxes()
         {
             Vector3 min = new Vector3(-3f, -5f, 3);
@@ -126,7 +163,7 @@ namespace Volamus_v1
                 {
                     part.Effect = effect;
 
-                    Matrix World = transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) * Matrix.CreateRotationZ(MathHelper.ToRadians(rotation + Direction * (-Gamma))) *
+                    Matrix World = transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) * Matrix.CreateRotationZ(MathHelper.ToRadians(rotation + Direction * (-Gamma)) + rotateModel) *
                                    Matrix.CreateScale(new Vector3(2, 2, 2)) * Matrix.CreateTranslation(Position);
                     Matrix Projection = camera.ProjectionMatrix;
                     Matrix View = camera.ViewMatrix;
@@ -170,7 +207,7 @@ namespace Volamus_v1
                 {
                     part.Effect = effect;
 
-                    Matrix World = transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) * Matrix.CreateRotationY(MathHelper.ToRadians(20) + angleWing) * Matrix.CreateRotationZ(MathHelper.ToRadians(rotateWing1 + rotation + Direction * (-Gamma))) *
+                    Matrix World = transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) * Matrix.CreateRotationY(MathHelper.ToRadians(20) + angleWing) * Matrix.CreateRotationZ(MathHelper.ToRadians(rotateWing1 + rotation + Direction * (-Gamma)) + rotateModel) *
                                    Matrix.CreateScale(new Vector3(3, 3, 3)) * Matrix.CreateTranslation(new Vector3(Position.X - 1, Position.Y, Position.Z + 2));
                     Matrix Projection = camera.ProjectionMatrix;
                     Matrix View = camera.ViewMatrix;
@@ -212,7 +249,7 @@ namespace Volamus_v1
                 {
                     part.Effect = effect;
 
-                    Matrix World = transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) * Matrix.CreateRotationY(MathHelper.ToRadians(20) + angleWing) * Matrix.CreateRotationZ(MathHelper.ToRadians(rotateWing2 + rotation + Direction * (-Gamma))) *
+                    Matrix World = transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) * Matrix.CreateRotationY(MathHelper.ToRadians(20) + angleWing) * Matrix.CreateRotationZ(MathHelper.ToRadians(rotateWing2 + rotation + Direction * (-Gamma)) + rotateModel) *
                                    Matrix.CreateScale(new Vector3(3, 3, 3)) * Matrix.CreateTranslation(new Vector3(Position.X + 1, Position.Y, Position.Z + 2));
                     Matrix Projection = camera.ProjectionMatrix;
                     Matrix View = camera.ViewMatrix;

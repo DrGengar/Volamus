@@ -184,6 +184,12 @@ namespace Volamus_v1
         public float Gamma
         {
             get { return gamma; }
+            set { gamma = value; }
+        }
+        public float BettaP
+        {
+            get { return betta; }
+            set { betta = value; }
         }
         public float Alpha
         {
@@ -220,6 +226,26 @@ namespace Volamus_v1
         {
             get { return hitAngleHigh; }
             set { hitAngleHigh = value; }
+        }
+        public float HitAngleLeft
+        {
+            get { return hitAngleLeft; }
+            set { hitAngleLeft = value; }
+        }
+        public float HitAngleRight
+        {
+            get { return hitAngleRight; }
+            set { hitAngleRight = value; }
+        }
+        public Vector3 leftWingPos
+        {
+            get { return leftWingPosition; }
+            set { leftWingPosition = value; }
+        }
+        public Vector3 rightWingPos
+        {
+            get { return rightWingPosition; }
+            set { rightWingPosition = value; }
         }
 
         public bool IsServing
@@ -900,6 +926,7 @@ namespace Volamus_v1
                     rightWingPosition = new Vector3(position.X - 1, position.Y, position.Z -3);
                 }
             }
+            /*
             else
             {
                 betta = 0;
@@ -940,7 +967,7 @@ namespace Volamus_v1
                     PositionRightWing = new Vector3(Position.X - 5, Position.Y, Position.Z + 2);
                     HitAngleHigh = -40;
                 }
-            }
+            }*/
         }
 
         //Schwacher Schlag
@@ -1575,6 +1602,8 @@ namespace Volamus_v1
                     rightWingPosition = new Vector3(position.X-1, position.Y, position.Z -3);
                 }
             }
+
+            /*
             else
             {
                 betta = 0;
@@ -1614,7 +1643,7 @@ namespace Volamus_v1
                     PositionRightWing = new Vector3(Position.X - 5, Position.Y, Position.Z + 2);
                     HitAngleHigh = -40;
                 }
-            }
+            }*/
         }
 
         //Schwacher Schlag

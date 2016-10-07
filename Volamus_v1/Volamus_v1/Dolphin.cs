@@ -16,6 +16,18 @@ namespace Volamus_v1
         Texture finTexture;
         float angleFin;
         bool finFalling;
+        float rotateEndeOderMatch; //während Match 90, am ende 45
+
+        //Jubel
+        bool moving_right;
+        bool moving_left;
+        float rotateModel;
+        float angleSin;
+        bool auftauchen;
+        bool tauchen;
+        float rotateModelSin;
+        float posYAlt;
+        float zLooser;
 
         public Dolphin(Vector3 pos, int ma_j_height, int mi_j_height, float j_velo, float mvp, Field field) : base(pos, ma_j_height, mi_j_height, j_velo, mvp, field) { }
 
@@ -23,6 +35,12 @@ namespace Volamus_v1
 
         public new void LoadContent()
         {
+            zLooser = Position.Z-5;
+            rotateEndeOderMatch = 90;
+            auftauchen = true;
+            tauchen = false;
+            moving_left = false;
+            moving_right = true;
             finFalling = false;
             Texture = GameStateManager.Instance.Content.Load<Texture2D>("Textures/delfinUV");
             model = GameStateManager.Instance.Content.Load<Model>("Models/delfin2");
@@ -62,7 +80,62 @@ namespace Volamus_v1
             }
         }
 
+        public void CheeringD()
+        {
+            Gamma = 0;
+            
+            if (this == GameScreen.Instance.Match.Winner)
+            {
+                rotateEndeOderMatch = 45;
+                if (Position.X >= GameScreen.Instance.Match.Field.Width / 2) //an rechter Feldgrenze
+                {
+                    moving_right = false;
+                    moving_left = true;
+                }
+                if (Position.X <= -GameScreen.Instance.Match.Field.Width / 2) //linker Rand
+                {
+                    moving_left = false;
+                    moving_right = true;
+                }
+                if (moving_right)
+                {
+                    posYAlt = Position.Z;
+                    Position = new Vector3(Position.X + 0.5f, Position.Y, 3 * (float)Math.Sin(angleSin / 4) - 1);
+                    rotateModel = 90 * -Direction;
+                }
+                if (moving_left)
+                {
+                    posYAlt = Position.Z;
+                    Position = new Vector3(Position.X - 0.5f, Position.Y, 3 * (float)Math.Sin(angleSin / 4) - 1);
+                    rotateModel = -90 * -Direction;
+                }
+                if (posYAlt <= Position.Z && Position.Z >= -1)
+                {
+                    auftauchen = true;
+                    tauchen = false;
+                }
+                if (posYAlt >= Position.Z && Position.Z <= -1)
+                {
+                    auftauchen = false;
+                    tauchen = true;
+                }
 
+                if (auftauchen)
+                {
+                    rotateModelSin += 1f;
+                }
+                if (tauchen)
+                {
+                    rotateModelSin -= 1f;
+                }
+                angleSin += 0.4f; //0.5
+            }
+            else
+            {
+                rotateEndeOderMatch = 130;
+                Position = new Vector3(Position.X, Position.Y,  zLooser);
+            }
+        }
 
         private void CreateBoundingBoxes()
         {
@@ -105,8 +178,8 @@ namespace Volamus_v1
                 {
                     part.Effect = effect;
 
-                    Matrix World = transforms[mesh.ParentBone.Index] * Matrix.CreateRotationY(MathHelper.ToRadians(Betta)) * Matrix.CreateRotationX(MathHelper.ToRadians(90 - Alpha)) * Matrix.CreateRotationZ(MathHelper.ToRadians(rotation + Direction * (-Gamma))) *
-                                   Matrix.CreateScale(new Vector3(4, 4, 4)) * Matrix.CreateTranslation(Position);
+                    Matrix World = transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(rotateEndeOderMatch - Alpha + rotateModelSin)) * Matrix.CreateRotationY(MathHelper.ToRadians(Betta)) * Matrix.CreateRotationZ(MathHelper.ToRadians(rotation + Direction * (-Gamma) + rotateModel)) *
+                                   Matrix.CreateScale(new Vector3(3, 3, 3)) * Matrix.CreateTranslation(Position);
                     Matrix Projection = camera.ProjectionMatrix;
                     Matrix View = camera.ViewMatrix;
                     Matrix WorldInverseTransposeMatrix = Matrix.Transpose(Matrix.Invert(World));
@@ -148,8 +221,8 @@ namespace Volamus_v1
                 {
                     part.Effect = effect;
 
-                    Matrix World = transforms[mesh.ParentBone.Index] * Matrix.CreateRotationY(MathHelper.ToRadians(-Betta)) * Matrix.CreateRotationX(MathHelper.ToRadians(90) + angleFin - Alpha) * Matrix.CreateRotationZ(MathHelper.ToRadians(rotation + Direction * (-Gamma))) *
-                                   Matrix.CreateScale(new Vector3(1, 1, 1)) * Matrix.CreateTranslation(new Vector3(Position.X, Position.Y , Position.Z));
+                    Matrix World = transforms[mesh.ParentBone.Index] * Matrix.CreateRotationY(MathHelper.ToRadians(-Betta)) * Matrix.CreateRotationX(MathHelper.ToRadians(90) + angleFin - Alpha) * Matrix.CreateRotationZ(MathHelper.ToRadians(rotation + Direction * (-Gamma)) + rotateModel) *
+                                   Matrix.CreateScale(new Vector3(1, 1, 1)) * Matrix.CreateTranslation(new Vector3(Position.X, Position.Y - Direction * 1, Position.Z + 1));
                     Matrix Projection = camera.ProjectionMatrix;
                     Matrix View = camera.ViewMatrix;
                     Matrix WorldInverseTransposeMatrix = Matrix.Transpose(Matrix.Invert(World));
