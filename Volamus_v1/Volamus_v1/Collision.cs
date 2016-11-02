@@ -202,7 +202,7 @@ namespace Volamus_v1
         //Spieler mit Drop
         public bool PlayerWithDrop(Player p, Drop d)
         {
-            if (d.BoundingBox.Intersects(p.InnerBoundingBox))
+            if (d.BoundingBox.Intersects(p.InnerBoundingBox)&& !GameScreen.Instance.Match.IsFinished)
             {
                 GameStateManager.Instance.Ingame.Play2D("Content//Sound//einsammelSound.ogg");
                 return true;
