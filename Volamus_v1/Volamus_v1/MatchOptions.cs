@@ -40,9 +40,9 @@ namespace Volamus_v1
             points = new SelectableInt(p, "Maximum Points");
 
             Texture2D mapOne, mapTwo, mapThree;
-            mapOne = GameStateManager.Instance.Content.Load<Texture2D>("Images/m1.3");
-            mapTwo = GameStateManager.Instance.Content.Load<Texture2D>("Images/map2.3");
-            mapThree = GameStateManager.Instance.Content.Load<Texture2D>("Images/map3.2");
+            mapOne = GameStateManager.Instance.Content.Load<Texture2D>("Images/pingMenü");
+            mapTwo = GameStateManager.Instance.Content.Load<Texture2D>("Images/humMenü");
+            mapThree = GameStateManager.Instance.Content.Load<Texture2D>("Images/delMenü2");
 
             stages = new SelectableImage(new[] { mapOne, mapTwo, mapThree }, "Maps");
 
@@ -322,7 +322,7 @@ namespace Volamus_v1
         {
             SpriteFont spriteFont = GameStateManager.Instance.Content.Load<SpriteFont>("SpriteFonts/Standard");
             base.Draw(spriteBatch);
-            stages.Draw(100);
+            stages.Draw(100); 
             points.Draw(350);
             wind.Draw(400);
             enemyVelo.Draw(450);

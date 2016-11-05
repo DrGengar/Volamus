@@ -2,7 +2,7 @@
 <GameStateManager xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <MusicVolume>20</MusicVolume>
   <IngameVolume>30</IngameVolume>
-  <Fullscreen>true</Fullscreen>
+  <Fullscreen>false</Fullscreen>
   <Image>
     <Alpha>0</Alpha>
     <Text />
