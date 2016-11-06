@@ -65,7 +65,7 @@ namespace Volamus_v1
             skydome = new Skydome(25f, false, GameStateManager.Instance.Content.Load<Texture2D>("Textures/wolken"));
             skydome.Load();
 
-            netTexture = GameStateManager.Instance.Content.Load<Texture2D>("Textures/iceTexture");
+            netTexture = GameStateManager.Instance.Content.Load<Texture2D>("Textures/netTextureWood");
 
             grass.LoadContent();
 

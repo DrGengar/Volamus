@@ -175,7 +175,7 @@ namespace Volamus_v1
 
                     effect.Parameters["cameraPos"].SetValue(camera.Position);
                     effect.Parameters["globalAmbient"].SetValue(new Vector4(0.2f, 0.2f, 0.2f, 1.0f));
-                    effect.Parameters["numLights"].SetValue(4);
+                    effect.Parameters["numLights"].SetValue(GameScreen.Instance.Match.LightsNumber);
 
                     effect.Parameters["PointLightpos"].SetValue(GameScreen.Instance.Match.LightsPosition);
                     effect.Parameters["PointLightambient"].SetValue(GameScreen.Instance.Match.LightsAmbient);
@@ -219,7 +219,7 @@ namespace Volamus_v1
 
                     effect.Parameters["cameraPos"].SetValue(camera.Position);
                     effect.Parameters["globalAmbient"].SetValue(new Vector4(0.2f, 0.2f, 0.2f, 1.0f));
-                    effect.Parameters["numLights"].SetValue(4);
+                    effect.Parameters["numLights"].SetValue(GameScreen.Instance.Match.LightsNumber);
 
                     effect.Parameters["PointLightpos"].SetValue(GameScreen.Instance.Match.LightsPosition);
                     effect.Parameters["PointLightambient"].SetValue(GameScreen.Instance.Match.LightsAmbient);
@@ -261,7 +261,7 @@ namespace Volamus_v1
 
                     effect.Parameters["cameraPos"].SetValue(camera.Position);
                     effect.Parameters["globalAmbient"].SetValue(new Vector4(0.2f, 0.2f, 0.2f, 1.0f));
-                    effect.Parameters["numLights"].SetValue(4);
+                    effect.Parameters["numLights"].SetValue(GameScreen.Instance.Match.LightsNumber);
 
                     effect.Parameters["PointLightpos"].SetValue(GameScreen.Instance.Match.LightsPosition);
                     effect.Parameters["PointLightambient"].SetValue(GameScreen.Instance.Match.LightsAmbient);
@@ -275,6 +275,62 @@ namespace Volamus_v1
                     effect.Parameters["Materialshininess"].SetValue(32.0f);
 
                     effect.Parameters["colorMapTexture"].SetValue(wingTextureR);
+                }
+                mesh.Draw();
+            }
+        }
+
+        public new void DrawArrow(Camera camera)
+        {
+            float temp = 0.0f;
+
+            if (Direction == -1)
+            {
+                temp = 180.0f;
+            }
+
+            Matrix[] transforms = new Matrix[Pfeil.Bones.Count];
+            Pfeil.CopyAbsoluteBoneTransformsTo(transforms);
+
+            foreach (ModelMesh mesh in Pfeil.Meshes)
+            {
+                foreach (ModelMeshPart part in mesh.MeshParts)
+                {
+                    part.Effect = effect;
+
+                    Matrix World = transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) * Matrix.CreateRotationZ(MathHelper.ToRadians(temp + (Direction) * (-Gamma))) *
+                                   Matrix.CreateScale(0.03f, 0.04f, 0.01f) * Matrix.CreateTranslation(new Vector3(Position.X, Position.Y, Position.Z - 2.25f));
+                    Matrix Projection = camera.ProjectionMatrix;
+                    Matrix View = camera.ViewMatrix;
+                    Matrix WorldInverseTransposeMatrix = Matrix.Transpose(Matrix.Invert(World));
+
+                    effect.Parameters["worldMatrix"].SetValue(World);
+                    effect.Parameters["worldInverseTransposeMatrix"].SetValue(WorldInverseTransposeMatrix);
+                    effect.Parameters["worldViewProjectionMatrix"].SetValue(World * View * Projection);
+
+                    effect.Parameters["cameraPos"].SetValue(camera.Position);
+                    effect.Parameters["globalAmbient"].SetValue(new Vector4(0.2f, 0.2f, 0.2f, 1.0f));
+                    effect.Parameters["numLights"].SetValue(GameScreen.Instance.Match.LightsNumber);
+
+                    effect.Parameters["PointLightpos"].SetValue(GameScreen.Instance.Match.LightsPosition);
+                    effect.Parameters["PointLightambient"].SetValue(GameScreen.Instance.Match.LightsAmbient);
+                    effect.Parameters["PointLightdiffuse"].SetValue(GameScreen.Instance.Match.LightsDiffuse);
+                    effect.Parameters["PointLightspecular"].SetValue(GameScreen.Instance.Match.LightsSpecular);
+                    effect.Parameters["PointLightradius"].SetValue(GameScreen.Instance.Match.LightsRadius);
+
+                    effect.Parameters["Materialambient"].SetValue(new Vector4(0.2f, 0.2f, 0.2f, 1.0f));
+                    effect.Parameters["Materialdiffuse"].SetValue(new Vector4(0.8f, 0.8f, 0.8f, 1.0f));
+                    effect.Parameters["Materialspecular"].SetValue(new Vector4(1.0f, 1.0f, 1.0f, 1.0f));
+                    effect.Parameters["Materialshininess"].SetValue(32.0f);
+
+                    if (CanHit)
+                    {
+                        effect.Parameters["colorMapTexture"].SetValue(arrowTexture2);
+                    }
+                    else
+                    {
+                        effect.Parameters["colorMapTexture"].SetValue(arrowTexture);
+                    }
                 }
                 mesh.Draw();
             }

@@ -40,7 +40,7 @@ namespace Volamus_v1
             skydome = new Skydome(25f, false, skyTexture);
             skydome.Load();
 
-            netTexture = GameStateManager.Instance.Content.Load<Texture2D>("Textures/iceTexture");
+            netTexture = GameStateManager.Instance.Content.Load<Texture2D>("Textures/netTextureSeaWeed");
 
             ocean = new Ocean();
             ocean.LoadContent();
@@ -54,7 +54,7 @@ namespace Volamus_v1
             groupTwo.UnloadContent();
         }
 
-        public new void Update(Random rnd)
+        public void Update(Random rnd)
         {
             groupOne.Update();
             groupTwo.Update();

@@ -36,6 +36,11 @@ namespace Volamus_v1
             get { return lightsRadius; }
         }
 
+        public int LightsNumber
+        {
+            get { return lights.Length; }
+        }
+
         public int MaxPoints
         {
             get { return maxPoints; }
@@ -113,6 +118,20 @@ namespace Volamus_v1
             }
         }
 
+        public int WhichField
+        {
+            get
+            {
+                if (iceField != null) return 1;
+
+                if (meadowField != null) return 2;
+
+                if (waterField != null) return 3;
+
+                return 0;
+            }
+        }
+
         private Image text;
         private float counter; // counter for scrolling
 
@@ -179,12 +198,9 @@ namespace Volamus_v1
             bumblebeeOne = one;
             bumblebeeTwo = two;
 
-            lights = new PointLight[4];
-            lights[0] = new PointLight(new Vector3(-f.Length / 2 - 10, -f.Width / 2 - 10, 20), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), 100.0f);
-            lights[1] = new PointLight(new Vector3(f.Length / 2 - 10, -f.Width / 2 - 10, 20), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), 100.0f);
-            lights[2] = new PointLight(new Vector3(-f.Length / 2 - 10, f.Width / 2 - 10, 20), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), 100.0f);
-            lights[3] = new PointLight(new Vector3(f.Length / 2 - 10, f.Width / 2 - 10, 20), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), 100.0f);
-
+            lights = new PointLight[1];
+            lights[0] = new PointLight(new Vector3(-50, 50, 30), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), 1000.0f);
+           
             Initialize(new Vector2(f.Length, f.Width), points, w, c_s, c_v);
         }
 
@@ -195,12 +211,8 @@ namespace Volamus_v1
             dolphinOne = one;
             dolphinTwo = two;
 
-            lights = new PointLight[4];
-            lights[0] = new PointLight(new Vector3(-f.Length / 2 - 10, -f.Width / 2 - 10, 20), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), 100.0f);
-            lights[1] = new PointLight(new Vector3(f.Length / 2 - 10, -f.Width / 2 - 10, 20), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), 100.0f);
-            lights[2] = new PointLight(new Vector3(-f.Length / 2 - 10, f.Width / 2 - 10, 20), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), 100.0f);
-            lights[3] = new PointLight(new Vector3(f.Length / 2 - 10, f.Width / 2 - 10, 20), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), 100.0f);
-
+            lights = new PointLight[1];
+            lights[0] = new PointLight(new Vector3(50, -50, 30), new Vector4(1.0f, 0.2f, 0.2f, 1.0f), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), 1000.0f);        
             Initialize(new Vector2(f.Length, f.Width), points, w, c_s, c_v);
         }
 
@@ -321,13 +333,6 @@ namespace Volamus_v1
         {
             var timer = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-            if (InputManager.Instance.KeyPressed(Keys.F1))
-            {
-                preMatch = false;
-                One.IsServing = true;
-                Collision.Instance.LastTouched = One;
-            }
-
             if (preMatch)
             {
                 rpsOne.Update(gameTime);
@@ -401,14 +406,17 @@ namespace Volamus_v1
                 {
                     bumblebeeOne.UpdateAnim();
                 }
+
                 if (Two == bumblebeeTwo)
                 {
                     bumblebeeTwo.UpdateAnim();
                 }
+
                 if (One == dolphinOne)
                 {
                     dolphinOne.UpdateAnim();
                 }
+
                 if (Two == dolphinTwo)
                 {
                     dolphinTwo.UpdateAnim();
@@ -620,7 +628,20 @@ namespace Volamus_v1
                 {
                     if (!isFinished)
                     {
-                        One.DrawArrow(camera);
+                        if (pinguinOne != null)
+                        {
+                            pinguinOne.DrawArrow(camera);
+                        }
+
+                        if (bumblebeeOne != null)
+                        {
+                            bumblebeeOne.DrawArrow(camera);
+                        }
+
+                        if (dolphinOne != null)
+                        {
+                            dolphinOne.DrawArrow(camera);
+                        }
 
                         Vector2 temp = new Vector2(view.X + pointsImage.Width / 4 + ((view.Width - pointsImage.Width) / 2), 0);
 
@@ -662,7 +683,20 @@ namespace Volamus_v1
                     {
                         if (!isFinished)
                         {
-                            Two.DrawArrow(camera);
+                            if (pinguinTwo != null)
+                            {
+                                pinguinTwo.DrawArrow(camera);
+                            }
+
+                            if (bumblebeeTwo != null)
+                            {
+                                bumblebeeTwo.DrawArrow(camera);
+                            }
+
+                            if (dolphinTwo != null)
+                            {
+                                dolphinTwo.DrawArrow(camera);
+                            }
 
                             Vector2 temp = new Vector2(view.X + pointsImage.Width / 4 + ((view.Width - pointsImage.Width) / 2), 0);
 

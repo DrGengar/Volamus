@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <SourceFile>C:/Users/Ich/Desktop/3dGame/Volamus_v1/Volamus_v1/Content/Sound/Ball.ogg</SourceFile>
-  <SourceTime>2016-10-07T16:48:55.3533879+02:00</SourceTime>
-  <DestFile>C:/Users/Ich/Desktop/3dGame/Volamus_v1/Volamus_v1/Content/bin/Windows/Sound/Ball.xnb</DestFile>
-  <DestTime>2016-10-07T16:49:40.0057947+02:00</DestTime>
+  <SourceFile>C:/Users/Lars/Desktop/Uni/3DGameDevelopment/Volamus/Volamus_v1/Volamus_v1/Content/Sound/Ball.ogg</SourceFile>
+  <SourceTime>2016-11-06T10:17:23.221285+01:00</SourceTime>
+  <DestFile>C:/Users/Lars/Desktop/Uni/3DGameDevelopment/Volamus/Volamus_v1/Volamus_v1/Content/bin/Windows/Sound/Ball.xnb</DestFile>
+  <DestTime>2016-11-06T11:07:56.9658053+01:00</DestTime>
   <Importer>OggImporter</Importer>
   <ImporterTime>2016-03-30T08:36:08+02:00</ImporterTime>
   <Processor>SongProcessor</Processor>
@@ -15,6 +15,6 @@
   <Dependencies />
   <BuildAsset />
   <BuildOutput>
-    <string>C:/Users/Ich/Desktop/3dGame/Volamus_v1/Volamus_v1/Content/bin/Windows/Sound/Ball.wma</string>
+    <string>C:/Users/Lars/Desktop/Uni/3DGameDevelopment/Volamus/Volamus_v1/Volamus_v1/Content/bin/Windows/Sound/Ball.wma</string>
   </BuildOutput>
 </PipelineBuildEvent>

@@ -11,6 +11,7 @@ namespace Volamus_v1
     public class Pinguin : Player
     {
         bool is_falling;
+
         public Pinguin(Vector3 pos, int ma_j_height, int mi_j_height, float j_velo, float mvp, Field field) : base(pos, ma_j_height, mi_j_height, j_velo, mvp, field){}
 
         public Pinguin(Vector3 pos, int ma_j_height, int mi_j_height, float j_velo, float mvp, Field field, PlayerIndex i) : base(pos, ma_j_height, mi_j_height, j_velo, mvp, field, i) { }

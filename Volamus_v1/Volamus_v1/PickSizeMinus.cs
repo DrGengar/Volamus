@@ -73,7 +73,14 @@ namespace Volamus_v1
             int zufall = rnd.Next(1, 11);
             int timeToLive = 200 + rnd.Next(80);
 
-            return new Drop(new Vector3(x, y, 0.5f), timeToLive, dr, texture);
+            if(GameScreen.Instance.Match.WhichField == 2)
+            {
+                return new Drop(new Vector3(x, y, 2.0f), timeToLive, dr, texture);
+            }
+            else
+            {
+                return new Drop(new Vector3(x, y, 0.5f), timeToLive, dr, texture);
+            }
         }
 
         public void Draw(Camera camera)
@@ -102,7 +109,7 @@ namespace Volamus_v1
 
                         effect.Parameters["cameraPos"].SetValue(camera.Position);
                         effect.Parameters["globalAmbient"].SetValue(new Vector4(0.2f, 0.2f, 0.2f, 1.0f));
-                        effect.Parameters["numLights"].SetValue(4);
+                        effect.Parameters["numLights"].SetValue(GameScreen.Instance.Match.LightsNumber);
 
                         effect.Parameters["PointLightpos"].SetValue(GameScreen.Instance.Match.LightsPosition);
                         effect.Parameters["PointLightambient"].SetValue(GameScreen.Instance.Match.LightsAmbient);

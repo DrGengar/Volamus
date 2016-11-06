@@ -92,7 +92,7 @@ namespace Volamus_v1
         Vector2[] box = new Vector2[2];
 
         Model pfeil;
-        Texture2D arrowTexture, arrowTexture2;
+        public Texture2D arrowTexture, arrowTexture2;
 
         KeyboardControl keyboard;
         GamePadControl gamepad;
@@ -101,6 +101,11 @@ namespace Volamus_v1
         PlayerIndex index;
 
         //Get-Methods
+
+        public Model Pfeil
+        {
+            get { return pfeil; }
+        }
 
         public int Direction
         {
@@ -1069,7 +1074,7 @@ namespace Volamus_v1
         {
             if (GameScreen.Instance.Match.IsFinished == false)
             {
-                gamepad.newstate = GamePad.GetState(PlayerIndex.One);
+                gamepad.newstate = GamePad.GetState(index);
                 camera.Update();
 
                 //Schlaganimation
@@ -1765,7 +1770,7 @@ namespace Volamus_v1
 
                     effect.Parameters["cameraPos"].SetValue(camera.Position);
                     effect.Parameters["globalAmbient"].SetValue(new Vector4(0.2f, 0.2f, 0.2f, 1.0f));
-                    effect.Parameters["numLights"].SetValue(4);
+                    effect.Parameters["numLights"].SetValue(GameScreen.Instance.Match.LightsNumber);
 
                     effect.Parameters["PointLightpos"].SetValue(GameScreen.Instance.Match.LightsPosition);
                     effect.Parameters["PointLightambient"].SetValue(GameScreen.Instance.Match.LightsAmbient);
@@ -1811,7 +1816,7 @@ namespace Volamus_v1
 
                     effect.Parameters["cameraPos"].SetValue(camera.Position);
                     effect.Parameters["globalAmbient"].SetValue(new Vector4(0.2f, 0.2f, 0.2f, 1.0f));
-                    effect.Parameters["numLights"].SetValue(4);
+                    effect.Parameters["numLights"].SetValue(GameScreen.Instance.Match.LightsNumber);
 
                     effect.Parameters["PointLightpos"].SetValue(GameScreen.Instance.Match.LightsPosition);
                     effect.Parameters["PointLightambient"].SetValue(GameScreen.Instance.Match.LightsAmbient);
@@ -1854,7 +1859,7 @@ namespace Volamus_v1
 
                     effect.Parameters["cameraPos"].SetValue(camera.Position);
                     effect.Parameters["globalAmbient"].SetValue(new Vector4(0.2f, 0.2f, 0.2f, 1.0f));
-                    effect.Parameters["numLights"].SetValue(4);
+                    effect.Parameters["numLights"].SetValue(GameScreen.Instance.Match.LightsNumber);
 
                     effect.Parameters["PointLightpos"].SetValue(GameScreen.Instance.Match.LightsPosition);
                     effect.Parameters["PointLightambient"].SetValue(GameScreen.Instance.Match.LightsAmbient);
@@ -1892,7 +1897,7 @@ namespace Volamus_v1
                     part.Effect = effect;
 
                     Matrix World = transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(90)) * Matrix.CreateRotationZ(MathHelper.ToRadians(temp + (direction) * (-gamma))) *
-                                   Matrix.CreateScale(0.03f, 0.04f, 0.01f) * Matrix.CreateTranslation(new Vector3(position.X, position.Y, 0.02f));
+                                   Matrix.CreateScale(0.03f, 0.04f, 0.01f) * Matrix.CreateTranslation(new Vector3(position.X, position.Y, position.Z + 0.02f));
                     Matrix Projection = camera.ProjectionMatrix;
                     Matrix View = camera.ViewMatrix;
                     Matrix WorldInverseTransposeMatrix = Matrix.Transpose(Matrix.Invert(World));
@@ -1903,7 +1908,7 @@ namespace Volamus_v1
 
                     effect.Parameters["cameraPos"].SetValue(camera.Position);
                     effect.Parameters["globalAmbient"].SetValue(new Vector4(0.2f, 0.2f, 0.2f, 1.0f));
-                    effect.Parameters["numLights"].SetValue(4);
+                    effect.Parameters["numLights"].SetValue(GameScreen.Instance.Match.LightsNumber);
 
                     effect.Parameters["PointLightpos"].SetValue(GameScreen.Instance.Match.LightsPosition);
                     effect.Parameters["PointLightambient"].SetValue(GameScreen.Instance.Match.LightsAmbient);

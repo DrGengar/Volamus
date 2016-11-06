@@ -84,7 +84,14 @@ namespace Volamus_v1
             int zufall = rnd.Next(1, 11);
             int timeToLive = 200 + rnd.Next(80);
 
-            return new Drop(new Vector3(x, y, 0.5f), timeToLive, dr, texture);
+            if (GameScreen.Instance.Match.WhichField == 2)
+            {
+                return new Drop(new Vector3(x, y, 2.0f), timeToLive, dr, texture);
+            }
+            else
+            {
+                return new Drop(new Vector3(x, y, 0.5f), timeToLive, dr, texture);
+            }
         }
 
         public void Draw(Camera camera)
@@ -111,7 +118,7 @@ namespace Volamus_v1
 
                         effect.Parameters["cameraPos"].SetValue(camera.Position);
                         effect.Parameters["globalAmbient"].SetValue(new Vector4(0.2f, 0.2f, 0.2f, 1.0f));
-                        effect.Parameters["numLights"].SetValue(4);
+                        effect.Parameters["numLights"].SetValue(GameScreen.Instance.Match.LightsNumber);
 
                         effect.Parameters["PointLightpos"].SetValue(GameScreen.Instance.Match.LightsPosition);
                         effect.Parameters["PointLightambient"].SetValue(GameScreen.Instance.Match.LightsAmbient);
@@ -125,24 +132,6 @@ namespace Volamus_v1
                         effect.Parameters["Materialshininess"].SetValue(32.0f);
 
                         effect.Parameters["colorMapTexture"].SetValue(texture);
-                        /*
-                        part.Effect = effect;
-                        effect.Parameters["World"].SetValue(transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(-125 + 180)) *
-                                Matrix.CreateScale(1.50f, 1.50f, 2.0f)
-                                * Matrix.CreateTranslation(dropsVelo[index].Position + new Vector3(0, 0, 1)));
-                        effect.Parameters["View"].SetValue(camera.ViewMatrix);
-                        effect.Parameters["Projection"].SetValue(camera.ProjectionMatrix);
-                        Matrix WorldInverseTransposeMatrix = Matrix.Transpose(Matrix.Invert(transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(-125 + 180)) *
-                                Matrix.CreateScale(1.5f, 1.5f, 1.5f)
-                                * Matrix.CreateTranslation(dropsVelo[index].Position + new Vector3(0, 0, 1))));
-                        effect.Parameters["WorldInverseTranspose"].SetValue(WorldInverseTransposeMatrix);
-
-                        effect.Parameters["ModelTexture"].SetValue(texture);
-
-                        Vector3 viewVector = Vector3.Transform(camera.View - camera.Position, Matrix.CreateRotationY(0));
-                        viewVector.Normalize();
-                        effect.Parameters["ViewVector"].SetValue(viewVector);
-                        */
                     }
                     mesh.Draw();
                 }

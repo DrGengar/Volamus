@@ -118,7 +118,7 @@ namespace Volamus_v1
 
                     effect.Parameters["cameraPos"].SetValue(camera.Position);
                     effect.Parameters["globalAmbient"].SetValue(new Vector4(0.2f, 0.2f, 0.2f, 1.0f));
-                    effect.Parameters["numLights"].SetValue(4);
+                    effect.Parameters["numLights"].SetValue(GameScreen.Instance.Match.LightsNumber);
 
                     effect.Parameters["PointLightpos"].SetValue(GameScreen.Instance.Match.LightsPosition);
                     effect.Parameters["PointLightambient"].SetValue(GameScreen.Instance.Match.LightsAmbient);
@@ -132,24 +132,6 @@ namespace Volamus_v1
                     effect.Parameters["Materialshininess"].SetValue(32.0f);
 
                     effect.Parameters["colorMapTexture"].SetValue(texture);
-                    /*
-                    part.Effect = effect;
-                    effect.Parameters["World"].SetValue(transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(Rotation)) *
-                            Matrix.CreateScale(1.50f, 1.50f, 2.0f)
-                            * Matrix.CreateTranslation(position));
-                    effect.Parameters["View"].SetValue(camera.ViewMatrix);
-                    effect.Parameters["Projection"].SetValue(camera.ProjectionMatrix);
-                    Matrix WorldInverseTransposeMatrix = Matrix.Transpose(Matrix.Invert(transforms[mesh.ParentBone.Index] * Matrix.CreateRotationX(MathHelper.ToRadians(Rotation)) *
-                            Matrix.CreateScale(1.5f, 1.5f, 1.5f)
-                            * Matrix.CreateTranslation(position)));
-                    effect.Parameters["WorldInverseTranspose"].SetValue(WorldInverseTransposeMatrix);
-
-                    effect.Parameters["ModelTexture"].SetValue(texture);
-
-                    viewVector = Vector3.Transform(camera.View - camera.Position, Matrix.CreateRotationY(0));
-                    viewVector.Normalize();
-                    effect.Parameters["ViewVector"].SetValue(viewVector);
-                    */
                 }
                 mesh.Draw();
             }
@@ -178,7 +160,7 @@ namespace Volamus_v1
 
                     effect.Parameters["cameraPos"].SetValue(camera.Position);
                     effect.Parameters["globalAmbient"].SetValue(new Vector4(0.2f, 0.2f, 0.2f, 1.0f));
-                    effect.Parameters["numLights"].SetValue(4);
+                    effect.Parameters["numLights"].SetValue(GameScreen.Instance.Match.LightsNumber);
 
                     effect.Parameters["PointLightpos"].SetValue(GameScreen.Instance.Match.LightsPosition);
                     effect.Parameters["PointLightambient"].SetValue(GameScreen.Instance.Match.LightsAmbient);

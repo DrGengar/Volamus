@@ -129,7 +129,7 @@ namespace Volamus_v1
 
                     effect.Parameters["cameraPos"].SetValue(camera.Position);
                     effect.Parameters["globalAmbient"].SetValue(new Vector4(0.2f, 0.2f, 0.2f, 1.0f));
-                    effect.Parameters["numLights"].SetValue(4);
+                    effect.Parameters["numLights"].SetValue(GameScreen.Instance.Match.LightsNumber);
 
                     effect.Parameters["PointLightpos"].SetValue(GameScreen.Instance.Match.LightsPosition);
                     effect.Parameters["PointLightambient"].SetValue(GameScreen.Instance.Match.LightsAmbient);
@@ -173,7 +173,7 @@ namespace Volamus_v1
 
                     effect.Parameters["cameraPos"].SetValue(camera.Position);
                     effect.Parameters["globalAmbient"].SetValue(new Vector4(0.2f, 0.2f, 0.2f, 1.0f));
-                    effect.Parameters["numLights"].SetValue(4);
+                    effect.Parameters["numLights"].SetValue(GameScreen.Instance.Match.LightsNumber);
 
                     effect.Parameters["PointLightpos"].SetValue(GameScreen.Instance.Match.LightsPosition);
                     effect.Parameters["PointLightambient"].SetValue(GameScreen.Instance.Match.LightsAmbient);
@@ -215,7 +215,7 @@ namespace Volamus_v1
 
                     effect.Parameters["cameraPos"].SetValue(camera.Position);
                     effect.Parameters["globalAmbient"].SetValue(new Vector4(0.2f, 0.2f, 0.2f, 1.0f));
-                    effect.Parameters["numLights"].SetValue(4);
+                    effect.Parameters["numLights"].SetValue(GameScreen.Instance.Match.LightsNumber);
 
                     effect.Parameters["PointLightpos"].SetValue(GameScreen.Instance.Match.LightsPosition);
                     effect.Parameters["PointLightambient"].SetValue(GameScreen.Instance.Match.LightsAmbient);

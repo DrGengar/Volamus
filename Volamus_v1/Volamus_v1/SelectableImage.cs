@@ -83,11 +83,11 @@ namespace Volamus_v1
                 {
                     if(is_active)
                     {
-                        GameStateManager.Instance.SpriteBatch.Draw(GameStateManager.Instance.Content.Load<Texture2D>("Images/mark2"), new Vector2(mid + width - 7.5f, y - 7.5f));
+                        GameStateManager.Instance.SpriteBatch.Draw(GameStateManager.Instance.Content.Load<Texture2D>("Images/mark2"), new Vector2(mid + width - 10.0f, y - 10.0f));
                     }
                     else
                     {
-                        GameStateManager.Instance.SpriteBatch.Draw(GameStateManager.Instance.Content.Load<Texture2D>("Images/mark"), new Vector2(mid + width - 7.5f, y - 7.5f));
+                        GameStateManager.Instance.SpriteBatch.Draw(GameStateManager.Instance.Content.Load<Texture2D>("Images/mark"), new Vector2(mid + width - 10.0f, y - 10.0f));
                     }
                 }
 
