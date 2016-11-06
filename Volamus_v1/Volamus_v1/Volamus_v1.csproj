@@ -60,6 +60,7 @@
     <Compile Include="Ball.cs" />
     <Compile Include="BumbleBee.cs" />
     <Compile Include="Collision.cs" />
+    <Compile Include="ConfettiFish.cs" />
     <Compile Include="ConfettiFlower.cs" />
     <Compile Include="Credits.cs" />
     <Compile Include="Controls.cs" />

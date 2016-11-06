@@ -15,6 +15,14 @@ namespace Volamus_v1
 
         SpectatorGroupDolphin groupOne, groupTwo;
 
+        ConfettiFish confetti;
+
+        public ConfettiFish Confetti
+        {
+            get { return confetti; }
+            set { confetti = value; }
+        }
+
         public SpectatorGroupDolphin GroupOne
         {
             get { return groupOne; }
@@ -58,6 +66,10 @@ namespace Volamus_v1
         {
             groupOne.Update();
             groupTwo.Update();
+            if (confetti != null)
+            {
+                confetti.Update(rnd);
+            }
         }
 
         public new void Draw(Camera camera)

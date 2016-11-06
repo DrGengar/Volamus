@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <SourceFile>C:/Users/Lars/Desktop/Uni/3DGameDevelopment/Volamus/Volamus_v1/Volamus_v1/Content/GameStateManager/FadeScreen.png</SourceFile>
-  <SourceTime>2016-11-06T10:17:19.6250793+01:00</SourceTime>
-  <DestFile>C:/Users/Lars/Desktop/Uni/3DGameDevelopment/Volamus/Volamus_v1/Volamus_v1/Content/bin/Windows/GameStateManager/FadeScreen.xnb</DestFile>
-  <DestTime>2016-11-06T11:07:50.3314258+01:00</DestTime>
+  <SourceFile>C:/Users/Iam/Desktop/3dGame/Volamus_v1/Volamus_v1/Content/GameStateManager/FadeScreen.png</SourceFile>
+  <SourceTime>2016-09-29T15:18:31.9818013+02:00</SourceTime>
+  <DestFile>C:/Users/Iam/Desktop/3dGame/Volamus_v1/Volamus_v1/Content/bin/Windows/GameStateManager/FadeScreen.xnb</DestFile>
+  <DestTime>2016-11-06T18:18:30.3220527+01:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2016-03-30T08:36:08+02:00</ImporterTime>
   <Processor>TextureProcessor</Processor>
