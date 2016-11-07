@@ -198,9 +198,9 @@ namespace Volamus_v1
             bumblebeeOne = one;
             bumblebeeTwo = two;
 
-            lights = new PointLight[1];
+            lights = new PointLight[2];
             lights[0] = new PointLight(new Vector3(-50, 50, 30), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), 1000.0f);
-           
+            lights[1] = new PointLight(new Vector3(50, -50, 30), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), 1000.0f);
             Initialize(new Vector2(f.Length, f.Width), points, w, c_s, c_v);
         }
 
@@ -211,8 +211,9 @@ namespace Volamus_v1
             dolphinOne = one;
             dolphinTwo = two;
 
-            lights = new PointLight[1];
-            lights[0] = new PointLight(new Vector3(50, -50, 30), new Vector4(1.0f, 0.2f, 0.2f, 1.0f), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), 1000.0f);        
+            lights = new PointLight[2];
+            lights[0] = new PointLight(new Vector3(50, -50, 30), new Vector4(1.0f, 0.2f, 0.2f, 1.0f), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), 1000.0f);
+            lights[1] = new PointLight(new Vector3(-50, 50, 30), new Vector4(1.0f, 0.2f, 0.2f, 1.0f), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), new Vector4(1.0f, 1.0f, 1.0f, 1.0f), 1000.0f);
             Initialize(new Vector2(f.Length, f.Width), points, w, c_s, c_v);
         }
 
@@ -254,7 +255,15 @@ namespace Volamus_v1
         public void LoadContent()
         {
             text = new Image();
-            text.Color = Color.Black;
+            if(meadowField!=null || waterField != null)
+            {
+                text.Color = Color.White;
+            }
+            else
+            {
+                text.Color = Color.Black;
+            }
+
             text.Scale = new Vector2(1.2f, 1.2f);
             text.Text = "The winner of this match will join the group of companions \n which will set out to find the golden cloud.";
             text.LoadContent();

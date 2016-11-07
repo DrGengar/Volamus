@@ -209,13 +209,13 @@ namespace Volamus_v1
             }
             FinDraw(camera);
 
-            DebugDraw d = new DebugDraw(GameStateManager.Instance.GraphicsDevice);
+     /*       DebugDraw d = new DebugDraw(GameStateManager.Instance.GraphicsDevice);
             d.Begin(camera.ViewMatrix, camera.ProjectionMatrix);
 
             d.DrawWireBox(innerBoundingBox, Color.White);
             d.DrawWireBox(outerBoundingBox, Color.White);
 
-            d.End();
+            d.End();*/
         }
 
         public void FinDraw(Camera camera)
