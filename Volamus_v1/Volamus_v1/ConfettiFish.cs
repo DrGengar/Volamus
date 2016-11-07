@@ -102,7 +102,7 @@ namespace Volamus_v1
 
             for (int index = 0; index < confetti.Count; index++)
             {
-                confetti[index].DrawFlower(camera, effect, 90, dr);
+                confetti[index].DrawFish(camera, effect, 90, dr);
             }
         }
     }

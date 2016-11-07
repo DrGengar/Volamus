@@ -444,6 +444,8 @@ namespace Volamus_v1
                     if (waterField != null)
                     {
                         waterField.GroupOne.SetCheering();
+                        waterField.Confetti = new ConfettiFish(new Vector3(-waterField.Width / 2, -waterField.Length / 2, 0), new Vector3(waterField.Width / 2, -waterField.Length / 2, 0));
+
                     }
                 }
 
